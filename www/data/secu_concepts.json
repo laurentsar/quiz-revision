@@ -2,7 +2,7 @@
 "title": "Cybersécurité, Secret & Homologation",
 "source": "Mindmaps Offre Thales + IGI 1300 + II 901 + IGI 2102",
 "branches": {
-"thales": "Offre Thales",
+"thales": "Architecture & homologation",
 "igi1300": "IGI 1300 — Secret Défense",
 "ii901": "II 901 — SI sensibles",
 "igi2102": "IGI 2102 — ICUE (UE)"
@@ -10,7 +10,7 @@
 "concepts": [
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Principes d'architecture",
 "term": "Defense in depth",
 "def": "Empiler des couches de sécurité complémentaires",
@@ -20,7 +20,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Principes d'architecture",
 "term": "Zero Trust",
 "def": "Ne jamais faire confiance par défaut, toujours vérifier",
@@ -30,7 +30,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Principes d'architecture",
 "term": "Least privilege",
 "def": "N'accorder que les droits strictement nécessaires",
@@ -40,7 +40,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Principes d'architecture",
 "term": "Need to know",
 "def": "Limiter l'accès aux seules informations nécessaires",
@@ -50,7 +50,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Principes d'architecture",
 "term": "Security by design",
 "def": "Intégrer la sécurité dès la conception du système",
@@ -60,7 +60,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Principes d'architecture",
 "term": "Segregation of duties",
 "def": "Séparer les rôles sensibles",
@@ -70,7 +70,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Objectifs de sécurité",
 "term": "Confidentialité",
 "def": "Réserver l'information aux personnes autorisées",
@@ -80,7 +80,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Objectifs de sécurité",
 "term": "Intégrité",
 "def": "Garantir que les données ne sont pas altérées",
@@ -90,7 +90,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Objectifs de sécurité",
 "term": "Disponibilité",
 "def": "Garantir l'accès au service et aux données",
@@ -100,7 +100,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Objectifs de sécurité",
 "term": "Traçabilité",
 "def": "Pouvoir reconstituer qui a fait quoi et quand",
@@ -110,7 +110,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Objectifs de sécurité",
 "term": "Résilience",
 "def": "Capacité à résister et à se rétablir après un incident",
@@ -120,7 +120,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Segmentation & zones de confiance",
 "term": "Zones de confiance",
 "def": "Regrouper les composants selon leur criticité et leur exposition",
@@ -130,7 +130,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Segmentation & zones de confiance",
 "term": "Cloisonnement",
 "def": "Limiter les communications entre zones",
@@ -140,7 +140,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Segmentation & zones de confiance",
 "term": "DMZ",
 "def": "Zone tampon entre un réseau exposé et le réseau interne sensible",
@@ -150,7 +150,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Segmentation & zones de confiance",
 "term": "Flux inter-zones",
 "def": "Identifier précisément les flux autorisés entre zones",
@@ -160,7 +160,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Segmentation & zones de confiance",
 "term": "Matrice de flux",
 "def": "Recenser les flux réseau autorisés (source, destination, port)",
@@ -172,7 +172,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Segmentation & zones de confiance",
 "term": "Bastion",
 "def": "Point d'accès contrôlé pour administrer des systèmes sensibles",
@@ -182,7 +182,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Identité & contrôle d'accès",
 "term": "IAM",
 "def": "Gérer les identités et les accès (Identity and Access Management)",
@@ -192,7 +192,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Identité & contrôle d'accès",
 "term": "RBAC",
 "def": "Attribuer les droits selon le rôle de l'utilisateur",
@@ -202,7 +202,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Identité & contrôle d'accès",
 "term": "MFA",
 "def": "Authentifier avec plusieurs facteurs (mot de passe + code…)",
@@ -212,7 +212,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Identité & contrôle d'accès",
 "term": "Comptes à privilèges",
 "def": "Comptes disposant de droits élevés (administration)",
@@ -222,7 +222,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Identité & contrôle d'accès",
 "term": "Revues d'accès",
 "def": "Vérifier périodiquement que les droits restent justifiés",
@@ -232,7 +232,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Identité & contrôle d'accès",
 "term": "Journalisation des accès",
 "def": "Enregistrer les connexions et actions des utilisateurs",
@@ -242,7 +242,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Protection réseau",
 "term": "Pare-feu",
 "def": "Filtrer le trafic entre réseaux selon des règles",
@@ -252,7 +252,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Protection réseau",
 "term": "IDS / IPS",
 "def": "Détecter ou bloquer les comportements réseau suspects",
@@ -262,7 +262,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Protection réseau",
 "term": "Proxy",
 "def": "Contrôler et journaliser les accès sortants",
@@ -272,7 +272,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Protection réseau",
 "term": "VPN",
 "def": "Établir un tunnel chiffré entre deux réseaux ou postes",
@@ -282,7 +282,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Protection réseau",
 "term": "Filtrage",
 "def": "Restreindre les ports, protocoles et destinations autorisés",
@@ -292,7 +292,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Protection réseau",
 "term": "Chiffrement des flux",
 "def": "Protéger les échanges contre l'interception ou l'altération",
@@ -302,7 +302,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Systèmes & durcissement",
 "term": "Hardening",
 "def": "Réduire la surface d'attaque d'un système",
@@ -312,7 +312,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Systèmes & durcissement",
 "term": "Patch management",
 "def": "Appliquer les correctifs de sécurité",
@@ -322,7 +322,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Systèmes & durcissement",
 "term": "Configuration sécurisée",
 "def": "Appliquer des paramètres conformes aux exigences de sécurité",
@@ -332,7 +332,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Systèmes & durcissement",
 "term": "Antivirus / EDR",
 "def": "Détecter et répondre aux menaces sur les postes et serveurs",
@@ -342,7 +342,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Systèmes & durcissement",
 "term": "Gestion des vulnérabilités",
 "def": "Identifier, qualifier, prioriser et traiter les failles",
@@ -352,7 +352,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Systèmes & durcissement",
 "term": "Contrôle des ports / services",
 "def": "Désactiver ce qui n'est pas nécessaire",
@@ -362,7 +362,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Supervision & détection",
 "term": "Logs",
 "def": "Journaux d'événements, matière première de la supervision",
@@ -372,7 +372,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Supervision & détection",
 "term": "SIEM",
 "def": "Centraliser, corréler et analyser les événements",
@@ -382,7 +382,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Supervision & détection",
 "term": "Alerting",
 "def": "Déclencher une alerte sur un événement suspect ou critique",
@@ -392,7 +392,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Supervision & détection",
 "term": "Corrélation",
 "def": "Relier plusieurs événements pour détecter un scénario d'attaque",
@@ -402,7 +402,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Supervision & détection",
 "term": "Détection d'incident",
 "def": "Identifier une compromission ou un comportement anormal",
@@ -412,7 +412,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Supervision & détection",
 "term": "Investigation",
 "def": "Analyser après coup le déroulement d'un incident",
@@ -422,7 +422,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Données",
 "term": "Classification",
 "def": "Attribuer un niveau de sensibilité aux données",
@@ -432,7 +432,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Données",
 "term": "Chiffrement",
 "def": "Rendre les données illisibles sans la clé",
@@ -442,7 +442,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Données",
 "term": "Intégrité des données",
 "def": "Garantir l'absence de modification non autorisée",
@@ -452,7 +452,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Données",
 "term": "Rétention",
 "def": "Définir combien de temps conserver les données et les logs",
@@ -462,7 +462,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Données",
 "term": "Gestion des secrets",
 "def": "Stocker et protéger mots de passe, clés et certificats",
@@ -472,7 +472,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Résilience & continuité",
 "term": "Sauvegarde",
 "def": "Copie de sécurité des données et configurations critiques",
@@ -482,7 +482,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Résilience & continuité",
 "term": "PRA",
 "def": "Plan de Reprise d'Activité (après un sinistre)",
@@ -492,7 +492,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Résilience & continuité",
 "term": "PCA",
 "def": "Plan de Continuité d'Activité (pendant la crise)",
@@ -502,7 +502,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Résilience & continuité",
 "term": "Redondance",
 "def": "Dupliquer des composants pour éviter un point unique de défaillance",
@@ -512,7 +512,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Résilience & continuité",
 "term": "Haute disponibilité",
 "def": "Limiter les interruptions de service",
@@ -522,7 +522,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Résilience & continuité",
 "term": "Tests de restauration",
 "def": "Vérifier qu'une sauvegarde est réellement exploitable",
@@ -532,7 +532,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Analyse de risque",
 "term": "Vraisemblance",
 "def": "Probabilité qu'une menace se réalise",
@@ -542,7 +542,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Analyse de risque",
 "term": "Gravité",
 "def": "Ampleur des conséquences (impact)",
@@ -552,7 +552,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Analyse de risque",
 "term": "Vulnérabilité",
 "def": "Faiblesse exploitable d'un système",
@@ -562,7 +562,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Analyse de risque",
 "term": "Risque résiduel",
 "def": "Risque qui subsiste après application des mesures",
@@ -572,7 +572,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Analyse de risque",
 "term": "Plan de traitement",
 "def": "Ensemble des actions décidées pour réduire les risques",
@@ -582,7 +582,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Analyse de risque",
 "term": "Mesure compensatoire",
 "def": "Mesure qui réduit un risque lié à un écart",
@@ -592,7 +592,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Scénarios de menace",
 "term": "Attaquant interne",
 "def": "Menace venant de l'intérieur (employé malveillant ou négligent)",
@@ -602,7 +602,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Scénarios de menace",
 "term": "Attaquant externe",
 "def": "Menace venant de l'extérieur, via Internet",
@@ -612,7 +612,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Scénarios de menace",
 "term": "Mouvement latéral",
 "def": "Progression d'un attaquant d'un système à un autre dans le réseau",
@@ -622,7 +622,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Scénarios de menace",
 "term": "Compromission",
 "def": "Prise de contrôle d'un système ou d'un compte",
@@ -632,7 +632,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Scénarios de menace",
 "term": "Exfiltration",
 "def": "Sortie de données hors du système d'information",
@@ -642,7 +642,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Scénarios de menace",
 "term": "Déni de service",
 "def": "Rendre un service indisponible",
@@ -652,7 +652,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Exigences",
 "term": "Exigence contractuelle",
 "def": "Exigence imposée par un contrat",
@@ -662,7 +662,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Exigences",
 "term": "Exigence organisationnelle",
 "def": "Exigence portant sur les processus et les rôles",
@@ -672,7 +672,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Exigences",
 "term": "Applicabilité",
 "def": "Étape vérifiant qu'une exigence s'applique au système",
@@ -682,7 +682,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Exigences",
 "term": "GALILEO",
 "def": "Programme spatial européen (ESA), contexte des exigences",
@@ -692,7 +692,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Conformité & accréditation",
 "term": "Matrice de conformité",
 "def": "Relier les exigences, les mesures de sécurité et les risques (avec preuves)",
@@ -704,7 +704,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Conformité & accréditation",
 "term": "Preuve",
 "def": "Élément démontrant qu'une exigence est satisfaite",
@@ -714,7 +714,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Conformité & accréditation",
 "term": "Dossier d'accréditation",
 "def": "Regroupe analyse de risque, conformité, écarts et preuves",
@@ -724,7 +724,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Écarts / Waivers",
 "term": "Waiver",
 "def": "Non-conformité acceptée temporairement et justifiée",
@@ -734,7 +734,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Écarts / Waivers",
 "term": "Écart",
 "def": "Non-conformité à une exigence de sécurité",
@@ -744,7 +744,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Écarts / Waivers",
 "term": "Justification",
 "def": "Raison motivant l'acceptation d'un écart",
@@ -754,7 +754,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Écarts / Waivers",
 "term": "Plan de remédiation",
 "def": "Décrit comment résorber un écart dans le temps",
@@ -764,7 +764,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Écarts / Waivers",
 "term": "Responsable du risque",
 "def": "Personne qui accepte formellement le risque résiduel",
@@ -774,7 +774,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Écarts / Waivers",
 "term": "Date d'expiration",
 "def": "Échéance au-delà de laquelle un waiver n'est plus valable",
@@ -784,7 +784,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Indicateurs",
 "term": "KPI",
 "def": "Indicateur de performance (Key Performance Indicator)",
@@ -794,7 +794,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Indicateurs",
 "term": "KRI",
 "def": "Indicateur de risque (Key Risk Indicator)",
@@ -804,7 +804,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Indicateurs",
 "term": "Waivers ouverts",
 "def": "Écarts encore non résolus (suivi de l'homologation)",
@@ -814,7 +814,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Indicateurs",
 "term": "Actions en retard",
 "def": "Actions de remédiation ayant dépassé leur échéance",
@@ -824,7 +824,7 @@
 },
 {
 "branch": "thales",
-"branchLabel": "Offre Thales",
+"branchLabel": "Architecture & homologation",
 "cat": "Indicateurs",
 "term": "Reporting mensuel",
 "def": "Vision périodique de l'état d'accréditation et de la tendance",
