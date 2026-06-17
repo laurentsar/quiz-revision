@@ -1,11 +1,14 @@
 {
-"title": "Cybersécurité & Homologation",
-"source": "Mindmap Offre Thales",
+"title": "Cybersécurité, Secret & Homologation",
+"source": "Mindmaps Offre Thales + IGI 1300 + II 901 + IGI 2102",
 "branches": {
 "archi": "Architecture sécurité",
 "risque": "Analyse de risque",
 "accred": "Accréditation / Homologation",
-"indic": "Indicateurs"
+"indic": "Indicateurs",
+"igi1300": "IGI 1300 — Secret Défense",
+"ii901": "II 901 — SI sensibles",
+"igi2102": "IGI 2102 — ICUE (UE)"
 },
 "concepts": [
 {
@@ -830,6 +833,519 @@
 "def": "Vision périodique de l'état d'accréditation et de la tendance",
 "tip": "Le point mensuel + la tendance.",
 "ex": "Un tableau de bord mensuel montre l'état d'accréditation et sa tendance.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Accès au secret",
+"term": "Besoin d'en connaître",
+"def": "Accès limité aux seules informations classifiées nécessaires à l'exercice de sa fonction",
+"tip": "Need to know à la française.",
+"ex": "Un agent habilité ne consulte que les documents utiles à sa mission.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Accès au secret",
+"term": "Habilitation",
+"def": "Décision autorisant une personne à accéder aux informations classifiées d'un niveau donné",
+"tip": "Le « permis » d'accès au secret.",
+"ex": "Une habilitation Secret est exigée pour lire un document Secret.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Accès au secret",
+"term": "Double condition d'accès",
+"def": "Accéder au secret exige À LA FOIS l'habilitation ET le besoin d'en connaître",
+"tip": "Habilitation + besoin d'en connaître : les deux.",
+"ex": "Être habilité ne suffit pas s'il n'y a pas besoin d'en connaître.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Classification (IGI 1300)",
+"term": "Très Secret",
+"def": "Niveau le plus élevé : divulgation aux conséquences exceptionnellement graves pour la Nation",
+"tip": "Le plus haut niveau.",
+"ex": "Réservé aux informations les plus sensibles de l'État.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Classification (IGI 1300)",
+"term": "Secret",
+"def": "Niveau dont la divulgation porterait atteinte à la défense et à la sécurité nationale",
+"tip": "Niveau intermédiaire.",
+"ex": "Un plan opérationnel peut être classifié Secret.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Classification (IGI 1300)",
+"term": "Diffusion Restreinte",
+"def": "Mention (et non un niveau classifié) protégeant des informations sensibles non classifiées",
+"tip": "DR = une mention, PAS un niveau de classification.",
+"ex": "Un document interne sensible porte la mention Diffusion Restreinte.",
+"confuse": [
+"Secret",
+"Très Secret"
+]
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Classification (IGI 1300)",
+"term": "Niveaux de classification",
+"def": "Échelle de protection (Très Secret, Secret) selon la gravité d'une divulgation",
+"tip": "Étiqueter selon la gravité.",
+"ex": "L'autorité émettrice fixe le niveau de classification.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Acteurs & sanctions",
+"term": "Autorité émettrice",
+"def": "Autorité qui décide de la classification d'une information et en répond",
+"tip": "Celle qui classe = celle qui décide.",
+"ex": "L'autorité émettrice peut aussi déclasser l'information.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Acteurs & sanctions",
+"term": "SGDSN",
+"def": "Secrétariat Général de la Défense et de la Sécurité Nationale : coordonne la protection du secret",
+"tip": "Le coordinateur interministériel.",
+"ex": "Le SGDSN définit les mesures générales et les coordonne.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Acteurs & sanctions",
+"term": "HFDS",
+"def": "Haut Fonctionnaire de Défense et de Sécurité : décline et supervise les mesures dans son ministère",
+"tip": "Le relais sécurité du ministère.",
+"ex": "Le HFDS veille à l'application des règles dans son ministère.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Acteurs & sanctions",
+"term": "Sanctions pénales",
+"def": "La compromission du secret de la défense nationale est réprimée pénalement",
+"tip": "Compromission = délit pénal.",
+"ex": "Divulguer une information classifiée expose à des poursuites pénales.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Procédure d'habilitation",
+"term": "Enquête administrative",
+"def": "Criblage préalable évaluant la fiabilité de la personne avant habilitation",
+"tip": "On enquête avant d'habiliter.",
+"ex": "L'enquête recherche d'éventuelles vulnérabilités.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Procédure d'habilitation",
+"term": "Décision d'habilitation",
+"def": "Acte notifié accordant ou refusant l'accès au secret, assorti d'obligations de discrétion",
+"tip": "La notification officielle.",
+"ex": "La décision d'habilitation est notifiée à l'intéressé.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Procédure d'habilitation",
+"term": "Durée de validité",
+"def": "L'habilitation est limitée dans le temps et doit être renouvelée",
+"tip": "Ça expire, ça se renouvelle.",
+"ex": "Une habilitation arrive à échéance puis est renouvelée.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "Procédure d'habilitation",
+"term": "Abrogation",
+"def": "Retrait de l'habilitation avant son terme (besoin ou confiance disparus)",
+"tip": "Annuler avant l'échéance.",
+"ex": "L'habilitation est abrogée si le besoin d'en connaître disparaît.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "SI classifiés & supports",
+"term": "Homologation d'un SI classifié",
+"def": "Décision attestant qu'un SI classifié atteint un niveau de sécurité suffisant pour être exploité",
+"tip": "Le feu vert d'exploitation du SI.",
+"ex": "Un SI classifié est homologué avant sa mise en service.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "SI classifiés & supports",
+"term": "Marquage des supports",
+"def": "Apposition visible du niveau de classification sur les supports",
+"tip": "On marque le niveau sur le support.",
+"ex": "Chaque page d'un document classifié porte sa mention.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "SI classifiés & supports",
+"term": "Traçabilité des supports",
+"def": "Enregistrement et conservation permettant de suivre les informations classifiées",
+"tip": "Qui détient quoi, et où.",
+"ex": "Les supports Secret sont inventoriés et tracés.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "SI classifiés & supports",
+"term": "Destruction",
+"def": "Procédure d'élimination sécurisée des supports en fin d'exploitation",
+"tip": "Détruire proprement.",
+"ex": "Les supports classifiés sont détruits selon une procédure contrôlée.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "SI classifiés & supports",
+"term": "Inventaire",
+"def": "Recensement périodique des supports classifiés (Secret et Très Secret)",
+"tip": "On compte les supports sensibles.",
+"ex": "Un inventaire vérifie régulièrement la présence des supports Très Secret.",
+"confuse": []
+},
+{
+"branch": "igi1300",
+"branchLabel": "IGI 1300 — Secret Défense",
+"cat": "SI classifiés & supports",
+"term": "Contrôle physique des accès",
+"def": "Restriction et vérification de l'accès physique aux zones abritant le classifié",
+"tip": "Qui entre physiquement.",
+"ex": "L'accès des personnes non habilitées est encadré et tracé.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Organisation de la SSI",
+"term": "RSSI",
+"def": "Responsable de la Sécurité des SI, désigné pour piloter la SSI de l'entité",
+"tip": "Le pilote de la SSI.",
+"ex": "L'entité désigne un RSSI responsable de la sécurité de ses SI.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Organisation de la SSI",
+"term": "PSSI",
+"def": "Politique de Sécurité des SI : document cadre fixant les règles de sécurité",
+"tip": "La politique = le cadre de règles.",
+"ex": "La PSSI définit les règles applicables dans l'entité.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Organisation de la SSI",
+"term": "Charte d'application",
+"def": "Charte précisant aux utilisateurs les règles d'usage des SI",
+"tip": "Les règles côté utilisateur.",
+"ex": "Chaque utilisateur signe la charte d'usage des SI.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Organisation de la SSI",
+"term": "Homologation d'un SI sensible",
+"def": "Validation du niveau de sécurité d'un SI sensible avant son exploitation",
+"tip": "Feu vert avant exploitation.",
+"ex": "Un SI traitant des informations sensibles est homologué avant mise en production.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Organisation de la SSI",
+"term": "Gestion des risques (II 901)",
+"def": "Démarche d'évaluation et de traitement des risques pesant sur les SI sensibles",
+"tip": "Évaluer puis traiter.",
+"ex": "On applique une méthode d'évaluation des risques (type EBIOS).",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Utilisateurs & personnel",
+"term": "Sensibilisation",
+"def": "Actions informant et responsabilisant les utilisateurs sur la sécurité des SI",
+"tip": "Former pour responsabiliser.",
+"ex": "Des campagnes de sensibilisation préviennent l'hameçonnage.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Utilisateurs & personnel",
+"term": "Personnels de confiance",
+"def": "Personnes occupant des postes clés de la SSI, choisies selon des critères de confiance",
+"tip": "Les postes clés, triés sur le volet.",
+"ex": "Les administrateurs SI sont des personnels de confiance.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Utilisateurs & personnel",
+"term": "Gestion des arrivées et départs",
+"def": "Procédures encadrant les droits lors des mouvements de personnel",
+"tip": "Ouvrir et fermer les accès au bon moment.",
+"ex": "Au départ d'un agent, ses accès sont immédiatement révoqués.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Diffusion Restreinte & exploitation",
+"term": "Protection physique des locaux",
+"def": "Mesures protégeant l'accès physique aux locaux hébergeant les SI sensibles",
+"tip": "Protéger les lieux.",
+"ex": "La salle serveurs est en zone à accès contrôlé.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Diffusion Restreinte & exploitation",
+"term": "Externalisation",
+"def": "Règles encadrant le recours à un prestataire pour des SI sensibles",
+"tip": "Encadrer le sous-traitant.",
+"ex": "Un hébergeur traitant des données DR respecte des clauses de sécurité.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Diffusion Restreinte & exploitation",
+"term": "Utilisation en milieu non maîtrisé",
+"def": "Précautions quand un SI sensible est utilisé hors d'un environnement contrôlé",
+"tip": "Hors de chez soi = prudence.",
+"ex": "Un poste nomade en déplacement applique des précautions renforcées.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Diffusion Restreinte & exploitation",
+"term": "Classes de réseau",
+"def": "Classification des réseaux (classe 0 non connecté, 1, 2) selon leur exposition",
+"tip": "Classe 0 = isolé.",
+"ex": "Un réseau de classe 0 n'est connecté à aucun autre réseau.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Diffusion Restreinte & exploitation",
+"term": "Dérogation",
+"def": "Autorisation exceptionnelle de s'écarter d'une règle, sous conditions",
+"tip": "Une exception encadrée.",
+"ex": "Une dérogation justifiée autorise une configuration non standard.",
+"confuse": []
+},
+{
+"branch": "ii901",
+"branchLabel": "II 901 — SI sensibles",
+"cat": "Diffusion Restreinte & exploitation",
+"term": "Gestion des incidents",
+"def": "Détection, traitement et suivi des incidents de sécurité des SI",
+"tip": "Gérer l'incident de bout en bout.",
+"ex": "Tout incident SSI est déclaré et traité selon une procédure.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Principes ICUE",
+"term": "ICUE",
+"def": "Information Classifiée de l'Union Européenne dont la divulgation nuirait aux intérêts de l'UE",
+"tip": "Le secret… version UE.",
+"ex": "Un document de l'UE peut être classifié ICUE.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Principes ICUE",
+"term": "Niveaux ICUE",
+"def": "Échelle UE : TRÈS SECRET UE / SECRET UE / CONFIDENTIEL UE / RESTREINT UE",
+"tip": "4 niveaux, du plus au moins sensible.",
+"ex": "CONFIDENTIEL UE est plus sensible que RESTREINT UE.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Principes ICUE",
+"term": "RESTREINT UE",
+"def": "Niveau le plus bas des ICUE (EU RESTRICTED) ; contrats et SI font l'objet de mesures particulières",
+"tip": "Le niveau ICUE le plus bas.",
+"ex": "Un contrat RESTREINT UE / EU RESTRICTED déclenche des mesures particulières.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Principes ICUE",
+"term": "Autorité nationale de sécurité",
+"def": "Autorité responsable de la protection des ICUE dans le pays",
+"tip": "Le garant national des ICUE.",
+"ex": "L'ANS supervise la protection des ICUE en France.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Personnes (ICUE)",
+"term": "Habilitation UE",
+"def": "Décision autorisant l'accès aux ICUE d'un niveau donné",
+"tip": "Le permis d'accès aux ICUE.",
+"ex": "Accéder à du SECRET UE requiert l'habilitation UE correspondante.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Personnes (ICUE)",
+"term": "Catalogue des emplois",
+"def": "Liste des postes nécessitant une habilitation et précisant son niveau",
+"tip": "Quels postes, quel niveau.",
+"ex": "Le catalogue recense les emplois exigeant une habilitation.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Personnes (ICUE)",
+"term": "Habilitation des ressortissants étrangers",
+"def": "Modalités spécifiques pour habiliter des personnes non nationales",
+"tip": "Cas particulier des étrangers.",
+"ex": "Un ressortissant étranger suit une procédure spécifique.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Informations & compromission (ICUE)",
+"term": "Circulation des ICUE",
+"def": "Règles de transmission, transport et échange des informations classifiées UE",
+"tip": "Comment ça circule.",
+"ex": "Le transport d'ICUE suit des règles strictes.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Informations & compromission (ICUE)",
+"term": "Compromission ICUE",
+"def": "Divulgation non autorisée d'une ICUE ; déclenche enquête et sanctions",
+"tip": "Fuite d'ICUE = enquête.",
+"ex": "Une compromission supposée ou avérée ouvre une procédure.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "Informations & compromission (ICUE)",
+"term": "Sanctions disciplinaires",
+"def": "Mesures disciplinaires en cas de manquement aux règles de protection",
+"tip": "Sanction côté employeur.",
+"ex": "Le non-respect des règles ICUE peut entraîner une sanction disciplinaire.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "SI & contrats (ICUE)",
+"term": "Homologation des systèmes ICUE",
+"def": "Validation de sécurité d'un SI traitant des ICUE avant son exploitation",
+"tip": "Feu vert pour un SI ICUE.",
+"ex": "Un SI manipulant des ICUE doit être homologué.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "SI & contrats (ICUE)",
+"term": "Agrément des dispositifs",
+"def": "Validation officielle des produits ou dispositifs de sécurité utilisés pour les ICUE",
+"tip": "Le produit doit être agréé.",
+"ex": "Seuls des dispositifs agréés protègent les ICUE.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "SI & contrats (ICUE)",
+"term": "Matériel cryptographique",
+"def": "Moyens de chiffrement agréés protégeant la confidentialité des ICUE",
+"tip": "La crypto doit être agréée.",
+"ex": "Le matériel cryptographique chiffre les ICUE en transit.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "SI & contrats (ICUE)",
+"term": "Contrat classifié UE",
+"def": "Contrat impliquant des ICUE, soumis à des clauses et habilitations spécifiques",
+"tip": "Un marché qui touche des ICUE.",
+"ex": "Un contrat classifié de l'UE impose des mesures de sécurité au titulaire.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "SI & contrats (ICUE)",
+"term": "Attestation de sécurité",
+"def": "Document attestant la capacité d'une entité à protéger des ICUE",
+"tip": "Le « label » sécurité de l'entité.",
+"ex": "Une attestation d'habilitation est requise pour le contrat.",
+"confuse": []
+},
+{
+"branch": "igi2102",
+"branchLabel": "IGI 2102 — ICUE (UE)",
+"cat": "SI & contrats (ICUE)",
+"term": "Protection des réunions",
+"def": "Mesures sécurisant les réunions et salles où sont traitées des ICUE",
+"tip": "Sécuriser les salles.",
+"ex": "Les réunions classifiées se tiennent en salle protégée.",
 "confuse": []
 }
 ]
