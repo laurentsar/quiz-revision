@@ -1,0 +1,836 @@
+{
+"title": "Cybersécurité & Homologation",
+"source": "Mindmap Offre Thales",
+"branches": {
+"archi": "Architecture sécurité",
+"risque": "Analyse de risque",
+"accred": "Accréditation / Homologation",
+"indic": "Indicateurs"
+},
+"concepts": [
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Principes d'architecture",
+"term": "Defense in depth",
+"def": "Empiler des couches de sécurité complémentaires",
+"tip": "Comme un château : douves + murs + donjon ; si une couche tombe, une autre tient.",
+"ex": "L'antivirus rate un malware, mais le pare-feu et la segmentation limitent les dégâts.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Principes d'architecture",
+"term": "Zero Trust",
+"def": "Ne jamais faire confiance par défaut, toujours vérifier",
+"tip": "« Jamais confiance, toujours vérifier » — même à l'intérieur du réseau.",
+"ex": "Un utilisateur déjà connecté doit se ré-authentifier pour une ressource sensible.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Principes d'architecture",
+"term": "Least privilege",
+"def": "N'accorder que les droits strictement nécessaires",
+"tip": "Juste les droits nécessaires, rien de plus.",
+"ex": "Un comptable accède aux dossiers compta, pas aux serveurs RH.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Principes d'architecture",
+"term": "Need to know",
+"def": "Limiter l'accès aux seules informations nécessaires",
+"tip": "On ne sait que ce qu'on a besoin de savoir.",
+"ex": "Un projet classifié n'est visible que par les membres de l'équipe concernée.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Principes d'architecture",
+"term": "Security by design",
+"def": "Intégrer la sécurité dès la conception du système",
+"tip": "La sécurité dès le plan, pas en rustine.",
+"ex": "On définit chiffrement et accès avant même de coder l'application.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Principes d'architecture",
+"term": "Segregation of duties",
+"def": "Séparer les rôles sensibles",
+"tip": "Celui qui demande ≠ celui qui valide.",
+"ex": "La personne qui crée un paiement ne peut pas l'approuver seule.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Objectifs de sécurité",
+"term": "Confidentialité",
+"def": "Réserver l'information aux personnes autorisées",
+"tip": "C de CID : le secret.",
+"ex": "Seuls les RH peuvent lire les bulletins de salaire.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Objectifs de sécurité",
+"term": "Intégrité",
+"def": "Garantir que les données ne sont pas altérées",
+"tip": "I de CID : non altéré.",
+"ex": "Une somme de contrôle révèle qu'un fichier a été modifié.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Objectifs de sécurité",
+"term": "Disponibilité",
+"def": "Garantir l'accès au service et aux données",
+"tip": "D de CID : accessible quand il faut.",
+"ex": "Le site doit rester joignable malgré un pic de trafic.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Objectifs de sécurité",
+"term": "Traçabilité",
+"def": "Pouvoir reconstituer qui a fait quoi et quand",
+"tip": "Qui ? Quoi ? Quand ?",
+"ex": "Les logs montrent que l'admin X a modifié la config à 14h02.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Objectifs de sécurité",
+"term": "Résilience",
+"def": "Capacité à résister et à se rétablir après un incident",
+"tip": "Encaisser le coup et se relever.",
+"ex": "Après une panne, le service redémarre sur un site de secours.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Segmentation & zones de confiance",
+"term": "Zones de confiance",
+"def": "Regrouper les composants selon leur criticité et leur exposition",
+"tip": "On range par criticité et exposition.",
+"ex": "Serveurs Internet, serveurs internes et systèmes critiques en zones distinctes.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Segmentation & zones de confiance",
+"term": "Cloisonnement",
+"def": "Limiter les communications entre zones",
+"tip": "Des cloisons entre les zones.",
+"ex": "Le réseau bureautique ne peut pas parler directement aux automates industriels.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Segmentation & zones de confiance",
+"term": "DMZ",
+"def": "Zone tampon entre un réseau exposé et le réseau interne sensible",
+"tip": "Le sas exposé entre dehors et dedans.",
+"ex": "Le serveur web public est en DMZ, jamais dans le réseau interne.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Segmentation & zones de confiance",
+"term": "Flux inter-zones",
+"def": "Identifier précisément les flux autorisés entre zones",
+"tip": "Qui parle à qui, précisément.",
+"ex": "On autorise seulement le port 443 de la DMZ vers le serveur applicatif.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Segmentation & zones de confiance",
+"term": "Matrice de flux",
+"def": "Recenser les flux réseau autorisés (source, destination, port)",
+"tip": "Le tableau source → destination → port.",
+"ex": "Un tableau liste tous les flux réseau autorisés et leur justification.",
+"confuse": [
+"Matrice de conformité"
+]
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Segmentation & zones de confiance",
+"term": "Bastion",
+"def": "Point d'accès contrôlé pour administrer des systèmes sensibles",
+"tip": "Le donjon : un seul passage gardé pour l'admin.",
+"ex": "Les administrateurs passent par le bastion pour atteindre les serveurs sensibles.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Identité & contrôle d'accès",
+"term": "IAM",
+"def": "Gérer les identités et les accès (Identity and Access Management)",
+"tip": "Identités + Accès, la gestion globale.",
+"ex": "Création, modification et suppression des comptes et de leurs droits.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Identité & contrôle d'accès",
+"term": "RBAC",
+"def": "Attribuer les droits selon le rôle de l'utilisateur",
+"tip": "Droits selon le RÔLE.",
+"ex": "Le rôle « support » donne automatiquement les accès du support.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Identité & contrôle d'accès",
+"term": "MFA",
+"def": "Authentifier avec plusieurs facteurs (mot de passe + code…)",
+"tip": "Deux preuves valent mieux qu'une.",
+"ex": "Mot de passe + code reçu sur le téléphone pour se connecter.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Identité & contrôle d'accès",
+"term": "Comptes à privilèges",
+"def": "Comptes disposant de droits élevés (administration)",
+"tip": "Les clés du royaume (admin).",
+"ex": "Le compte administrateur du domaine, ultra-surveillé.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Identité & contrôle d'accès",
+"term": "Revues d'accès",
+"def": "Vérifier périodiquement que les droits restent justifiés",
+"tip": "On refait le tri régulièrement.",
+"ex": "Chaque trimestre, on vérifie que personne ne garde de droits inutiles.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Identité & contrôle d'accès",
+"term": "Journalisation des accès",
+"def": "Enregistrer les connexions et actions des utilisateurs",
+"tip": "On note qui entre et ce qu'il fait.",
+"ex": "Chaque connexion réussie ou échouée est enregistrée.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Protection réseau",
+"term": "Pare-feu",
+"def": "Filtrer le trafic entre réseaux selon des règles",
+"tip": "Le videur : règles d'entrée / sortie.",
+"ex": "Il bloque tout le trafic sauf les ports explicitement autorisés.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Protection réseau",
+"term": "IDS / IPS",
+"def": "Détecter ou bloquer les comportements réseau suspects",
+"tip": "IDS alerte, IPS bloque.",
+"ex": "L'IPS coupe une connexion qui ressemble à une attaque connue.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Protection réseau",
+"term": "Proxy",
+"def": "Contrôler et journaliser les accès sortants",
+"tip": "Le filtre des sorties web.",
+"ex": "Les accès Internet des employés passent par le proxy qui journalise tout.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Protection réseau",
+"term": "VPN",
+"def": "Établir un tunnel chiffré entre deux réseaux ou postes",
+"tip": "Tunnel chiffré à travers Internet.",
+"ex": "Le télétravailleur rejoint le réseau de l'entreprise via un VPN.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Protection réseau",
+"term": "Filtrage",
+"def": "Restreindre les ports, protocoles et destinations autorisés",
+"tip": "On restreint ports / protocoles / destinations.",
+"ex": "On n'autorise que HTTPS vers une liste de serveurs.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Protection réseau",
+"term": "Chiffrement des flux",
+"def": "Protéger les échanges contre l'interception ou l'altération",
+"tip": "Données illisibles en transit.",
+"ex": "Le HTTPS protège les échanges entre le navigateur et le site.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Systèmes & durcissement",
+"term": "Hardening",
+"def": "Réduire la surface d'attaque d'un système",
+"tip": "On enlève le superflu = moins de surface.",
+"ex": "On désactive les services inutiles et on durcit la config d'un serveur.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Systèmes & durcissement",
+"term": "Patch management",
+"def": "Appliquer les correctifs de sécurité",
+"tip": "Boucher les trous connus.",
+"ex": "On applique vite les correctifs de sécurité publiés.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Systèmes & durcissement",
+"term": "Configuration sécurisée",
+"def": "Appliquer des paramètres conformes aux exigences de sécurité",
+"tip": "Régler conforme aux exigences.",
+"ex": "On applique un guide de durcissement (CIS) sur chaque machine.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Systèmes & durcissement",
+"term": "Antivirus / EDR",
+"def": "Détecter et répondre aux menaces sur les postes et serveurs",
+"tip": "Le garde du corps du poste.",
+"ex": "L'EDR détecte un comportement anormal sur un PC et l'isole.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Systèmes & durcissement",
+"term": "Gestion des vulnérabilités",
+"def": "Identifier, qualifier, prioriser et traiter les failles",
+"tip": "Identifier → qualifier → prioriser → traiter.",
+"ex": "Un scan révèle des failles ; on traite d'abord les critiques.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Systèmes & durcissement",
+"term": "Contrôle des ports / services",
+"def": "Désactiver ce qui n'est pas nécessaire",
+"tip": "Fermer ce qui ne sert pas.",
+"ex": "On ferme les ports réseau non utilisés d'un serveur.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Supervision & détection",
+"term": "Logs",
+"def": "Journaux d'événements, matière première de la supervision",
+"tip": "Les traces : la matière première.",
+"ex": "Les journaux des serveurs sont collectés pour analyse.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Supervision & détection",
+"term": "SIEM",
+"def": "Centraliser, corréler et analyser les événements",
+"tip": "Le cerveau qui centralise et corrèle.",
+"ex": "Le SIEM agrège les logs de tout le SI et lève des alertes.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Supervision & détection",
+"term": "Alerting",
+"def": "Déclencher une alerte sur un événement suspect ou critique",
+"tip": "La sonnette d'alarme.",
+"ex": "Une alerte se déclenche après 10 échecs de connexion en 1 minute.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Supervision & détection",
+"term": "Corrélation",
+"def": "Relier plusieurs événements pour détecter un scénario d'attaque",
+"tip": "Relier les points → un scénario.",
+"ex": "Connexion inhabituelle + gros transfert = exfiltration probable.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Supervision & détection",
+"term": "Détection d'incident",
+"def": "Identifier une compromission ou un comportement anormal",
+"tip": "Repérer l'anormal.",
+"ex": "On repère une machine qui communique avec un serveur malveillant.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Supervision & détection",
+"term": "Investigation",
+"def": "Analyser après coup le déroulement d'un incident",
+"tip": "L'enquête après coup.",
+"ex": "On analyse les logs pour comprendre comment l'attaquant est entré.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Données",
+"term": "Classification",
+"def": "Attribuer un niveau de sensibilité aux données",
+"tip": "Étiqueter la sensibilité.",
+"ex": "Un document est marqué « Confidentiel » ou « Public ».",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Données",
+"term": "Chiffrement",
+"def": "Rendre les données illisibles sans la clé",
+"tip": "Illisible sans la clé.",
+"ex": "Le disque d'un portable est chiffré en cas de vol.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Données",
+"term": "Intégrité des données",
+"def": "Garantir l'absence de modification non autorisée",
+"tip": "Pas de modif sournoise.",
+"ex": "Un hachage permet de détecter toute altération d'un fichier.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Données",
+"term": "Rétention",
+"def": "Définir combien de temps conserver les données et les logs",
+"tip": "Combien de temps on garde.",
+"ex": "Les logs sont conservés 12 mois puis supprimés.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Données",
+"term": "Gestion des secrets",
+"def": "Stocker et protéger mots de passe, clés et certificats",
+"tip": "Le coffre-fort des clés et mots de passe.",
+"ex": "Les mots de passe applicatifs sont dans un coffre (vault), pas en clair.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Résilience & continuité",
+"term": "Sauvegarde",
+"def": "Copie de sécurité des données et configurations critiques",
+"tip": "La copie de secours.",
+"ex": "Une copie quotidienne des données est stockée hors site.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Résilience & continuité",
+"term": "PRA",
+"def": "Plan de Reprise d'Activité (après un sinistre)",
+"tip": "PRA = Reprise, APRÈS le sinistre.",
+"ex": "Après l'incendie de la salle serveurs, le PRA permet de repartir.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Résilience & continuité",
+"term": "PCA",
+"def": "Plan de Continuité d'Activité (pendant la crise)",
+"tip": "PCA = Continuité, PENDANT la crise.",
+"ex": "Le PCA maintient les activités essentielles même en mode dégradé.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Résilience & continuité",
+"term": "Redondance",
+"def": "Dupliquer des composants pour éviter un point unique de défaillance",
+"tip": "En double = pas de point unique.",
+"ex": "Deux alimentations électriques pour éviter l'arrêt si l'une lâche.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Résilience & continuité",
+"term": "Haute disponibilité",
+"def": "Limiter les interruptions de service",
+"tip": "Le moins d'interruption possible.",
+"ex": "Un cluster bascule automatiquement si un serveur tombe.",
+"confuse": []
+},
+{
+"branch": "archi",
+"branchLabel": "Architecture sécurité",
+"cat": "Résilience & continuité",
+"term": "Tests de restauration",
+"def": "Vérifier qu'une sauvegarde est réellement exploitable",
+"tip": "Une sauvegarde non testée = un pari.",
+"ex": "On restaure régulièrement une sauvegarde pour vérifier qu'elle marche.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Analyse de risque",
+"term": "Vraisemblance",
+"def": "Probabilité qu'une menace se réalise",
+"tip": "La PROBA que ça arrive.",
+"ex": "Une faille très exploitée a une vraisemblance élevée.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Analyse de risque",
+"term": "Gravité",
+"def": "Ampleur des conséquences (impact)",
+"tip": "La FORCE de l'impact.",
+"ex": "La fuite de données clients aurait une gravité majeure.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Analyse de risque",
+"term": "Vulnérabilité",
+"def": "Faiblesse exploitable d'un système",
+"tip": "La faille exploitable.",
+"ex": "Un serveur non patché est une vulnérabilité.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Analyse de risque",
+"term": "Risque résiduel",
+"def": "Risque qui subsiste après application des mesures",
+"tip": "Ce qui reste APRÈS les mesures.",
+"ex": "Même après correctifs, un risque faible subsiste : le résiduel.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Analyse de risque",
+"term": "Plan de traitement",
+"def": "Ensemble des actions décidées pour réduire les risques",
+"tip": "La to-do des mesures.",
+"ex": "Le plan liste actions, responsables et échéances pour réduire les risques.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Analyse de risque",
+"term": "Mesure compensatoire",
+"def": "Mesure qui réduit un risque lié à un écart",
+"tip": "Le plan B qui réduit le risque.",
+"ex": "Faute de patcher tout de suite, on isole le serveur en attendant.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Scénarios de menace",
+"term": "Attaquant interne",
+"def": "Menace venant de l'intérieur (employé malveillant ou négligent)",
+"tip": "L'ennemi de l'intérieur.",
+"ex": "Un salarié mécontent copie des données avant de partir.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Scénarios de menace",
+"term": "Attaquant externe",
+"def": "Menace venant de l'extérieur, via Internet",
+"tip": "L'ennemi de dehors.",
+"ex": "Un pirate tente de forcer le portail d'authentification depuis Internet.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Scénarios de menace",
+"term": "Mouvement latéral",
+"def": "Progression d'un attaquant d'un système à un autre dans le réseau",
+"tip": "Rebondir de machine en machine.",
+"ex": "Depuis un poste compromis, l'attaquant atteint le serveur de fichiers.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Scénarios de menace",
+"term": "Compromission",
+"def": "Prise de contrôle d'un système ou d'un compte",
+"tip": "Prise de contrôle.",
+"ex": "Un compte admin est piraté et utilisé par l'attaquant.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Scénarios de menace",
+"term": "Exfiltration",
+"def": "Sortie de données hors du système d'information",
+"tip": "Faire SORTIR les données.",
+"ex": "Des fichiers confidentiels sont envoyés vers un serveur externe.",
+"confuse": []
+},
+{
+"branch": "risque",
+"branchLabel": "Analyse de risque",
+"cat": "Scénarios de menace",
+"term": "Déni de service",
+"def": "Rendre un service indisponible",
+"tip": "Rendre indispo par saturation.",
+"ex": "Un flot de requêtes sature le site qui devient inaccessible.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Exigences",
+"term": "Exigence contractuelle",
+"def": "Exigence imposée par un contrat",
+"tip": "Imposée par le CONTRAT.",
+"ex": "Le contrat exige le chiffrement des données client.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Exigences",
+"term": "Exigence organisationnelle",
+"def": "Exigence portant sur les processus et les rôles",
+"tip": "Processus et rôles.",
+"ex": "Une exigence impose une revue d'accès trimestrielle.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Exigences",
+"term": "Applicabilité",
+"def": "Étape vérifiant qu'une exigence s'applique au système",
+"tip": "Est-ce que ça nous concerne ?",
+"ex": "On vérifie qu'une exigence s'applique bien au système étudié.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Exigences",
+"term": "GALILEO",
+"def": "Programme spatial européen (ESA), contexte des exigences",
+"tip": "Le « GPS » européen (ESA).",
+"ex": "Le programme GALILEO fixe le contexte des exigences de sécurité.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Conformité & accréditation",
+"term": "Matrice de conformité",
+"def": "Relier les exigences, les mesures de sécurité et les risques (avec preuves)",
+"tip": "Exigence ↔ mesure ↔ risque ↔ preuve.",
+"ex": "Un tableau montre, pour chaque exigence, la mesure et la preuve associées.",
+"confuse": [
+"Matrice de flux"
+]
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Conformité & accréditation",
+"term": "Preuve",
+"def": "Élément démontrant qu'une exigence est satisfaite",
+"tip": "Ça prouve que c'est fait.",
+"ex": "Une capture de config ou un rapport d'audit sert de preuve.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Conformité & accréditation",
+"term": "Dossier d'accréditation",
+"def": "Regroupe analyse de risque, conformité, écarts et preuves",
+"tip": "Le dossier complet d'homologation.",
+"ex": "Il rassemble risque, conformité, écarts et preuves pour la décision.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Écarts / Waivers",
+"term": "Waiver",
+"def": "Non-conformité acceptée temporairement et justifiée",
+"tip": "Écart accepté, daté, justifié.",
+"ex": "On accepte temporairement une non-conformité avec une date d'expiration.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Écarts / Waivers",
+"term": "Écart",
+"def": "Non-conformité à une exigence de sécurité",
+"tip": "Une exigence non respectée.",
+"ex": "La rétention des logs est de 6 mois alors que l'exigence demande 12.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Écarts / Waivers",
+"term": "Justification",
+"def": "Raison motivant l'acceptation d'un écart",
+"tip": "Le POURQUOI de l'acceptation.",
+"ex": "On justifie un écart par un coût disproportionné à court terme.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Écarts / Waivers",
+"term": "Plan de remédiation",
+"def": "Décrit comment résorber un écart dans le temps",
+"tip": "Comment et quand on corrige.",
+"ex": "Le plan prévoit de corriger l'écart d'ici trois mois.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Écarts / Waivers",
+"term": "Responsable du risque",
+"def": "Personne qui accepte formellement le risque résiduel",
+"tip": "Celui qui signe l'acceptation.",
+"ex": "Le responsable métier accepte formellement le risque résiduel.",
+"confuse": []
+},
+{
+"branch": "accred",
+"branchLabel": "Accréditation / Homologation",
+"cat": "Écarts / Waivers",
+"term": "Date d'expiration",
+"def": "Échéance au-delà de laquelle un waiver n'est plus valable",
+"tip": "L'écart a une échéance.",
+"ex": "Le waiver expire le 31/12 ; après, il faut être conforme.",
+"confuse": []
+},
+{
+"branch": "indic",
+"branchLabel": "Indicateurs",
+"cat": "Indicateurs",
+"term": "KPI",
+"def": "Indicateur de performance (Key Performance Indicator)",
+"tip": "P = Performance.",
+"ex": "Le % d'exigences couvertes est un KPI de l'homologation.",
+"confuse": []
+},
+{
+"branch": "indic",
+"branchLabel": "Indicateurs",
+"cat": "Indicateurs",
+"term": "KRI",
+"def": "Indicateur de risque (Key Risk Indicator)",
+"tip": "R = Risque.",
+"ex": "Le nombre de vulnérabilités critiques ouvertes est un KRI.",
+"confuse": []
+},
+{
+"branch": "indic",
+"branchLabel": "Indicateurs",
+"cat": "Indicateurs",
+"term": "Waivers ouverts",
+"def": "Écarts encore non résolus (suivi de l'homologation)",
+"tip": "Écarts encore non soldés.",
+"ex": "15 waivers ouverts dont 3 expirés : signal d'alerte.",
+"confuse": []
+},
+{
+"branch": "indic",
+"branchLabel": "Indicateurs",
+"cat": "Indicateurs",
+"term": "Actions en retard",
+"def": "Actions de remédiation ayant dépassé leur échéance",
+"tip": "Échéances dépassées.",
+"ex": "Des actions de remédiation non réalisées à temps.",
+"confuse": []
+},
+{
+"branch": "indic",
+"branchLabel": "Indicateurs",
+"cat": "Indicateurs",
+"term": "Reporting mensuel",
+"def": "Vision périodique de l'état d'accréditation et de la tendance",
+"tip": "Le point mensuel + la tendance.",
+"ex": "Un tableau de bord mensuel montre l'état d'accréditation et sa tendance.",
+"confuse": []
+}
+]
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#061525" />
+  <title>Quizz Révision</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="img/icon-192.png" />
+  <link rel="apple-touch-icon" href="img/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-blob blob-one"></div>
+  <div class="bg-blob blob-two"></div>
+
+  <main id="app">
+    <!-- HOME -->
+    <section id="view-home" class="view">
+      <div class="home-head">
+        <div>
+          <h1 class="title">Quizz Révision</h1>
+          <p class="subtitle">Cybersécurité &amp; homologation — questions générées à la volée</p>
+        </div>
+        <button id="btn-settings" class="gear" title="Réglages">⚙️</button>
+      </div>
+
+      <div class="top-actions">
+        <button id="btn-learn" class="secondary">🎓 Apprendre (cartes)</button>
+        <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
+        <button id="btn-fiches" class="secondary">📑 Fiches</button>
+      </div>
+
+      <div class="card hero">
+        <span class="hero-label">Thème</span>
+        <div id="branch-row" class="chip-row"></div>
+
+        <span class="hero-label">Type de question</span>
+        <div class="chip-row">
+          <button class="chip qtype-chip" data-qtype="mix">Mélange</button>
+          <button class="chip qtype-chip" data-qtype="def">Terme → définition</button>
+          <button class="chip qtype-chip" data-qtype="term">Définition → terme</button>
+          <button class="chip qtype-chip" data-qtype="situation">Mise en situation</button>
+          <button class="chip qtype-chip" data-qtype="cat">Catégorie</button>
+        </div>
+
+        <span class="hero-label">Questions</span>
+        <div class="chip-row">
+          <button class="chip count-chip" data-count="10">10</button>
+          <button class="chip count-chip" data-count="20">20</button>
+          <button class="chip count-chip" data-count="0">Tout</button>
+        </div>
+      </div>
+
+      <div class="card meta">
+        <div class="meta-row"><span class="meta-label">Concepts dans ce thème</span><span id="stat-pool" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Concepts maîtrisés</span><span id="stat-mastered" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">À revoir aujourd'hui</span><span id="stat-due" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Dernier score</span><span id="stat-last" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Meilleur score</span><span id="stat-best" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Quiz terminés · précision</span><span id="stat-total" class="meta-value">0 · —</span></div>
+      </div>
+
+      <button id="btn-start" class="primary">Démarrer la révision</button>
+    </section>
+
+    <!-- SETTINGS (modal) -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <span>⚙️ Réglages</span>
+          <button id="settings-close" class="gear">✕</button>
+        </div>
+        <label class="toggle"><span>⏭️ Question suivante automatique</span><input type="checkbox" id="opt-autonext" /></label>
+        <label class="toggle"><span>🎵 Son juste / faux</span><input type="checkbox" id="opt-sound" /></label>
+        <button id="btn-reset" class="ghost" style="margin-top:14px">🗑️ Réinitialiser mes stats &amp; erreurs</button>
+      </div>
+    </div>
+
+    <!-- APPRENDRE (flashcards + répétition espacée) -->
+    <section id="view-learn" class="view hidden">
+      <div class="quiz-header">
+        <span id="learn-progress" class="quiz-progress">Carte 1/1</span>
+        <span id="learn-level" class="quiz-level"></span>
+      </div>
+
+      <div class="card flash-card">
+        <span class="flash-cat" id="flash-cat"></span>
+        <span class="flash-term" id="flash-term"></span>
+        <div id="flash-back" class="flash-back hidden">
+          <p class="flash-def" id="flash-def"></p>
+          <p class="flash-tip" id="flash-tip"></p>
+          <p class="flash-ex" id="flash-ex"></p>
+        </div>
+      </div>
+
+      <button id="btn-flash-reveal" class="primary">Afficher la réponse</button>
+      <div id="flash-grade" class="quiz-footer hidden">
+        <button id="btn-flash-again" class="ghost grow">🔁 À revoir</button>
+        <button id="btn-flash-ok" class="primary grow">✅ Je savais</button>
+      </div>
+      <button id="btn-learn-home" class="secondary">Accueil</button>
+    </section>
+
+    <!-- FICHES (référence) -->
+    <section id="view-fiches" class="view hidden">
+      <div class="quiz-header">
+        <span class="quiz-progress">📑 Fiches de révision</span>
+        <span id="fiches-crumb" class="quiz-level"></span>
+      </div>
+      <div id="fiches-content"></div>
+      <button id="btn-fiches-home" class="secondary">Accueil</button>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="view-quiz" class="view hidden">
+      <div class="quiz-header">
+        <span id="quiz-progress" class="quiz-progress">Question 1/10</span>
+        <span id="quiz-level" class="quiz-level"></span>
+      </div>
+
+      <div class="card word-card">
+        <span id="quiz-prompt-label" class="word-label">Question</span>
+        <div class="word-line">
+          <span id="quiz-word" class="word-value sentence"></span>
+        </div>
+      </div>
+
+      <div id="quiz-options" class="options"></div>
+
+      <div class="feedback-area"><span id="quiz-feedback" class="feedback"></span></div>
+
+      <div class="quiz-footer">
+        <button id="btn-abort" class="ghost">Quitter</button>
+        <button id="btn-next" class="primary grow" disabled>Suivant</button>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="view-result" class="view hidden">
+      <h1 class="title">Résultat</h1>
+      <p id="result-sub" class="subtitle">Quiz terminé</p>
+
+      <div class="card result-card">
+        <span id="result-score" class="result-score">0/10</span>
+        <span class="result-label">Bonnes réponses</span>
+      </div>
+
+      <div id="result-wrong" class="card wrong-card"></div>
+
+      <button id="btn-replay" class="primary">Nouvelle révision</button>
+      <button id="btn-home" class="secondary">Accueil</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
