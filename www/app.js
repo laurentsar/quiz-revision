@@ -144,15 +144,15 @@ let autoNextTimer = null;
 function showView(name) { Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name)); window.scrollTo(0, 0); }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
 
-function renderBranchChips() {
-  const row = $('branch-row'); row.innerHTML = '';
-  [['all', 'Tout']].concat(Object.entries(DB.branches)).forEach(([key, label]) => {
-    const b = document.createElement('button');
-    b.className = 'chip' + (key === state.branch ? ' active' : '');
-    b.textContent = label;
-    b.addEventListener('click', () => { state.branch = key; renderBranchChips(); renderHome(); });
-    row.appendChild(b);
-  });
+const BRANCH_COLORS = { all: '#27B3FF', archi: '#27B3FF', risque: '#FFD166', accred: '#4CE0D2', indic: '#FF6B81', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
+function themeColor() { return BRANCH_COLORS[state.branch] || '#27B3FF'; }
+
+function renderBranchSelect() {
+  const sel = $('branch-select');
+  const count = (k) => k === 'all' ? ALL.length : ALL.filter(c => c.branch === k).length;
+  const entries = [['all', 'Tout']].concat(Object.entries(DB.branches));
+  sel.innerHTML = entries.map(([k, label]) => `<option value="${k}">${esc(label)} (${count(k)})</option>`).join('');
+  sel.value = state.branch;
 }
 
 function renderHome() {
@@ -185,6 +185,10 @@ function renderQuestion() {
   const q = state.questions[state.index], a = state.answers[state.index];
   $('quiz-progress').textContent = `Question ${state.index + 1}/${state.questions.length}`;
   $('quiz-level').textContent = state.mode === 'review' ? '⟳ Révision erreurs' : (state.branch === 'all' ? 'Tout' : DB.branches[state.branch]);
+  $('quiz-level').style.color = themeColor();
+  const bar = $('quiz-bar');
+  bar.style.background = themeColor();
+  bar.style.width = ((state.index + (a ? 1 : 0)) / state.questions.length * 100) + '%';
   $('quiz-prompt-label').textContent = q.promptLabel;
   $('quiz-word').textContent = q.promptText;
 
@@ -203,12 +207,13 @@ function renderQuestion() {
 
   const fb = $('quiz-feedback');
   if (a) {
-    let txt = (a.correct ? '✅ Correct' : '❌ Faux') + `\n📌 ${q.reminder}`;
-    if (q.tip) txt += `\n💡 ${q.tip}`;
-    if (q.ex) txt += `\n🔎 ${q.ex}`;
-    fb.textContent = txt;
-    fb.className = 'feedback ' + (a.correct ? 'good' : 'bad');
-  } else { fb.textContent = ''; fb.className = 'feedback'; }
+    let html = `<div class="fb-head">${a.correct ? '✅ Correct' : '❌ Faux'}</div>`;
+    html += `<div class="fb-line">📌 ${esc(q.reminder)}</div>`;
+    if (q.tip) html += `<div class="fb-line tip">💡 ${esc(q.tip)}</div>`;
+    if (q.ex) html += `<div class="fb-line ex">🔎 ${esc(q.ex)}</div>`;
+    fb.innerHTML = html;
+    fb.className = 'feedback show ' + (a.correct ? 'good' : 'bad');
+  } else { fb.innerHTML = ''; fb.className = 'feedback'; }
 
   const next = $('btn-next');
   next.disabled = !a;
@@ -298,6 +303,7 @@ function renderFiches() {
 }
 
 // ---------- câblage ----------
+$('branch-select').addEventListener('change', (e) => { state.branch = e.target.value; renderHome(); });
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
@@ -339,7 +345,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
   ALL = DB.concepts;
   CATS = uniq(ALL.map(c => c.cat));
   ALL.forEach(c => { BYTERM[c.term] = c; });
-  renderBranchChips();
+  renderBranchSelect();
   renderChips('.qtype-chip', state.qtype, 'qtype');
   renderChips('.count-chip', state.count, 'count');
   renderHome();

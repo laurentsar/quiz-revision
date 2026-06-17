@@ -33,16 +33,7 @@
 
       <div class="card hero">
         <span class="hero-label">Thème</span>
-        <div id="branch-row" class="chip-row"></div>
-
-        <span class="hero-label">Type de question</span>
-        <div class="chip-row">
-          <button class="chip qtype-chip" data-qtype="mix">Mélange</button>
-          <button class="chip qtype-chip" data-qtype="def">Terme → définition</button>
-          <button class="chip qtype-chip" data-qtype="term">Définition → terme</button>
-          <button class="chip qtype-chip" data-qtype="situation">Mise en situation</button>
-          <button class="chip qtype-chip" data-qtype="cat">Catégorie</button>
-        </div>
+        <select id="branch-select" class="select"></select>
 
         <span class="hero-label">Questions</span>
         <div class="chip-row">
@@ -50,6 +41,18 @@
           <button class="chip count-chip" data-count="20">20</button>
           <button class="chip count-chip" data-count="0">Tout</button>
         </div>
+
+        <details class="adv">
+          <summary>Options avancées</summary>
+          <span class="hero-label">Type de question</span>
+          <div class="chip-row">
+            <button class="chip qtype-chip" data-qtype="mix">Mélange</button>
+            <button class="chip qtype-chip" data-qtype="def">Terme → définition</button>
+            <button class="chip qtype-chip" data-qtype="term">Définition → terme</button>
+            <button class="chip qtype-chip" data-qtype="situation">Mise en situation</button>
+            <button class="chip qtype-chip" data-qtype="cat">Catégorie</button>
+          </div>
+        </details>
       </div>
 
       <div class="card meta">
@@ -118,6 +121,7 @@
         <span id="quiz-progress" class="quiz-progress">Question 1/10</span>
         <span id="quiz-level" class="quiz-level"></span>
       </div>
+      <div class="progress"><div id="quiz-bar" class="progress-bar"></div></div>
 
       <div class="card word-card">
         <span id="quiz-prompt-label" class="word-label">Question</span>
@@ -130,7 +134,7 @@
 
       <div class="feedback-area"><span id="quiz-feedback" class="feedback"></span></div>
 
-      <div class="quiz-footer">
+      <div class="quiz-footer sticky">
         <button id="btn-abort" class="ghost">Quitter</button>
         <button id="btn-next" class="primary grow" disabled>Suivant</button>
       </div>
