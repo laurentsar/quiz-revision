@@ -144,7 +144,7 @@ let autoNextTimer = null;
 function showView(name) { Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name)); window.scrollTo(0, 0); }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
 
-const BRANCH_COLORS = { all: '#27B3FF', archi: '#27B3FF', risque: '#FFD166', accred: '#4CE0D2', indic: '#FF6B81', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
+const BRANCH_COLORS = { all: '#27B3FF', thales: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
 function themeColor() { return BRANCH_COLORS[state.branch] || '#27B3FF'; }
 
 function renderBranchSelect() {
