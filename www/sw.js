@@ -1,9 +1,10 @@
-const CACHE = 'quizrev-v5';
+const CACHE = 'quizrev-v6';
 const ASSETS = [
   './',
   'index.html',
   'styles.css',
   'app.js',
+  'update-check.js',
   'manifest.webmanifest',
   'data/secu_concepts.json',
   'img/icon-192.png',
