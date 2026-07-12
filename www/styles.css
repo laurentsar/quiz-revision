@@ -82,6 +82,9 @@ html, body {
   transition: transform 0.08s ease;
 }
 .chip.active { background: var(--sky); color: var(--ink); }
+/* sous-rangée des groupes (domaines CISSP, réf. cyber) : chips plus discrètes */
+#cissp-row { padding-left: 6px; border-left: 2px solid rgba(76,224,210,0.35); }
+.sub-chip { font-size: 13px; padding: 7px 12px; }
 .chip:active { transform: scale(0.97); }
 
 .meta { background: rgba(255,255,255,0.06); border: none; gap: 10px; }

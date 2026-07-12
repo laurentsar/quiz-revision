@@ -45,3 +45,11 @@ Le build local n'est pas possible sur la machine de dev (ARM). L'APK est produit
 
 Pour enrichir le quiz : ajouter un concept dans `secu_concepts.json` (term/def/cat/tip/ex),
 commit + push, l'APK se reconstruit automatiquement.
+
+## Mind maps Ignite Technologies
+11 mind maps de [Ignitetechnologies/Mindmap](https://github.com/Ignitetechnologies/Mindmap)
+(NIST CSF, RGPD, HIPAA, codes HTTP, ingénierie sociale, MITRE ATT&CK, Blue Team,
+technologies cyber, Sécurité 360°, menaces & attaques, DevOps) sont transcrites et
+**traduites en français** en concepts révisables — les images ne sont pas embarquées.
+Regénérer : `python3 tools/build_ignite_concepts.py`. Ces 11 thèmes forment le groupe
+« Réf. cyber » dans le sélecteur, distinct du CISSP.

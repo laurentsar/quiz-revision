@@ -1,0 +1,1950 @@
+{
+ "source": "Mind maps Ignite Technologies (github.com/Ignitetechnologies/Mindmap) — transcrites et traduites, images non incluses",
+ "branches": {
+  "ig_nist": "NIST CSF",
+  "ig_gdpr": "RGPD",
+  "ig_hipaa": "HIPAA",
+  "ig_http": "Codes HTTP",
+  "ig_socialeng": "Ingénierie sociale",
+  "ig_mitre": "MITRE ATT&CK",
+  "ig_blueteam": "Blue Team",
+  "ig_cybertech": "Techno cyber",
+  "ig_sec360": "Sécurité 360°",
+  "ig_secauto": "Menaces & attaques",
+  "ig_devops": "DevOps"
+ },
+ "concepts": [
+  {
+   "term": "Asset Management",
+   "cat": "Identify (Identifier)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Identify (Identifier)",
+   "def": "Recenser et gérer les actifs (matériels, logiciels, données) selon leur importance pour l'organisation."
+  },
+  {
+   "term": "Business Environment",
+   "cat": "Identify (Identifier)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Identify (Identifier)",
+   "def": "Comprendre la mission, les parties prenantes et la place de l'organisation dans la chaîne de valeur."
+  },
+  {
+   "term": "Governance",
+   "cat": "Identify (Identifier)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Identify (Identifier)",
+   "def": "Politiques, procédures et responsabilités qui pilotent la gestion du risque cyber."
+  },
+  {
+   "term": "Risk Assessment",
+   "cat": "Identify (Identifier)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Identify (Identifier)",
+   "def": "Évaluer le risque pesant sur les opérations, les actifs et les personnes."
+  },
+  {
+   "term": "Risk Management Strategy",
+   "cat": "Identify (Identifier)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Identify (Identifier)",
+   "def": "Définir priorités, contraintes et tolérance au risque de l'organisation."
+  },
+  {
+   "term": "Supply Chain Risk Management",
+   "cat": "Identify (Identifier)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Identify (Identifier)",
+   "def": "Gérer le risque lié aux fournisseurs et à la chaîne d'approvisionnement."
+  },
+  {
+   "term": "Identity Management and Access Control",
+   "cat": "Protect (Protéger)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Protect (Protéger)",
+   "def": "Limiter l'accès aux actifs aux seuls utilisateurs, processus et appareils autorisés."
+  },
+  {
+   "term": "Awareness and Training",
+   "cat": "Protect (Protéger)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Protect (Protéger)",
+   "def": "Sensibiliser et former le personnel à ses responsabilités de sécurité."
+  },
+  {
+   "term": "Data Security",
+   "cat": "Protect (Protéger)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Protect (Protéger)",
+   "def": "Protéger la confidentialité, l'intégrité et la disponibilité des données."
+  },
+  {
+   "term": "Information Protection Processes and Procedures",
+   "cat": "Protect (Protéger)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Protect (Protéger)",
+   "def": "Maintenir des politiques et procédures de protection des systèmes d'information."
+  },
+  {
+   "term": "Maintenance",
+   "cat": "Protect (Protéger)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Protect (Protéger)",
+   "def": "Entretenir et réparer les composants selon des procédures maîtrisées."
+  },
+  {
+   "term": "Protective Technology",
+   "cat": "Protect (Protéger)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Protect (Protéger)",
+   "def": "Solutions techniques assurant la sécurité et la résilience des systèmes."
+  },
+  {
+   "term": "Anomalies and Events",
+   "cat": "Detect (Détecter)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Detect (Détecter)",
+   "def": "Détecter les activités anormales et en comprendre l'impact potentiel."
+  },
+  {
+   "term": "Security Continuous Monitoring",
+   "cat": "Detect (Détecter)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Detect (Détecter)",
+   "def": "Surveiller en continu les systèmes pour repérer les événements de sécurité."
+  },
+  {
+   "term": "Detection Processes",
+   "cat": "Detect (Détecter)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Detect (Détecter)",
+   "def": "Maintenir et tester les processus de détection des incidents."
+  },
+  {
+   "term": "Response Planning",
+   "cat": "Respond (Répondre)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Respond (Répondre)",
+   "def": "Exécuter et maintenir les processus de réponse aux incidents détectés."
+  },
+  {
+   "term": "Communications",
+   "cat": "Respond (Répondre)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Respond (Répondre)",
+   "def": "Coordonner la réponse avec les parties prenantes internes et externes."
+  },
+  {
+   "term": "Analysis",
+   "cat": "Respond (Répondre)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Respond (Répondre)",
+   "def": "Analyser l'incident pour assurer une réponse efficace et étayer la reprise."
+  },
+  {
+   "term": "Mitigation",
+   "cat": "Respond (Répondre)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Respond (Répondre)",
+   "def": "Contenir l'incident et en atténuer les effets."
+  },
+  {
+   "term": "Improvements",
+   "cat": "Respond (Répondre)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Respond (Répondre)",
+   "def": "Tirer les leçons des incidents pour renforcer la réponse."
+  },
+  {
+   "term": "Recovery Planning",
+   "cat": "Recover (Rétablir)",
+   "branch": "ig_nist",
+   "tip": "NIST CSF · Recover (Rétablir)",
+   "def": "Exécuter les processus de reprise pour restaurer les services affectés."
+  },
+  {
+   "term": "Entrée en vigueur",
+   "cat": "Présentation & champ",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Présentation & champ",
+   "def": "RGPD applicable depuis mai 2018 (Règlement UE 2016/679)."
+  },
+  {
+   "term": "Champ territorial",
+   "cat": "Présentation & champ",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Présentation & champ",
+   "def": "S'applique aux organismes de l'UE/EEE et, par extraterritorialité, aux entreprises hors UE ciblant des résidents européens."
+  },
+  {
+   "term": "Directive remplacée",
+   "cat": "Présentation & champ",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Présentation & champ",
+   "def": "Remplace la directive 95/46/CE sur la protection des données."
+  },
+  {
+   "term": "Autorités de contrôle",
+   "cat": "Présentation & champ",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Présentation & champ",
+   "def": "Appliqué par les autorités nationales (la CNIL en France)."
+  },
+  {
+   "term": "Licéité, loyauté, transparence",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Traiter les données de façon licite, loyale et transparente pour la personne."
+  },
+  {
+   "term": "Limitation des finalités",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Collecter pour des finalités déterminées, explicites et légitimes."
+  },
+  {
+   "term": "Minimisation des données",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Ne collecter que les données adéquates, pertinentes et strictement nécessaires."
+  },
+  {
+   "term": "Exactitude",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Maintenir les données exactes et à jour."
+  },
+  {
+   "term": "Limitation de conservation",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Ne conserver les données que le temps nécessaire aux finalités."
+  },
+  {
+   "term": "Intégrité et confidentialité",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Garantir la sécurité des données par des mesures appropriées."
+  },
+  {
+   "term": "Responsabilité (accountability)",
+   "cat": "7 principes (Art. 5)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · 7 principes (Art. 5)",
+   "def": "Le responsable doit pouvoir démontrer sa conformité."
+  },
+  {
+   "term": "Consentement",
+   "cat": "Bases légales (Art. 6)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Bases légales (Art. 6)",
+   "def": "La personne a consenti au traitement de ses données."
+  },
+  {
+   "term": "Nécessité contractuelle",
+   "cat": "Bases légales (Art. 6)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Bases légales (Art. 6)",
+   "def": "Traitement nécessaire à l'exécution d'un contrat."
+  },
+  {
+   "term": "Obligation légale",
+   "cat": "Bases légales (Art. 6)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Bases légales (Art. 6)",
+   "def": "Traitement imposé par une obligation légale."
+  },
+  {
+   "term": "Intérêts vitaux",
+   "cat": "Bases légales (Art. 6)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Bases légales (Art. 6)",
+   "def": "Traitement nécessaire à la sauvegarde de la vie d'une personne."
+  },
+  {
+   "term": "Mission d'intérêt public",
+   "cat": "Bases légales (Art. 6)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Bases légales (Art. 6)",
+   "def": "Traitement relevant d'une mission d'intérêt public."
+  },
+  {
+   "term": "Intérêts légitimes",
+   "cat": "Bases légales (Art. 6)",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Bases légales (Art. 6)",
+   "def": "Intérêt légitime du responsable, sauf atteinte aux droits de la personne."
+  },
+  {
+   "term": "Droit d'accès (Art. 15)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "Obtenir la confirmation et une copie des données traitées."
+  },
+  {
+   "term": "Droit de rectification (Art. 16)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "Faire corriger des données inexactes ou incomplètes."
+  },
+  {
+   "term": "Droit à l'effacement (Art. 17)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "« Droit à l'oubli » : faire supprimer ses données sous conditions."
+  },
+  {
+   "term": "Droit à la limitation (Art. 18)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "Faire geler temporairement un traitement contesté."
+  },
+  {
+   "term": "Droit à la portabilité (Art. 20)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "Récupérer ses données dans un format structuré et réutilisable."
+  },
+  {
+   "term": "Droit d'opposition (Art. 21)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "S'opposer à un traitement, notamment à des fins de prospection."
+  },
+  {
+   "term": "Décision automatisée (Art. 22)",
+   "cat": "Droits des personnes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Droits des personnes",
+   "def": "Ne pas faire l'objet d'une décision fondée uniquement sur un traitement automatisé."
+  },
+  {
+   "term": "Responsable de traitement",
+   "cat": "Rôles clés",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Rôles clés",
+   "def": "Détermine les finalités et les moyens du traitement ; porte la responsabilité principale."
+  },
+  {
+   "term": "Sous-traitant",
+   "cat": "Rôles clés",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Rôles clés",
+   "def": "Traite les données pour le compte du responsable, encadré par un contrat (DPA)."
+  },
+  {
+   "term": "Délégué à la protection (DPO)",
+   "cat": "Rôles clés",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Rôles clés",
+   "def": "Conseille et contrôle la conformité ; obligatoire pour le secteur public et les traitements à grande échelle."
+  },
+  {
+   "term": "Personne concernée",
+   "cat": "Rôles clés",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Rôles clés",
+   "def": "L'individu dont les données personnelles sont traitées."
+  },
+  {
+   "term": "Autorité de contrôle",
+   "cat": "Rôles clés",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Rôles clés",
+   "def": "Autorité nationale (CNIL) chargée de veiller à l'application du RGPD."
+  },
+  {
+   "term": "Libre",
+   "cat": "Exigences de consentement",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Exigences de consentement",
+   "def": "Donné sans contrainte ni conséquence négative en cas de refus."
+  },
+  {
+   "term": "Spécifique",
+   "cat": "Exigences de consentement",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Exigences de consentement",
+   "def": "Rattaché à une finalité déterminée."
+  },
+  {
+   "term": "Éclairé",
+   "cat": "Exigences de consentement",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Exigences de consentement",
+   "def": "La personne est informée avant de consentir."
+  },
+  {
+   "term": "Univoque",
+   "cat": "Exigences de consentement",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Exigences de consentement",
+   "def": "Résulte d'un acte positif clair (pas de cases pré-cochées)."
+  },
+  {
+   "term": "Retirable",
+   "cat": "Exigences de consentement",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Exigences de consentement",
+   "def": "Peut être retiré à tout moment, aussi facilement que donné."
+  },
+  {
+   "term": "Privacy by design & by default (Art. 25)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Intégrer la protection des données dès la conception et par défaut."
+  },
+  {
+   "term": "Registre des traitements (Art. 30)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Tenir un registre des activités de traitement (ROPA)."
+  },
+  {
+   "term": "Analyse d'impact — AIPD (Art. 35)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Évaluer l'impact sur la vie privée des traitements à risque élevé."
+  },
+  {
+   "term": "Contrat de sous-traitance (Art. 28)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Encadrer la sous-traitance par un accord écrit (DPA)."
+  },
+  {
+   "term": "Nomination d'un DPO (Art. 37)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Désigner un délégué lorsque la loi l'exige."
+  },
+  {
+   "term": "Information / transparence (Art. 13-14)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Fournir une information claire sur le traitement des données."
+  },
+  {
+   "term": "Mesures de sécurité (Art. 32)",
+   "cat": "Obligations des organismes",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Obligations des organismes",
+   "def": "Mettre en œuvre des mesures techniques et organisationnelles adaptées au risque."
+  },
+  {
+   "term": "Notifier l'autorité sous 72 h (Art. 33)",
+   "cat": "Notification de violation",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Notification de violation",
+   "def": "Signaler une violation à l'autorité de contrôle dans les 72 heures."
+  },
+  {
+   "term": "Informer les personnes (Art. 34)",
+   "cat": "Notification de violation",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Notification de violation",
+   "def": "Avertir les personnes concernées sans délai en cas de risque élevé."
+  },
+  {
+   "term": "Documenter les violations",
+   "cat": "Notification de violation",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Notification de violation",
+   "def": "Consigner toutes les violations en interne, même non notifiées."
+  },
+  {
+   "term": "Amende palier 1",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Jusqu'à 10 M€ ou 2 % du chiffre d'affaires mondial."
+  },
+  {
+   "term": "Amende palier 2",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Jusqu'à 20 M€ ou 4 % du chiffre d'affaires mondial."
+  },
+  {
+   "term": "Droit à réparation (Art. 82)",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Toute personne ayant subi un dommage peut obtenir réparation."
+  },
+  {
+   "term": "Guichet unique",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Une autorité chef de file coordonne pour les traitements transfrontaliers."
+  },
+  {
+   "term": "Décision d'adéquation",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Transfert autorisé vers un pays offrant un niveau de protection adéquat."
+  },
+  {
+   "term": "Clauses contractuelles types (CCT)",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Clauses standard encadrant les transferts hors UE."
+  },
+  {
+   "term": "Règles d'entreprise contraignantes (BCR)",
+   "cat": "Sanctions & transferts",
+   "branch": "ig_gdpr",
+   "tip": "RGPD · Sanctions & transferts",
+   "def": "Règles internes approuvées encadrant les transferts intra-groupe."
+  },
+  {
+   "term": "Protected Health Information (PHI)",
+   "cat": "Privacy Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Privacy Rule",
+   "def": "Toute information de santé identifiante protégée par HIPAA."
+  },
+  {
+   "term": "Minimum Necessary Standard",
+   "cat": "Privacy Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Privacy Rule",
+   "def": "N'utiliser ou ne divulguer que le minimum de PHI nécessaire."
+  },
+  {
+   "term": "Patient Rights",
+   "cat": "Privacy Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Privacy Rule",
+   "def": "Droits d'accès, de rectification et de restriction du patient sur ses données."
+  },
+  {
+   "term": "Notice of Privacy Practices (NPP)",
+   "cat": "Privacy Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Privacy Rule",
+   "def": "Avis informant le patient de l'usage de ses données de santé."
+  },
+  {
+   "term": "Administrative Safeguards",
+   "cat": "Security Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Security Rule",
+   "def": "Mesures organisationnelles protégeant les PHI électroniques (ePHI)."
+  },
+  {
+   "term": "Physical Safeguards",
+   "cat": "Security Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Security Rule",
+   "def": "Protections physiques des systèmes et des locaux hébergeant les ePHI."
+  },
+  {
+   "term": "Technical Safeguards",
+   "cat": "Security Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Security Rule",
+   "def": "Contrôles techniques (chiffrement, contrôle d'accès) sur les ePHI."
+  },
+  {
+   "term": "Risk Analysis & Management",
+   "cat": "Security Rule",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Security Rule",
+   "def": "Analyser et gérer les risques pesant sur les ePHI."
+  },
+  {
+   "term": "Transactions & Code Sets Rule",
+   "cat": "Autres règles",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Autres règles",
+   "def": "Standardise les transactions électroniques de santé (EDI, ICD-10, CPT)."
+  },
+  {
+   "term": "Identifiers Rule",
+   "cat": "Autres règles",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Autres règles",
+   "def": "Identifiants standard : NPI (soignant), EIN (employeur), HPID (assureur)."
+  },
+  {
+   "term": "Enforcement Rule",
+   "cat": "Autres règles",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Autres règles",
+   "def": "Sanctions civiles (100 $–50 000 $/violation) et pénales, enquêtes de l'OCR."
+  },
+  {
+   "term": "Breach Notification Rule",
+   "cat": "Autres règles",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Autres règles",
+   "def": "Notifier les personnes sous 60 jours ; HHS/médias si 500+ concernés."
+  },
+  {
+   "term": "Covered Entities",
+   "cat": "Entités & identifiants",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Entités & identifiants",
+   "def": "Plans de santé, soignants et chambres de compensation soumis à HIPAA."
+  },
+  {
+   "term": "Business Associate Agreement (BAA)",
+   "cat": "Entités & identifiants",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Entités & identifiants",
+   "def": "Contrat encadrant un sous-traitant manipulant des PHI."
+  },
+  {
+   "term": "18 PHI Identifiers",
+   "cat": "Entités & identifiants",
+   "branch": "ig_hipaa",
+   "tip": "HIPAA · Entités & identifiants",
+   "def": "Les 18 identifiants (noms, dates, SSN, biométrie…) rendant une donnée identifiante."
+  },
+  {
+   "term": "100 Continue",
+   "cat": "1xx Informational",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 1xx Informational",
+   "def": "Le client peut poursuivre l'envoi de la requête."
+  },
+  {
+   "term": "101 Switching Protocols",
+   "cat": "1xx Informational",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 1xx Informational",
+   "def": "Le serveur accepte de changer de protocole."
+  },
+  {
+   "term": "102 Processing",
+   "cat": "1xx Informational",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 1xx Informational",
+   "def": "Requête reçue, traitement en cours (WebDAV)."
+  },
+  {
+   "term": "200 OK",
+   "cat": "2xx Successful",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 2xx Successful",
+   "def": "Requête réussie."
+  },
+  {
+   "term": "201 Created",
+   "cat": "2xx Successful",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 2xx Successful",
+   "def": "Ressource créée avec succès."
+  },
+  {
+   "term": "202 Accepted",
+   "cat": "2xx Successful",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 2xx Successful",
+   "def": "Requête acceptée mais traitement non terminé."
+  },
+  {
+   "term": "204 No Content",
+   "cat": "2xx Successful",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 2xx Successful",
+   "def": "Succès sans corps de réponse."
+  },
+  {
+   "term": "206 Partial Content",
+   "cat": "2xx Successful",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 2xx Successful",
+   "def": "Contenu partiel renvoyé (requête Range)."
+  },
+  {
+   "term": "301 Moved Permanently",
+   "cat": "3xx Redirection",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 3xx Redirection",
+   "def": "Ressource déplacée de façon permanente."
+  },
+  {
+   "term": "302 Found",
+   "cat": "3xx Redirection",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 3xx Redirection",
+   "def": "Redirection temporaire."
+  },
+  {
+   "term": "304 Not Modified",
+   "cat": "3xx Redirection",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 3xx Redirection",
+   "def": "Ressource inchangée, utiliser le cache."
+  },
+  {
+   "term": "307 Temporary Redirect",
+   "cat": "3xx Redirection",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 3xx Redirection",
+   "def": "Redirection temporaire en conservant la méthode."
+  },
+  {
+   "term": "308 Permanent Redirect",
+   "cat": "3xx Redirection",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 3xx Redirection",
+   "def": "Redirection permanente en conservant la méthode."
+  },
+  {
+   "term": "400 Bad Request",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Requête mal formée."
+  },
+  {
+   "term": "401 Unauthorized",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Authentification requise ou échouée."
+  },
+  {
+   "term": "403 Forbidden",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Accès refusé malgré une authentification valide."
+  },
+  {
+   "term": "404 Not Found",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Ressource introuvable."
+  },
+  {
+   "term": "405 Method Not Allowed",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Méthode HTTP non autorisée pour cette ressource."
+  },
+  {
+   "term": "408 Request Timeout",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Le serveur a trop attendu la requête."
+  },
+  {
+   "term": "409 Conflict",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Conflit avec l'état actuel de la ressource."
+  },
+  {
+   "term": "418 I'm a teapot",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Blague RFC 2324 : « je suis une théière »."
+  },
+  {
+   "term": "429 Too Many Requests",
+   "cat": "4xx Client Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 4xx Client Error",
+   "def": "Trop de requêtes (limitation de débit)."
+  },
+  {
+   "term": "500 Internal Server Error",
+   "cat": "5xx Server Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 5xx Server Error",
+   "def": "Erreur générique côté serveur."
+  },
+  {
+   "term": "501 Not Implemented",
+   "cat": "5xx Server Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 5xx Server Error",
+   "def": "Fonctionnalité non supportée par le serveur."
+  },
+  {
+   "term": "502 Bad Gateway",
+   "cat": "5xx Server Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 5xx Server Error",
+   "def": "Réponse invalide reçue d'un serveur amont."
+  },
+  {
+   "term": "503 Service Unavailable",
+   "cat": "5xx Server Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 5xx Server Error",
+   "def": "Service indisponible (surcharge ou maintenance)."
+  },
+  {
+   "term": "504 Gateway Timeout",
+   "cat": "5xx Server Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 5xx Server Error",
+   "def": "Délai dépassé en attendant un serveur amont."
+  },
+  {
+   "term": "511 Network Authentication Required",
+   "cat": "5xx Server Error",
+   "branch": "ig_http",
+   "tip": "Codes HTTP · 5xx Server Error",
+   "def": "Authentification réseau nécessaire (portail captif)."
+  },
+  {
+   "term": "Spear Phishing",
+   "cat": "Phishing",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Phishing",
+   "def": "Hameçonnage ciblé sur une personne ou organisation précise."
+  },
+  {
+   "term": "Vishing",
+   "cat": "Phishing",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Phishing",
+   "def": "Hameçonnage par téléphone (voice phishing)."
+  },
+  {
+   "term": "Smishing",
+   "cat": "Phishing",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Phishing",
+   "def": "Hameçonnage par SMS."
+  },
+  {
+   "term": "Clone Phishing",
+   "cat": "Phishing",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Phishing",
+   "def": "Copie d'un email légitime dont les liens sont remplacés par des liens malveillants."
+  },
+  {
+   "term": "Watering Hole Attack",
+   "cat": "Phishing",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Phishing",
+   "def": "Compromettre un site fréquenté par la cible pour l'infecter."
+  },
+  {
+   "term": "Business Email Compromise (BEC)",
+   "cat": "Phishing",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Phishing",
+   "def": "Usurpation d'un dirigeant pour ordonner un virement frauduleux."
+  },
+  {
+   "term": "Tech Support Scam",
+   "cat": "Pretexting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Pretexting",
+   "def": "Faux support technique soutirant accès ou paiement."
+  },
+  {
+   "term": "CEO Fraud Scam",
+   "cat": "Pretexting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Pretexting",
+   "def": "Usurpation d'un dirigeant pour obtenir un virement ou des données."
+  },
+  {
+   "term": "Job Scam",
+   "cat": "Pretexting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Pretexting",
+   "def": "Fausse offre d'emploi pour collecter données ou argent."
+  },
+  {
+   "term": "Lottery Scam",
+   "cat": "Pretexting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Pretexting",
+   "def": "Faux gain de loterie exigeant des frais préalables."
+  },
+  {
+   "term": "USB Drop Attack",
+   "cat": "Baiting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Baiting",
+   "def": "Clé USB piégée abandonnée pour être branchée par la victime."
+  },
+  {
+   "term": "Fake WiFi Hotspot",
+   "cat": "Baiting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Baiting",
+   "def": "Point d'accès WiFi factice pour intercepter le trafic."
+  },
+  {
+   "term": "Evil Twin Attack",
+   "cat": "Baiting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Baiting",
+   "def": "Faux point d'accès imitant un réseau légitime."
+  },
+  {
+   "term": "QR Code Scam",
+   "cat": "Baiting",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Baiting",
+   "def": "QR code menant vers un site ou un paiement frauduleux."
+  },
+  {
+   "term": "Conference Scam",
+   "cat": "Quid Pro Quo",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Quid Pro Quo",
+   "def": "Fausse invitation à une conférence pour soutirer paiement ou données."
+  },
+  {
+   "term": "Fake Software Scam",
+   "cat": "Quid Pro Quo",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Quid Pro Quo",
+   "def": "Faux logiciel « gratuit » en échange d'informations."
+  },
+  {
+   "term": "IT Support Scam",
+   "cat": "Quid Pro Quo",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Quid Pro Quo",
+   "def": "Faux service informatique offrant de l'aide contre un accès."
+  },
+  {
+   "term": "Piggybacking / Tailgating",
+   "cat": "Tailgating & physique",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Tailgating & physique",
+   "def": "Entrer dans un local sécurisé en suivant une personne autorisée."
+  },
+  {
+   "term": "Dumpster Diving",
+   "cat": "Tailgating & physique",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Tailgating & physique",
+   "def": "Fouiller les poubelles pour récupérer des informations sensibles."
+  },
+  {
+   "term": "Shoulder Surfing",
+   "cat": "Tailgating & physique",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Tailgating & physique",
+   "def": "Observer par-dessus l'épaule pour capter mots de passe ou codes."
+  },
+  {
+   "term": "Eavesdropping",
+   "cat": "Tailgating & physique",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Tailgating & physique",
+   "def": "Écoute clandestine de conversations ou de communications."
+  },
+  {
+   "term": "Credit Card Skimming",
+   "cat": "Tailgating & physique",
+   "branch": "ig_socialeng",
+   "tip": "Ingénierie sociale · Tailgating & physique",
+   "def": "Copie des données d'une carte via un lecteur piégé."
+  },
+  {
+   "term": "Reconnaissance (TA0043)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Collecter des informations pour préparer une future attaque."
+  },
+  {
+   "term": "Resource Development (TA0042)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Mettre en place les ressources (infrastructure, comptes) servant l'attaque."
+  },
+  {
+   "term": "Initial Access (TA0001)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Obtenir un premier pied dans le réseau cible."
+  },
+  {
+   "term": "Execution (TA0002)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Exécuter du code malveillant sur un système."
+  },
+  {
+   "term": "Persistence (TA0003)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Maintenir l'accès malgré redémarrages et changements d'identifiants."
+  },
+  {
+   "term": "Privilege Escalation (TA0004)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Obtenir des privilèges plus élevés sur le système."
+  },
+  {
+   "term": "Defense Evasion (TA0005)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Échapper à la détection des défenses."
+  },
+  {
+   "term": "Credential Access (TA0006)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Voler des identifiants (noms de compte, mots de passe)."
+  },
+  {
+   "term": "Discovery (TA0007)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Explorer l'environnement pour le comprendre."
+  },
+  {
+   "term": "Lateral Movement (TA0008)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Se déplacer d'un système à l'autre dans le réseau."
+  },
+  {
+   "term": "Collection (TA0009)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Rassembler les données d'intérêt pour l'objectif."
+  },
+  {
+   "term": "Command and Control (TA0011)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Communiquer avec les systèmes compromis pour les piloter."
+  },
+  {
+   "term": "Exfiltration (TA0010)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Extraire les données volées hors du réseau."
+  },
+  {
+   "term": "Impact (TA0040)",
+   "cat": "Tactiques Enterprise",
+   "branch": "ig_mitre",
+   "tip": "MITRE ATT&CK · Tactiques Enterprise",
+   "def": "Manipuler, interrompre ou détruire systèmes et données."
+  },
+  {
+   "term": "Threat Hunting",
+   "cat": "Blue Team Operations",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Blue Team Operations",
+   "def": "Recherche proactive de menaces non détectées dans le SI."
+  },
+  {
+   "term": "Detection Engineering",
+   "cat": "Blue Team Operations",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Blue Team Operations",
+   "def": "Conception et maintenance des règles de détection."
+  },
+  {
+   "term": "Attack Simulation",
+   "cat": "Blue Team Operations",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Blue Team Operations",
+   "def": "Rejouer des attaques pour tester les défenses."
+  },
+  {
+   "term": "Security Automation",
+   "cat": "Blue Team Operations",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Blue Team Operations",
+   "def": "Automatiser les tâches de sécurité répétitives."
+  },
+  {
+   "term": "Security Operations Center (SOC)",
+   "cat": "Security Monitoring",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Security Monitoring",
+   "def": "Équipe supervisant la sécurité en continu."
+  },
+  {
+   "term": "Log Monitoring",
+   "cat": "Security Monitoring",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Security Monitoring",
+   "def": "Surveillance des journaux pour repérer des anomalies."
+  },
+  {
+   "term": "Endpoint Monitoring",
+   "cat": "Security Monitoring",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Security Monitoring",
+   "def": "Surveillance des postes et serveurs."
+  },
+  {
+   "term": "Network Monitoring",
+   "cat": "Security Monitoring",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Security Monitoring",
+   "def": "Surveillance du trafic réseau."
+  },
+  {
+   "term": "SIEM Analysis",
+   "cat": "Threat Detection",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Detection",
+   "def": "Corrélation des événements de sécurité via un SIEM."
+  },
+  {
+   "term": "Signature Detection",
+   "cat": "Threat Detection",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Detection",
+   "def": "Détection par signatures connues de menaces."
+  },
+  {
+   "term": "Behavior Analysis",
+   "cat": "Threat Detection",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Detection",
+   "def": "Détection fondée sur les comportements."
+  },
+  {
+   "term": "Anomaly Detection",
+   "cat": "Threat Detection",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Detection",
+   "def": "Détection des écarts par rapport à la normale."
+  },
+  {
+   "term": "MITRE ATT&CK Mapping",
+   "cat": "Threat Detection",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Detection",
+   "def": "Cartographie des détections sur le référentiel ATT&CK."
+  },
+  {
+   "term": "Incident Identification",
+   "cat": "Incident Response",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Incident Response",
+   "def": "Repérer et qualifier un incident de sécurité."
+  },
+  {
+   "term": "Containment",
+   "cat": "Incident Response",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Incident Response",
+   "def": "Contenir l'incident pour limiter sa propagation."
+  },
+  {
+   "term": "Eradication",
+   "cat": "Incident Response",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Incident Response",
+   "def": "Éliminer la cause de l'incident."
+  },
+  {
+   "term": "Recovery",
+   "cat": "Incident Response",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Incident Response",
+   "def": "Restaurer les systèmes et services."
+  },
+  {
+   "term": "Post-Incident Review",
+   "cat": "Incident Response",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Incident Response",
+   "def": "Retour d'expérience après incident."
+  },
+  {
+   "term": "Indicators of Compromise (IOC)",
+   "cat": "Threat Intelligence",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Intelligence",
+   "def": "Traces techniques révélant une compromission."
+  },
+  {
+   "term": "Indicators of Attack (IOA)",
+   "cat": "Threat Intelligence",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Intelligence",
+   "def": "Signes d'une attaque en cours, orientés comportement."
+  },
+  {
+   "term": "Adversary Tracking",
+   "cat": "Threat Intelligence",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Intelligence",
+   "def": "Suivi des groupes d'attaquants."
+  },
+  {
+   "term": "Malware Analysis",
+   "cat": "Threat Intelligence",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Threat Intelligence",
+   "def": "Analyse du code malveillant."
+  },
+  {
+   "term": "Endpoint Detection and Response (EDR)",
+   "cat": "Endpoint & réseau",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Endpoint & réseau",
+   "def": "Détection et réponse au niveau des postes."
+  },
+  {
+   "term": "Host Intrusion Detection",
+   "cat": "Endpoint & réseau",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Endpoint & réseau",
+   "def": "Détection d'intrusion sur un hôte (HIDS)."
+  },
+  {
+   "term": "Intrusion Detection System (IDS)",
+   "cat": "Endpoint & réseau",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Endpoint & réseau",
+   "def": "Détecte les intrusions réseau."
+  },
+  {
+   "term": "Intrusion Prevention System (IPS)",
+   "cat": "Endpoint & réseau",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Endpoint & réseau",
+   "def": "Détecte et bloque les intrusions réseau."
+  },
+  {
+   "term": "Firewall Monitoring",
+   "cat": "Endpoint & réseau",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Endpoint & réseau",
+   "def": "Surveillance des pare-feux."
+  },
+  {
+   "term": "Log Correlation",
+   "cat": "Log & vulnérabilités",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Log & vulnérabilités",
+   "def": "Rapprocher des journaux de sources différentes."
+  },
+  {
+   "term": "Centralized Logging",
+   "cat": "Log & vulnérabilités",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Log & vulnérabilités",
+   "def": "Centraliser les journaux pour l'analyse."
+  },
+  {
+   "term": "Vulnerability Scanning",
+   "cat": "Log & vulnérabilités",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Log & vulnérabilités",
+   "def": "Rechercher automatiquement les failles."
+  },
+  {
+   "term": "Configuration Hardening",
+   "cat": "Log & vulnérabilités",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Log & vulnérabilités",
+   "def": "Durcir la configuration des systèmes."
+  },
+  {
+   "term": "Patch Management",
+   "cat": "Log & vulnérabilités",
+   "branch": "ig_blueteam",
+   "tip": "Blue Team · Log & vulnérabilités",
+   "def": "Gérer le déploiement des correctifs."
+  },
+  {
+   "term": "Next-Gen Firewall / WAF",
+   "cat": "Network Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Network Security",
+   "def": "Pare-feu applicatif de nouvelle génération."
+  },
+  {
+   "term": "IDS/IPS",
+   "cat": "Network Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Network Security",
+   "def": "Détection/prévention d'intrusion réseau."
+  },
+  {
+   "term": "Network Access Control (NAC)",
+   "cat": "Network Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Network Security",
+   "def": "Contrôle des équipements admis sur le réseau."
+  },
+  {
+   "term": "Secure Web Gateway (SWG)",
+   "cat": "Network Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Network Security",
+   "def": "Passerelle filtrant le trafic web sortant."
+  },
+  {
+   "term": "Network Segmentation",
+   "cat": "Network Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Network Security",
+   "def": "Cloisonner le réseau pour limiter la propagation."
+  },
+  {
+   "term": "Antivirus / Anti-malware",
+   "cat": "Endpoint Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Endpoint Security",
+   "def": "Détection des logiciels malveillants sur les postes."
+  },
+  {
+   "term": "Endpoint Detection & Response (EDR)",
+   "cat": "Endpoint Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Endpoint Security",
+   "def": "Détection et réponse avancées sur les postes."
+  },
+  {
+   "term": "Host-Based IPS (HIPS)",
+   "cat": "Endpoint Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Endpoint Security",
+   "def": "Prévention d'intrusion au niveau de l'hôte."
+  },
+  {
+   "term": "Application Whitelisting",
+   "cat": "Endpoint Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Endpoint Security",
+   "def": "N'autoriser que les applications approuvées."
+  },
+  {
+   "term": "CASB",
+   "cat": "Cloud Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Cloud Security",
+   "def": "Cloud Access Security Broker : contrôle l'usage des services cloud."
+  },
+  {
+   "term": "Cloud Workload Protection (CWPP)",
+   "cat": "Cloud Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Cloud Security",
+   "def": "Protection des charges de travail cloud."
+  },
+  {
+   "term": "Cloud Security Posture Management (CSPM)",
+   "cat": "Cloud Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Cloud Security",
+   "def": "Surveillance des mauvaises configurations cloud."
+  },
+  {
+   "term": "Zero Trust Network Access (ZTNA)",
+   "cat": "Cloud Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Cloud Security",
+   "def": "Accès sans confiance implicite, vérifié en continu."
+  },
+  {
+   "term": "Multi-Factor Authentication (MFA)",
+   "cat": "Identity & Access (IAM)",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Identity & Access (IAM)",
+   "def": "Authentification à plusieurs facteurs."
+  },
+  {
+   "term": "Privileged Access Management (PAM)",
+   "cat": "Identity & Access (IAM)",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Identity & Access (IAM)",
+   "def": "Gestion des comptes à privilèges."
+  },
+  {
+   "term": "Single Sign-On (SSO)",
+   "cat": "Identity & Access (IAM)",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Identity & Access (IAM)",
+   "def": "Authentification unique pour plusieurs services."
+  },
+  {
+   "term": "Identity Governance (IGA)",
+   "cat": "Identity & Access (IAM)",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Identity & Access (IAM)",
+   "def": "Gouvernance des identités et des accès."
+  },
+  {
+   "term": "Directory Services",
+   "cat": "Identity & Access (IAM)",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Identity & Access (IAM)",
+   "def": "Annuaires (Active Directory, LDAP)."
+  },
+  {
+   "term": "SIEM",
+   "cat": "Threat Intel & Monitoring",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Threat Intel & Monitoring",
+   "def": "Gestion des informations et événements de sécurité."
+  },
+  {
+   "term": "SOAR",
+   "cat": "Threat Intel & Monitoring",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Threat Intel & Monitoring",
+   "def": "Orchestration, automatisation et réponse de sécurité."
+  },
+  {
+   "term": "Threat Intelligence Platform (TIP)",
+   "cat": "Threat Intel & Monitoring",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Threat Intel & Monitoring",
+   "def": "Plateforme de renseignement sur les menaces."
+  },
+  {
+   "term": "UEBA",
+   "cat": "Threat Intel & Monitoring",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Threat Intel & Monitoring",
+   "def": "Analyse comportementale des utilisateurs et entités."
+  },
+  {
+   "term": "Data Loss Prevention (DLP)",
+   "cat": "Data & App Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Data & App Security",
+   "def": "Prévention de la fuite de données."
+  },
+  {
+   "term": "Tokenization",
+   "cat": "Data & App Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Data & App Security",
+   "def": "Remplacer une donnée sensible par un jeton non signifiant."
+  },
+  {
+   "term": "SAST / DAST",
+   "cat": "Data & App Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Data & App Security",
+   "def": "Tests de sécurité applicative statiques / dynamiques."
+  },
+  {
+   "term": "Runtime App Self-Protection (RASP)",
+   "cat": "Data & App Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Data & App Security",
+   "def": "Protection applicative à l'exécution."
+  },
+  {
+   "term": "Software Composition Analysis (SCA)",
+   "cat": "Data & App Security",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Data & App Security",
+   "def": "Analyse des dépendances open source."
+  },
+  {
+   "term": "Penetration Testing",
+   "cat": "Offensive & GRC",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Offensive & GRC",
+   "def": "Test d'intrusion pour évaluer la sécurité."
+  },
+  {
+   "term": "Breach & Attack Simulation (BAS)",
+   "cat": "Offensive & GRC",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Offensive & GRC",
+   "def": "Simulation continue d'attaques."
+  },
+  {
+   "term": "GRC Platforms",
+   "cat": "Offensive & GRC",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Offensive & GRC",
+   "def": "Gouvernance, risque et conformité."
+  },
+  {
+   "term": "Disaster Recovery as a Service (DRaaS)",
+   "cat": "Offensive & GRC",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Offensive & GRC",
+   "def": "Reprise d'activité externalisée."
+  },
+  {
+   "term": "Immutable Backups",
+   "cat": "Offensive & GRC",
+   "branch": "ig_cybertech",
+   "tip": "Techno cyber · Offensive & GRC",
+   "def": "Sauvegardes non modifiables, anti-rançongiciel."
+  },
+  {
+   "term": "Botnet Protection",
+   "cat": "Advance Threat Protection",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Advance Threat Protection",
+   "def": "Protection contre les réseaux de machines zombies."
+  },
+  {
+   "term": "Sandboxing and Emulation",
+   "cat": "Advance Threat Protection",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Advance Threat Protection",
+   "def": "Exécution isolée pour analyser un fichier suspect."
+  },
+  {
+   "term": "Network Forensics",
+   "cat": "Advance Threat Protection",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Advance Threat Protection",
+   "def": "Investigation à partir du trafic réseau."
+  },
+  {
+   "term": "Firewall Management",
+   "cat": "Network Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Network Security",
+   "def": "Gestion des règles de pare-feu."
+  },
+  {
+   "term": "Network Access Control",
+   "cat": "Network Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Network Security",
+   "def": "Contrôle des accès au réseau."
+  },
+  {
+   "term": "Unified Threat Management",
+   "cat": "Network Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Network Security",
+   "def": "Boîtier regroupant plusieurs fonctions de sécurité."
+  },
+  {
+   "term": "Intrusion Detection/Prevention Systems",
+   "cat": "Network Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Network Security",
+   "def": "Détection/prévention d'intrusion réseau."
+  },
+  {
+   "term": "Data Encryption",
+   "cat": "Data Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Data Security",
+   "def": "Chiffrement des données."
+  },
+  {
+   "term": "Data Leakage Prevention",
+   "cat": "Data Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Data Security",
+   "def": "Prévention de la fuite de données (DLP)."
+  },
+  {
+   "term": "DNS Security",
+   "cat": "Infrastructure Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Infrastructure Security",
+   "def": "Sécurisation de la résolution de noms."
+  },
+  {
+   "term": "Mail Security",
+   "cat": "Infrastructure Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Infrastructure Security",
+   "def": "Filtrage et protection de la messagerie."
+  },
+  {
+   "term": "Zero Day Vulnerability Tracking",
+   "cat": "Infrastructure Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Infrastructure Security",
+   "def": "Suivi des failles inconnues (0-day)."
+  },
+  {
+   "term": "OWASP Mobile Top 10",
+   "cat": "Mobile Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Mobile Security",
+   "def": "Principaux risques de sécurité des applications mobiles."
+  },
+  {
+   "term": "Rogue Access Point Detection",
+   "cat": "Mobile Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Mobile Security",
+   "def": "Détection de points d'accès pirates."
+  },
+  {
+   "term": "Mobile Penetration Testing",
+   "cat": "Mobile Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Mobile Security",
+   "def": "Test d'intrusion mobile."
+  },
+  {
+   "term": "OWASP Top 10",
+   "cat": "Application Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Application Security",
+   "def": "Principaux risques de sécurité des applications web."
+  },
+  {
+   "term": "Web Application Firewall",
+   "cat": "Application Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Application Security",
+   "def": "Pare-feu applicatif web (WAF)."
+  },
+  {
+   "term": "Secure Code Review",
+   "cat": "Application Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Application Security",
+   "def": "Revue de code axée sécurité."
+  },
+  {
+   "term": "Database Activity Monitoring",
+   "cat": "Application Security",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · Application Security",
+   "def": "Surveillance des accès aux bases de données."
+  },
+  {
+   "term": "Vulnerability/Patch Management",
+   "cat": "System & Risk",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · System & Risk",
+   "def": "Gestion des vulnérabilités et des correctifs."
+  },
+  {
+   "term": "ISO 27001/HIPAA/PCI, SOC",
+   "cat": "System & Risk",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · System & Risk",
+   "def": "Cadres de conformité de sécurité."
+  },
+  {
+   "term": "Audit and Compliance Analysis",
+   "cat": "System & Risk",
+   "branch": "ig_sec360",
+   "tip": "Sécurité 360° · System & Risk",
+   "def": "Analyse d'audit et de conformité."
+  },
+  {
+   "term": "Authentication and Authorization",
+   "cat": "Application Security",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Application Security",
+   "def": "Vérifier l'identité puis les droits d'accès."
+  },
+  {
+   "term": "Input Validation",
+   "cat": "Application Security",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Application Security",
+   "def": "Valider les entrées pour éviter les injections."
+  },
+  {
+   "term": "Session Management",
+   "cat": "Application Security",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Application Security",
+   "def": "Gérer les sessions de façon sécurisée."
+  },
+  {
+   "term": "Medical Identity Theft",
+   "cat": "Identity Theft",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Identity Theft",
+   "def": "Usurpation d'identité à des fins médicales."
+  },
+  {
+   "term": "Financial Fraud",
+   "cat": "Identity Theft",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Identity Theft",
+   "def": "Fraude financière par usurpation d'identité."
+  },
+  {
+   "term": "Tax Identity Theft",
+   "cat": "Identity Theft",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Identity Theft",
+   "def": "Usurpation pour une fraude fiscale."
+  },
+  {
+   "term": "Brute Force Attacks",
+   "cat": "Password Attack",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Password Attack",
+   "def": "Essais exhaustifs de mots de passe."
+  },
+  {
+   "term": "Dictionary Attacks",
+   "cat": "Password Attack",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Password Attack",
+   "def": "Essais fondés sur une liste de mots probables."
+  },
+  {
+   "term": "Credential Stuffing",
+   "cat": "Password Attack",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Password Attack",
+   "def": "Réutilisation de couples identifiant/mot de passe volés."
+  },
+  {
+   "term": "Ransom Attacks",
+   "cat": "Malicious Code",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Malicious Code",
+   "def": "Rançongiciel chiffrant les données contre paiement."
+  },
+  {
+   "term": "Botnets",
+   "cat": "Malicious Code",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Malicious Code",
+   "def": "Réseau de machines compromises pilotées à distance."
+  },
+  {
+   "term": "Payloads and Exploits",
+   "cat": "Malicious Code",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Malicious Code",
+   "def": "Charges utiles et exploitations de failles."
+  },
+  {
+   "term": "Phishing",
+   "cat": "E-mail Attack",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · E-mail Attack",
+   "def": "Hameçonnage par email."
+  },
+  {
+   "term": "Email Spoofing",
+   "cat": "E-mail Attack",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · E-mail Attack",
+   "def": "Falsification de l'expéditeur d'un email."
+  },
+  {
+   "term": "Ransomware Attacks",
+   "cat": "Financial & Cyber Crime",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Financial & Cyber Crime",
+   "def": "Attaques par rançongiciel."
+  },
+  {
+   "term": "Insider Threats",
+   "cat": "Financial & Cyber Crime",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Financial & Cyber Crime",
+   "def": "Menaces internes (employés, prestataires)."
+  },
+  {
+   "term": "Cyber Espionage",
+   "cat": "Financial & Cyber Crime",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Financial & Cyber Crime",
+   "def": "Espionnage informatique."
+  },
+  {
+   "term": "Data Breaches",
+   "cat": "Financial & Cyber Crime",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Financial & Cyber Crime",
+   "def": "Violations de données."
+  },
+  {
+   "term": "Different Types of Hackers",
+   "cat": "Hacking",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Hacking",
+   "def": "Black/white/grey hat selon l'intention."
+  },
+  {
+   "term": "Malicious Intent",
+   "cat": "Hacking",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Hacking",
+   "def": "Intention malveillante de l'attaquant."
+  },
+  {
+   "term": "Unauthorized Access",
+   "cat": "Hacking",
+   "branch": "ig_secauto",
+   "tip": "Menaces & attaques · Hacking",
+   "def": "Accès non autorisé à un système."
+  },
+  {
+   "term": "Programming Languages",
+   "cat": "Fondations",
+   "branch": "ig_devops",
+   "tip": "DevOps · Fondations",
+   "def": "Python, Go, JavaScript, Ruby : langages courants en DevOps."
+  },
+  {
+   "term": "Server Administration",
+   "cat": "Fondations",
+   "branch": "ig_devops",
+   "tip": "DevOps · Fondations",
+   "def": "Administration Linux, Unix, Windows."
+  },
+  {
+   "term": "Network and Security",
+   "cat": "Fondations",
+   "branch": "ig_devops",
+   "tip": "DevOps · Fondations",
+   "def": "TCP/IP, DNS, HTTP/s, FTP, SSL."
+  },
+  {
+   "term": "Web Server",
+   "cat": "Servers & Databases",
+   "branch": "ig_devops",
+   "tip": "DevOps · Servers & Databases",
+   "def": "Apache, Nginx, Tomcat, IIS, Jetty."
+  },
+  {
+   "term": "Caching",
+   "cat": "Servers & Databases",
+   "branch": "ig_devops",
+   "tip": "DevOps · Servers & Databases",
+   "def": "Redis, Memcache : mise en cache."
+  },
+  {
+   "term": "SQL",
+   "cat": "Servers & Databases",
+   "branch": "ig_devops",
+   "tip": "DevOps · Servers & Databases",
+   "def": "MySQL/MariaDB, PostgreSQL, Oracle, MS-SQL."
+  },
+  {
+   "term": "NoSQL",
+   "cat": "Servers & Databases",
+   "branch": "ig_devops",
+   "tip": "DevOps · Servers & Databases",
+   "def": "MongoDB, Cassandra, DynamoDB : bases non relationnelles."
+  },
+  {
+   "term": "Container Orchestrators",
+   "cat": "Infrastructure as Code",
+   "branch": "ig_devops",
+   "tip": "DevOps · Infrastructure as Code",
+   "def": "Kubernetes, OpenShift, Nomad, Docker Swarm."
+  },
+  {
+   "term": "Container",
+   "cat": "Infrastructure as Code",
+   "branch": "ig_devops",
+   "tip": "DevOps · Infrastructure as Code",
+   "def": "Docker, rkt, LXC : conteneurisation."
+  },
+  {
+   "term": "Configuration Management",
+   "cat": "Infrastructure as Code",
+   "branch": "ig_devops",
+   "tip": "DevOps · Infrastructure as Code",
+   "def": "Ansible, Puppet, Chef, Salt Stack."
+  },
+  {
+   "term": "Infrastructure Provisioning",
+   "cat": "Infrastructure as Code",
+   "branch": "ig_devops",
+   "tip": "DevOps · Infrastructure as Code",
+   "def": "Terraform, CloudFormation, Azure Template."
+  },
+  {
+   "term": "Jenkins",
+   "cat": "CI/CD",
+   "branch": "ig_devops",
+   "tip": "DevOps · CI/CD",
+   "def": "Serveur d'intégration/déploiement continu."
+  },
+  {
+   "term": "GitLab CI",
+   "cat": "CI/CD",
+   "branch": "ig_devops",
+   "tip": "DevOps · CI/CD",
+   "def": "CI/CD intégré à GitLab."
+  },
+  {
+   "term": "GitHub Actions",
+   "cat": "CI/CD",
+   "branch": "ig_devops",
+   "tip": "DevOps · CI/CD",
+   "def": "Automatisation CI/CD dans GitHub."
+  },
+  {
+   "term": "CI/CD Pipeline",
+   "cat": "CI/CD",
+   "branch": "ig_devops",
+   "tip": "DevOps · CI/CD",
+   "def": "Chaîne d'intégration et de déploiement continus."
+  },
+  {
+   "term": "Monitoring",
+   "cat": "Monitoring & Clouds",
+   "branch": "ig_devops",
+   "tip": "DevOps · Monitoring & Clouds",
+   "def": "Zabbix, Prometheus, Grafana, DataDog."
+  },
+  {
+   "term": "Logging",
+   "cat": "Monitoring & Clouds",
+   "branch": "ig_devops",
+   "tip": "DevOps · Monitoring & Clouds",
+   "def": "ELK, Graylog, Splunk : centralisation des journaux."
+  },
+  {
+   "term": "Clouds",
+   "cat": "Monitoring & Clouds",
+   "branch": "ig_devops",
+   "tip": "DevOps · Monitoring & Clouds",
+   "def": "AWS, Azure, GCP, OpenStack."
+  }
+ ]
+}

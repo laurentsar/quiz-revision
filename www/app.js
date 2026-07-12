@@ -20,8 +20,16 @@ const state = {
 
 let DB = null, ALL = [], CATS = [], BYTERM = {};
 
-const CISSP_RE = /^cissp\d+$/;   // cissp1..cissp7 = les 7 domaines CISSP
-function isCissp(k) { return CISSP_RE.test(k); }
+// Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
+// id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
+const GROUPS = [
+  { id: 'cissp', label: 'CISSP', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
+  { id: 'ignite', label: 'Réf. cyber', color: '#B15CFF', test: (k) => /^ig_/.test(k) },
+];
+function groupOf(k) { return GROUPS.find(g => g.test(k)); }
+function groupById(id) { return GROUPS.find(g => g.id === id); }
+function groupKeys(g) { return Object.keys(DB.branches).filter(g.test); }
+function groupActive(g) { return [...state.branches].some(g.test); }
 function branchLabel(k) { return (DB.branches && DB.branches[k]) || k; }
 
 // Libellé de la sélection courante : rien de sélectionné = tout.
@@ -29,8 +37,10 @@ function scopeLabel() {
   const n = state.branches.size;
   if (!n || n === Object.keys(DB.branches).length) return 'Tout';
   if (n === 1) return branchLabel([...state.branches][0]);
-  const cissp = [...state.branches].filter(isCissp).length;
-  if (cissp === n) return cissp === 7 ? 'CISSP' : `CISSP · ${n} domaines`;
+  for (const g of GROUPS) {
+    const inG = [...state.branches].filter(g.test).length;
+    if (inG === n) return inG === groupKeys(g).length ? g.label : `${g.label} · ${n}`;
+  }
   return `${n} thèmes`;
 }
 
@@ -213,45 +223,47 @@ function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEac
 const BRANCH_COLORS = { archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
 function themeColor() {
   const sel = [...state.branches];
-  if (sel.length && sel.every(isCissp)) return '#4CE0D2';
+  for (const g of GROUPS) if (sel.length && sel.every(g.test)) return g.color;
   if (sel.length === 1) return BRANCH_COLORS[sel[0]] || '#27B3FF';
   return '#27B3FF';
 }
 
-// Thèmes en chips multi-sélection. Les 7 domaines CISSP sont derrière une seule
-// chip « CISSP » ; leur détail n'apparaît que si elle est active (besoin ponctuel).
-function cisspKeys() { return Object.keys(DB.branches).filter(isCissp); }
-function cisspActive() { return [...state.branches].some(isCissp); }
-
+// Thèmes en chips multi-sélection. Chaque groupe (CISSP, Réf. cyber) est réduit à
+// une chip parent ; le détail de ses membres n'apparaît que si le groupe est actif.
 function renderBranchSelect() {
   const row = $('branch-row'), sub = $('cissp-row');
   const nb = (k) => ALL.filter(c => c.branch === k).length;
-  const label = (k, l, n) => esc(l) + (settings.showCounts ? ` (${n})` : '');   // compteur optionnel
+  const label = (l, n) => esc(l) + (settings.showCounts ? ` (${n})` : '');   // compteur optionnel
+  const chip = (cls, key, l, n, on) =>
+    `<button class="chip ${cls}${on ? ' active' : ''}" data-branch="${key}">${label(l, n)}</button>`;
 
-  const plain = Object.entries(DB.branches).filter(([k]) => !isCissp(k));
-  const cissp = Object.entries(DB.branches).filter(([k]) => isCissp(k));
-  const cisspTotal = cissp.reduce((n, [k]) => n + nb(k), 0);
+  const plain = Object.entries(DB.branches).filter(([k]) => !groupOf(k));
+  let rowHtml = plain.map(([k, l]) => chip('branch-chip', k, l, nb(k), state.branches.has(k))).join('');
+  GROUPS.forEach(g => {
+    const keys = groupKeys(g);
+    if (keys.length) rowHtml += chip('branch-chip', 'grp:' + g.id, g.label, keys.reduce((n, k) => n + nb(k), 0), groupActive(g));
+  });
+  row.innerHTML = rowHtml;
 
-  row.innerHTML = plain.map(([k, l]) =>
-    `<button class="chip branch-chip${state.branches.has(k) ? ' active' : ''}" data-branch="${k}">${label(k, l, nb(k))}</button>`
-  ).join('') + (cissp.length
-    ? `<button class="chip branch-chip${cisspActive() ? ' active' : ''}" data-branch="cissp">${label('cissp', 'CISSP', cisspTotal)}</button>`
-    : '');
-
-  sub.innerHTML = cissp.map(([k, l]) =>
-    `<button class="chip cissp-chip${state.branches.has(k) ? ' active' : ''}" data-branch="${k}">${label(k, l, nb(k))}</button>`
-  ).join('');
-  sub.classList.toggle('hidden', !cisspActive());
+  // sous-rangée : membres des groupes actifs
+  let subHtml = '';
+  GROUPS.forEach(g => {
+    if (!groupActive(g)) return;
+    subHtml += groupKeys(g).map(k => chip('sub-chip', k, DB.branches[k], nb(k), state.branches.has(k))).join('');
+  });
+  sub.innerHTML = subHtml;
+  sub.classList.toggle('hidden', !subHtml);
 
   row.querySelectorAll('.branch-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
-  sub.querySelectorAll('.cissp-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
+  sub.querySelectorAll('.sub-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
 }
 
-// La chip « CISSP » vaut pour ses 7 domaines d'un bloc.
+// Une chip « grp:<id> » bascule tous les membres du groupe d'un bloc.
 function toggleBranch(key) {
-  if (key === 'cissp') {
-    if (cisspActive()) cisspKeys().forEach(k => state.branches.delete(k));
-    else cisspKeys().forEach(k => state.branches.add(k));
+  if (key.startsWith('grp:')) {
+    const g = groupById(key.slice(4));
+    if (groupActive(g)) groupKeys(g).forEach(k => state.branches.delete(k));
+    else groupKeys(g).forEach(k => state.branches.add(k));
   } else if (state.branches.has(key)) {
     state.branches.delete(key);
   } else {
@@ -559,7 +571,8 @@ function drawGrouped(c, labels, a, b, colA, colB) {
 // ---------- vue Stats ----------
 // Abréviation des thèmes pour tenir sous une barre de graphe.
 function shortBranch(k) {
-  if (isCissp(k)) return 'D' + k.replace('cissp', '');
+  if (/^cissp\d+$/.test(k)) return 'D' + k.replace('cissp', '');
+  if (k.startsWith('ig_')) return k.slice(3, 7);
   return { archi: 'Archi', igi1300: '1300', ii901: '901', igi2102: '2102' }[k] || k.slice(0, 5);
 }
 
@@ -729,13 +742,18 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 
 // ---------- démarrage ----------
 (async function init() {
-  const [base, cissp] = await Promise.all([
+  const empty = { branches: {}, concepts: [] };
+  const [base, cissp, ignite] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
-    (await fetch('data/cissp_concepts.json')).json().catch(() => ({ branches: {}, concepts: [] })),
+    (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
+    (await fetch('data/ignite_concepts.json')).json().catch(() => empty),
   ]);
-  // Les 7 domaines CISSP deviennent des thèmes à part entière : quiz, flashcards,
-  // Leitner et « mes erreurs » les traitent comme n'importe quel autre concept.
-  DB = { branches: Object.assign({}, base.branches, cissp.branches), concepts: base.concepts.concat(cissp.concepts) };
+  // Chaque source (homologation, CISSP, mind maps Ignite) apporte ses thèmes ; tous
+  // sont traités à l'identique par le quiz, les flashcards, le Leitner et les erreurs.
+  DB = {
+    branches: Object.assign({}, base.branches, cissp.branches, ignite.branches),
+    concepts: base.concepts.concat(cissp.concepts, ignite.concepts),
+  };
   ALL = DB.concepts;
   CATS = uniq(ALL.map(c => c.cat));
   ALL.forEach(c => { BYTERM[c.term] = c; });
