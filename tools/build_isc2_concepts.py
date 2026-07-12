@@ -556,6 +556,68 @@ SUPPLEMENT = {
             ('Data Breach Notification', "Legal duty to report breaches within set deadlines."),
         ],
     },
+    # ── CC densification ──
+    'cc1': {
+        'More Principles': [
+            ('CIA Triad', "Confidentiality, Integrity, Availability — core security goals."),
+            ('Least Privilege', "Granting only the access strictly needed."),
+            ('Defense in Depth', "Layering controls so no single failure is fatal."),
+            ('Threat', "Any potential danger that could exploit a vulnerability."),
+            ('Vulnerability', "A weakness that a threat can exploit."),
+            ('Likelihood', "The probability that a threat exploits a vulnerability."),
+            ('Impact', "The magnitude of harm if a risk materializes."),
+            ('Risk Acceptance', "Choosing to live with a risk without further control."),
+            ('Risk Avoidance', "Eliminating the activity that generates the risk."),
+            ('Risk Mitigation', "Reducing a risk with controls."),
+        ],
+    },
+    'cc2': {
+        'Continuity Metrics': [
+            ('Business Impact Analysis (BIA)', "Identifies critical functions and disruption impact."),
+            ('Maximum Tolerable Downtime (MTD)', "Longest time a function can be down before serious harm."),
+            ('Full Backup', "A complete copy of all selected data."),
+            ('Incremental Backup', "Copies only data changed since the last backup."),
+            ('Differential Backup', "Copies data changed since the last full backup."),
+            ('Tabletop Exercise', "Discussion-based rehearsal of a response plan."),
+            ('Failover', "Automatic switch to a standby system on failure."),
+        ],
+    },
+    'cc3': {
+        'More Access Controls': [
+            ('Need to Know', "Access limited to information required for one's duties."),
+            ('Turnstile', "Physical barrier admitting one person at a time."),
+            ('Biometrics', "Authentication using physical or behavioural traits."),
+            ('Privileged Account', "An account with elevated administrative rights."),
+            ('Provisioning', "Creating accounts and granting appropriate access."),
+            ('Deprovisioning', "Removing access when no longer needed (e.g., offboarding)."),
+            ('Access Control List (ACL)', "A list defining which subjects may access an object."),
+        ],
+    },
+    'cc4': {
+        'Networking Details': [
+            ('Firewall', "Filters traffic between networks based on rules."),
+            ('Router', "Forwards packets between networks."),
+            ('Switch', "Forwards frames within a local network."),
+            ('TCP', "Connection-oriented, reliable transport protocol."),
+            ('UDP', "Connectionless, fast transport protocol without guarantees."),
+            ('Port 443 (HTTPS)', "Standard port for encrypted web traffic."),
+            ('Ransomware', "Malware that encrypts data and demands payment."),
+            ('Zero Trust', "No implicit trust; every access request is verified."),
+            ('Micro-segmentation', "Fine-grained network isolation of workloads."),
+        ],
+    },
+    'cc5': {
+        'Operations Details': [
+            ('Public Key Infrastructure (PKI)', "Framework of certificates and authorities managing keys."),
+            ('Digital Signature', "Provides authenticity, integrity and non-repudiation."),
+            ('Data Destruction', "Securely erasing data at end of life (wiping, shredding)."),
+            ('Data Labeling', "Marking data with its classification level."),
+            ('Whitelisting', "Allowing only approved applications or addresses."),
+            ('Blacklisting', "Blocking known-bad applications or addresses."),
+            ('Phishing', "Fraudulent messages tricking users into revealing data."),
+            ('Principle of Least Functionality', "Systems run only the services they need."),
+        ],
+    },
 }
 
 # fusionne les compléments dans les thèmes existants

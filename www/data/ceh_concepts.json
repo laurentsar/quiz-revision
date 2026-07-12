@@ -199,6 +199,279 @@
    "cat": "Phases & concepts clés",
    "branch": "ceh1",
    "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "OSINT",
+   "def": "Open-Source Intelligence: gathering data from public sources.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Active Reconnaissance",
+   "def": "Directly interacting with the target to gather data.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Passive Reconnaissance",
+   "def": "Gathering data without touching the target.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Nmap",
+   "def": "Popular tool for network discovery and port scanning.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Port Scanning",
+   "def": "Probing a host to find open ports and services.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Banner Grabbing",
+   "def": "Reading service banners to identify software and versions.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "SYN Scan",
+   "def": "Stealthy half-open TCP scan that avoids full connections.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Google Dorking",
+   "def": "Using advanced search operators to find exposed data.",
+   "cat": "Reconnaissance & scanning",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Reconnaissance & scanning"
+  },
+  {
+   "term": "Password Cracking",
+   "def": "Recovering passwords by brute force, dictionary or rainbow tables.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Rainbow Table",
+   "def": "Precomputed hash lookup table to crack passwords fast.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Keylogger",
+   "def": "Records keystrokes to steal credentials.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Rootkit",
+   "def": "Stealthy malware hiding its presence with deep system access.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Backdoor",
+   "def": "Hidden access mechanism bypassing normal authentication.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Pass-the-Hash",
+   "def": "Authenticating with a stolen password hash instead of the password.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Steganography",
+   "def": "Hiding data inside other files (images, audio).",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Covering Tracks",
+   "def": "Deleting logs and artifacts to hide intrusion.",
+   "cat": "Access & post-exploitation",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Access & post-exploitation"
+  },
+  {
+   "term": "Trojan",
+   "def": "Malware disguised as legitimate software.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "Worm",
+   "def": "Self-replicating malware spreading without user action.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "Ransomware",
+   "def": "Malware encrypting data and demanding a ransom.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "Botnet",
+   "def": "Network of compromised machines controlled remotely.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "ARP Spoofing",
+   "def": "Poisoning ARP tables to intercept LAN traffic.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "MAC Flooding",
+   "def": "Overwhelming a switch to force it to broadcast traffic.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "DNS Poisoning",
+   "def": "Corrupting DNS responses to redirect victims.",
+   "cat": "Malware & sniffing",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Malware & sniffing"
+  },
+  {
+   "term": "Cross-Site Scripting (XSS)",
+   "def": "Injecting scripts into pages viewed by other users.",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "Cross-Site Request Forgery (CSRF)",
+   "def": "Forcing a browser to send unwanted authenticated requests.",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "Directory Traversal",
+   "def": "Accessing files outside the web root via crafted paths.",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "Command Injection",
+   "def": "Executing arbitrary OS commands through vulnerable input.",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "Session Fixation",
+   "def": "Forcing a known session ID onto a victim to hijack it.",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "Honeypot",
+   "def": "A decoy system used to detect and study attackers.",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "Firewall Evasion",
+   "def": "Techniques to bypass firewall filtering (fragmentation, tunneling).",
+   "cat": "Web & network attacks",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Web & network attacks"
+  },
+  {
+   "term": "WEP",
+   "def": "Obsolete, insecure Wi-Fi encryption standard.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "WPA3",
+   "def": "Latest, strongest Wi-Fi security protocol.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Evil Twin",
+   "def": "Rogue access point impersonating a legitimate one.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Deauthentication Attack",
+   "def": "Forcing clients off Wi-Fi to capture handshakes.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Jailbreaking / Rooting",
+   "def": "Removing OS restrictions on mobile devices.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Symmetric Encryption",
+   "def": "Same key encrypts and decrypts (e.g., AES).",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Asymmetric Encryption",
+   "def": "Public/private key pair (e.g., RSA).",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Hashing",
+   "def": "One-way function producing a fixed-length digest.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
+  },
+  {
+   "term": "Man-in-the-Middle (MITM)",
+   "def": "Intercepting communication between two parties.",
+   "cat": "Wireless, mobile & crypto",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Wireless, mobile & crypto"
   }
  ]
 }

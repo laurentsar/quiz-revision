@@ -160,9 +160,12 @@ function hasDef(concept) { return !!concept.def; }
 function makeQuestion(concept) {
   let type = state.qtype;
   if (type === 'mix') {
-    const types = hasDef(concept) ? ['def', 'term', 'situation'] : [];
-    if (CATS.length >= OPTION_COUNT) types.push('cat');
-    type = types[Math.floor(Math.random() * types.length)] || 'cat';
+    // Concept défini : questions de fond (terme↔définition, situation). La question
+    // de « catégorie » n'apporte rien de plus ici, on la réserve aux concepts SANS
+    // définition (surtout CISSP « structure »), où c'est le seul type possible.
+    const types = hasDef(concept) ? ['def', 'term', 'situation']
+      : (CATS.length >= OPTION_COUNT ? ['cat'] : ['def']);
+    type = types[Math.floor(Math.random() * types.length)];
   }
   if (type === 'situation' && !concept.ex) type = 'def';
   if ((type === 'def' || type === 'term') && !hasDef(concept)) type = 'cat';

@@ -366,6 +366,76 @@
    "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
   },
   {
+   "term": "CIA Triad",
+   "def": "Confidentiality, Integrity, Availability — core security goals.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Least Privilege",
+   "def": "Granting only the access strictly needed.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Defense in Depth",
+   "def": "Layering controls so no single failure is fatal.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Threat",
+   "def": "Any potential danger that could exploit a vulnerability.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Vulnerability",
+   "def": "A weakness that a threat can exploit.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Likelihood",
+   "def": "The probability that a threat exploits a vulnerability.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Impact",
+   "def": "The magnitude of harm if a risk materializes.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Risk Acceptance",
+   "def": "Choosing to live with a risk without further control.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Risk Avoidance",
+   "def": "Eliminating the activity that generates the risk.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
+   "term": "Risk Mitigation",
+   "def": "Reducing a risk with controls.",
+   "cat": "More Principles",
+   "branch": "cc1",
+   "tip": "CC · Security Principles · More Principles"
+  },
+  {
    "term": "Business Continuity Plan (BCP)",
    "def": "A plan to keep critical business functions running during and after a disruption.",
    "cat": "2.1 Business Continuity (BC)",
@@ -450,6 +520,48 @@
    "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
   },
   {
+   "term": "Maximum Tolerable Downtime (MTD)",
+   "def": "Longest time a function can be down before serious harm.",
+   "cat": "Continuity Metrics",
+   "branch": "cc2",
+   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+  },
+  {
+   "term": "Full Backup",
+   "def": "A complete copy of all selected data.",
+   "cat": "Continuity Metrics",
+   "branch": "cc2",
+   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+  },
+  {
+   "term": "Incremental Backup",
+   "def": "Copies only data changed since the last backup.",
+   "cat": "Continuity Metrics",
+   "branch": "cc2",
+   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+  },
+  {
+   "term": "Differential Backup",
+   "def": "Copies data changed since the last full backup.",
+   "cat": "Continuity Metrics",
+   "branch": "cc2",
+   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+  },
+  {
+   "term": "Tabletop Exercise",
+   "def": "Discussion-based rehearsal of a response plan.",
+   "cat": "Continuity Metrics",
+   "branch": "cc2",
+   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+  },
+  {
+   "term": "Failover",
+   "def": "Automatic switch to a standby system on failure.",
+   "cat": "Continuity Metrics",
+   "branch": "cc2",
+   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+  },
+  {
    "term": "Badge System",
    "def": "Physical control granting entry via an identification badge.",
    "cat": "3.1 Physical Access Controls",
@@ -518,6 +630,55 @@
    "cat": "3.2 Logical Access Controls",
    "branch": "cc3",
    "tip": "CC · Access Controls · 3.2 Logical Access Controls"
+  },
+  {
+   "term": "Need to Know",
+   "def": "Access limited to information required for one's duties.",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
+  },
+  {
+   "term": "Turnstile",
+   "def": "Physical barrier admitting one person at a time.",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
+  },
+  {
+   "term": "Biometrics",
+   "def": "Authentication using physical or behavioural traits.",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
+  },
+  {
+   "term": "Privileged Account",
+   "def": "An account with elevated administrative rights.",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
+  },
+  {
+   "term": "Provisioning",
+   "def": "Creating accounts and granting appropriate access.",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
+  },
+  {
+   "term": "Deprovisioning",
+   "def": "Removing access when no longer needed (e.g., offboarding).",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
+  },
+  {
+   "term": "Access Control List (ACL)",
+   "def": "A list defining which subjects may access an object.",
+   "cat": "More Access Controls",
+   "branch": "cc3",
+   "tip": "CC · Access Controls · More Access Controls"
   },
   {
    "term": "OSI Model",
@@ -660,6 +821,69 @@
    "tip": "CC · Network Security · 4.3 Security Infrastructure"
   },
   {
+   "term": "Firewall",
+   "def": "Filters traffic between networks based on rules.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "Router",
+   "def": "Forwards packets between networks.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "Switch",
+   "def": "Forwards frames within a local network.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "TCP",
+   "def": "Connection-oriented, reliable transport protocol.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "UDP",
+   "def": "Connectionless, fast transport protocol without guarantees.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "Port 443 (HTTPS)",
+   "def": "Standard port for encrypted web traffic.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "Ransomware",
+   "def": "Malware that encrypts data and demands payment.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "Zero Trust",
+   "def": "No implicit trust; every access request is verified.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
+   "term": "Micro-segmentation",
+   "def": "Fine-grained network isolation of workloads.",
+   "cat": "Networking Details",
+   "branch": "cc4",
+   "tip": "CC · Network Security · Networking Details"
+  },
+  {
    "term": "Symmetric Encryption",
    "def": "Encryption using the same key to encrypt and decrypt.",
    "cat": "5.1 Data Security",
@@ -777,6 +1001,62 @@
    "cat": "5.4 Security Awareness Training",
    "branch": "cc5",
    "tip": "CC · Security Operations · 5.4 Security Awareness Training"
+  },
+  {
+   "term": "Public Key Infrastructure (PKI)",
+   "def": "Framework of certificates and authorities managing keys.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Digital Signature",
+   "def": "Provides authenticity, integrity and non-repudiation.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Data Destruction",
+   "def": "Securely erasing data at end of life (wiping, shredding).",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Data Labeling",
+   "def": "Marking data with its classification level.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Whitelisting",
+   "def": "Allowing only approved applications or addresses.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Blacklisting",
+   "def": "Blocking known-bad applications or addresses.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Phishing",
+   "def": "Fraudulent messages tricking users into revealing data.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
+  },
+  {
+   "term": "Principle of Least Functionality",
+   "def": "Systems run only the services they need.",
+   "cat": "Operations Details",
+   "branch": "cc5",
+   "tip": "CC · Security Operations · Operations Details"
   },
   {
    "term": "CIA Triad",

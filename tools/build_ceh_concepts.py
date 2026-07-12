@@ -52,14 +52,69 @@ CATS = {
         ('Footprinting', "Collecting information to build a profile of the target."),
         ('Privilege Escalation', "Gaining higher rights than initially granted."),
     ],
+    'Reconnaissance & scanning': [
+        ('OSINT', "Open-Source Intelligence: gathering data from public sources."),
+        ('Active Reconnaissance', "Directly interacting with the target to gather data."),
+        ('Passive Reconnaissance', "Gathering data without touching the target."),
+        ('Nmap', "Popular tool for network discovery and port scanning."),
+        ('Port Scanning', "Probing a host to find open ports and services."),
+        ('Banner Grabbing', "Reading service banners to identify software and versions."),
+        ('SYN Scan', "Stealthy half-open TCP scan that avoids full connections."),
+        ('Google Dorking', "Using advanced search operators to find exposed data."),
+    ],
+    'Access & post-exploitation': [
+        ('Password Cracking', "Recovering passwords by brute force, dictionary or rainbow tables."),
+        ('Rainbow Table', "Precomputed hash lookup table to crack passwords fast."),
+        ('Keylogger', "Records keystrokes to steal credentials."),
+        ('Rootkit', "Stealthy malware hiding its presence with deep system access."),
+        ('Backdoor', "Hidden access mechanism bypassing normal authentication."),
+        ('Pass-the-Hash', "Authenticating with a stolen password hash instead of the password."),
+        ('Steganography', "Hiding data inside other files (images, audio)."),
+        ('Covering Tracks', "Deleting logs and artifacts to hide intrusion."),
+    ],
+    'Malware & sniffing': [
+        ('Trojan', "Malware disguised as legitimate software."),
+        ('Worm', "Self-replicating malware spreading without user action."),
+        ('Ransomware', "Malware encrypting data and demanding a ransom."),
+        ('Botnet', "Network of compromised machines controlled remotely."),
+        ('ARP Spoofing', "Poisoning ARP tables to intercept LAN traffic."),
+        ('MAC Flooding', "Overwhelming a switch to force it to broadcast traffic."),
+        ('DNS Poisoning', "Corrupting DNS responses to redirect victims."),
+    ],
+    'Web & network attacks': [
+        ('SQL Injection', "Injecting malicious SQL to manipulate a database."),
+        ('Cross-Site Scripting (XSS)', "Injecting scripts into pages viewed by other users."),
+        ('Cross-Site Request Forgery (CSRF)', "Forcing a browser to send unwanted authenticated requests."),
+        ('Directory Traversal', "Accessing files outside the web root via crafted paths."),
+        ('Command Injection', "Executing arbitrary OS commands through vulnerable input."),
+        ('Session Fixation', "Forcing a known session ID onto a victim to hijack it."),
+        ('Honeypot', "A decoy system used to detect and study attackers."),
+        ('Firewall Evasion', "Techniques to bypass firewall filtering (fragmentation, tunneling)."),
+    ],
+    'Wireless, mobile & crypto': [
+        ('WEP', "Obsolete, insecure Wi-Fi encryption standard."),
+        ('WPA3', "Latest, strongest Wi-Fi security protocol."),
+        ('Evil Twin', "Rogue access point impersonating a legitimate one."),
+        ('Deauthentication Attack', "Forcing clients off Wi-Fi to capture handshakes."),
+        ('Jailbreaking / Rooting', "Removing OS restrictions on mobile devices."),
+        ('Symmetric Encryption', "Same key encrypts and decrypts (e.g., AES)."),
+        ('Asymmetric Encryption', "Public/private key pair (e.g., RSA)."),
+        ('Hashing', "One-way function producing a fixed-length digest."),
+        ('Man-in-the-Middle (MITM)', "Intercepting communication between two parties."),
+    ],
 }
 
 
 def main():
     branches = {'ceh1': 'CEH v13'}
     concepts = []
+    seen = set()
     for cat, items in CATS.items():
         for term, dfn in items:
+            low = term.lower()
+            if low in seen:   # un terme (ex. SQL Injection) peut figurer dans 2 rubriques
+                continue
+            seen.add(low)
             concepts.append({'term': term, 'def': dfn, 'cat': cat,
                              'branch': 'ceh1', 'tip': 'CEH v13 · ' + cat})
 
