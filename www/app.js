@@ -24,6 +24,10 @@ let DB = null, ALL = [], CATS = [], BYTERM = {};
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
 const GROUPS = [
   { id: 'cissp', label: 'CISSP', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
+  { id: 'sscp', label: 'SSCP', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
+  { id: 'ccsp', label: 'CCSP', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
+  { id: 'cc', label: 'CC (ISC2)', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
+  { id: 'ceh', label: 'CEH', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
   { id: 'ignite', label: 'Réf. cyber', color: '#B15CFF', test: (k) => /^ig_/.test(k) },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
@@ -572,6 +576,10 @@ function drawGrouped(c, labels, a, b, colA, colB) {
 // Abréviation des thèmes pour tenir sous une barre de graphe.
 function shortBranch(k) {
   if (/^cissp\d+$/.test(k)) return 'D' + k.replace('cissp', '');
+  if (/^sscp\d+$/.test(k)) return 'S' + k.replace('sscp', '');
+  if (/^ccsp\d+$/.test(k)) return 'P' + k.replace('ccsp', '');
+  if (/^cc\d+$/.test(k)) return 'CC' + k.replace('cc', '');
+  if (/^ceh\d+$/.test(k)) return 'CEH';
   if (k.startsWith('ig_')) return k.slice(3, 7);
   return { archi: 'Archi', igi1300: '1300', ii901: '901', igi2102: '2102' }[k] || k.slice(0, 5);
 }
@@ -743,16 +751,19 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 // ---------- démarrage ----------
 (async function init() {
   const empty = { branches: {}, concepts: [] };
-  const [base, cissp, ignite] = await Promise.all([
+  const [base, cissp, isc2, ceh, ignite] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
     (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
+    (await fetch('data/isc2_concepts.json')).json().catch(() => empty),
+    (await fetch('data/ceh_concepts.json')).json().catch(() => empty),
     (await fetch('data/ignite_concepts.json')).json().catch(() => empty),
   ]);
-  // Chaque source (homologation, CISSP, mind maps Ignite) apporte ses thèmes ; tous
-  // sont traités à l'identique par le quiz, les flashcards, le Leitner et les erreurs.
+  // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite) apporte
+  // ses thèmes ; tous sont traités à l'identique par le quiz, les flashcards et le Leitner.
+  const srcs = [base, cissp, isc2, ceh, ignite];
   DB = {
-    branches: Object.assign({}, base.branches, cissp.branches, ignite.branches),
-    concepts: base.concepts.concat(cissp.concepts, ignite.concepts),
+    branches: Object.assign({}, ...srcs.map(s => s.branches)),
+    concepts: [].concat(...srcs.map(s => s.concepts)),
   };
   ALL = DB.concepts;
   CATS = uniq(ALL.map(c => c.cat));

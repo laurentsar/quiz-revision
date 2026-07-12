@@ -1,11 +1,11 @@
 {
  "source": "https://github.com/yyds-page/cissp-mind-map (GPL-3.0) — CISSP 2020, OSG/AIO 8e éd.",
  "branches": {
-  "cissp1": "Security Management Practices",
+  "cissp1": "Security and Risk Management",
   "cissp2": "Asset Security",
   "cissp3": "Security Architecture and Engineering",
   "cissp4": "Communication and Network Security",
-  "cissp5": "Identity and Access Management",
+  "cissp5": "Identity and Access Management (IAM)",
   "cissp6": "Security Assessment and Testing",
   "cissp7": "Security Operations"
  },
@@ -33,33 +33,6 @@
    "cat": "Fundamental Principles of Security",
    "branch": "cissp1",
    "tip": "Mind map CISSP · AIC triad"
-  },
-  {
-   "term": "vulnerability",
-   "def": "is a weakness in a system that allows a threat source to compromise its security",
-   "cat": "Security Definitions",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Security Definitions"
-  },
-  {
-   "term": "threat",
-   "def": "is any potential danger that is associated with the exploitation of a vulnerability",
-   "cat": "Security Definitions",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Security Definitions"
-  },
-  {
-   "term": "risk",
-   "def": "is the likelihood of a threat source exploiting a vulnerability and the corresponding business impact",
-   "cat": "Security Definitions",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Security Definitions"
-  },
-  {
-   "term": "exposure",
-   "cat": "Security Definitions",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Security Definitions"
   },
   {
    "term": "Preventive",
@@ -122,12 +95,6 @@
    "tip": "Mind map CISSP · Security Program Development"
   },
   {
-   "term": "list",
-   "cat": "Security Frameworks",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Security Program Development › ISO/IEC 27000 series"
-  },
-  {
    "term": "Enterprise Architecture Development",
    "cat": "Security Frameworks",
    "branch": "cissp1",
@@ -138,12 +105,6 @@
    "cat": "Security Frameworks",
    "branch": "cissp1",
    "tip": "Mind map CISSP · Enterprise Architecture Development"
-  },
-  {
-   "term": "two-dimensional model",
-   "cat": "Security Frameworks",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Enterprise Architecture Development › Zachman Framework"
   },
   {
    "term": "TOGAF",
@@ -194,12 +155,6 @@
    "cat": "Security Frameworks",
    "branch": "cissp1",
    "tip": "Mind map CISSP · Security Controls Development"
-  },
-  {
-   "term": "five key principles",
-   "cat": "Security Frameworks",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Security Controls Development › COBIT 5"
   },
   {
    "term": "NIST SP 800-53",
@@ -305,22 +260,10 @@
    "tip": "Mind map CISSP · Levels › Level 1"
   },
   {
-   "term": "Level 2",
-   "cat": "Security Frameworks",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Capability Maturity Model Integration (CMMI) › Levels"
-  },
-  {
    "term": "Repeatable process",
    "cat": "Security Frameworks",
    "branch": "cissp1",
    "tip": "Mind map CISSP · Levels › Level 2"
-  },
-  {
-   "term": "Level 3",
-   "cat": "Security Frameworks",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Capability Maturity Model Integration (CMMI) › Levels"
   },
   {
    "term": "Defined Process",
@@ -378,12 +321,6 @@
    "tip": "Mind map CISSP · The Crux of Computer Crime Laws"
   },
   {
-   "term": "The Evolution of Attacks",
-   "cat": "Complexities in Cybercrime",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Complexities in Cybercrime"
-  },
-  {
    "term": "Common Internet Crime Schemes",
    "cat": "Complexities in Cybercrime",
    "branch": "cissp1",
@@ -396,22 +333,10 @@
    "tip": "Mind map CISSP · Complexities in Cybercrime"
   },
   {
-   "term": "core principles",
-   "cat": "Complexities in Cybercrime",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · International Issues › Organisation for Economic Co-operation and Development (OECD) Guidelines"
-  },
-  {
    "term": "General Data Protection Regulation (GDPR) 2016",
    "cat": "Complexities in Cybercrime",
    "branch": "cissp1",
    "tip": "Mind map CISSP · International Issues"
-  },
-  {
-   "term": "three relevant entities",
-   "cat": "Complexities in Cybercrime",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · International Issues › General Data Protection Regulation (GDPR) 2016"
   },
   {
    "term": "Data subject",
@@ -430,12 +355,6 @@
    "cat": "Complexities in Cybercrime",
    "branch": "cissp1",
    "tip": "Mind map CISSP · General Data Protection Regulation (GDPR) 2016 › three relevant entities"
-  },
-  {
-   "term": "privacy data",
-   "cat": "Complexities in Cybercrime",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · International Issues › General Data Protection Regulation (GDPR) 2016"
   },
   {
    "term": "Role",
@@ -487,6 +406,38 @@
    "tip": "Mind map CISSP · General Data Protection Regulation (GDPR) 2016 › Key provisions of the GDPR"
   },
   {
+   "term": "Import/Export Legal Requirements",
+   "cat": "Complexities in Cybercrime",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · International Issues"
+  },
+  {
+   "term": "Types of Legal Systems",
+   "cat": "Complexities in Cybercrime",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · International Issues"
+  },
+  {
+   "term": "Civil (Code) Law System",
+   "def": "Civil law generally is derived from common law (case law)",
+   "cat": "Complexities in Cybercrime",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · International Issues › Types of Legal Systems"
+  },
+  {
+   "term": "Criminal",
+   "def": "Addresses behavior that is considered harmful to society.",
+   "cat": "Complexities in Cybercrime",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · International Issues › Types of Legal Systems"
+  },
+  {
+   "term": "Civil/Tort",
+   "cat": "Complexities in Cybercrime",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · International Issues › Types of Legal Systems"
+  },
+  {
    "term": "Trade Secret",
    "def": "is something that is proprietary to a company and important for its survival and profitability.",
    "cat": "Intellectual Property Laws",
@@ -501,8 +452,57 @@
    "tip": "Mind map CISSP · Intellectual Property Laws"
   },
   {
+   "term": "Patent",
+   "def": "is the strongest form of intellectual property protection.",
+   "cat": "Intellectual Property Laws",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Intellectual Property Laws"
+  },
+  {
+   "term": "Software Piracy",
+   "cat": "Intellectual Property Laws",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Intellectual Property Laws"
+  },
+  {
+   "term": "Digital Millennium Copyright Act (DMCA)",
+   "cat": "Intellectual Property Laws",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Software Piracy"
+  },
+  {
+   "term": "Copyright Directive",
+   "cat": "Intellectual Property Laws",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Software Piracy"
+  },
+  {
+   "term": "Personally identifiable information (PII)",
+   "cat": "Privacy",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Privacy"
+  },
+  {
+   "term": "Typical compenents",
+   "cat": "Privacy",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Personally identifiable information (PII)"
+  },
+  {
+   "term": "Law",
+   "cat": "Privacy",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Privacy"
+  },
+  {
    "term": "Gramm-LeachBliley Act of 1999 (GLBA)",
    "def": "include any organization that provides financial products or services to individuals",
+   "cat": "Privacy",
+   "branch": "cissp1",
+   "tip": "Mind map CISSP · Law"
+  },
+  {
+   "term": "Health Insurance Portability and Accountability Act (HIPAA)",
    "cat": "Privacy",
    "branch": "cissp1",
    "tip": "Mind map CISSP · Law"
@@ -571,20 +571,6 @@
    "tip": "Mind map CISSP · Methodologies for Risk Assessment"
   },
   {
-   "term": "steps",
-   "def": "3. Draw up a table in which failures are paired with their effects and an evaluation of the effects.",
-   "cat": "Risk Assessment and Analysis",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Methodologies for Risk Assessment › Failure Modes and Effect Analysis (FMEA)"
-  },
-  {
-   "term": "reduce its risk when it comes to outsourcing",
-   "def": "Review contracts to ensure security and protection levels are agreed upon",
-   "cat": "Supply Chain Risk Management",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Upstream and Downstream Suppliers › Services"
-  },
-  {
    "term": "Service Level Agreements",
    "def": "(SLA) is a contractual agreement that states that a service provider guarantees a certain level of service.",
    "cat": "Supply Chain Risk Management",
@@ -597,20 +583,6 @@
    "cat": "Risk Management Frameworks",
    "branch": "cissp1",
    "tip": "Mind map CISSP · Commonly Accepted Risk Management Frameworks"
-  },
-  {
-   "term": "business continuity management (BCM)",
-   "def": "is the holistic management process that should cover both of them.",
-   "cat": "Business Continuity and Disaster Recovery",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Concepts"
-  },
-  {
-   "term": "The process of drawing up a policy",
-   "def": "5. Perform a gap analysis. Find out where the organization currently is in terms of continuity planning, and spell out where it wants to be at the end of the BCP process.",
-   "cat": "Business Continuity and Disaster Recovery",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · BCP Project Components › BCP Policy"
   },
   {
    "term": "Tips",
@@ -627,18 +599,11 @@
    "tip": "Mind map CISSP · Business Continuity Planning Requirements › Risk Assessment Evaluation and Process"
   },
   {
-   "term": "Ten Commandments of Computer Ethics",
-   "def": "9. Thou shalt think about the social consequences of the program you are writing or the system you are designing.",
-   "cat": "Ethics",
+   "term": "Steps",
+   "def": "The new employee is issued all appropriate identification badges, keys, and access tokens pursuant to their assigned roles.",
+   "cat": "Personnel Security",
    "branch": "cissp1",
-   "tip": "Mind map CISSP · The Computer Ethics Institute"
-  },
-  {
-   "term": "The Internet Architecture Board",
-   "def": "It is responsible for the architectural oversight of the Internet Engineering Task Force (IETF) activities, Internet Standards Process oversight and appeal, and editor of Requests for Comments (RFCs).",
-   "cat": "Ethics",
-   "branch": "cissp1",
-   "tip": "Mind map CISSP · Ethics"
+   "tip": "Mind map CISSP · Onboarding"
   },
   {
    "term": "Backup",
@@ -661,24 +626,6 @@
    "tip": "Mind map CISSP · Classification"
   },
   {
-   "term": "commercial business",
-   "cat": "Classification",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Classifications Levels"
-  },
-  {
-   "term": "military purposes",
-   "cat": "Classification",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Classifications Levels"
-  },
-  {
-   "term": "criteria parameters for determine the sensitivity of data",
-   "cat": "Classification",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Classifications Levels"
-  },
-  {
    "term": "Classification Controls",
    "cat": "Classification",
    "branch": "cissp2",
@@ -686,7 +633,6 @@
   },
   {
    "term": "Classification Procedures",
-   "def": "2. Specify the criteria that will determine how data is classified.",
    "cat": "Classification",
    "branch": "cissp2",
    "tip": "Mind map CISSP · Classification Controls"
@@ -704,20 +650,6 @@
    "tip": "Mind map CISSP · Executive Management"
   },
   {
-   "term": "chief information officer (CIO)",
-   "def": "The CIO sets the stage for the protection of company assets and is ultimately responsible for the success of the company security program.",
-   "cat": "Layers of Responsibility",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Executive Management"
-  },
-  {
-   "term": "chief security officer (CSO)",
-   "def": "is responsible for understanding the risks that the company faces and for mitigating these risks to an acceptable level.",
-   "cat": "Layers of Responsibility",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Executive Management"
-  },
-  {
    "term": "Data Owner",
    "cat": "Layers of Responsibility",
    "branch": "cissp2",
@@ -725,6 +657,7 @@
   },
   {
    "term": "Data Custodian",
+   "def": "is responsible for maintaining and protecting the data.",
    "cat": "Layers of Responsibility",
    "branch": "cissp2",
    "tip": "Mind map CISSP · Layers of Responsibility"
@@ -803,14 +736,7 @@
    "tip": "Mind map CISSP · Retention Policies"
   },
   {
-   "term": "e-Discovery",
-   "cat": "Retention Policies",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · What Data We Retain"
-  },
-  {
    "term": "Electronic Discovery Reference Model (EDRM)",
-   "def": "2. Preservation of this data to ensure it is not accidentally or routinely destroyed while complying with the order.",
    "cat": "Retention Policies",
    "branch": "cissp2",
    "tip": "Mind map CISSP · What Data We Retain › e-Discovery"
@@ -877,12 +803,6 @@
    "tip": "Mind map CISSP · Data Security Controls"
   },
   {
-   "term": "loopholes",
-   "cat": "Protecting Assets",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Data Security Controls › Data in Use"
-  },
-  {
    "term": "Media Controls",
    "def": "Clearing is acceptable when media will be reused in the same physical environment for the same purposes",
    "cat": "Protecting Assets",
@@ -930,12 +850,6 @@
    "tip": "Mind map CISSP · Media Controls"
   },
   {
-   "term": "The costs commonly include",
-   "cat": "Data Leakage",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · Data Leakage"
-  },
-  {
    "term": "Data Leak Prevention(DLP)",
    "cat": "Data Leakage",
    "branch": "cissp2",
@@ -954,22 +868,10 @@
    "tip": "Mind map CISSP · Data Leak Prevention(DLP) › General Approaches to DLP"
   },
   {
-   "term": "some key areas",
-   "cat": "Data Leakage",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · General Approaches to DLP › Data Protection Strategy"
-  },
-  {
    "term": "Implementation, Testing, and Tuning",
    "cat": "Data Leakage",
    "branch": "cissp2",
    "tip": "Mind map CISSP · Data Leak Prevention(DLP) › General Approaches to DLP"
-  },
-  {
-   "term": "comparing competing products",
-   "cat": "Data Leakage",
-   "branch": "cissp2",
-   "tip": "Mind map CISSP · General Approaches to DLP › Implementation, Testing, and Tuning"
   },
   {
    "term": "Network DLP (NDLP)",
@@ -989,12 +891,6 @@
    "cat": "Data Leakage",
    "branch": "cissp2",
    "tip": "Mind map CISSP · Data Leak Prevention(DLP) › General Approaches to DLP"
-  },
-  {
-   "term": "standards",
-   "cat": "System Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · System Architecture"
   },
   {
    "term": "ISO/IEC/IEEE 42010. System Architecture. year 2011",
@@ -1027,24 +923,6 @@
    "tip": "Mind map CISSP · standards › ISO/IEC/IEEE 42010. System Architecture. year 2011"
   },
   {
-   "term": "encompasses",
-   "cat": "Computer Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Computer Architecture"
-  },
-  {
-   "term": "central processing unit (CPU)",
-   "cat": "Computer Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Computer Architecture"
-  },
-  {
-   "term": "program status word (PSW)",
-   "cat": "Computer Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · central processing unit (CPU)"
-  },
-  {
    "term": "Memory Types",
    "cat": "Computer Architecture",
    "branch": "cissp3",
@@ -1052,18 +930,6 @@
   },
   {
    "term": "Random access memory (RAM)",
-   "cat": "Computer Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Memory Types"
-  },
-  {
-   "term": "dynamic RAM (DRAM)",
-   "cat": "Computer Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Memory Types › Random access memory (RAM)"
-  },
-  {
-   "term": "additional types of RAM",
    "cat": "Computer Architecture",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Memory Types"
@@ -1112,18 +978,6 @@
    "tip": "Mind map CISSP · Operating Systems"
   },
   {
-   "term": "multitasking",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Process Management"
-  },
-  {
-   "term": "two categories of interrupts",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Process Management"
-  },
-  {
    "term": "Memory Stacks",
    "cat": "Operating Systems",
    "branch": "cissp3",
@@ -1160,18 +1014,6 @@
    "tip": "Mind map CISSP · Operating Systems"
   },
   {
-   "term": "The goals of memory management",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Memory Management"
-  },
-  {
-   "term": "five basic responsibilities",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Memory Management"
-  },
-  {
    "term": "Relocation",
    "cat": "Operating Systems",
    "branch": "cissp3",
@@ -1203,6 +1045,7 @@
   },
   {
    "term": "Memory Protection Issues",
+   "def": "Every address reference is validated for protection.",
    "cat": "Operating Systems",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Memory Management"
@@ -1231,18 +1074,6 @@
    "cat": "Operating Systems",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Input/Output Device Management"
-  },
-  {
-   "term": "block",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Input/Output Device Management › Type"
-  },
-  {
-   "term": "character",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Input/Output Device Management › Type"
   },
   {
    "term": "Interrupts",
@@ -1275,12 +1106,6 @@
    "tip": "Mind map CISSP · CPU Architecture Integration"
   },
   {
-   "term": "kernel mode",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · CPU Architecture Integration › CPU Operation Modes"
-  },
-  {
    "term": "Process Domain",
    "def": "The higher the ring level that the process executes within, the larger the domain of resources that is available to it.",
    "cat": "Operating Systems",
@@ -1294,12 +1119,6 @@
    "tip": "Mind map CISSP · Operating Systems"
   },
   {
-   "term": "layered operating system architecture",
-   "cat": "Operating Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Operating System Architectures"
-  },
-  {
    "term": "Virtual Machines",
    "cat": "Operating Systems",
    "branch": "cissp3",
@@ -1310,13 +1129,6 @@
    "cat": "System Security Architecture",
    "branch": "cissp3",
    "tip": "Mind map CISSP · System Security Architecture"
-  },
-  {
-   "term": "trusted computing base (TCB)",
-   "def": "is a collection of all the hardware, software, and firmware components within a system that provides some type of security and enforces the system’s security policy.",
-   "cat": "System Security Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Security Architecture Requirements"
   },
   {
    "term": "Security Perimeter",
@@ -1339,13 +1151,8 @@
    "tip": "Mind map CISSP · Security Architecture Requirements"
   },
   {
-   "term": "three main requirements",
-   "cat": "System Security Architecture",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Security Architecture Requirements › Security Kernel"
-  },
-  {
    "term": "Bell-LaPadula Model(1970s)",
+   "def": "it provides and addresses confidentiality only",
    "cat": "Security Models",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Security Models"
@@ -1406,12 +1213,6 @@
    "tip": "Mind map CISSP · Security Models"
   },
   {
-   "term": "elements",
-   "cat": "Security Models",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Clark-Wilson Model"
-  },
-  {
    "term": "Noninterference Model",
    "cat": "Security Models",
    "branch": "cissp3",
@@ -1438,19 +1239,6 @@
    "tip": "Mind map CISSP · Security Models"
   },
   {
-   "term": "define",
-   "def": "addresses some of these issues and defines a set of basic rights in terms of commands that a specific subject can execute on an object.",
-   "cat": "Security Models",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Graham-Denning Model"
-  },
-  {
-   "term": "rules",
-   "cat": "Security Models",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Graham-Denning Model"
-  },
-  {
    "term": "Harrison-Ruzzo-Ullman Mode(HRU)",
    "def": "HRU model is used by software designers to ensure that no unforeseen vulnerability is introduced and the stated access control goals are achieved",
    "cat": "Security Models",
@@ -1464,19 +1252,7 @@
    "tip": "Mind map CISSP · Systems Evaluation"
   },
   {
-   "term": "name: ISO/IEC 15408",
-   "cat": "Systems Evaluation",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Common Criteria（CC)"
-  },
-  {
    "term": "Evaluation Assurance Level (EAL)",
-   "cat": "Systems Evaluation",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Common Criteria（CC)"
-  },
-  {
-   "term": "protection profile",
    "cat": "Systems Evaluation",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Common Criteria（CC)"
@@ -1488,11 +1264,53 @@
    "tip": "Mind map CISSP · Common Criteria（CC) › protection profile"
   },
   {
+   "term": "Security objectives",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC) › protection profile"
+  },
+  {
    "term": "Security requirements",
    "def": "These are very specific requirements for compliant products. They are detailed enough for implementation by system developers, and for evaluation by independent laboratories.",
    "cat": "Systems Evaluation",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Common Criteria（CC) › protection profile"
+  },
+  {
+   "term": "Components",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC)"
+  },
+  {
+   "term": "Protection profile (PP)",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC) › Components"
+  },
+  {
+   "term": "Target of evaluation (TOE)",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC) › Components"
+  },
+  {
+   "term": "Security target",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC) › Components"
+  },
+  {
+   "term": "Security functional requirements",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC) › Components"
+  },
+  {
+   "term": "Security assurance requirements",
+   "cat": "Systems Evaluation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Common Criteria（CC) › Components"
   },
   {
    "term": "Packages—EALs",
@@ -1516,6 +1334,12 @@
    "tip": "Mind map CISSP · Certification vs. Accreditation"
   },
   {
+   "term": "Certification and accreditation (C&A)",
+   "cat": "Certification vs. Accreditation",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Certification vs. Accreditation"
+  },
+  {
    "term": "Open Systems",
    "def": "Systems described as open are built upon standards, protocols, and interfaces that have published specifications.",
    "cat": "Open vs. Closed Systems",
@@ -1523,11 +1347,41 @@
    "tip": "Mind map CISSP · Open vs. Closed Systems"
   },
   {
-   "term": "data parallelism",
-   "def": "describes the distribution of data among different nodes that then process it in parallel",
+   "term": "Closed Systems",
+   "cat": "Open vs. Closed Systems",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Open vs. Closed Systems"
+  },
+  {
+   "term": "Cloud Computing",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Systems Security"
+  },
+  {
+   "term": "Parallel Computing",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Systems Security"
+  },
+  {
+   "term": "Bit-level parallelism",
    "cat": "Systems Security",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Parallel Computing"
+  },
+  {
+   "term": "Database Systems",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Systems Security"
+  },
+  {
+   "term": "Aggregation",
+   "def": "is the act of combining information from separate sources",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Database Systems"
   },
   {
    "term": "Inference",
@@ -1551,8 +1405,63 @@
    "tip": "Mind map CISSP · Database Systems › Inference"
   },
   {
+   "term": "Web-Based Systems",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Systems Security"
+  },
+  {
+   "term": "Mobile Systems",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Systems Security"
+  },
+  {
+   "term": "Cyber-Physical Systems",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Systems Security"
+  },
+  {
+   "term": "Internet of Things",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Cyber-Physical Systems"
+  },
+  {
+   "term": "Industrial Control Systems(ICS)",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Cyber-Physical Systems"
+  },
+  {
+   "term": "Supervisory Control and Data Acquisition (SCADA)",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Cyber-Physical Systems › Industrial Control Systems(ICS)"
+  },
+  {
+   "term": "ICS Security",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Cyber-Physical Systems › Industrial Control Systems(ICS)"
+  },
+  {
+   "term": "NIST SP 800-82",
+   "def": "Ensure there is a process for patch management.",
+   "cat": "Systems Security",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Industrial Control Systems(ICS) › ICS Security"
+  },
+  {
+   "term": "Maintenance Hooks",
+   "cat": "A Few Threats to Review",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · A Few Threats to Review"
+  },
+  {
    "term": "Steganography",
-   "def": "Payload The information that is to be concealed and transmitted",
+   "def": "Stegomedium The medium in which the information is hidden",
    "cat": "Cryptography Definitions and Concepts",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Cryptography Definitions and Concepts"
@@ -1565,18 +1474,18 @@
    "tip": "Mind map CISSP · Symmetric › strengths and weakness"
   },
   {
+   "term": "Data Encryption Standard (DES)",
+   "def": "The result is 64-bit blocks of ciphertext",
+   "cat": "Types of Symmetric Systems",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Types of Symmetric Systems"
+  },
+  {
    "term": "Electronic Code Book (ECB)",
    "def": "Errors are contained. If an error takes place during the encryption process, it only affects one block of data.",
    "cat": "Types of Symmetric Systems",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Data Encryption Standard (DES) › DES Modes"
-  },
-  {
-   "term": "rounds",
-   "def": "If both the key and block size are 128 bits, there are 10 rounds.",
-   "cat": "Types of Symmetric Systems",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Advanced Encryption Standard (AES)"
   },
   {
    "term": "RSA",
@@ -1600,22 +1509,15 @@
    "tip": "Mind map CISSP · Types of Asymmetric Systems"
   },
   {
-   "term": "characteristics",
-   "def": "The hash should be a one-way function so messages are not disclosed by their values.",
-   "cat": "Message Integrity",
-   "branch": "cissp3",
-   "tip": "Mind map CISSP · Various Hashing Algorithms"
-  },
-  {
    "term": "Digital Signatures",
-   "def": "A message can be digitally signed, which provides authentication, nonrepudiation, and integrity.",
+   "def": "A message can be encrypted, which provides confidentiality.",
    "cat": "Applying Cryptography",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Applying Cryptography"
   },
   {
    "term": "Rules for Keys and Key Management",
-   "def": "The key’s lifetime should correspond with the sensitivity of the data it is protecting.",
+   "def": "Keys should be stored and transmitted by secure means.",
    "cat": "Applying Cryptography",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Key Management › Key Management Principles"
@@ -1633,6 +1535,13 @@
    "cat": "Internal Support Systems",
    "branch": "cissp3",
    "tip": "Mind map CISSP · Fire Prevention, Detection, and Suppression › Types of Fire Detection"
+  },
+  {
+   "term": "Fire Suppression",
+   "def": "The most effective replacement for halon is FM-200",
+   "cat": "Internal Support Systems",
+   "branch": "cissp3",
+   "tip": "Mind map CISSP · Environmental Issues › Fire Prevention, Detection, and Suppression"
   },
   {
    "term": "Preaction",
@@ -1655,12 +1564,6 @@
    "tip": "Mind map CISSP · Open Systems Interconnection Reference Model"
   },
   {
-   "term": "protocols",
-   "cat": "Open Systems Interconnection Reference Model",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Application Layer"
-  },
-  {
    "term": "Presentation Layer",
    "cat": "Open Systems Interconnection Reference Model",
    "branch": "cissp4",
@@ -1671,12 +1574,6 @@
    "cat": "Open Systems Interconnection Reference Model",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Open Systems Interconnection Reference Model"
-  },
-  {
-   "term": "different modes",
-   "cat": "Open Systems Interconnection Reference Model",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Session Layer"
   },
   {
    "term": "Transport Layer",
@@ -1701,12 +1598,6 @@
    "cat": "Open Systems Interconnection Reference Model",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Open Systems Interconnection Reference Model"
-  },
-  {
-   "term": "standard interfaces",
-   "cat": "Open Systems Interconnection Reference Model",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Physical Layer"
   },
   {
    "term": "Multilayer Protocols",
@@ -1741,22 +1632,10 @@
    "tip": "Mind map CISSP · TCP"
   },
   {
-   "term": "attack",
-   "cat": "TCP/IP Model",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · TCP"
-  },
-  {
    "term": "IP Addressing",
    "cat": "TCP/IP Model",
    "branch": "cissp4",
    "tip": "Mind map CISSP · TCP/IP Model"
-  },
-  {
-   "term": "supernetting",
-   "cat": "TCP/IP Model",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · IP Addressing"
   },
   {
    "term": "IPv6",
@@ -1839,12 +1718,6 @@
    "tip": "Mind map CISSP · Transmission Media"
   },
   {
-   "term": "signal",
-   "cat": "Transmission Media",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Types of Transmission"
-  },
-  {
    "term": "Digital",
    "cat": "Transmission Media",
    "branch": "cissp4",
@@ -1858,12 +1731,6 @@
    "tip": "Mind map CISSP · signal › Digital"
   },
   {
-   "term": "types",
-   "cat": "Transmission Media",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Types of Transmission"
-  },
-  {
    "term": "Asynchronous",
    "cat": "Transmission Media",
    "branch": "cissp4",
@@ -1874,12 +1741,6 @@
    "cat": "Transmission Media",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Types of Transmission › types"
-  },
-  {
-   "term": "transmission",
-   "cat": "Transmission Media",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Types of Transmission"
   },
   {
    "term": "Baseband",
@@ -1904,12 +1765,6 @@
    "cat": "Transmission Media",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Types of Transmission › Cabling"
-  },
-  {
-   "term": "unshielded twisted pair (UTP)",
-   "cat": "Transmission Media",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Cabling › Twisted-Pair Cable"
   },
   {
    "term": "Fiber-Optic Cable",
@@ -1954,12 +1809,6 @@
    "tip": "Mind map CISSP · Wireless Communications Techniques"
   },
   {
-   "term": "direct sequence spread spectrum (DSSS),",
-   "cat": "Wireless Networks",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Wireless Communications Techniques › Spread Spectrum"
-  },
-  {
    "term": "Orthogonal Frequency-Division Multiplexing",
    "cat": "Wireless Networks",
    "branch": "cissp4",
@@ -1970,12 +1819,6 @@
    "cat": "Wireless Networks",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Wireless Networks"
-  },
-  {
-   "term": "access point (AP)",
-   "cat": "Wireless Networks",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · WLAN Components"
   },
   {
    "term": "Evolution of WLAN Security",
@@ -1991,6 +1834,7 @@
   },
   {
    "term": "Wired Equivalent Privacy (WEP)",
+   "def": "WEP is considered insecure and should not be used.",
    "cat": "Wireless Networks",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Evolution of WLAN Security › IEEE Standard 802.11"
@@ -2015,19 +1859,12 @@
   },
   {
    "term": "Notice",
-   "def": "802.1X is not a wireless protocol. It is an access control protocol that can be implemented on both wired and wireless networks.",
    "cat": "Wireless Networks",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Evolution of WLAN Security › IEEE Standard 802.1X"
   },
   {
    "term": "Lightweight Extensible Authentication Protocol (LEAP)",
-   "cat": "Wireless Networks",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Evolution of WLAN Security › IEEE Standard 802.1X"
-  },
-  {
-   "term": "EAP and Transport Layer Security (EAP-TLS),",
    "cat": "Wireless Networks",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Evolution of WLAN Security › IEEE Standard 802.1X"
@@ -2065,19 +1902,7 @@
    "tip": "Mind map CISSP · Wireless Networks"
   },
   {
-   "term": "two main microwave wireless transmission",
-   "cat": "Wireless Networks",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Wireless Networks"
-  },
-  {
    "term": "Satellites",
-   "cat": "Wireless Networks",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · two main microwave wireless transmission"
-  },
-  {
-   "term": "terrestrial",
    "cat": "Wireless Networks",
    "branch": "cissp4",
    "tip": "Mind map CISSP · two main microwave wireless transmission"
@@ -2132,11 +1957,35 @@
    "tip": "Mind map CISSP · Media Access Technologies › CSMA"
   },
   {
+   "term": "CSMA/CA",
+   "cat": "Networking Foundations",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Media Access Technologies › CSMA"
+  },
+  {
    "term": "Polling",
    "def": "is a method of monitoring multiple devices and controlling network access transmission",
    "cat": "Networking Foundations",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Media Access Technologies"
+  },
+  {
+   "term": "Ethernet",
+   "cat": "Networking Foundations",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Media Access Technologies"
+  },
+  {
+   "term": "100Base-TX",
+   "cat": "Networking Foundations",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Ethernet › types"
+  },
+  {
+   "term": "1000Base-T",
+   "cat": "Networking Foundations",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Ethernet › types"
   },
   {
    "term": "Token Ring",
@@ -2146,6 +1995,18 @@
    "tip": "Mind map CISSP · Media Access Technologies"
   },
   {
+   "term": "FDDI",
+   "cat": "Networking Foundations",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Media Access Technologies"
+  },
+  {
+   "term": "Transmission Methods",
+   "cat": "Networking Foundations",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Networking Foundations"
+  },
+  {
    "term": "Bootstrap Protocol (BOOTP)",
    "def": "was created after RARP to enhance the functionality that RARP provides for diskless workstations",
    "cat": "Network Protocols and Services",
@@ -2153,8 +2014,63 @@
    "tip": "Mind map CISSP · Network Protocols and Services"
   },
   {
+   "term": "Internet Control Message Protocol(ICMP)",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Network Protocols and Services"
+  },
+  {
+   "term": "Simple Network Management Protocol (SNMP)",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Network Protocols and Services"
+  },
+  {
+   "term": "SNMP v3",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Simple Network Management Protocol (SNMP)"
+  },
+  {
+   "term": "Domain Name Service",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Network Protocols and Services"
+  },
+  {
+   "term": "DNS Threats",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Domain Name Service"
+  },
+  {
+   "term": "E-mail Services",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Network Protocols and Services"
+  },
+  {
+   "term": "Post Office Protocol (POP)",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · E-mail Services"
+  },
+  {
+   "term": "E-mail Relaying",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · E-mail Services"
+  },
+  {
    "term": "Route flapping",
    "def": "refers to the constant changes in the availability of routes.",
+   "cat": "Network Protocols and Services",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Routing Protocols"
+  },
+  {
+   "term": "Interior Routing Protocols/Interior Gateway Protocols",
+   "def": "Virtual Router Redundancy Protocol(IS-IS)",
    "cat": "Network Protocols and Services",
    "branch": "cissp4",
    "tip": "Mind map CISSP · Routing Protocols"
@@ -2167,18 +2083,18 @@
    "tip": "Mind map CISSP · Network Components"
   },
   {
-   "term": "use",
-   "def": "Firewalls are used to restrict access to one network from another network",
-   "cat": "Network Components",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Firewalls"
-  },
-  {
    "term": "Stateful-Inspection Firewall Characteristics",
    "def": "Provides a high degree of security and does not introduce the performance hit that application proxy firewalls introduce",
    "cat": "Network Components",
    "branch": "cissp4",
    "tip": "Mind map CISSP · types › Stateful"
+  },
+  {
+   "term": "Characteristics",
+   "def": "Each protocol that is to be monitored must have a unique proxy.",
+   "cat": "Network Components",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · Proxy › Application-level proxies"
   },
   {
    "term": "Multihome/Dual-Homed",
@@ -2202,13 +2118,6 @@
    "tip": "Mind map CISSP · WAN Technologies"
   },
   {
-   "term": "security measures",
-   "def": "Configure the remote access server to call back the initiating phone number to ensure it is a valid and approved number.",
-   "cat": "Remote Access",
-   "branch": "cissp4",
-   "tip": "Mind map CISSP · Dial-up Connections"
-  },
-  {
    "term": "Authentication Header (AH)",
    "def": "Provides data integrity, data-origin authentication, and protection from replay attacks",
    "cat": "Remote Access",
@@ -2218,6 +2127,13 @@
   {
    "term": "Encapsulating Security Payload (ESP)",
    "def": "Provides confidentiality, data-origin authentication, and data integrity",
+   "cat": "Remote Access",
+   "branch": "cissp4",
+   "tip": "Mind map CISSP · VPN › Internet Protocol Security"
+  },
+  {
+   "term": "Internet Key Exchange (IKE)",
+   "def": "Provides authenticated keying material for use with ISAKMP",
    "cat": "Remote Access",
    "branch": "cissp4",
    "tip": "Mind map CISSP · VPN › Internet Protocol Security"
@@ -2251,12 +2167,6 @@
   },
   {
    "term": "Strong authentication",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Identification and Authentication"
-  },
-  {
-   "term": "Directories",
    "cat": "Identification, Authentication, Authorization, and Accountability",
    "branch": "cissp5",
    "tip": "Mind map CISSP · Identification and Authentication"
@@ -2298,12 +2208,6 @@
    "tip": "Mind map CISSP · Authentication Methods"
   },
   {
-   "term": "crossover error rate (CER)",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Authentication Methods › Biometrics"
-  },
-  {
    "term": "Passwords",
    "cat": "Identification, Authentication, Authorization, and Accountability",
    "branch": "cissp5",
@@ -2328,12 +2232,6 @@
    "tip": "Mind map CISSP · Authentication Methods"
   },
   {
-   "term": "The Token Device",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Authentication Methods › One-Time Password"
-  },
-  {
    "term": "Cryptographic Keys",
    "cat": "Identification, Authentication, Authorization, and Accountability",
    "branch": "cissp5",
@@ -2347,12 +2245,6 @@
   },
   {
    "term": "Side-channel attacks",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Cryptographic Keys › Smart Card Attacks"
-  },
-  {
-   "term": "An ISO/IEC standard, 14443",
    "cat": "Identification, Authentication, Authorization, and Accountability",
    "branch": "cissp5",
    "tip": "Mind map CISSP · Cryptographic Keys › Smart Card Attacks"
@@ -2388,12 +2280,6 @@
    "tip": "Mind map CISSP · Single Sign-On › Kerberos"
   },
   {
-   "term": "ticket granting service (TGS)",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Kerberos › Main Components in Kerberos"
-  },
-  {
    "term": "Weaknesses of Kerberos",
    "def": "Secret keys are temporarily stored on the users’ workstations, which means it is possible for an intruder to obtain these cryptographic keys.",
    "cat": "Identification, Authentication, Authorization, and Accountability",
@@ -2423,12 +2309,6 @@
    "cat": "Identification, Authentication, Authorization, and Accountability",
    "branch": "cissp5",
    "tip": "Mind map CISSP · Identification, Authentication, Authorization, and Accountability"
-  },
-  {
-   "term": "events",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Accountability"
   },
   {
    "term": "Application-level events",
@@ -2483,12 +2363,6 @@
    "cat": "Identification, Authentication, Authorization, and Accountability",
    "branch": "cissp5",
    "tip": "Mind map CISSP · Federation"
-  },
-  {
-   "term": "four roles",
-   "cat": "Identification, Authentication, Authorization, and Accountability",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Federation › OAuth"
   },
   {
    "term": "OpenID Connect (OIDC)",
@@ -2556,12 +2430,6 @@
    "cat": "Access Control Mechanisms",
    "branch": "cissp5",
    "tip": "Mind map CISSP · Access Control Mechanisms"
-  },
-  {
-   "term": "some possible attributes",
-   "cat": "Access Control Mechanisms",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Attribute-Based Access Control"
   },
   {
    "term": "Constrained User Interfaces",
@@ -2636,18 +2504,6 @@
    "tip": "Mind map CISSP · Controlling Physical and Logical Access"
   },
   {
-   "term": "Administrative controls",
-   "cat": "Controlling Physical and Logical Access",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Access Control Layers"
-  },
-  {
-   "term": "Physical controls",
-   "cat": "Controlling Physical and Logical Access",
-   "branch": "cissp5",
-   "tip": "Mind map CISSP · Access Control Layers"
-  },
-  {
    "term": "Unauthorized Disclosure of Information",
    "cat": "Access Control Practices",
    "branch": "cissp5",
@@ -2678,8 +2534,43 @@
    "tip": "Mind map CISSP · Intrusion Detection Systems › Signature-based"
   },
   {
+   "term": "Anomaly-based",
+   "cat": "Access Control Monitoring",
+   "branch": "cissp5",
+   "tip": "Mind map CISSP · Intrusion Detection Systems"
+  },
+  {
+   "term": "Dictionary Attack",
+   "cat": "Threats to Access Control",
+   "branch": "cissp5",
+   "tip": "Mind map CISSP · Threats to Access Control"
+  },
+  {
+   "term": "Countermeasures",
+   "cat": "Threats to Access Control",
+   "branch": "cissp5",
+   "tip": "Mind map CISSP · Dictionary Attack"
+  },
+  {
+   "term": "Brute-Force Attacks",
+   "cat": "Threats to Access Control",
+   "branch": "cissp5",
+   "tip": "Mind map CISSP · Threats to Access Control"
+  },
+  {
+   "term": "Spoofing at Logon",
+   "cat": "Threats to Access Control",
+   "branch": "cissp5",
+   "tip": "Mind map CISSP · Threats to Access Control"
+  },
+  {
+   "term": "Phishing and Pharming",
+   "cat": "Threats to Access Control",
+   "branch": "cissp5",
+   "tip": "Mind map CISSP · Threats to Access Control"
+  },
+  {
    "term": "Information System Security Audit Process",
-   "def": "2. Involve the right business unit leaders to ensure the needs of the business are identified and addressed.",
    "cat": "Assessment, Test, and Audit Strategies",
    "branch": "cissp6",
    "tip": "Mind map CISSP · Assessment, Test, and Audit Strategies"
@@ -2719,12 +2610,6 @@
    "cat": "Auditing Technical Controls",
    "branch": "cissp6",
    "tip": "Mind map CISSP · Auditing Technical Controls"
-  },
-  {
-   "term": "varying degrees of knowledge",
-   "cat": "Auditing Technical Controls",
-   "branch": "cissp6",
-   "tip": "Mind map CISSP · Penetration Testing"
   },
   {
    "term": "War Dialing",
@@ -2830,18 +2715,6 @@
    "tip": "Mind map CISSP · Key Performance and Risk Indicators"
   },
   {
-   "term": "terms",
-   "cat": "Auditing Administrative Controls",
-   "branch": "cissp6",
-   "tip": "Mind map CISSP · Key Performance and Risk Indicators › Key Performance Indicators"
-  },
-  {
-   "term": "process",
-   "cat": "Auditing Administrative Controls",
-   "branch": "cissp6",
-   "tip": "Mind map CISSP · Key Performance and Risk Indicators › Key Performance Indicators"
-  },
-  {
    "term": "Key Risk Indicators",
    "def": "KRIs are selected for their impact on the decisions of the senior leaders in the organization",
    "cat": "Auditing Administrative Controls",
@@ -2855,35 +2728,16 @@
    "tip": "Mind map CISSP · Reporting"
   },
   {
-   "term": "key elements of a good technical audit report",
-   "cat": "Reporting",
-   "branch": "cissp6",
-   "tip": "Mind map CISSP · Writing Technical Reports"
-  },
-  {
    "term": "Executive Summary",
    "cat": "Reporting",
    "branch": "cissp6",
    "tip": "Mind map CISSP · Writing Technical Reports › key elements of a good technical audit report"
   },
   {
-   "term": "accountants valuate other assets",
-   "def": "The market approach is based on determining how much other firms are paying for a similar asset in the marketplace.",
-   "cat": "Reporting",
-   "branch": "cissp6",
-   "tip": "Mind map CISSP · key elements of a good technical audit report › Executive Summary"
-  },
-  {
    "term": "Security and Network Personnel",
    "cat": "Administrative Management",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Administrative Management"
-  },
-  {
-   "term": "tasks",
-   "cat": "Administrative Management",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Security and Network Personnel"
   },
   {
    "term": "Facility Access Control",
@@ -2904,46 +2758,16 @@
    "tip": "Mind map CISSP · Facility Access Control › Locks"
   },
   {
-   "term": "the tumbler lock",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Locks › Mechanical Locks"
-  },
-  {
-   "term": "three types of tumbler locks",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Mechanical Locks › the tumbler lock"
-  },
-  {
    "term": "Wafer tumbler locks",
    "cat": "Physical Security",
    "branch": "cissp7",
    "tip": "Mind map CISSP · the tumbler lock › three types of tumbler locks"
   },
   {
-   "term": "Cipher locks,",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · the tumbler lock › three types of tumbler locks"
-  },
-  {
-   "term": "functionalities",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · three types of tumbler locks › Cipher locks,"
-  },
-  {
    "term": "Device Locks",
    "cat": "Physical Security",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Locks › Mechanical Locks"
-  },
-  {
-   "term": "capabilities",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Mechanical Locks › Device Locks"
   },
   {
    "term": "Lock Strengths",
@@ -2964,12 +2788,6 @@
    "tip": "Mind map CISSP · Physical Security"
   },
   {
-   "term": "control types",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · External Boundary Protection Mechanisms"
-  },
-  {
    "term": "Fencing",
    "def": "Fences six to seven feet high are considered too high to climb easily.",
    "cat": "Physical Security",
@@ -2983,12 +2801,6 @@
    "tip": "Mind map CISSP · External Boundary Protection Mechanisms"
   },
   {
-   "term": "closed-circuit TV (CCTV)",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · External Boundary Protection Mechanisms › Visual Recording Devices"
-  },
-  {
    "term": "Two main types of lenses",
    "cat": "Physical Security",
    "branch": "cissp7",
@@ -2996,12 +2808,6 @@
   },
   {
    "term": "IDSs can be used to detect changes",
-   "cat": "Physical Security",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Intrusion Detection Systems"
-  },
-  {
-   "term": "A photoelectric system",
    "cat": "Physical Security",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Intrusion Detection Systems"
@@ -3017,12 +2823,6 @@
    "cat": "Secure Resource Provisioning",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Asset Inventory"
-  },
-  {
-   "term": "best practices",
-   "cat": "Secure Resource Provisioning",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Asset Inventory › Tracking Software"
   },
   {
    "term": "Asset Management",
@@ -3043,22 +2843,10 @@
    "tip": "Mind map CISSP · Configuration Management"
   },
   {
-   "term": "change control policy",
-   "cat": "Secure Resource Provisioning",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Configuration Management › Change Control Process"
-  },
-  {
    "term": "Trusted Recovery",
    "cat": "Secure Resource Provisioning",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Secure Resource Provisioning"
-  },
-  {
-   "term": "type of failure",
-   "cat": "Secure Resource Provisioning",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Trusted Recovery"
   },
   {
    "term": "After a System Crash",
@@ -3074,15 +2862,10 @@
   },
   {
    "term": "System Hardening",
+   "def": "Locked-down systems are referred to as bastion hosts.",
    "cat": "Secure Resource Provisioning",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Secure Resource Provisioning"
-  },
-  {
-   "term": "keeping that information available",
-   "cat": "Network and Resource Availability",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Network and Resource Availability"
   },
   {
    "term": "Mean Time Between Failures",
@@ -3129,12 +2912,6 @@
    "tip": "Mind map CISSP · Network and Resource Availability"
   },
   {
-   "term": "The steps of this generalized process",
-   "cat": "Preventing and Detecting",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Preventing and Detecting"
-  },
-  {
    "term": "Continuous Monitoring",
    "def": "NIST Special Publication 800-137, “Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations,” defines information security continuous monitoring as “maintaining ongoing awareness of information security, vulnerabilities, and threats to support organizational risk management decisions.”",
    "cat": "Preventing and Detecting",
@@ -3166,12 +2943,6 @@
    "tip": "Mind map CISSP · Vulnerability Management"
   },
   {
-   "term": "social engineering assessment",
-   "cat": "Preventing and Detecting",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Vulnerability Management › Human Vulnerabilities"
-  },
-  {
    "term": "Unmanaged Patching",
    "cat": "Preventing and Detecting",
    "branch": "cissp7",
@@ -3190,24 +2961,6 @@
    "tip": "Mind map CISSP · Preventing and Detecting"
   },
   {
-   "term": "managed security services providers (MSSPs)",
-   "cat": "Preventing and Detecting",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Outsourced Services"
-  },
-  {
-   "term": "incident response team",
-   "cat": "The Incident Management Process",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · The Incident Management Process"
-  },
-  {
-   "term": "The Cyber Kill Chain",
-   "cat": "The Incident Management Process",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · The Incident Management Process"
-  },
-  {
    "term": "Reporting",
    "cat": "The Incident Management Process",
    "branch": "cissp7",
@@ -3224,19 +2977,6 @@
    "cat": "Investigations",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Computer Forensics and Proper Collection of Evidence"
-  },
-  {
-   "term": "attributes",
-   "cat": "Investigations",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Computer Forensics and Proper Collection of Evidence › Scientific Working Group on Digital Evidence (SWGDE)"
-  },
-  {
-   "term": "principles",
-   "def": "3. When it is necessary for a person to access original digital evidence, that person should be trained for the purpose.",
-   "cat": "Investigations",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Computer Forensics and Proper Collection of Evidence › Scientific Working Group on Digital Evidence (SWGDE)"
   },
   {
    "term": "Different Types of Assessments an Investigator Can Perform",
@@ -3270,12 +3010,6 @@
   },
   {
    "term": "Types of Investigations",
-   "cat": "Investigations",
-   "branch": "cissp7",
-   "tip": "Mind map CISSP · Investigations"
-  },
-  {
-   "term": "The Forensic Investigation Process",
    "cat": "Investigations",
    "branch": "cissp7",
    "tip": "Mind map CISSP · Investigations"
@@ -3329,11 +3063,88 @@
    "tip": "Mind map CISSP · Backup Storage Strategies"
   },
   {
-   "term": "to the alternate site",
-   "def": "Ensuring an adequate environment is provided (power, facility infrastructure, water, HVAC)",
+   "term": "Electronic Backup Solutions",
+   "cat": "Disaster Recovery",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Backup Storage Strategies"
+  },
+  {
+   "term": "Electronic vaulting",
+   "cat": "Disaster Recovery",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Backup Storage Strategies › Electronic Backup Solutions"
+  },
+  {
+   "term": "End-User Environment",
+   "cat": "Disaster Recovery",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Disaster Recovery"
+  },
+  {
+   "term": "Liability",
+   "cat": "Liability and Its Ramifications",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Liability and Its Ramifications"
+  },
+  {
+   "term": "Liability Scenarios",
+   "cat": "Liability and Its Ramifications",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Liability and Its Ramifications"
+  },
+  {
+   "term": "Contractual Agreements",
+   "cat": "Liability and Its Ramifications",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Liability and Its Ramifications"
+  },
+  {
+   "term": "Procurement and Vendor Processes",
+   "cat": "Liability and Its Ramifications",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Liability and Its Ramifications"
+  },
+  {
+   "term": "Personnel",
    "cat": "Implementing Disaster Recovery",
    "branch": "cissp7",
-   "tip": "Mind map CISSP · Restoration"
+   "tip": "Mind map CISSP · Implementing Disaster Recovery"
+  },
+  {
+   "term": "Assessment",
+   "cat": "Implementing Disaster Recovery",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Implementing Disaster Recovery"
+  },
+  {
+   "term": "Restoration",
+   "cat": "Implementing Disaster Recovery",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Implementing Disaster Recovery"
+  },
+  {
+   "term": "Communications",
+   "cat": "Implementing Disaster Recovery",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Implementing Disaster Recovery"
+  },
+  {
+   "term": "Emergency Management",
+   "cat": "Personal Safety Concerns",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Personal Safety Concerns"
+  },
+  {
+   "term": "OEP",
+   "cat": "Personal Safety Concerns",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Emergency Management"
+  },
+  {
+   "term": "Travel",
+   "cat": "Personal Safety Concerns",
+   "branch": "cissp7",
+   "tip": "Mind map CISSP · Emergency Management"
   }
  ]
 }

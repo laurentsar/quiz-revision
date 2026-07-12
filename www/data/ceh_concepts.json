@@ -1,0 +1,204 @@
+{
+ "source": "EC-Council CEH v13 — 20 modules officiels (à re-vérifier sur eccouncil.org)",
+ "branches": {
+  "ceh1": "CEH v13"
+ },
+ "concepts": [
+  {
+   "term": "Introduction to Ethical Hacking",
+   "def": "Fundamentals of ethical hacking, the cyber kill chain and attack phases.",
+   "cat": "Foundations (Modules 1-5)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Foundations (Modules 1-5)"
+  },
+  {
+   "term": "Footprinting and Reconnaissance",
+   "def": "Gathering information about a target using open sources (OSINT).",
+   "cat": "Foundations (Modules 1-5)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Foundations (Modules 1-5)"
+  },
+  {
+   "term": "Scanning Networks",
+   "def": "Discovering live hosts, ports and services on a network.",
+   "cat": "Foundations (Modules 1-5)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Foundations (Modules 1-5)"
+  },
+  {
+   "term": "Enumeration",
+   "def": "Extracting usernames, shares and services from a target.",
+   "cat": "Foundations (Modules 1-5)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Foundations (Modules 1-5)"
+  },
+  {
+   "term": "Vulnerability Analysis",
+   "def": "Identifying and assessing weaknesses in systems and applications.",
+   "cat": "Foundations (Modules 1-5)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Foundations (Modules 1-5)"
+  },
+  {
+   "term": "System Hacking",
+   "def": "Gaining access, escalating privileges and maintaining access to a system.",
+   "cat": "System Attacks (Modules 6-10)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · System Attacks (Modules 6-10)"
+  },
+  {
+   "term": "Malware Threats",
+   "def": "Viruses, worms, trojans, ransomware and their analysis.",
+   "cat": "System Attacks (Modules 6-10)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · System Attacks (Modules 6-10)"
+  },
+  {
+   "term": "Sniffing",
+   "def": "Capturing and analysing network traffic to steal data.",
+   "cat": "System Attacks (Modules 6-10)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · System Attacks (Modules 6-10)"
+  },
+  {
+   "term": "Social Engineering",
+   "def": "Manipulating people to divulge information or grant access.",
+   "cat": "System Attacks (Modules 6-10)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · System Attacks (Modules 6-10)"
+  },
+  {
+   "term": "Denial-of-Service",
+   "def": "Overwhelming a target to make a service unavailable (DoS/DDoS).",
+   "cat": "System Attacks (Modules 6-10)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · System Attacks (Modules 6-10)"
+  },
+  {
+   "term": "Session Hijacking",
+   "def": "Taking over a valid user session to gain unauthorized access.",
+   "cat": "Network & Web Attacks (Modules 11-15)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Network & Web Attacks (Modules 11-15)"
+  },
+  {
+   "term": "Evading IDS, Firewalls and Honeypots",
+   "def": "Techniques to bypass detection and prevention systems.",
+   "cat": "Network & Web Attacks (Modules 11-15)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Network & Web Attacks (Modules 11-15)"
+  },
+  {
+   "term": "Hacking Web Servers",
+   "def": "Exploiting web server misconfigurations and vulnerabilities.",
+   "cat": "Network & Web Attacks (Modules 11-15)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Network & Web Attacks (Modules 11-15)"
+  },
+  {
+   "term": "Hacking Web Applications",
+   "def": "Attacking web apps (OWASP Top 10, auth flaws, injection).",
+   "cat": "Network & Web Attacks (Modules 11-15)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Network & Web Attacks (Modules 11-15)"
+  },
+  {
+   "term": "SQL Injection",
+   "def": "Injecting malicious SQL to manipulate a database.",
+   "cat": "Network & Web Attacks (Modules 11-15)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Network & Web Attacks (Modules 11-15)"
+  },
+  {
+   "term": "Hacking Wireless Networks",
+   "def": "Attacking Wi-Fi encryption and access points.",
+   "cat": "Emerging Tech (Modules 16-20)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Emerging Tech (Modules 16-20)"
+  },
+  {
+   "term": "Hacking Mobile Platforms",
+   "def": "Exploiting Android and iOS devices and apps.",
+   "cat": "Emerging Tech (Modules 16-20)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Emerging Tech (Modules 16-20)"
+  },
+  {
+   "term": "IoT and OT Hacking",
+   "def": "Attacking connected devices and operational technology.",
+   "cat": "Emerging Tech (Modules 16-20)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Emerging Tech (Modules 16-20)"
+  },
+  {
+   "term": "Cloud Computing",
+   "def": "Cloud attack techniques and container/serverless security.",
+   "cat": "Emerging Tech (Modules 16-20)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Emerging Tech (Modules 16-20)"
+  },
+  {
+   "term": "Cryptography",
+   "def": "Encryption, hashing, PKI and cryptographic attacks.",
+   "cat": "Emerging Tech (Modules 16-20)",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Emerging Tech (Modules 16-20)"
+  },
+  {
+   "term": "Reconnaissance",
+   "def": "First hacking phase: gathering information about the target.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Scanning",
+   "def": "Second phase: probing the target for live hosts and open ports.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Gaining Access",
+   "def": "Third phase: exploiting a vulnerability to enter the system.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Maintaining Access",
+   "def": "Fourth phase: keeping persistent access (backdoors, rootkits).",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Clearing Tracks",
+   "def": "Fifth phase: erasing evidence of the intrusion.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Cyber Kill Chain",
+   "def": "Model describing the stages of a cyber attack.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Footprinting",
+   "def": "Collecting information to build a profile of the target.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  },
+  {
+   "term": "Privilege Escalation",
+   "def": "Gaining higher rights than initially granted.",
+   "cat": "Phases & concepts clés",
+   "branch": "ceh1",
+   "tip": "CEH v13 · Phases & concepts clés"
+  }
+ ]
+}

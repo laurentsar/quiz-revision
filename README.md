@@ -53,3 +53,23 @@ technologies cyber, Sécurité 360°, menaces & attaques, DevOps) sont transcrit
 **traduites en français** en concepts révisables — les images ne sont pas embarquées.
 Regénérer : `python3 tools/build_ignite_concepts.py`. Ces 11 thèmes forment le groupe
 « Réf. cyber » dans le sélecteur, distinct du CISSP.
+
+## Certifications (contenu en anglais, examens en anglais)
+Chaque certification est un **groupe** dans le sélecteur de thèmes.
+
+| Cert | Éditeur | Domaines | Référentiel officiel | Généré par |
+|------|---------|----------|----------------------|------------|
+| CISSP | ISC2 | 8 | outline 15 avr. 2024 | `build_cissp_concepts.py` (mind map) + `build_isc2_concepts.py` (domaine 8) |
+| SSCP | ISC2 | 7 | outline 15 sept. 2024 | `build_isc2_concepts.py` |
+| CCSP | ISC2 | 6 | outline officiel | `build_isc2_concepts.py` |
+| CC | ISC2 | 5 | outline 29 août 2022 | `build_isc2_concepts.py` |
+| CEH v13 | EC-Council | 20 modules | course outline v13 | `build_ceh_concepts.py` |
+
+Notes de cohérence CISSP : le domaine 1 de la mind map source (« Security Management
+Practices », ancien nom CBK) est renommé au nom officiel « Security and Risk
+Management » ; le domaine 8 « Software Development Security », absent de la source,
+est rédigé à la main.
+
+⚠️ **À re-vérifier périodiquement** : les éditeurs mettent à jour leurs référentiels
+(ex. CC : nouvel outline au 1er sept. 2026 intégrant l'IA). Comparer aux sources
+officielles (isc2.org/certifications, eccouncil.org) avant chaque session d'examen.

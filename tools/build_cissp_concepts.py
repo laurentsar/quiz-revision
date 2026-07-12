@@ -29,27 +29,68 @@ DEF_HINT = re.compile(r'\b(is|are|refers to|means|consists of|provides|describes
 NUM_PREFIX = re.compile(r'^\d+[\.\)]\s*')
 MAX_STRUCTURE_PER_DOMAIN = 70   # garde un pool équilibré entre domaines
 
+# Noms officiels des domaines CISSP (ISC2, outline en vigueur au 15 avril 2024).
+OFFICIAL_CISSP = {
+    1: 'Security and Risk Management',
+    2: 'Asset Security',
+    3: 'Security Architecture and Engineering',
+    4: 'Communication and Network Security',
+    5: 'Identity and Access Management (IAM)',
+    6: 'Security Assessment and Testing',
+    7: 'Security Operations',
+    8: 'Software Development Security',
+}
+
+
+# Mots isolés trop génériques pour être un terme de quiz (bruit de l'arbre).
+JUNK_TERMS = {
+    'signal', 'directories', 'level 2', 'level 3', 'administrative controls',
+    'technical controls', 'physical controls', 'overview', 'introduction',
+    'definition', 'definitions', 'types', 'examples', 'general', 'others',
+}
+
 
 def good_term(t):
-    """Un terme doit être court et nommer une notion, pas une étape ni une phrase."""
+    """Un terme doit nommer une notion : Titre/acronyme, ni fragment ni phrase."""
     t = t.strip()
-    if not (3 <= len(t) <= 60):
+    if not (3 <= len(t) <= 60) or t.count(' ') > 7:
         return False
-    if t.count(' ') > 7 or NUM_PREFIX.match(t):
+    if NUM_PREFIX.match(t) or t.endswith(('.', ':', '?', ',')):
         return False
-    if t.endswith(('.', ':', '?')):
+    if t.lower() in JUNK_TERMS:
+        return False
+    # Fragment : commence par une minuscule ou un article (« the tumbler lock »,
+    # « managed security… ») -> ce n'est pas un intitulé de concept.
+    first = t.split()[0].lower()
+    if first in ('the', 'a', 'an', 'and', 'or', 'of', 'to', 'for', 'with', 'from'):
+        return False
+    if t[0].islower():
         return False
     return True
 
 
-def good_def(t):
-    if not (60 <= len(t) <= 400):
-        return False
-    if not DEF_HINT.search(t):
-        return False
-    if t.lower().startswith(('e.g', 'example', 'see ', 'such as')):
-        return False
-    return True
+def clean_def(t):
+    """Retient une définition exploitable, avec ou sans verbe-indice, sinon None."""
+    t = t.strip()
+    if not (40 <= len(t) <= 400):
+        return None
+    if NUM_PREFIX.match(t) or t.lower().startswith(('e.g', 'example', 'see ', 'such as')):
+        return None
+    # au moins deux mots et une allure de phrase (pas un simple sigle entre parenthèses)
+    if t.count(' ') < 3:
+        return None
+    return t
+
+
+def best_def(leaves):
+    """Meilleure définition parmi les feuilles DIRECTES d'un nœud.
+
+    On exige un indice de verbe (« is/are/provides… ») : sans lui, la feuille la
+    plus longue est souvent un détail voisin, pas la définition du terme — ce qui
+    produisait des paires terme/définition fausses. On préfère donc la 1re feuille
+    munie d'un verbe-indice (l'ordre de l'arbre = ordre de lecture)."""
+    cands = [c for c in (clean_def(l) for l in leaves) if c and DEF_HINT.search(c)]
+    return cands[0] if cands else None
 
 
 def main():
@@ -63,9 +104,9 @@ def main():
 
     for di, dom in enumerate(mm['domains'], start=1):
         key = f'cissp{di}'
-        # Les domaines sont regroupés sous « CISSP » dans le sélecteur : le libellé
-        # ne garde que le nom du domaine (« Domain 3. » n'apporte rien).
-        label = re.sub(r'^Domain\s+\d+\.\s*', '', dom['t'])
+        # Libellés officiels ISC2 CISSP (outline 15 avril 2024) : la source utilise
+        # « Security Management Practices » (ancien nom CBK) pour le domaine 1.
+        label = OFFICIAL_CISSP.get(di, re.sub(r'^Domain\s+\d+\.\s*', '', dom['t']))
         branches[key] = label
 
         def walk(node, section, path):
@@ -75,17 +116,17 @@ def main():
             low = term.lower()
 
             if good_term(term) and low not in taken and section:
-                defs = [l for l in leaves if good_def(l)]
-                short_leaves = [l for l in leaves if len(l) <= 60]
+                # définition tirée uniquement des feuilles directes du nœud (fiable)
+                dfn = best_def(leaves)
                 trail = ' › '.join(path[-2:]) if path else section
-                if defs and len(short_leaves) <= 6:
+                if dfn:
                     taken.add(low)
                     concepts.append({
-                        'term': term, 'def': defs[0], 'cat': section,
+                        'term': term, 'def': dfn, 'cat': section,
                         'branch': key, 'tip': 'Mind map CISSP · %s' % trail,
                     })
                 elif kids and struct_count[key] < MAX_STRUCTURE_PER_DOMAIN:
-                    # pas de définition : concept « structure » (question de catégorie)
+                    # pas de définition exploitable : concept « structure » (question de catégorie)
                     taken.add(low)
                     struct_count[key] += 1
                     concepts.append({
