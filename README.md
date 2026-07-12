@@ -1,7 +1,6 @@
 # Quizz Révision — Cybersécurité & Homologation
 
-Application **Android (APK) hors ligne** pour réviser une mindmap de cybersécurité / homologation
-(« Offre Thales »). Les questions sont **générées à la volée** depuis une base de **82 concepts**
+Application **Android (APK) hors ligne** pour réviser une mindmap de cybersécurité / homologation. Les questions sont **générées à la volée** depuis une base de **82 concepts**
 (terme / définition / catégorie / mnémonique / exemple), réparties en 4 thèmes :
 Architecture sécurité, Analyse de risque, Accréditation/Homologation, Indicateurs.
 
