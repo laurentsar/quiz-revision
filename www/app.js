@@ -27,9 +27,10 @@ let DB = null, ALL = [], CATS = [], BYTERM = {};
 // des thèmes séparés à part entière (chips individuelles).
 // dot = pastille de couleur préfixant chaque sous-thème dans le menu (visible même
 // sur les pickers natifs mobiles, qui ignorent la couleur CSS des options).
-const HOMOLOG = ['archi', 'igi1300', 'ii901', 'igi2102'];
+const REGLEM = ['igi1300', 'ii901', 'igi2102'];   // instructions FR (protection du secret)
 const GROUPS = [
-  { id: 'homolog', label: 'Homologation', icon: '🇫🇷', dot: '🔵', color: '#27B3FF', test: (k) => HOMOLOG.includes(k) },
+  { id: 'homolog', label: 'Homologation', icon: '🏛️', dot: '🔵', color: '#27B3FF', test: (k) => k === 'archi' },
+  { id: 'reglem', label: 'Réglementation (IGI/II)', icon: '⚖️', dot: '🟠', color: '#FF9F6B', test: (k) => REGLEM.includes(k) },
   { id: 'cissp', label: 'Certification CISSP', icon: '🎓', dot: '🟢', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
   { id: 'sscp', label: 'Certification SSCP', icon: '🎓', dot: '🟢', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
   { id: 'ccsp', label: 'Certification CCSP', icon: '🎓', dot: '🟢', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
