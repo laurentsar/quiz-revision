@@ -218,7 +218,7 @@ function beep(ok) {
 function vibrate(ok) { try { navigator.vibrate && navigator.vibrate(ok ? 25 : [40, 50, 40]); } catch (e) {} }
 
 // ---------- vues ----------
-const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn'), mindmap: $('view-mindmap'), stats: $('view-stats') };
+const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn'), resources: $('view-resources'), stats: $('view-stats') };
 let autoNextTimer = null;
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
@@ -336,8 +336,11 @@ function renderQuestion() {
     html += `<div class="fb-line">📌 ${esc(q.reminder)}</div>`;
     if (q.tip) html += `<div class="fb-line tip">💡 ${esc(q.tip)}</div>`;
     if (q.ex) html += `<div class="fb-line ex">🔎 ${esc(q.ex)}</div>`;
+    html += `<a class="fb-video" data-term="${esc(q.key)}">🎥 Voir une vidéo sur ce concept</a>`;
     fb.innerHTML = html;
     fb.className = 'feedback show ' + (a.correct ? 'good' : 'bad');
+    const v = fb.querySelector('.fb-video');
+    if (v) v.addEventListener('click', () => openExternal(videoSearchUrl(v.dataset.term)));
   } else { fb.innerHTML = ''; fb.className = 'feedback'; }
 
   const next = $('btn-next');
@@ -433,93 +436,67 @@ function renderFiches() {
     `<div class="card gram-section"><h3 class="gram-h3">${esc(cat)}</h3>` +
     items.map(c => `<div class="fiche"><div class="fiche-term">${esc(c.term)}</div><div class="fiche-def">${esc(c.def || 'Relève de : ' + c.cat)}</div>` +
       (c.tip ? `<div class="fiche-tip">💡 ${esc(c.tip)}</div>` : '') +
-      (c.ex ? `<div class="fiche-ex">🔎 ${esc(c.ex)}</div>` : '') + `</div>`).join('') +
+      (c.ex ? `<div class="fiche-ex">🔎 ${esc(c.ex)}</div>` : '') +
+      `<a class="fiche-video" data-term="${esc(c.term)}">🎥 Vidéo</a></div>`).join('') +
     `</div>`).join('');
+  $('fiches-content').querySelectorAll('.fiche-video').forEach(a =>
+    a.addEventListener('click', () => openExternal(videoSearchUrl(a.dataset.term))));
 }
 
-// ---------- mind maps CISSP ----------
-// Arbre issu de yyds-page/cissp-mind-map (GPL-3.0), converti par tools/build_cissp_mindmap.py.
-// Chargé à la demande (156 Ko) : inutile de le payer au démarrage du quiz.
-const MM = { data: null, domain: 0, query: '' };
-const MM_SEARCH_MIN = 3;
+// ---------- ressources (podcasts / vidéos) ----------
+// Sélection FR d'abord ; pour les certifs ISC2/EC-Council (peu de contenu FR de
+// qualité) on ajoute les meilleures références anglaises. Liens = pages stables.
+const RESOURCES = [
+  { cat: '🎧 Podcasts cybersécurité (FR)', items: [
+    { icon: '🎧', title: 'NoLimitSecu', sub: 'podcast cyber francophone hebdo', url: 'https://www.nolimitsecu.fr/' },
+    { icon: '🎧', title: 'Le Comptoir Sécu', sub: 'vulgarisation sécurité (FR)', url: 'https://www.comptoirsecu.fr/podcast/' },
+    { icon: '🎧', title: 'Hack’n Speak', sub: 'offensif / pentest (FR)', url: 'https://open.spotify.com/show/2Ns0rF5R7hedYN4dpvGaThD' },
+    { icon: '🎧', title: 'Cyber & Vous', sub: 'sensibilisation (FR)', url: 'https://podcasts.apple.com/fr/podcast/cyber-vous/id1519062627' },
+  ] },
+  { cat: '📺 Chaînes YouTube cyber (FR)', items: [
+    { icon: '📺', title: 'Cookie connecté', sub: 'vulgarisation sécurité (FR)', url: 'https://www.youtube.com/@CookieConnecte' },
+    { icon: '📺', title: 'Micode', sub: 'hacking / cyber (FR)', url: 'https://www.youtube.com/@Micode' },
+    { icon: '📺', title: 'IT-Connect', sub: 'tutos sysadmin & sécurité (FR)', url: 'https://www.youtube.com/@itconnect-fr' },
+    { icon: '📺', title: 'Waked XY', sub: 'hacking éthique (FR)', url: 'https://www.youtube.com/@WakedXY' },
+  ] },
+  { cat: '🇫🇷 Homologation / secret défense', items: [
+    { icon: '🏛️', title: 'ANSSI — cyber.gouv.fr', sub: 'IGI 1300, II 901, IGI 2102, guides', url: 'https://cyber.gouv.fr/' },
+    { icon: '⚖️', title: 'CNIL — RGPD', sub: 'fiches et vidéos officielles (FR)', url: 'https://www.cnil.fr/fr/comprendre-le-rgpd' },
+    { icon: '📺', title: 'CNIL (YouTube)', sub: 'RGPD & protection des données', url: 'https://www.youtube.com/@CNIL' },
+  ] },
+  { cat: '🎓 Certifications ISC2 (CISSP/SSCP/CCSP/CC)', items: [
+    { icon: '📺', title: 'Prabh Nair (EN)', sub: 'CISSP / CC — très pédagogique', url: 'https://www.youtube.com/@Prabhnair1' },
+    { icon: '📺', title: 'Inside Cloud and Security (EN)', sub: 'CISSP / CCSP', url: 'https://www.youtube.com/@InsideCloudAndSecurity' },
+    { icon: '🎓', title: 'ISC2 — parcours officiels', sub: 'CC gratuit, outlines', url: 'https://www.isc2.org/certifications' },
+  ] },
+  { cat: '🎯 CEH / offensif', items: [
+    { icon: '📺', title: 'Processus Thief (FR)', sub: 'pentest / offensif', url: 'https://www.youtube.com/@ProcessusThief' },
+    { icon: '🎓', title: 'EC-Council — CEH', sub: 'programme officiel v13', url: 'https://www.eccouncil.org/train-certify/certified-ethical-hacker-ceh/' },
+    { icon: '📺', title: 'TryHackMe (EN)', sub: 'labs pratiques', url: 'https://www.youtube.com/@TryHackMe' },
+  ] },
+];
 
-async function loadMindmap() {
-  if (MM.data) return MM.data;
-  MM.data = await (await fetch('data/cissp_mindmap.json')).json();
-  return MM.data;
-}
-
-function mmShortTitle(t) { return t.replace(/^Domain\s+\d+\.\s*/i, ''); }
-
-function mmNodeHtml(node, depth) {
-  const kids = node.c || [];
-  if (!kids.length) return `<div class="mm-leaf">${esc(node.t)}</div>`;
-  // Seul le 1er niveau est ouvert : au-delà l'arbre est trop dense sur mobile.
-  const open = depth === 0 ? ' open' : '';
-  return `<details class="mm-node mm-d${Math.min(depth, 3)}"${open}>` +
-    `<summary>${esc(node.t)}<span class="mm-count">${kids.length}</span></summary>` +
-    `<div class="mm-children">${kids.map(k => mmNodeHtml(k, depth + 1)).join('')}</div>` +
-    `</details>`;
-}
-
-// Recherche : parcours complet, on garde le chemin pour situer chaque résultat.
-function mmSearch(q) {
-  const needle = q.toLowerCase();
-  const hits = [];
-  const walk = (node, path, domain) => {
-    if (node.t.toLowerCase().includes(needle)) hits.push({ t: node.t, path, domain, leaf: !node.c });
-    (node.c || []).forEach(k => walk(k, path.concat(node.t), domain));
-    return hits;
-  };
-  MM.data.domains.forEach(d => (d.c || []).forEach(k => walk(k, [], d.t)));
-  return hits;
-}
-
-function mmHighlight(text, q) {
-  const i = text.toLowerCase().indexOf(q.toLowerCase());
-  if (i < 0) return esc(text);
-  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
-}
-
-function renderMindmap() {
-  const box = $('mm-content'), chips = $('mm-domains');
-  $('mm-source').textContent = 'Source : ' + MM.data.source;
-
-  chips.innerHTML = MM.data.domains.map((d, i) =>
-    `<button class="chip mm-chip${i === MM.domain && !MM.query ? ' active' : ''}" data-mm="${i}">${esc(mmShortTitle(d.t))}</button>`
-  ).join('');
-  chips.querySelectorAll('.mm-chip').forEach(c => c.addEventListener('click', () => {
-    MM.domain = +c.dataset.mm; MM.query = ''; $('mm-search').value = '';
-    renderMindmap(); window.scrollTo(0, 0);
-  }));
-
-  if (MM.query.length >= MM_SEARCH_MIN) {
-    const hits = mmSearch(MM.query);
-    $('mm-crumb').textContent = hits.length + ' résultat' + (hits.length > 1 ? 's' : '');
-    box.innerHTML = hits.length
-      ? `<div class="card">${hits.slice(0, 200).map(h =>
-          `<div class="mm-hit"><div class="mm-hit-t">${mmHighlight(h.t, MM.query)}</div>` +
-          `<div class="mm-hit-p">${esc(mmShortTitle(h.domain))}${h.path.length ? ' › ' + esc(h.path.join(' › ')) : ''}</div></div>`
-        ).join('')}${hits.length > 200 ? '<div class="mm-hit-p">… ' + (hits.length - 200) + ' de plus, affine la recherche</div>' : ''}</div>`
-      : '<div class="card"><div class="mm-hit-p">Aucun résultat</div></div>';
-    return;
-  }
-
-  const d = MM.data.domains[MM.domain];
-  $('mm-crumb').textContent = mmShortTitle(d.t);
-  box.innerHTML = `<div class="card mm-tree"><h3 class="gram-h3">${esc(mmShortTitle(d.t))}</h3>` +
-    (d.c || []).map(k => mmNodeHtml(k, 0)).join('') + '</div>';
-}
-
-async function openMindmap() {
-  $('mm-content').innerHTML = '<div class="card"><div class="mm-hit-p">Chargement…</div></div>';
-  showView('mindmap');
+// Ouvre un lien externe (navigateur système en APK, nouvel onglet en PWA).
+function openExternal(url) {
   try {
-    await loadMindmap();
-    renderMindmap();
-  } catch (e) {
-    $('mm-content').innerHTML = '<div class="card"><div class="mm-hit-p">Mind maps indisponibles hors ligne (première ouverture nécessite le réseau).</div></div>';
-  }
+    const cap = window.Capacitor;
+    if (cap && cap.Plugins && cap.Plugins.Browser) { cap.Plugins.Browser.open({ url }); return; }
+  } catch (e) {}
+  window.open(url, '_blank', 'noopener');
+}
+// Recherche vidéo YouTube (résultats français) pour un concept.
+function videoSearchUrl(term) {
+  const q = term.replace(/\([^)]*\)/g, '').trim();
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' cybersécurité');
+}
+
+function renderResources() {
+  const box = $('resources-content');
+  const link = (r) => `<a class="res-link" data-url="${esc(r.url)}">${esc(r.icon || '▸')} ${esc(r.title)}<span class="res-sub">${esc(r.sub || '')}</span></a>`;
+  box.innerHTML = RESOURCES.map(sec =>
+    `<div class="card"><h3 class="gram-h3">${esc(sec.cat)}</h3>${sec.items.map(link).join('')}</div>`
+  ).join('');
+  box.querySelectorAll('.res-link').forEach(a => a.addEventListener('click', () => openExternal(a.dataset.url)));
 }
 
 // ---------- graphiques (canvas, sans dépendance) ----------
@@ -700,20 +677,8 @@ $('btn-flash-again').addEventListener('click', () => gradeFlash(false));
 $('btn-learn-home').addEventListener('click', exitToHome);
 $('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
 $('btn-fiches-home').addEventListener('click', exitToHome);
-$('btn-mindmap').addEventListener('click', openMindmap);
-$('btn-mindmap-home').addEventListener('click', exitToHome);
-
-let mmDebounce = null;
-$('mm-search').addEventListener('input', (e) => {
-  const q = e.target.value.trim();
-  clearTimeout(mmDebounce);
-  mmDebounce = setTimeout(() => {
-    // < 3 caractères : on retombe sur l'arbre du domaine courant
-    if (q.length && q.length < MM_SEARCH_MIN) return;
-    MM.query = q;
-    if (MM.data) renderMindmap();
-  }, 180);
-});
+$('btn-resources').addEventListener('click', () => { renderResources(); showView('resources'); });
+$('btn-resources-home').addEventListener('click', exitToHome);
 
 function bindToggle(id, key, after) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); if (after) after(); }); }
 bindToggle('opt-autonext', 'autoNext');

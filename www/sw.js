@@ -1,4 +1,4 @@
-const CACHE = 'quizrev-v17';
+const CACHE = 'quizrev-v18';
 const ASSETS = [
   './',
   'index.html',
@@ -7,7 +7,6 @@ const ASSETS = [
   'update-check.js',
   'manifest.webmanifest',
   'data/secu_concepts.json',
-  'data/cissp_mindmap.json',
   'data/cissp_concepts.json',
   'data/ignite_concepts.json',
   'data/isc2_concepts.json',

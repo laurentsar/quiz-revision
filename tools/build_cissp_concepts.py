@@ -21,7 +21,7 @@ import re
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, 'www/data/cissp_mindmap.json')
+SRC = os.path.join(ROOT, 'tools/cissp_mindmap.json')
 BASE = os.path.join(ROOT, 'www/data/secu_concepts.json')
 OUT = os.path.join(ROOT, 'www/data/cissp_concepts.json')
 

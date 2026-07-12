@@ -73,3 +73,10 @@ est rédigé à la main.
 ⚠️ **À re-vérifier périodiquement** : les éditeurs mettent à jour leurs référentiels
 (ex. CC : nouvel outline au 1er sept. 2026 intégrant l'IA). Comparer aux sources
 officielles (isc2.org/certifications, eccouncil.org) avant chaque session d'examen.
+
+## Ressources & vidéos
+Section « 🎧 Podcasts & vidéos » : sélection francophone (NoLimitSecu, Comptoir Sécu,
+Cookie connecté, Micode, ANSSI, CNIL…) + meilleures références EN pour les certifs.
+Chaque concept a un lien « 🎥 Vidéo » (recherche YouTube FR). La vue mind map CISSP a
+été retirée : les chapitres sont couverts par les Fiches (concepts groupés par rubrique).
+Source de régénération des concepts CISSP déplacée dans tools/cissp_mindmap.json.

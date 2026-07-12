@@ -31,7 +31,7 @@
         <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
         <button id="btn-stats" class="secondary">📊 Stats</button>
         <button id="btn-fiches" class="secondary">📑 Fiches</button>
-        <button id="btn-mindmap" class="secondary top-wide">🧠 Mind maps CISSP</button>
+        <button id="btn-resources" class="secondary top-wide">🎧 Podcasts &amp; vidéos</button>
       </div>
 
       <div class="card hero">
@@ -165,20 +165,14 @@
       <button id="btn-fiches-home" class="secondary">Accueil</button>
     </section>
 
-    <!-- MIND MAPS CISSP -->
-    <section id="view-mindmap" class="view hidden">
+    <!-- RESSOURCES (podcasts & vidéos) -->
+    <section id="view-resources" class="view hidden">
       <div class="quiz-header">
-        <span class="quiz-progress">🧠 Mind maps CISSP</span>
-        <span id="mm-crumb" class="quiz-level"></span>
+        <span class="quiz-progress">🎧 Podcasts &amp; vidéos</span>
       </div>
-
-      <input id="mm-search" class="mm-search" type="search" placeholder="Rechercher dans les 7 domaines…" autocomplete="off" />
-
-      <div id="mm-domains" class="mm-domains"></div>
-      <div id="mm-content"></div>
-      <p id="mm-source" class="mm-source"></p>
-
-      <button id="btn-mindmap-home" class="secondary">Accueil</button>
+      <div id="resources-content"></div>
+      <p class="mm-source">Liens externes ouverts dans le navigateur. Sélection francophone en priorité.</p>
+      <button id="btn-resources-home" class="secondary">Accueil</button>
     </section>
 
     <!-- QUIZ -->
@@ -226,7 +220,7 @@
   <button id="btn-fab-home" class="fab-home hidden" title="Accueil">🏠</button>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='2.6';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='2.7';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>

@@ -2,7 +2,7 @@
 """Convertit la mind map CISSP (yyds-page/cissp-mind-map, GPL-3.0) en JSON d'arbre.
 
 Source : All-Domains-Tree-View.txt — arbre à indentation de 2 espaces, les feuilles
-étant préfixées par « • ». On produit www/data/cissp_mindmap.json :
+étant préfixées par « • ». On produit tools/cissp_mindmap.json :
 
     {"source": ..., "domains": [{"title": ..., "children": [{"t": ..., "c": [...]}, ...]}]}
 
@@ -14,7 +14,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, 'www/data/cissp_mindmap.json')
+OUT = os.path.join(ROOT, 'tools/cissp_mindmap.json')
 SOURCE = 'https://github.com/yyds-page/cissp-mind-map (GPL-3.0) — CISSP 2020, OSG/AIO 8e éd.'
 
 
