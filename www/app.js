@@ -242,36 +242,8 @@ function themeColor() {
   return '#27B3FF';
 }
 
-// Thèmes en chips multi-sélection. Chaque groupe (CISSP, Réf. cyber) est réduit à
-// une chip parent ; le détail de ses membres n'apparaît que si le groupe est actif.
+// Sélection du thème via un unique menu déroulant (Tout, thème simple, ou groupe).
 function renderBranchSelect() {
-  const row = $('branch-row'), sub = $('cissp-row');
-  const nb = (k) => ALL.filter(c => c.branch === k).length;
-  const label = (l, n) => esc(l) + (settings.showCounts ? ` (${n})` : '');   // compteur optionnel
-  const chip = (cls, key, l, n, on) =>
-    `<button class="chip ${cls}${on ? ' active' : ''}" data-branch="${key}">${label(l, n)}</button>`;
-
-  const plain = Object.entries(DB.branches).filter(([k]) => !groupOf(k));
-  let rowHtml = plain.map(([k, l]) => chip('branch-chip', k, l, nb(k), state.branches.has(k))).join('');
-  GROUPS.forEach(g => {
-    const keys = groupKeys(g);
-    if (keys.length) rowHtml += chip('branch-chip', 'grp:' + g.id, g.label, keys.reduce((n, k) => n + nb(k), 0), groupActive(g));
-  });
-  row.innerHTML = rowHtml;
-
-  // sous-rangée : membres des groupes actifs
-  let subHtml = '';
-  GROUPS.forEach(g => {
-    if (!groupActive(g)) return;
-    subHtml += groupKeys(g).map(k => chip('sub-chip', k, DB.branches[k], nb(k), state.branches.has(k))).join('');
-  });
-  sub.innerHTML = subHtml;
-  sub.classList.toggle('hidden', !subHtml);
-
-  row.querySelectorAll('.branch-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
-  sub.querySelectorAll('.sub-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
-
-  // menu déroulant de sélection rapide (synchronisé avec les chips)
   const home = $('home-select');
   const v = scopeToSelectValue();
   home.innerHTML = (v === '' ? '<option value="" disabled>— sélection multiple —</option>' : '') + themeOptionsHtml();
@@ -310,19 +282,6 @@ function selectHomeTheme(v) {
   renderBranchSelect(); renderHome();
 }
 
-// Une chip « grp:<id> » bascule tous les membres du groupe d'un bloc.
-function toggleBranch(key) {
-  if (key.startsWith('grp:')) {
-    const g = groupById(key.slice(4));
-    if (groupActive(g)) groupKeys(g).forEach(k => state.branches.delete(k));
-    else groupKeys(g).forEach(k => state.branches.add(k));
-  } else if (state.branches.has(key)) {
-    state.branches.delete(key);
-  } else {
-    state.branches.add(key);
-  }
-  renderBranchSelect(); renderHome();
-}
 
 function renderHome() {
   const p = pool(), srs = getSrs(), now = Date.now();
@@ -775,14 +734,6 @@ function launchFireworks() {
 }
 
 // ---------- câblage ----------
-$('btn-branch-all').addEventListener('click', () => {
-  Object.keys(DB.branches).forEach(k => state.branches.add(k));
-  renderBranchSelect(); renderHome();
-});
-$('btn-branch-none').addEventListener('click', () => {
-  state.branches.clear();                  // vide = tout le corpus
-  renderBranchSelect(); renderHome();
-});
 $('home-select').addEventListener('change', (e) => selectHomeTheme(e.target.value));
 $('btn-fab-home').addEventListener('click', exitToHome);
 $('btn-stats').addEventListener('click', () => { showView('stats'); renderStatsView(); });
