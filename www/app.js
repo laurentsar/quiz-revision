@@ -261,7 +261,7 @@ function themeOptionsHtml() {
   GROUPS.forEach(g => {
     const m = Object.entries(DB.branches).filter(([k]) => g.test(k));
     if (!m.length) return;
-    h += `<optgroup label="${esc((g.icon ? g.icon + ' ' : '') + g.label)}">` +
+    h += `<optgroup label="${esc('── ' + (g.icon ? g.icon + ' ' : '') + g.label + ' ──')}">` +
       opt('grp:' + g.id, (g.dot || '▸') + ' Tout — ' + g.label) +
       m.map(([k, l]) => opt(k, (g.dot || '·') + ' ' + l)).join('') + `</optgroup>`;
   });
