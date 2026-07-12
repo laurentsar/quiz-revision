@@ -166,8 +166,9 @@
     <section id="view-fiches" class="view hidden">
       <div class="quiz-header">
         <span class="quiz-progress">📑 Fiches de révision</span>
-        <span id="fiches-crumb" class="quiz-level"></span>
       </div>
+      <span class="hero-label">Consulter un thème</span>
+      <select id="fiches-select" class="select"></select>
       <div id="fiches-content"></div>
       <button id="btn-fiches-home" class="secondary">Accueil</button>
     </section>
@@ -239,7 +240,7 @@
   <button id="btn-fab-home" class="fab-home hidden" title="Accueil">🏠</button>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='3.0';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='3.1';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>

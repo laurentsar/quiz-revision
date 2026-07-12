@@ -494,10 +494,37 @@ function gradeFlash(ok) {
   else { showView('home'); renderHome(); }
 }
 
-// ---------- fiches (référence) ----------
+// ---------- fiches (référence, consultables par thème via menu déroulant) ----------
+// Sélection propre aux Fiches, indépendante du quiz : 'all', une clé de branche,
+// ou 'grp:<id>' pour tout un groupe (CISSP, Réf. cyber…).
+let fichesSel = 'all';
+
+// Peuple le menu déroulant avec tous les thèmes, groupés en optgroups.
+function renderFichesSelect() {
+  const sel = $('fiches-select');
+  const opt = (v, l) => `<option value="${v}">${esc(l)}</option>`;
+  const plain = Object.entries(DB.branches).filter(([k]) => !groupOf(k));
+  let html = opt('all', 'Tout') + plain.map(([k, l]) => opt(k, l)).join('');
+  GROUPS.forEach(g => {
+    const members = Object.entries(DB.branches).filter(([k]) => g.test(k));
+    if (!members.length) return;
+    html += `<optgroup label="${esc(g.label)}">` +
+      opt('grp:' + g.id, g.label + ' — tout') +
+      members.map(([k, l]) => opt(k, '  ' + l)).join('') + `</optgroup>`;
+  });
+  sel.innerHTML = html;
+  sel.value = fichesSel;
+}
+
+function fichesList() {
+  if (fichesSel === 'all') return ALL;
+  if (fichesSel.startsWith('grp:')) { const g = groupById(fichesSel.slice(4)); return ALL.filter(c => g.test(c.branch)); }
+  return ALL.filter(c => c.branch === fichesSel);
+}
+
 function renderFiches() {
-  const list = pool();
-  $('fiches-crumb').textContent = scopeLabel();
+  renderFichesSelect();
+  const list = fichesList();
   const byCat = {};
   list.forEach(c => { (byCat[c.cat] = byCat[c.cat] || []).push(c); });
   $('fiches-content').innerHTML = Object.entries(byCat).map(([cat, items]) =>
@@ -506,7 +533,7 @@ function renderFiches() {
       (c.tip ? `<div class="fiche-tip">💡 ${esc(c.tip)}</div>` : '') +
       (c.ex ? `<div class="fiche-ex">🔎 ${esc(c.ex)}</div>` : '') +
       `<a class="fiche-video" data-term="${esc(c.term)}">🎥 Vidéo</a></div>`).join('') +
-    `</div>`).join('');
+    `</div>`).join('') || '<div class="card"><div class="mm-source">Aucune fiche.</div></div>';
   $('fiches-content').querySelectorAll('.fiche-video').forEach(a =>
     a.addEventListener('click', () => openExternal(videoSearchUrl(a.dataset.term))));
 }
@@ -743,7 +770,14 @@ $('btn-flash-reveal').addEventListener('click', revealFlash);
 $('btn-flash-ok').addEventListener('click', () => gradeFlash(true));
 $('btn-flash-again').addEventListener('click', () => gradeFlash(false));
 $('btn-learn-home').addEventListener('click', exitToHome);
-$('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
+$('btn-fiches').addEventListener('click', () => {
+  // pré-sélectionne le thème du quiz : une branche unique, un groupe entier, sinon Tout
+  const sel = [...state.branches];
+  if (sel.length === 1) fichesSel = sel[0];
+  else { const g = sel.length && GROUPS.find(gr => sel.every(gr.test) && sel.length === Object.keys(DB.branches).filter(gr.test).length); fichesSel = g ? 'grp:' + g.id : 'all'; }
+  renderFiches(); showView('fiches');
+});
+$('fiches-select').addEventListener('change', (e) => { fichesSel = e.target.value; renderFiches(); window.scrollTo(0, 0); });
 $('btn-fiches-home').addEventListener('click', exitToHome);
 $('btn-resources').addEventListener('click', () => { renderResources(); showView('resources'); });
 $('btn-resources-home').addEventListener('click', exitToHome);
