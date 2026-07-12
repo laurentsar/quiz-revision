@@ -735,11 +735,21 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
     concepts: [].concat(...srcs.map(s => s.concepts)),
   };
   ALL = DB.concepts;
+  const normEx = (t) => t.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9à-ÿ]+/g, ' ').trim();
+
+  // Remplissage des définitions manquantes : un concept sans `def` hérite de la
+  // définition d'un homonyme défini ailleurs (ex. « Confidentiality » côté CISSP
+  // reprend la définition écrite côté CC). Complété par data/cissp_defs.json.
+  const defByNorm = {};
+  ALL.forEach(c => { if (c.def && !defByNorm[normEx(c.term)]) defByNorm[normEx(c.term)] = c.def; });
+  const authored = await (await fetch('data/cissp_defs.json')).json().catch(() => ({}));
+  Object.entries(authored).forEach(([k, v]) => { defByNorm[k] = v; });   // rédigé > hérité
+  ALL.forEach(c => { if (!c.def && defByNorm[normEx(c.term)]) c.def = defByNorm[normEx(c.term)]; });
+
   // Scénarios (« mises en situation ») rattachés par terme normalisé : un concept
   // doté d'un `ex` débloque la question de mise en situation. On n'applique un
   // scénario que si sa langue correspond à celle du thème — un thème français
   // (homologation, Réf. cyber) ne reçoit pas un scénario anglais, et inversement.
-  const normEx = (t) => t.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9à-ÿ]+/g, ' ').trim();
   const branchLang = (b) => (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_')) ? 'fr' : 'en';
   ALL.forEach(c => {
     const s = scen[normEx(c.term)];

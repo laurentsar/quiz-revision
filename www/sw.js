@@ -1,4 +1,4 @@
-const CACHE = 'quizrev-v18';
+const CACHE = 'quizrev-v19';
 const ASSETS = [
   './',
   'index.html',
@@ -12,6 +12,7 @@ const ASSETS = [
   'data/isc2_concepts.json',
   'data/ceh_concepts.json',
   'data/scenarios.json',
+  'data/cissp_defs.json',
   'img/icon-192.png',
   'img/icon-512.png',
 ];
