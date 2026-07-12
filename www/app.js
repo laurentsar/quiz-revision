@@ -27,12 +27,12 @@ let DB = null, ALL = [], CATS = [], BYTERM = {};
 // des thèmes séparés à part entière (chips individuelles).
 const HOMOLOG = ['archi', 'igi1300', 'ii901', 'igi2102'];
 const GROUPS = [
-  { id: 'homolog', label: 'Homologation', color: '#27B3FF', test: (k) => HOMOLOG.includes(k) },
-  { id: 'cissp', label: 'Certification CISSP', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
-  { id: 'sscp', label: 'Certification SSCP', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
-  { id: 'ccsp', label: 'Certification CCSP', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
-  { id: 'cc', label: 'Certification CC (ISC2)', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
-  { id: 'ceh', label: 'Certification CEH', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
+  { id: 'homolog', label: 'Homologation', icon: '🇫🇷', color: '#27B3FF', test: (k) => HOMOLOG.includes(k) },
+  { id: 'cissp', label: 'Certification CISSP', icon: '🎓', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
+  { id: 'sscp', label: 'Certification SSCP', icon: '🎓', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
+  { id: 'ccsp', label: 'Certification CCSP', icon: '🎓', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
+  { id: 'cc', label: 'Certification CC (ISC2)', icon: '🎓', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
+  { id: 'ceh', label: 'Certification CEH', icon: '🎓', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
 function groupById(id) { return GROUPS.find(g => g.id === id); }
@@ -250,18 +250,21 @@ function renderBranchSelect() {
   home.value = v;
 }
 
-// Options communes au menu accueil et au menu des fiches : Tout, thèmes simples,
-// puis un optgroup par groupe (Homologation, Certifications) avec « — tout » + membres.
+// Options du menu déroulant, séparées en grandes parties par des optgroups (en-têtes
+// natifs, visibles sur mobile) : Tout · 🇫🇷 Homologation · 🎓 Certifications · 🧭 Référence.
 function themeOptionsHtml() {
   const opt = (val, l) => `<option value="${val}">${esc(l)}</option>`;
-  const plain = Object.entries(DB.branches).filter(([k]) => !groupOf(k));
-  let h = opt('all', 'Tout') + plain.map(([k, l]) => opt(k, l)).join('');
+  let h = opt('all', '⭐ Tout');
   GROUPS.forEach(g => {
     const m = Object.entries(DB.branches).filter(([k]) => g.test(k));
     if (!m.length) return;
-    h += `<optgroup label="${esc(g.label)}">` + opt('grp:' + g.id, g.label + ' — tout') +
-      m.map(([k, l]) => opt(k, '  ' + l)).join('') + `</optgroup>`;
+    h += `<optgroup label="${esc((g.icon ? g.icon + ' ' : '') + g.label)}">` +
+      opt('grp:' + g.id, '▸ Tout — ' + g.label) +
+      m.map(([k, l]) => opt(k, '   ' + l)).join('') + `</optgroup>`;
   });
+  // thèmes de référence (non regroupés) rassemblés sous un en-tête visuel commun
+  const ref = Object.entries(DB.branches).filter(([k]) => k.startsWith('ig_'));
+  if (ref.length) h += `<optgroup label="🧭 Référence cyber">` + ref.map(([k, l]) => opt(k, '   ' + l)).join('') + `</optgroup>`;
   return h;
 }
 

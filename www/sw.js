@@ -1,4 +1,4 @@
-const CACHE = 'quizrev-v26';
+const CACHE = 'quizrev-v27';
 const ASSETS = [
   './',
   'index.html',
