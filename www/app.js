@@ -10,7 +10,7 @@ const MAX_BOX = BOX_DAYS.length - 1;     // box >= 4 = maîtrisé
 const DAY = 86400000;
 
 const state = {
-  branch: 'all',
+  branches: new Set(),   // vide = tous les thèmes ; sinon clés de branche concrètes
   qtype: 'mix',       // 'mix' | 'def' | 'term' | 'situation' | 'cat'
   count: 10,          // 0 = tout
   mode: 'srs',        // 'srs' | 'review'
@@ -20,28 +20,57 @@ const state = {
 
 let DB = null, ALL = [], CATS = [], BYTERM = {};
 
-const CISSP_RE = /^cissp\d+$/;   // cissp1..cissp7 = les domaines ; 'cissp' = les 7 réunis
-function isCissp(k) { return k === 'cissp' || CISSP_RE.test(k); }
-function branchLabel(k) {
-  if (k === 'all') return 'Tout';
-  if (k === 'cissp') return 'CISSP';
-  return (DB.branches && DB.branches[k]) || k;
+const CISSP_RE = /^cissp\d+$/;   // cissp1..cissp7 = les 7 domaines CISSP
+function isCissp(k) { return CISSP_RE.test(k); }
+function branchLabel(k) { return (DB.branches && DB.branches[k]) || k; }
+
+// Libellé de la sélection courante : rien de sélectionné = tout.
+function scopeLabel() {
+  const n = state.branches.size;
+  if (!n || n === Object.keys(DB.branches).length) return 'Tout';
+  if (n === 1) return branchLabel([...state.branches][0]);
+  const cissp = [...state.branches].filter(isCissp).length;
+  if (cissp === n) return cissp === 7 ? 'CISSP' : `CISSP · ${n} domaines`;
+  return `${n} thèmes`;
 }
 
-const settings = Object.assign({ autoNext: true, sound: true, showCounts: false }, lsGet('quizrev:settings:v1', {}));
+const settings = Object.assign({ autoNext: true, sound: true, showCounts: false, closeDistractors: false }, lsGet('quizrev:settings:v1', {}));
 
 // ---------- persistance ----------
 function lsGet(k, d) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : d; } catch (e) { return d; } }
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function saveSettings() { lsSet('quizrev:settings:v1', settings); }
 
-function loadStats() { return Object.assign({ done: 0, bestPct: 0, lastPct: -1, totalQ: 0, totalC: 0 }, lsGet('quizrev:stats:v1', {})); }
+function loadStats() { return Object.assign({ done: 0, bestPct: 0, lastPct: -1, totalQ: 0, totalC: 0, points: 0, streak: 0, bestStreak: 0, perfect: 0 }, lsGet('quizrev:stats:v1', {})); }
 function saveStats(s) { lsSet('quizrev:stats:v1', s); }
 
 function getWrong() { return lsGet('quizrev:wrong:v1', []); }
 function saveWrong(w) { lsSet('quizrev:wrong:v1', w); }
 function addWrong(t) { const w = getWrong(); if (!w.includes(t)) { w.push(t); saveWrong(w); } }
 function removeWrong(t) { saveWrong(getWrong().filter(x => x !== t)); }
+
+// Journal d'activité quotidien (alimente le graphe « 14 derniers jours »).
+function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function logDaily(correct) {
+  const m = lsGet('quizrev:daily:v1', {});
+  const t = todayStr();
+  const e = m[t] || { q: 0, c: 0 };
+  e.q++; if (correct) e.c++;
+  m[t] = e;
+  const keys = Object.keys(m).sort();
+  while (keys.length > 90) delete m[keys.shift()];   // on ne garde que 90 jours
+  lsSet('quizrev:daily:v1', m);
+}
+function lastNDays(n) {
+  const m = lsGet('quizrev:daily:v1', {});
+  const out = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    out.push({ day: d.getDate(), q: (m[k] || {}).q || 0 });
+  }
+  return out;
+}
 
 // Leitner SRS (clé = terme)
 function getSrs() { return lsGet('quizrev:srs:v1', {}); }
@@ -62,13 +91,10 @@ function uniq(a) { return [...new Set(a)]; }
 function uniqKeepFirst(a) { const s = new Set(), o = []; a.forEach(v => { if (v != null && !s.has(v)) { s.add(v); o.push(v); } }); return o; }
 const $ = (id) => document.getElementById(id);
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-// 'cissp' = thème parent : tous les domaines CISSP d'un coup.
-function inBranch(c, branch) {
-  if (branch === 'all') return true;
-  if (branch === 'cissp') return CISSP_RE.test(c.branch);
-  return c.branch === branch;
+// Sélection vide = pas de filtre (tout le corpus).
+function pool() {
+  return state.branches.size ? ALL.filter(c => state.branches.has(c.branch)) : ALL;
 }
-function pool() { return ALL.filter(c => inBranch(c, state.branch)); }
 function fieldVal(term, field) { const c = BYTERM[term]; return c ? c[field] : null; }
 
 // ---------- sélection des concepts (répétition espacée) ----------
@@ -86,6 +112,19 @@ function pickConcepts(mode) {
 }
 
 // ---------- génération de questions à la volée ----------
+// Proximité textuelle grossière (initiale, longueur, lettres communes) : sert à
+// classer les distracteurs quand l'option « distracteurs proches » est active.
+function similarity(a, b) {
+  a = String(a).toLowerCase(); b = String(b).toLowerCase();
+  if (a === b) return -1;
+  let s = 0;
+  if (a[0] === b[0]) s += 3;
+  s += Math.max(0, 3 - Math.abs(a.length - b.length));
+  const setB = new Set(b); let shared = 0;
+  new Set(a).forEach(ch => { if (setB.has(ch)) shared++; });
+  return s + shared * 0.5;
+}
+
 // Distracteurs ciblés : confusions explicites -> même catégorie -> même branche -> global.
 function distractors(field, correct, concept, n) {
   const tier = (pred) => shuffle(uniq(ALL.filter(pred).map(c => c[field]))).filter(v => v && v !== correct);
@@ -93,7 +132,11 @@ function distractors(field, correct, concept, n) {
   const t2 = tier(c => c.cat === concept.cat && c.term !== concept.term);
   const t3 = tier(c => c.branch === concept.branch);
   const t4 = tier(() => true);
-  return uniqKeepFirst([...t1, ...t2, ...t3, ...t4]).slice(0, n);
+  const cand = uniqKeepFirst([...t1, ...t2, ...t3, ...t4]);
+  if (!settings.closeDistractors) return cand.slice(0, n);
+  // mode difficile : on pioche parmi les plus ressemblants, pas les premiers venus
+  const ranked = cand.map(v => [v, similarity(correct, v)]).sort((x, y) => y[1] - x[1]);
+  return shuffle(ranked.slice(0, Math.max(8, n * 4)).map(x => x[0])).slice(0, n);
 }
 
 // Un concept « structure » (issu de la mind map CISSP) n'a pas de définition :
@@ -158,36 +201,63 @@ function beep(ok) {
 function vibrate(ok) { try { navigator.vibrate && navigator.vibrate(ok ? 25 : [40, 50, 40]); } catch (e) {} }
 
 // ---------- vues ----------
-const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn'), mindmap: $('view-mindmap') };
+const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn'), mindmap: $('view-mindmap'), stats: $('view-stats') };
 let autoNextTimer = null;
-function showView(name) { Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name)); window.scrollTo(0, 0); }
+function showView(name) {
+  Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
+  $('btn-fab-home').classList.toggle('hidden', name === 'home');   // bouton flottant Accueil
+  window.scrollTo(0, 0);
+}
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
 
-const BRANCH_COLORS = { all: '#27B3FF', archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
+const BRANCH_COLORS = { archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
 function themeColor() {
-  if (isCissp(state.branch)) return '#4CE0D2';
-  return BRANCH_COLORS[state.branch] || '#27B3FF';
+  const sel = [...state.branches];
+  if (sel.length && sel.every(isCissp)) return '#4CE0D2';
+  if (sel.length === 1) return BRANCH_COLORS[sel[0]] || '#27B3FF';
+  return '#27B3FF';
 }
 
-// Le sélecteur de thème ne montre qu'une ligne « CISSP » : les 7 domaines sont
-// un besoin ponctuel, ils restent dans un second sélecteur qui n'apparaît que
-// lorsque CISSP est choisi.
+// Thèmes en chips multi-sélection. Les 7 domaines CISSP sont derrière une seule
+// chip « CISSP » ; leur détail n'apparaît que si elle est active (besoin ponctuel).
+function cisspKeys() { return Object.keys(DB.branches).filter(isCissp); }
+function cisspActive() { return [...state.branches].some(isCissp); }
+
 function renderBranchSelect() {
-  const sel = $('branch-select'), sub = $('cissp-select');
-  const count = (k) => ALL.filter(c => inBranch(c, k)).length;
-  // compteur affiché seulement si l'option est cochée (Réglages)
-  const opt = (k, label) => `<option value="${k}">${esc(label)}${settings.showCounts ? ' (' + count(k) + ')' : ''}</option>`;
+  const row = $('branch-row'), sub = $('cissp-row');
+  const nb = (k) => ALL.filter(c => c.branch === k).length;
+  const label = (k, l, n) => esc(l) + (settings.showCounts ? ` (${n})` : '');   // compteur optionnel
 
-  const plain = Object.entries(DB.branches).filter(([k]) => !CISSP_RE.test(k));
-  const cissp = Object.entries(DB.branches).filter(([k]) => CISSP_RE.test(k));
+  const plain = Object.entries(DB.branches).filter(([k]) => !isCissp(k));
+  const cissp = Object.entries(DB.branches).filter(([k]) => isCissp(k));
+  const cisspTotal = cissp.reduce((n, [k]) => n + nb(k), 0);
 
-  sel.innerHTML = opt('all', 'Tout') + plain.map(([k, label]) => opt(k, label)).join('') +
-    (cissp.length ? opt('cissp', 'CISSP') : '');
-  sel.value = isCissp(state.branch) ? 'cissp' : state.branch;
+  row.innerHTML = plain.map(([k, l]) =>
+    `<button class="chip branch-chip${state.branches.has(k) ? ' active' : ''}" data-branch="${k}">${label(k, l, nb(k))}</button>`
+  ).join('') + (cissp.length
+    ? `<button class="chip branch-chip${cisspActive() ? ' active' : ''}" data-branch="cissp">${label('cissp', 'CISSP', cisspTotal)}</button>`
+    : '');
 
-  sub.innerHTML = opt('cissp', 'Tous les domaines') + cissp.map(([k, label]) => opt(k, label)).join('');
-  sub.value = isCissp(state.branch) ? state.branch : 'cissp';
-  sub.classList.toggle('hidden', !isCissp(state.branch));
+  sub.innerHTML = cissp.map(([k, l]) =>
+    `<button class="chip cissp-chip${state.branches.has(k) ? ' active' : ''}" data-branch="${k}">${label(k, l, nb(k))}</button>`
+  ).join('');
+  sub.classList.toggle('hidden', !cisspActive());
+
+  row.querySelectorAll('.branch-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
+  sub.querySelectorAll('.cissp-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
+}
+
+// La chip « CISSP » vaut pour ses 7 domaines d'un bloc.
+function toggleBranch(key) {
+  if (key === 'cissp') {
+    if (cisspActive()) cisspKeys().forEach(k => state.branches.delete(k));
+    else cisspKeys().forEach(k => state.branches.add(k));
+  } else if (state.branches.has(key)) {
+    state.branches.delete(key);
+  } else {
+    state.branches.add(key);
+  }
+  renderBranchSelect(); renderHome();
 }
 
 function renderHome() {
@@ -199,6 +269,7 @@ function renderHome() {
   $('stat-due').textContent = due;
   const s = loadStats();
   $('stat-last').textContent = s.lastPct < 0 ? '—' : s.lastPct + ' %';
+  $('stat-best').textContent = s.bestPct ? s.bestPct + ' %' : '—';
   const acc = s.totalQ ? Math.round(100 * s.totalC / s.totalQ) : null;
   $('stat-total').textContent = s.done + ' · ' + (acc == null ? '—' : acc + ' %');
   const w = getWrong().length;
@@ -219,7 +290,7 @@ function renderQuestion() {
   clearTimeout(autoNextTimer);
   const q = state.questions[state.index], a = state.answers[state.index];
   $('quiz-progress').textContent = `Question ${state.index + 1}/${state.questions.length}`;
-  $('quiz-level').textContent = state.mode === 'review' ? '⟳ Révision erreurs' : branchLabel(state.branch);
+  $('quiz-level').textContent = state.mode === 'review' ? '⟳ Révision erreurs' : scopeLabel();
   $('quiz-level').style.color = themeColor();
   const bar = $('quiz-bar');
   bar.style.background = themeColor();
@@ -261,6 +332,7 @@ function selectOption(idx) {
   const correct = idx === q.correctIndex;
   state.answers[state.index] = { selectedIndex: idx, correct };
   srsUpdate(q.key, correct);
+  logDaily(correct);
   if (correct) { if (state.mode === 'review') removeWrong(q.key); } else addWrong(q.key);
   beep(correct); vibrate(correct);
   renderQuestion();
@@ -279,7 +351,14 @@ function finishQuiz() {
   const score = state.answers.filter(a => a && a.correct).length;
   const pct = Math.round(100 * score / total);
   const prev = loadStats();
-  saveStats({ done: prev.done + 1, bestPct: Math.max(prev.bestPct, pct), lastPct: pct, totalQ: prev.totalQ + total, totalC: prev.totalC + score });
+  const perfect = score === total;
+  const streak = perfect ? prev.streak + 1 : 0;
+  saveStats({
+    done: prev.done + 1, bestPct: Math.max(prev.bestPct, pct), lastPct: pct,
+    totalQ: prev.totalQ + total, totalC: prev.totalC + score,
+    points: prev.points + score, streak, bestStreak: Math.max(prev.bestStreak, streak),
+    perfect: prev.perfect + (perfect ? 1 : 0),
+  });
 
   const wrong = state.questions.map((q, i) => ({ prompt: q.promptText, correct: q.correctText, ok: state.answers[i] && state.answers[i].correct })).filter(x => !x.ok);
   $('result-sub').textContent = state.mode === 'review' ? 'Révision des erreurs terminée' : 'Quiz terminé';
@@ -289,6 +368,7 @@ function finishQuiz() {
     ? '<span class="wrong-title">À retravailler</span>' + wrong.map(w => `<div class="wrong-row"><span class="wrong-word">${esc(w.prompt)}</span><span class="wrong-answer">${esc(w.correct)}</span></div>`).join('')
     : '<span class="wrong-title">Parfait 🎉</span><span class="wrong-answer">Aucune erreur</span>';
   showView('result');
+  if (perfect && total >= 3) launchFireworks();
 }
 
 // ---------- mode Apprendre (flashcards) ----------
@@ -302,7 +382,7 @@ function startLearn() {
 function renderFlash() {
   const c = state.learn[state.lidx];
   $('learn-progress').textContent = `Carte ${state.lidx + 1}/${state.learn.length}`;
-  $('learn-level').textContent = branchLabel(state.branch);
+  $('learn-level').textContent = scopeLabel();
   $('flash-cat').textContent = c.cat;
   $('flash-term').textContent = c.term;
   $('flash-def').textContent = c.def || 'Relève de : ' + c.cat;
@@ -319,6 +399,7 @@ function revealFlash() {
 }
 function gradeFlash(ok) {
   srsUpdate(state.learn[state.lidx].term, ok);
+  logDaily(ok);
   if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
   else { showView('home'); renderHome(); }
 }
@@ -326,7 +407,7 @@ function gradeFlash(ok) {
 // ---------- fiches (référence) ----------
 function renderFiches() {
   const list = pool();
-  $('fiches-crumb').textContent = branchLabel(state.branch);
+  $('fiches-crumb').textContent = scopeLabel();
   const byCat = {};
   list.forEach(c => { (byCat[c.cat] = byCat[c.cat] || []).push(c); });
   $('fiches-content').innerHTML = Object.entries(byCat).map(([cat, items]) =>
@@ -422,13 +503,162 @@ async function openMindmap() {
   }
 }
 
+// ---------- graphiques (canvas, sans dépendance) ----------
+function canvasCtx(c, h) {
+  const dpr = window.devicePixelRatio || 1;
+  const w = c.clientWidth || 320;
+  c.width = w * dpr; c.height = h * dpr;
+  const x = c.getContext('2d'); x.scale(dpr, dpr); x.clearRect(0, 0, w, h);
+  return [x, w, h];
+}
+function roundRect(x, bx, by, bw, bh, r) {
+  r = Math.min(r, bw / 2, bh / 2); if (bh <= 0) return;
+  x.beginPath();
+  x.moveTo(bx + r, by);
+  x.arcTo(bx + bw, by, bx + bw, by + bh, r);
+  x.arcTo(bx + bw, by + bh, bx, by + bh, r);
+  x.arcTo(bx, by + bh, bx, by, r);
+  x.arcTo(bx, by, bx + bw, by, r);
+  x.closePath();
+}
+function drawBars(c, labels, values, colors) {
+  const [x, w, h] = canvasCtx(c, 170);
+  const pad = { l: 6, r: 6, t: 20, b: 22 };
+  const max = Math.max(1, ...values);
+  const n = values.length || 1;
+  const bw = (w - pad.l - pad.r) / n;
+  x.font = '11px sans-serif'; x.textAlign = 'center';
+  values.forEach((v, i) => {
+    const bh = (h - pad.t - pad.b) * (v / max);
+    const bx = pad.l + i * bw, by = h - pad.b - bh;
+    x.fillStyle = (typeof colors === 'function' ? colors(i, v) : (colors[i] || '#27B3FF'));
+    roundRect(x, bx + bw * 0.18, by, bw * 0.64, bh, 4); x.fill();
+    if (v) { x.fillStyle = '#EAF2FF'; x.fillText(v, bx + bw / 2, by - 5); }
+    x.fillStyle = '#B8C7E3'; x.fillText(labels[i], bx + bw / 2, h - 7);
+  });
+}
+function drawGrouped(c, labels, a, b, colA, colB) {
+  const [x, w, h] = canvasCtx(c, 170);
+  const pad = { l: 6, r: 6, t: 20, b: 22 };
+  const max = Math.max(1, ...a, ...b);
+  const n = labels.length || 1;
+  const gw = (w - pad.l - pad.r) / n;
+  x.font = '10px sans-serif'; x.textAlign = 'center';
+  labels.forEach((lab, i) => {
+    const gx = pad.l + i * gw;
+    [[a[i], colA, 0.20], [b[i], colB, 0.52]].forEach(([v, col, off]) => {
+      const bh = (h - pad.t - pad.b) * (v / max);
+      const bx = gx + gw * off, by = h - pad.b - bh, bwid = gw * 0.28;
+      x.fillStyle = col; roundRect(x, bx, by, bwid, bh, 3); x.fill();
+      if (v) { x.fillStyle = '#EAF2FF'; x.fillText(v, bx + bwid / 2, by - 4); }
+    });
+    x.fillStyle = '#B8C7E3'; x.fillText(lab, gx + gw / 2, h - 7);
+  });
+}
+
+// ---------- vue Stats ----------
+// Abréviation des thèmes pour tenir sous une barre de graphe.
+function shortBranch(k) {
+  if (isCissp(k)) return 'D' + k.replace('cissp', '');
+  return { archi: 'Archi', igi1300: '1300', ii901: '901', igi2102: '2102' }[k] || k.slice(0, 5);
+}
+
+function renderStatsView() {
+  const srs = getSrs(), p = pool();
+  $('stats-scope').textContent = scopeLabel();
+
+  let c = 0, w = 0, seen = 0, mastered = 0;
+  const boxes = [0, 0, 0, 0, 0, 0];
+  p.forEach(it => {
+    const e = srs[it.term];
+    if (e && e.seen > 0) {
+      seen++; c += e.correct; w += e.wrong;
+      boxes[e.box] = (boxes[e.box] || 0) + 1;
+      if (e.box >= 4) mastered++;
+    }
+  });
+  const acc = (c + w) ? Math.round(100 * c / (c + w)) : 0;
+  const st = loadStats();
+  $('stats-summary').innerHTML = [
+    ['Quiz', st.done], ['Points', st.points], ['Précision', acc + '%'],
+    ['Concepts vus', seen], ['Maîtrisés', mastered], ['Record série', st.bestStreak],
+  ].map(([l, v]) => `<div class="stile"><b>${v}</b><span>${l}</span></div>`).join('');
+
+  const act = lastNDays(14);
+  drawBars($('chart-activity'), act.map(d => d.day), act.map(d => d.q), '#27B3FF');
+
+  const boxColors = ['#FF6B81', '#27B3FF', '#27B3FF', '#4CE0D2', '#35D07F', '#35D07F'];
+  drawBars($('chart-boxes'), ['0', '1', '2', '3', '4', '5'], boxes, (i) => boxColors[i]);
+
+  const keys = Object.keys(DB.branches);
+  const vus = keys.map(k => ALL.filter(it => it.branch === k && srs[it.term] && srs[it.term].seen > 0).length);
+  const mas = keys.map(k => ALL.filter(it => it.branch === k && srs[it.term] && srs[it.term].box >= 4).length);
+  drawGrouped($('chart-branches'), keys.map(shortBranch), vus, mas, '#27B3FF', '#35D07F');
+}
+
+// ---------- feux d'artifice (quiz parfait) ----------
+function launchFireworks() {
+  let c = document.getElementById('fx-canvas');
+  if (!c) { c = document.createElement('canvas'); c.id = 'fx-canvas'; document.body.appendChild(c); }
+  const dpr = window.devicePixelRatio || 1;
+  const W = innerWidth, H = innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  const x = c.getContext('2d'); x.scale(dpr, dpr);
+  const colors = ['#FF3B5C', '#27B3FF', '#35D07F', '#FFD166', '#B15CFF', '#4CE0D2', '#FF9F43', '#FF6BD6', '#FFFFFF'];
+  let parts = [];
+  function burst(bx, by, big) {
+    const col = colors[Math.floor(Math.random() * colors.length)];
+    const n = big ? 180 + Math.floor(Math.random() * 90) : 100 + Math.floor(Math.random() * 60);
+    const power = big ? 9.5 : 6.5;
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, sp = (0.35 + Math.random()) * power;
+      parts.push({ x: bx, y: by, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, decay: 0.018 + Math.random() * 0.022, col, r: 2 + Math.random() * 2.8 });
+    }
+    parts.push({ flash: true, x: bx, y: by, life: 1, decay: 0.13, col, r: big ? 110 : 70 });
+  }
+  const t0 = performance.now();
+  let last = 0, finale = false;
+  function frame(t) {
+    const el = t - t0;
+    x.globalCompositeOperation = 'source-over';
+    x.fillStyle = 'rgba(6,16,28,0.22)'; x.fillRect(0, 0, W, H);
+    if (el < 1100 && t - last > 190) { last = t; burst(W * (0.12 + Math.random() * 0.76), H * (0.12 + Math.random() * 0.42), Math.random() < 0.4); }
+    if (!finale && el > 1100) { finale = true; for (let k = 0; k < 6; k++) burst(W * (0.18 + Math.random() * 0.64), H * (0.15 + Math.random() * 0.45), true); }
+    x.globalCompositeOperation = 'lighter';
+    parts.forEach(p => {
+      if (p.flash) {
+        p.life -= p.decay;
+        const g = x.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        g.addColorStop(0, 'rgba(255,255,255,' + Math.max(0, p.life * 0.55) + ')');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        x.fillStyle = g; x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fill();
+        return;
+      }
+      p.vy += 0.055; p.vx *= 0.985; p.vy *= 0.985; p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+      x.globalAlpha = Math.max(0, p.life);
+      x.fillStyle = p.col; x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fill();
+    });
+    x.globalAlpha = 1;
+    parts = parts.filter(p => p.life > 0);
+    if (el < 2000) requestAnimationFrame(frame);
+    else c.remove();
+  }
+  requestAnimationFrame(frame);
+}
+
 // ---------- câblage ----------
-$('branch-select').addEventListener('change', (e) => {
-  state.branch = e.target.value;           // 'cissp' = les 7 domaines réunis
-  renderBranchSelect();                    // affiche/masque le sélecteur de domaine
-  renderHome();
+$('btn-branch-all').addEventListener('click', () => {
+  Object.keys(DB.branches).forEach(k => state.branches.add(k));
+  renderBranchSelect(); renderHome();
 });
-$('cissp-select').addEventListener('change', (e) => { state.branch = e.target.value; renderHome(); });
+$('btn-branch-none').addEventListener('click', () => {
+  state.branches.clear();                  // vide = tout le corpus
+  renderBranchSelect(); renderHome();
+});
+$('btn-fab-home').addEventListener('click', exitToHome);
+$('btn-stats').addEventListener('click', () => { showView('stats'); renderStatsView(); });
+$('btn-stats-home').addEventListener('click', exitToHome);
+window.addEventListener('resize', () => { if (!views.stats.classList.contains('hidden')) renderStatsView(); });
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
@@ -465,6 +695,7 @@ function bindToggle(id, key, after) { const el = $(id); el.checked = settings[ke
 bindToggle('opt-autonext', 'autoNext');
 bindToggle('opt-sound', 'sound');
 bindToggle('opt-counts', 'showCounts', renderBranchSelect);
+bindToggle('opt-close', 'closeDistractors');
 
 const settingsModal = $('settings-modal');
 $('app-version').textContent = 'v' + (window.APP_VERSION || '?');
@@ -489,7 +720,7 @@ $('settings-close').addEventListener('click', () => settingsModal.classList.add(
 settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.add('hidden'); });
 $('btn-reset').addEventListener('click', () => {
   if (confirm('Réinitialiser progression, stats et erreurs ?')) {
-    ['quizrev:stats:v1', 'quizrev:wrong:v1', 'quizrev:srs:v1'].forEach(k => localStorage.removeItem(k));
+    ['quizrev:stats:v1', 'quizrev:wrong:v1', 'quizrev:srs:v1', 'quizrev:daily:v1'].forEach(k => localStorage.removeItem(k));
     settingsModal.classList.add('hidden'); renderHome();
   }
 });

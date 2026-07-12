@@ -153,8 +153,29 @@ html, body {
 .modal-head { display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 16px; }
 .modal-head .gear { width: 36px; height: 36px; font-size: 16px; }
 
-.top-actions { display: flex; gap: 10px; }
-.top-actions .secondary { flex: 1; padding: 12px 10px; font-size: 14px; }
+.top-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.top-actions .secondary { flex: 1; min-width: 44%; padding: 12px 10px; font-size: 14px; }
+.top-actions .top-wide { flex-basis: 100%; }
+
+/* Bouton flottant Accueil (utile dans les vues longues : mind maps, fiches) */
+.fab-home {
+  position: fixed; bottom: 22px; right: 18px; z-index: 200;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--card); border: 1.5px solid rgba(255,255,255,0.12);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  font-size: 22px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.fab-home:active { transform: scale(0.9); opacity: 0.8; }
+
+.ghost-sm {
+  background: transparent; border: 1px solid rgba(255,255,255,0.14);
+  color: var(--text-dim); border-radius: 999px;
+  padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+
+#fx-canvas { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
 
 .stats-tiles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 .stile { background: var(--card-alt); border-radius: 14px; padding: 12px 8px; text-align: center; }
