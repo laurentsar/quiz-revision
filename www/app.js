@@ -21,6 +21,7 @@ const state = {
 let DB = null, ALL = [], CATS = [], BYTERM = {};
 
 const CISSP_RE = /^cissp\d+$/;   // cissp1..cissp7 = les domaines ; 'cissp' = les 7 réunis
+function isCissp(k) { return k === 'cissp' || CISSP_RE.test(k); }
 function branchLabel(k) {
   if (k === 'all') return 'Tout';
   if (k === 'cissp') return 'CISSP';
@@ -164,27 +165,29 @@ function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEac
 
 const BRANCH_COLORS = { all: '#27B3FF', archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
 function themeColor() {
-  if (state.branch === 'cissp' || CISSP_RE.test(state.branch)) return '#4CE0D2';
+  if (isCissp(state.branch)) return '#4CE0D2';
   return BRANCH_COLORS[state.branch] || '#27B3FF';
 }
 
-// Les 7 domaines CISSP sont regroupés sous une seule entrée « CISSP », avec les
-// sous-domaines en dessous — sinon le sélecteur de thème devient illisible.
+// Le sélecteur de thème ne montre qu'une ligne « CISSP » : les 7 domaines sont
+// un besoin ponctuel, ils restent dans un second sélecteur qui n'apparaît que
+// lorsque CISSP est choisi.
 function renderBranchSelect() {
-  const sel = $('branch-select');
+  const sel = $('branch-select'), sub = $('cissp-select');
   const count = (k) => ALL.filter(c => inBranch(c, k)).length;
   const opt = (k, label) => `<option value="${k}">${esc(label)} (${count(k)})</option>`;
 
   const plain = Object.entries(DB.branches).filter(([k]) => !CISSP_RE.test(k));
   const cissp = Object.entries(DB.branches).filter(([k]) => CISSP_RE.test(k));
 
-  let html = opt('all', 'Tout') + plain.map(([k, label]) => opt(k, label)).join('');
-  if (cissp.length) {
-    html += `<optgroup label="CISSP">` + opt('cissp', 'CISSP — tous les domaines') +
-      cissp.map(([k, label]) => opt(k, '  ' + label)).join('') + `</optgroup>`;
-  }
-  sel.innerHTML = html;
-  sel.value = state.branch;
+  sel.innerHTML = opt('all', 'Tout') + plain.map(([k, label]) => opt(k, label)).join('') +
+    (cissp.length ? opt('cissp', 'CISSP') : '');
+  sel.value = isCissp(state.branch) ? 'cissp' : state.branch;
+
+  sub.innerHTML = `<option value="cissp">Tous les domaines (${count('cissp')})</option>` +
+    cissp.map(([k, label]) => opt(k, label)).join('');
+  sub.value = isCissp(state.branch) ? state.branch : 'cissp';
+  sub.classList.toggle('hidden', !isCissp(state.branch));
 }
 
 function renderHome() {
@@ -404,7 +407,7 @@ function renderMindmap() {
 
   const d = MM.data.domains[MM.domain];
   $('mm-crumb').textContent = mmShortTitle(d.t);
-  box.innerHTML = `<div class="card mm-tree"><h3 class="gram-h3">${esc(d.t)}</h3>` +
+  box.innerHTML = `<div class="card mm-tree"><h3 class="gram-h3">${esc(mmShortTitle(d.t))}</h3>` +
     (d.c || []).map(k => mmNodeHtml(k, 0)).join('') + '</div>';
 }
 
@@ -420,7 +423,12 @@ async function openMindmap() {
 }
 
 // ---------- câblage ----------
-$('branch-select').addEventListener('change', (e) => { state.branch = e.target.value; renderHome(); });
+$('branch-select').addEventListener('change', (e) => {
+  state.branch = e.target.value;           // 'cissp' = les 7 domaines réunis
+  renderBranchSelect();                    // affiche/masque le sélecteur de domaine
+  renderHome();
+});
+$('cissp-select').addEventListener('change', (e) => { state.branch = e.target.value; renderHome(); });
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 

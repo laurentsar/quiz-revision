@@ -35,6 +35,8 @@
       <div class="card hero">
         <span class="hero-label">Thème</span>
         <select id="branch-select" class="select"></select>
+        <!-- n'apparaît qu'en thème CISSP : cibler un domaine précis si besoin -->
+        <select id="cissp-select" class="select hidden" style="margin-top:8px"></select>
 
         <span class="hero-label">Questions</span>
         <div class="chip-row">
@@ -175,7 +177,7 @@
   </main>
 
   <script src="app.js"></script>
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='1.7';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='1.8';</script>
   <script src="update-check.js" defer></script>
 </body>
 </html>
