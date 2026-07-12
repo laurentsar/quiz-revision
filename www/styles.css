@@ -396,3 +396,12 @@ html, body {
 .fiche-video, .fb-video { display: inline-block; margin-top: 6px; color: var(--sky);
   font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
 .fb-video { margin-top: 10px; }
+
+/* ---------- minuteur par question + pause Pomodoro ---------- */
+.quiz-timer { font-weight: 700; font-size: 14px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.quiz-timer.urgent { color: var(--danger); }
+.pomo-card { text-align: center; max-width: 340px; }
+.pomo-emoji { font-size: 52px; line-height: 1; }
+.pomo-title { margin: 10px 0 6px; font-size: 22px; }
+.pomo-sub { color: var(--text-dim); font-size: 14px; line-height: 1.5; margin: 0 0 14px; }
+.pomo-count { font-size: 46px; font-weight: 800; font-variant-numeric: tabular-nums; margin-bottom: 16px; color: var(--mint); }

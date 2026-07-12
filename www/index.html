@@ -87,6 +87,8 @@
         <label class="toggle"><span>⏭️ Question suivante automatique</span><input type="checkbox" id="opt-autonext" /></label>
         <label class="toggle"><span>🎵 Son juste / faux</span><input type="checkbox" id="opt-sound" /></label>
         <label class="toggle"><span>🎯 Distracteurs proches (plus difficile)</span><input type="checkbox" id="opt-close" /></label>
+        <label class="toggle"><span>⏱️ Minuteur 30 s par question</span><input type="checkbox" id="opt-timer" /></label>
+        <label class="toggle"><span>🍅 Pauses Pomodoro (25 min → 5 min)</span><input type="checkbox" id="opt-pomodoro" /></label>
         <label class="toggle"><span>🔢 Afficher le nombre de concepts par thème</span><input type="checkbox" id="opt-counts" /></label>
 
         <div class="meta-row" style="margin-top:14px">
@@ -179,6 +181,7 @@
     <section id="view-quiz" class="view hidden">
       <div class="quiz-header">
         <span id="quiz-progress" class="quiz-progress">Question 1/10</span>
+        <span id="quiz-timer" class="quiz-timer"></span>
         <span id="quiz-level" class="quiz-level"></span>
       </div>
       <div class="progress"><div id="quiz-bar" class="progress-bar"></div></div>
@@ -215,12 +218,23 @@
       <button id="btn-replay" class="primary">Nouvelle révision</button>
       <button id="btn-home" class="secondary">Accueil</button>
     </section>
+
+    <!-- PAUSE POMODORO -->
+    <div id="pomodoro-modal" class="modal hidden">
+      <div class="modal-card pomo-card">
+        <div class="pomo-emoji">🍅</div>
+        <h2 class="pomo-title">Pause Pomodoro</h2>
+        <p class="pomo-sub">25 min de révision active — le cerveau consolide mieux avec une vraie pause. Lève-toi, respire, hydrate-toi.</p>
+        <div id="pomo-countdown" class="pomo-count">5:00</div>
+        <button id="btn-pomo-resume" class="primary">Reprendre maintenant</button>
+      </div>
+    </div>
   </main>
 
   <button id="btn-fab-home" class="fab-home hidden" title="Accueil">🏠</button>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='2.8';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='2.9';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
