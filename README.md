@@ -22,6 +22,21 @@ Tout est **local** (localStorage) et **hors ligne**.
 ## Contenu
 - `www/` : application web (HTML/CSS/JS vanilla, 0 dépendance runtime) emballée par Capacitor.
 - `www/data/secu_concepts.json` : la base de concepts (éditable / extensible).
+- `www/data/cissp_mindmap.json` : les 7 mind maps CISSP (arbre navigable + recherche).
+- `www/data/cissp_concepts.json` : concepts CISSP dérivés de ces mind maps, révisables
+  comme les autres (quiz, flashcards, Leitner, « mes erreurs »).
+
+## Mind maps CISSP
+Les mind maps proviennent de [yyds-page/cissp-mind-map](https://github.com/yyds-page/cissp-mind-map)
+(GPL-3.0, CISSP 2020 / OSG-AIO 8e éd., usage non commercial), converties depuis
+`All-Domains-Tree-View.txt` par :
+
+    python3 tools/build_cissp_mindmap.py tools/All-Domains-Tree-View.txt   # arbre navigable
+    python3 tools/build_cissp_concepts.py                                  # concepts révisables
+
+Deux natures de concepts sont dérivées de l'arbre : ceux qui ont une **définition**
+en feuille (toutes les questions du moteur), et les concepts de **structure**, sans
+définition, dont on révise la place dans la carte (questions de catégorie).
 
 ## Build de l'APK
 Le build local n'est pas possible sur la machine de dev (ARM). L'APK est produit par

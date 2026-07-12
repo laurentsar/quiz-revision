@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Génère toutes les icônes de Quiz Langue (PWA + Android) sans dépendance.
+"""Génère toutes les icônes de Quizz Révision (PWA + Android) sans dépendance.
 
-Design : monogramme « Q » blanc sur fond dégradé diagonal bleu nuit -> cyan,
-le tout rendu en anti-aliasing analytique (signed distance fields).
+Design : bouclier (cybersécurité) contenant une mind map — un noeud central relié
+à trois noeuds satellites — en blanc sur dégradé diagonal bleu nuit -> cyan.
+Rendu en anti-aliasing analytique (signed distance fields).
 """
 import math, os, struct, zlib
 
@@ -30,21 +31,64 @@ def seg_dist(px, py, ax, ay, bx, by):
     return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
 
 
-def render(size, shape, q_scale):
+def bezier(p0, p1, p2, n):
+    """Points d'une quadratique (bornes incluses)."""
+    out = []
+    for i in range(n + 1):
+        t = i / n
+        u = 1.0 - t
+        out.append((u * u * p0[0] + 2 * u * t * p1[0] + t * t * p2[0],
+                    u * u * p0[1] + 2 * u * t * p1[1] + t * t * p2[1]))
+    return out
+
+
+def shield_polygon(cx, cy, s, scale):
+    """Contour du bouclier : bord haut droit, flancs galbés, pointe basse."""
+    w = 0.36 * s * scale          # demi-largeur
+    top = cy - 0.40 * s * scale
+    bot = cy + 0.46 * s * scale
+    r = 0.10 * s * scale          # arrondi des coins hauts
+    right = ([(cx + w - r, top)]
+             + bezier((cx + w - r, top), (cx + w, top), (cx + w, top + r), 6)
+             + bezier((cx + w, top + r), (cx + w, cy + 0.20 * s * scale), (cx, bot), 22))
+    left = [(2 * cx - x, y) for (x, y) in reversed(right)]
+    return right + left
+
+
+def poly_sdf(px, py, poly):
+    """Distance signée à un polygone (négatif à l'intérieur)."""
+    d = 1e18
+    inside = False
+    n = len(poly)
+    for i in range(n):
+        ax, ay = poly[i]
+        bx, by = poly[(i + 1) % n]
+        d = min(d, seg_dist(px, py, ax, ay, bx, by))
+        if (ay > py) != (by > py) and px < (bx - ax) * (py - ay) / (by - ay + 1e-12) + ax:
+            inside = not inside
+    return -d if inside else d
+
+
+def render(size, shape, scale):
     """shape: 'square' (coins arrondis), 'circle', 'fullbleed'."""
     s = float(size)
     aa = max(1.0, s / 256.0)
     cx = cy = s / 2.0
     half = s / 2.0
-    cr = 0.22 * s                      # rayon des coins (square)
-    R = q_scale * s                    # rayon extérieur de l'anneau Q
-    stroke = 0.34 * R                  # épaisseur du trait
-    rin = R - stroke                   # rayon intérieur
-    inv = 1.0 / math.sqrt(2.0)
-    # queue du Q (diagonale bas-droite)
-    p1 = (cx + inv * 0.45 * R, cy + inv * 0.45 * R)
-    p2 = (cx + inv * 1.18 * R, cy + inv * 1.18 * R)
-    t_half = 0.5 * stroke
+    cr = 0.22 * s                          # rayon des coins (square)
+
+    poly = shield_polygon(cx, cy, s, scale)
+    shield_stroke = 0.030 * s * scale      # épaisseur du contour du bouclier
+
+    # Mind map : noeud central + 3 satellites (haut-gauche, haut-droite, bas)
+    node_r = 0.052 * s * scale
+    sat_r = 0.036 * s * scale
+    link = 0.020 * s * scale               # demi-épaisseur des liens
+    sats = [
+        (cx - 0.17 * s * scale, cy - 0.15 * s * scale),
+        (cx + 0.17 * s * scale, cy - 0.15 * s * scale),
+        (cx, cy + 0.20 * s * scale),
+    ]
 
     px = bytearray(size * size * 4)
     i = 0
@@ -69,18 +113,23 @@ def render(size, shape, q_scale):
             bg = C0[1] + (C1[1] - C0[1]) * t
             bb = C0[2] + (C1[2] - C0[2]) * t
 
-            # ---- monogramme Q ----
-            dist = math.hypot(fx - cx, fy - cy)
-            ring = min(cover(dist - R, aa), cover(rin - dist, aa))
-            tail = cover(seg_dist(fx, fy, p1[0], p1[1], p2[0], p2[1]) - t_half, aa)
-            q = max(ring, tail)
+            # ---- contour du bouclier ----
+            ds = poly_sdf(fx, fy, poly)
+            g = cover(abs(ds) - shield_stroke * 0.5, aa)
 
-            r = br + (WHITE[0] - br) * q
-            g = bg + (WHITE[1] - bg) * q
-            b = bb + (WHITE[2] - bb) * q
+            # ---- mind map (uniquement à l'intérieur du bouclier) ----
+            m = cover(math.hypot(fx - cx, fy - cy) - node_r, aa)
+            for (sx, sy) in sats:
+                m = max(m, cover(math.hypot(fx - sx, fy - sy) - sat_r, aa))
+                m = max(m, cover(seg_dist(fx, fy, cx, cy, sx, sy) - link, aa))
+            g = max(g, m)
+
+            r = br + (WHITE[0] - br) * g
+            gg = bg + (WHITE[1] - bg) * g
+            b = bb + (WHITE[2] - bb) * g
 
             px[i] = int(r + 0.5)
-            px[i + 1] = int(g + 0.5)
+            px[i + 1] = int(gg + 0.5)
             px[i + 2] = int(b + 0.5)
             px[i + 3] = int(clamp(a) * 255 + 0.5)
             i += 4
@@ -113,20 +162,18 @@ RES = os.path.join(ROOT, 'android/app/src/main/res')
 
 def main():
     print("== PWA (www/img) ==")
-    cache = {}
     for n in (192, 512):
-        px = render(n, 'fullbleed', 0.31)
-        cache[n] = px
-        write_png(os.path.join(ROOT, f'www/img/icon-{n}.png'), n, px)
+        write_png(os.path.join(ROOT, f'www/img/icon-{n}.png'), n, render(n, 'fullbleed', 1.0))
 
     print("== Android launcher / round / foreground ==")
     for d, (sl, sf) in DENS.items():
         write_png(os.path.join(RES, f'mipmap-{d}/ic_launcher.png'), sl,
-                  render(sl, 'square', 0.34))
+                  render(sl, 'square', 1.0))
         write_png(os.path.join(RES, f'mipmap-{d}/ic_launcher_round.png'), sl,
-                  render(sl, 'circle', 0.34))
+                  render(sl, 'circle', 1.0))
+        # foreground : la zone sûre d'une icône adaptative est ~66% -> on réduit
         write_png(os.path.join(RES, f'mipmap-{d}/ic_launcher_foreground.png'), sf,
-                  render(sf, 'fullbleed', 0.27))
+                  render(sf, 'fullbleed', 0.72))
 
 
 if __name__ == '__main__':

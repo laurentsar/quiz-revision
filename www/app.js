@@ -82,14 +82,19 @@ function distractors(field, correct, concept, n) {
   return uniqKeepFirst([...t1, ...t2, ...t3, ...t4]).slice(0, n);
 }
 
+// Un concept « structure » (issu de la mind map CISSP) n'a pas de définition :
+// seule sa place dans l'arbre est révisable -> question de catégorie.
+function hasDef(concept) { return !!concept.def; }
+
 function makeQuestion(concept) {
   let type = state.qtype;
   if (type === 'mix') {
-    const types = ['def', 'term', 'situation'];
+    const types = hasDef(concept) ? ['def', 'term', 'situation'] : [];
     if (CATS.length >= OPTION_COUNT) types.push('cat');
-    type = types[Math.floor(Math.random() * types.length)];
+    type = types[Math.floor(Math.random() * types.length)] || 'cat';
   }
   if (type === 'situation' && !concept.ex) type = 'def';
+  if ((type === 'def' || type === 'term') && !hasDef(concept)) type = 'cat';
 
   let promptLabel, promptText, correct, field;
   if (type === 'term') {
@@ -110,7 +115,7 @@ function makeQuestion(concept) {
   return {
     key: concept.term, promptLabel, promptText,
     options: opts, correctIndex: opts.indexOf(correct), correctText: correct,
-    reminder: concept.term + ' — ' + concept.def,
+    reminder: concept.term + ' — ' + (concept.def || 'relève de : ' + concept.cat),
     tip: concept.tip, ex: concept.ex, cat: concept.cat,
   };
 }
@@ -139,12 +144,16 @@ function beep(ok) {
 function vibrate(ok) { try { navigator.vibrate && navigator.vibrate(ok ? 25 : [40, 50, 40]); } catch (e) {} }
 
 // ---------- vues ----------
-const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn') };
+const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn'), mindmap: $('view-mindmap') };
 let autoNextTimer = null;
 function showView(name) { Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name)); window.scrollTo(0, 0); }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
 
-const BRANCH_COLORS = { all: '#27B3FF', thales: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
+const BRANCH_COLORS = {
+  all: '#27B3FF', archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B',
+  cissp1: '#4CE0D2', cissp2: '#4CE0D2', cissp3: '#4CE0D2', cissp4: '#4CE0D2',
+  cissp5: '#4CE0D2', cissp6: '#4CE0D2', cissp7: '#4CE0D2',
+};
 function themeColor() { return BRANCH_COLORS[state.branch] || '#27B3FF'; }
 
 function renderBranchSelect() {
@@ -270,7 +279,7 @@ function renderFlash() {
   $('learn-level').textContent = state.branch === 'all' ? 'Tout' : DB.branches[state.branch];
   $('flash-cat').textContent = c.cat;
   $('flash-term').textContent = c.term;
-  $('flash-def').textContent = c.def;
+  $('flash-def').textContent = c.def || 'Relève de : ' + c.cat;
   $('flash-tip').textContent = c.tip ? '💡 ' + c.tip : '';
   $('flash-ex').textContent = c.ex ? '🔎 ' + c.ex : '';
   $('flash-back').classList.add('hidden');
@@ -296,10 +305,95 @@ function renderFiches() {
   list.forEach(c => { (byCat[c.cat] = byCat[c.cat] || []).push(c); });
   $('fiches-content').innerHTML = Object.entries(byCat).map(([cat, items]) =>
     `<div class="card gram-section"><h3 class="gram-h3">${esc(cat)}</h3>` +
-    items.map(c => `<div class="fiche"><div class="fiche-term">${esc(c.term)}</div><div class="fiche-def">${esc(c.def)}</div>` +
+    items.map(c => `<div class="fiche"><div class="fiche-term">${esc(c.term)}</div><div class="fiche-def">${esc(c.def || 'Relève de : ' + c.cat)}</div>` +
       (c.tip ? `<div class="fiche-tip">💡 ${esc(c.tip)}</div>` : '') +
       (c.ex ? `<div class="fiche-ex">🔎 ${esc(c.ex)}</div>` : '') + `</div>`).join('') +
     `</div>`).join('');
+}
+
+// ---------- mind maps CISSP ----------
+// Arbre issu de yyds-page/cissp-mind-map (GPL-3.0), converti par tools/build_cissp_mindmap.py.
+// Chargé à la demande (156 Ko) : inutile de le payer au démarrage du quiz.
+const MM = { data: null, domain: 0, query: '' };
+const MM_SEARCH_MIN = 3;
+
+async function loadMindmap() {
+  if (MM.data) return MM.data;
+  MM.data = await (await fetch('data/cissp_mindmap.json')).json();
+  return MM.data;
+}
+
+function mmShortTitle(t) { return t.replace(/^Domain\s+(\d+)\.\s*/i, 'D$1 · '); }
+
+function mmNodeHtml(node, depth) {
+  const kids = node.c || [];
+  if (!kids.length) return `<div class="mm-leaf">${esc(node.t)}</div>`;
+  // Seul le 1er niveau est ouvert : au-delà l'arbre est trop dense sur mobile.
+  const open = depth === 0 ? ' open' : '';
+  return `<details class="mm-node mm-d${Math.min(depth, 3)}"${open}>` +
+    `<summary>${esc(node.t)}<span class="mm-count">${kids.length}</span></summary>` +
+    `<div class="mm-children">${kids.map(k => mmNodeHtml(k, depth + 1)).join('')}</div>` +
+    `</details>`;
+}
+
+// Recherche : parcours complet, on garde le chemin pour situer chaque résultat.
+function mmSearch(q) {
+  const needle = q.toLowerCase();
+  const hits = [];
+  const walk = (node, path, domain) => {
+    if (node.t.toLowerCase().includes(needle)) hits.push({ t: node.t, path, domain, leaf: !node.c });
+    (node.c || []).forEach(k => walk(k, path.concat(node.t), domain));
+    return hits;
+  };
+  MM.data.domains.forEach(d => (d.c || []).forEach(k => walk(k, [], d.t)));
+  return hits;
+}
+
+function mmHighlight(text, q) {
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return esc(text);
+  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+}
+
+function renderMindmap() {
+  const box = $('mm-content'), chips = $('mm-domains');
+  $('mm-source').textContent = 'Source : ' + MM.data.source;
+
+  chips.innerHTML = MM.data.domains.map((d, i) =>
+    `<button class="chip mm-chip${i === MM.domain && !MM.query ? ' active' : ''}" data-mm="${i}">${esc(mmShortTitle(d.t))}</button>`
+  ).join('');
+  chips.querySelectorAll('.mm-chip').forEach(c => c.addEventListener('click', () => {
+    MM.domain = +c.dataset.mm; MM.query = ''; $('mm-search').value = '';
+    renderMindmap(); window.scrollTo(0, 0);
+  }));
+
+  if (MM.query.length >= MM_SEARCH_MIN) {
+    const hits = mmSearch(MM.query);
+    $('mm-crumb').textContent = hits.length + ' résultat' + (hits.length > 1 ? 's' : '');
+    box.innerHTML = hits.length
+      ? `<div class="card">${hits.slice(0, 200).map(h =>
+          `<div class="mm-hit"><div class="mm-hit-t">${mmHighlight(h.t, MM.query)}</div>` +
+          `<div class="mm-hit-p">${esc(mmShortTitle(h.domain))}${h.path.length ? ' › ' + esc(h.path.join(' › ')) : ''}</div></div>`
+        ).join('')}${hits.length > 200 ? '<div class="mm-hit-p">… ' + (hits.length - 200) + ' de plus, affine la recherche</div>' : ''}</div>`
+      : '<div class="card"><div class="mm-hit-p">Aucun résultat</div></div>';
+    return;
+  }
+
+  const d = MM.data.domains[MM.domain];
+  $('mm-crumb').textContent = mmShortTitle(d.t);
+  box.innerHTML = `<div class="card mm-tree"><h3 class="gram-h3">${esc(d.t)}</h3>` +
+    (d.c || []).map(k => mmNodeHtml(k, 0)).join('') + '</div>';
+}
+
+async function openMindmap() {
+  $('mm-content').innerHTML = '<div class="card"><div class="mm-hit-p">Chargement…</div></div>';
+  showView('mindmap');
+  try {
+    await loadMindmap();
+    renderMindmap();
+  } catch (e) {
+    $('mm-content').innerHTML = '<div class="card"><div class="mm-hit-p">Mind maps indisponibles hors ligne (première ouverture nécessite le réseau).</div></div>';
+  }
 }
 
 // ---------- câblage ----------
@@ -321,6 +415,20 @@ $('btn-flash-again').addEventListener('click', () => gradeFlash(false));
 $('btn-learn-home').addEventListener('click', exitToHome);
 $('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
 $('btn-fiches-home').addEventListener('click', exitToHome);
+$('btn-mindmap').addEventListener('click', openMindmap);
+$('btn-mindmap-home').addEventListener('click', exitToHome);
+
+let mmDebounce = null;
+$('mm-search').addEventListener('input', (e) => {
+  const q = e.target.value.trim();
+  clearTimeout(mmDebounce);
+  mmDebounce = setTimeout(() => {
+    // < 3 caractères : on retombe sur l'arbre du domaine courant
+    if (q.length && q.length < MM_SEARCH_MIN) return;
+    MM.query = q;
+    if (MM.data) renderMindmap();
+  }, 180);
+});
 
 function bindToggle(id, key) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); }); }
 bindToggle('opt-autonext', 'autoNext');
@@ -341,7 +449,13 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 
 // ---------- démarrage ----------
 (async function init() {
-  DB = await (await fetch('data/secu_concepts.json')).json();
+  const [base, cissp] = await Promise.all([
+    (await fetch('data/secu_concepts.json')).json(),
+    (await fetch('data/cissp_concepts.json')).json().catch(() => ({ branches: {}, concepts: [] })),
+  ]);
+  // Les 7 domaines CISSP deviennent des thèmes à part entière : quiz, flashcards,
+  // Leitner et « mes erreurs » les traitent comme n'importe quel autre concept.
+  DB = { branches: Object.assign({}, base.branches, cissp.branches), concepts: base.concepts.concat(cissp.concepts) };
   ALL = DB.concepts;
   CATS = uniq(ALL.map(c => c.cat));
   ALL.forEach(c => { BYTERM[c.term] = c; });
