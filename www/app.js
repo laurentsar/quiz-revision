@@ -22,13 +22,14 @@ let DB = null, ALL = [], CATS = [], BYTERM = {};
 
 // Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
+// Seules les certifications sont regroupées (préfixe « Certification »). Les thèmes
+// de référence (ex-« Réf. cyber ») sont désormais des thèmes séparés à part entière.
 const GROUPS = [
-  { id: 'cissp', label: 'CISSP', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
-  { id: 'sscp', label: 'SSCP', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
-  { id: 'ccsp', label: 'CCSP', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
-  { id: 'cc', label: 'CC (ISC2)', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
-  { id: 'ceh', label: 'CEH', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
-  { id: 'ignite', label: 'Réf. cyber', color: '#B15CFF', test: (k) => /^ig_/.test(k) },
+  { id: 'cissp', label: 'Certification CISSP', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
+  { id: 'sscp', label: 'Certification SSCP', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
+  { id: 'ccsp', label: 'Certification CCSP', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
+  { id: 'cc', label: 'Certification CC (ISC2)', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
+  { id: 'ceh', label: 'Certification CEH', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
 function groupById(id) { return GROUPS.find(g => g.id === id); }
