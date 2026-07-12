@@ -406,6 +406,7 @@ html, body {
 .pomo-sub { color: var(--text-dim); font-size: 14px; line-height: 1.5; margin: 0 0 14px; }
 .pomo-count { font-size: 46px; font-weight: 800; font-variant-numeric: tabular-nums; margin-bottom: 16px; color: var(--mint); }
 
-/* en-têtes de section du menu déroulant (couleur sur navigateurs qui le gèrent) */
-.select optgroup { color: var(--mint); font-weight: 700; background: var(--ink); }
-.select option { color: var(--text); font-weight: 400; }
+/* menu déroulant : en-tête de section plus gros/gras, sous-thèmes plus petits
+   (appliqué sur PWA/desktop ; les pickers natifs mobiles peuvent l'ignorer) */
+.select optgroup { color: var(--mint); font-weight: 700; font-size: 15px; background: var(--ink); }
+.select option { color: var(--text); font-weight: 400; font-size: 12.5px; }
