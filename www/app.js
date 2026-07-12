@@ -25,14 +25,16 @@ let DB = null, ALL = [], CATS = [], BYTERM = {};
 // Homologation (FR) reste un groupe ; les certifications forment leurs groupes
 // (préfixe « Certification »). Les thèmes de référence (ex-« Réf. cyber ») sont
 // des thèmes séparés à part entière (chips individuelles).
+// dot = pastille de couleur préfixant chaque sous-thème dans le menu (visible même
+// sur les pickers natifs mobiles, qui ignorent la couleur CSS des options).
 const HOMOLOG = ['archi', 'igi1300', 'ii901', 'igi2102'];
 const GROUPS = [
-  { id: 'homolog', label: 'Homologation', icon: '🇫🇷', color: '#27B3FF', test: (k) => HOMOLOG.includes(k) },
-  { id: 'cissp', label: 'Certification CISSP', icon: '🎓', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
-  { id: 'sscp', label: 'Certification SSCP', icon: '🎓', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
-  { id: 'ccsp', label: 'Certification CCSP', icon: '🎓', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
-  { id: 'cc', label: 'Certification CC (ISC2)', icon: '🎓', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
-  { id: 'ceh', label: 'Certification CEH', icon: '🎓', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
+  { id: 'homolog', label: 'Homologation', icon: '🇫🇷', dot: '🔵', color: '#27B3FF', test: (k) => HOMOLOG.includes(k) },
+  { id: 'cissp', label: 'Certification CISSP', icon: '🎓', dot: '🟢', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
+  { id: 'sscp', label: 'Certification SSCP', icon: '🎓', dot: '🟢', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
+  { id: 'ccsp', label: 'Certification CCSP', icon: '🎓', dot: '🟢', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
+  { id: 'cc', label: 'Certification CC (ISC2)', icon: '🎓', dot: '🟢', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
+  { id: 'ceh', label: 'Certification CEH', icon: '🎓', dot: '🟢', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
 function groupById(id) { return GROUPS.find(g => g.id === id); }
@@ -259,12 +261,12 @@ function themeOptionsHtml() {
     const m = Object.entries(DB.branches).filter(([k]) => g.test(k));
     if (!m.length) return;
     h += `<optgroup label="${esc((g.icon ? g.icon + ' ' : '') + g.label)}">` +
-      opt('grp:' + g.id, '▸ Tout — ' + g.label) +
-      m.map(([k, l]) => opt(k, '   ' + l)).join('') + `</optgroup>`;
+      opt('grp:' + g.id, (g.dot || '▸') + ' Tout — ' + g.label) +
+      m.map(([k, l]) => opt(k, (g.dot || '·') + ' ' + l)).join('') + `</optgroup>`;
   });
   // thèmes de référence (non regroupés) rassemblés sous un en-tête visuel commun
   const ref = Object.entries(DB.branches).filter(([k]) => k.startsWith('ig_'));
-  if (ref.length) h += `<optgroup label="🧭 Référence cyber">` + ref.map(([k, l]) => opt(k, '   ' + l)).join('') + `</optgroup>`;
+  if (ref.length) h += `<optgroup label="🧭 Référence cyber">` + ref.map(([k, l]) => opt(k, '🟣 ' + l)).join('') + `</optgroup>`;
   return h;
 }
 
