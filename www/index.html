@@ -21,6 +21,7 @@
         <div>
           <h1 class="title">Quizz Révision</h1>
           <p class="subtitle">Cybersécurité &amp; homologation — questions générées à la volée</p>
+          <p class="subtitle" id="home-version" style="font-size:12px;opacity:.7"></p>
         </div>
         <button id="btn-settings" class="gear" title="Réglages">⚙️</button>
       </div>
@@ -79,7 +80,16 @@
         </div>
         <label class="toggle"><span>⏭️ Question suivante automatique</span><input type="checkbox" id="opt-autonext" /></label>
         <label class="toggle"><span>🎵 Son juste / faux</span><input type="checkbox" id="opt-sound" /></label>
-        <button id="btn-reset" class="ghost" style="margin-top:14px">🗑️ Réinitialiser mes stats &amp; erreurs</button>
+        <label class="toggle"><span>🔢 Afficher le nombre de concepts par thème</span><input type="checkbox" id="opt-counts" /></label>
+
+        <div class="meta-row" style="margin-top:14px">
+          <span class="meta-label">Version installée</span>
+          <span id="app-version" class="meta-value">—</span>
+        </div>
+        <button id="btn-check-update" class="ghost">🔄 Vérifier les mises à jour</button>
+        <p id="update-status" class="mm-source"></p>
+
+        <button id="btn-reset" class="ghost">🗑️ Réinitialiser mes stats &amp; erreurs</button>
       </div>
     </div>
 
@@ -176,8 +186,9 @@
     </section>
   </main>
 
+  <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='1.9';</script>
   <script src="app.js"></script>
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='1.8';</script>
   <script src="update-check.js" defer></script>
 </body>
 </html>

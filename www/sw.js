@@ -1,4 +1,4 @@
-const CACHE = 'quizrev-v9';
+const CACHE = 'quizrev-v10';
 const ASSETS = [
   './',
   'index.html',
@@ -21,6 +21,12 @@ self.addEventListener('activate', (e) => {
   );
 });
 self.addEventListener('fetch', (e) => {
+  // Ne toucher qu'aux assets de l'app : intercepter le cross-origin (api.github.com)
+  // servait une réponse en cache — ou, hors ligne, index.html à la place du JSON,
+  // ce qui cassait silencieusement la vérification de mise à jour.
+  const url = new URL(e.request.url);
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
+
   e.respondWith(
     caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
       const copy = res.clone();

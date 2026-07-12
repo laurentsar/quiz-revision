@@ -36,27 +36,50 @@
     return 0;
   }
 
-  var last = parseInt(ls(true, KEY_POLL), 10) || 0;
-  if (Date.now() - last < POLL_INTERVAL) return;
+  // Dans l'APK, on passe par CapacitorHttp : la requête part du natif, hors WebView,
+  // donc ni CORS ni service worker ne peuvent l'intercepter. Repli fetch ailleurs.
+  function getLatest() {
+    var url = 'https://api.github.com/repos/' + REPO + '/releases/latest?_=' + Date.now();
+    var http = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp;
+    if (http) {
+      return http.get({ url: url, headers: { Accept: 'application/vnd.github+json' }, responseType: 'json', connectTimeout: 8000, readTimeout: 10000 })
+        .then(function (r) {
+          if (r.status >= 400) throw new Error('HTTP ' + r.status);
+          return typeof r.data === 'string' ? JSON.parse(r.data) : r.data;
+        });
+    }
+    return fetch(url, { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      });
+  }
 
-  // Cache-buster (_) : évite qu'un service worker "cache-first" serve une
-  // réponse d'API périmée. GitHub ignore les paramètres inconnus.
-  fetch('https://api.github.com/repos/' + REPO + '/releases/latest?_=' + Date.now(), {
-    headers: { Accept: 'application/vnd.github+json' }
-  })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (rel) {
-      if (!rel || !rel.tag_name) return;
+  // force = déclenché par l'utilisateur : ignore le throttle et la version ignorée.
+  // Résout { status: 'update'|'uptodate', version } ou rejette avec l'erreur réseau.
+  function check(force) {
+    var last = parseInt(ls(true, KEY_POLL), 10) || 0;
+    if (!force && Date.now() - last < POLL_INTERVAL) {
+      return Promise.resolve({ status: 'throttled', version: CURRENT });
+    }
+    return getLatest().then(function (rel) {
+      if (!rel || !rel.tag_name) throw new Error('Release illisible');
       ls(false, KEY_POLL, Date.now());
       var latest = String(rel.tag_name).replace(/^v/, '');
-      if (cmp(latest, CURRENT) <= 0) return;          // déjà à jour
-      if (ls(true, KEY_DISMISS) === latest) return;    // version déjà ignorée
-      var apk = (rel.assets || []).filter(function (a) {
-        return /\.apk$/i.test(a.name);
-      })[0];
+      if (cmp(latest, CURRENT) <= 0) return { status: 'uptodate', version: latest };
+      if (!force && ls(true, KEY_DISMISS) === latest) return { status: 'dismissed', version: latest };
+      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/i.test(a.name); })[0];
       showBanner(latest, apk ? apk.browser_download_url : rel.html_url);
-    })
-    .catch(function () { /* hors-ligne : silencieux */ });
+      return { status: 'update', version: latest };
+    });
+  }
+
+  // Vérification à l'ouverture, puis à chaque retour au premier plan (throttlée).
+  window.UpdateCheck = { check: check, current: CURRENT };
+  check(false).catch(function () { /* hors ligne : silencieux */ });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) check(false).catch(function () {});
+  });
 
   function showBanner(version, url) {
     if (document.getElementById('update-banner')) return;

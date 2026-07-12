@@ -28,7 +28,7 @@ function branchLabel(k) {
   return (DB.branches && DB.branches[k]) || k;
 }
 
-const settings = Object.assign({ autoNext: true, sound: true }, lsGet('quizrev:settings:v1', {}));
+const settings = Object.assign({ autoNext: true, sound: true, showCounts: false }, lsGet('quizrev:settings:v1', {}));
 
 // ---------- persistance ----------
 function lsGet(k, d) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : d; } catch (e) { return d; } }
@@ -175,7 +175,8 @@ function themeColor() {
 function renderBranchSelect() {
   const sel = $('branch-select'), sub = $('cissp-select');
   const count = (k) => ALL.filter(c => inBranch(c, k)).length;
-  const opt = (k, label) => `<option value="${k}">${esc(label)} (${count(k)})</option>`;
+  // compteur affiché seulement si l'option est cochée (Réglages)
+  const opt = (k, label) => `<option value="${k}">${esc(label)}${settings.showCounts ? ' (' + count(k) + ')' : ''}</option>`;
 
   const plain = Object.entries(DB.branches).filter(([k]) => !CISSP_RE.test(k));
   const cissp = Object.entries(DB.branches).filter(([k]) => CISSP_RE.test(k));
@@ -184,8 +185,7 @@ function renderBranchSelect() {
     (cissp.length ? opt('cissp', 'CISSP') : '');
   sel.value = isCissp(state.branch) ? 'cissp' : state.branch;
 
-  sub.innerHTML = `<option value="cissp">Tous les domaines (${count('cissp')})</option>` +
-    cissp.map(([k, label]) => opt(k, label)).join('');
+  sub.innerHTML = opt('cissp', 'Tous les domaines') + cissp.map(([k, label]) => opt(k, label)).join('');
   sub.value = isCissp(state.branch) ? state.branch : 'cissp';
   sub.classList.toggle('hidden', !isCissp(state.branch));
 }
@@ -461,11 +461,29 @@ $('mm-search').addEventListener('input', (e) => {
   }, 180);
 });
 
-function bindToggle(id, key) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); }); }
+function bindToggle(id, key, after) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); if (after) after(); }); }
 bindToggle('opt-autonext', 'autoNext');
 bindToggle('opt-sound', 'sound');
+bindToggle('opt-counts', 'showCounts', renderBranchSelect);
 
 const settingsModal = $('settings-modal');
+$('app-version').textContent = 'v' + (window.APP_VERSION || '?');
+$('home-version').textContent = 'Version ' + (window.APP_VERSION || '?');
+$('btn-check-update').addEventListener('click', async () => {
+  const btn = $('btn-check-update'), out = $('update-status');
+  if (!window.UpdateCheck) { out.textContent = 'Vérificateur indisponible.'; return; }
+  btn.disabled = true; out.textContent = '⏳ Vérification…';
+  try {
+    // force : ignore le throttle de 6 h et une version précédemment ignorée
+    const r = await window.UpdateCheck.check(true);
+    out.textContent = r.status === 'update'
+      ? '🆕 Version v' + r.version + ' disponible — voir la bannière en bas.'
+      : '✅ À jour (v' + r.version + ').';
+  } catch (e) {
+    out.textContent = '❌ Échec : ' + ((e && e.message) || e);
+  }
+  btn.disabled = false;
+});
 $('btn-settings').addEventListener('click', () => settingsModal.classList.remove('hidden'));
 $('settings-close').addEventListener('click', () => settingsModal.classList.add('hidden'));
 settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.add('hidden'); });
