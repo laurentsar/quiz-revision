@@ -69,9 +69,11 @@
       'max-width:520px;margin:0 auto}' +
       '#update-banner .ub-txt{flex:1;min-width:0}' +
       '#update-banner b{color:#fff}' +
-      '#update-banner a{flex:none;background:#22c55e;color:#06210f;text-decoration:none;' +
-      'font-weight:700;padding:8px 14px;border-radius:10px}' +
-      '#update-banner button{flex:none;background:transparent;border:0;color:#9ca3af;' +
+      '#update-banner .ub-go{flex:none;background:#22c55e;color:#06210f;text-decoration:none;' +
+      'font:700 14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;border:0;' +
+      'padding:8px 14px;border-radius:10px;cursor:pointer}' +
+      '#update-banner .ub-go:disabled{opacity:.6}' +
+      '#update-banner .ub-x{flex:none;background:transparent;border:0;color:#9ca3af;' +
       'font-size:18px;line-height:1;cursor:pointer;padding:4px}';
     document.head.appendChild(css);
 
@@ -80,10 +82,35 @@
     var txt = document.createElement('span');
     txt.className = 'ub-txt';
     txt.innerHTML = '🔄 Nouvelle version <b>v' + version + '</b> disponible';
-    var dl = document.createElement('a');
-    dl.href = url; dl.target = '_blank'; dl.rel = 'noopener';
-    dl.textContent = 'Télécharger';
+
+    // Dans l'APK : téléchargement + installation sans quitter l'app (UpdatePlugin natif).
+    // En PWA / navigateur : simple lien vers l'asset de la Release.
+    var up = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.UpdatePlugin;
+    var dl;
+    if (up && /\.apk$/i.test(url)) {
+      dl = document.createElement('button');
+      dl.className = 'ub-go';
+      dl.textContent = '⬇ Installer';
+      dl.onclick = function () {
+        dl.textContent = '⏳ …'; dl.disabled = true;
+        up.downloadAndInstall({ url: url })
+          .catch(function (e) {
+            dl.textContent = '⬇ Installer'; dl.disabled = false;
+            var msg = (e && e.message) || String(e);
+            alert(/permission/i.test(msg)
+              ? "Autorise l'installation d'apps depuis cette source dans les paramètres Android, puis réessaie."
+              : 'Erreur : ' + msg);
+          });
+      };
+    } else {
+      dl = document.createElement('a');
+      dl.className = 'ub-go';
+      dl.href = url; dl.target = '_blank'; dl.rel = 'noopener';
+      dl.textContent = 'Télécharger';
+    }
+
     var x = document.createElement('button');
+    x.className = 'ub-x';
     x.setAttribute('aria-label', 'Ignorer'); x.textContent = '✕';
     x.onclick = function () { ls(false, KEY_DISMISS, version); b.remove(); };
     b.appendChild(txt); b.appendChild(dl); b.appendChild(x);

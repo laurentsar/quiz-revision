@@ -63,8 +63,9 @@ def main():
 
     for di, dom in enumerate(mm['domains'], start=1):
         key = f'cissp{di}'
-        # « Domain 3. Security Architecture and Engineering » -> « CISSP D3 · Security… »
-        label = 'CISSP D%d · %s' % (di, re.sub(r'^Domain\s+\d+\.\s*', '', dom['t']))
+        # Les domaines sont regroupés sous « CISSP » dans le sélecteur : le libellé
+        # ne garde que le nom du domaine (« Domain 3. » n'apporte rien).
+        label = re.sub(r'^Domain\s+\d+\.\s*', '', dom['t'])
         branches[key] = label
 
         def walk(node, section, path):

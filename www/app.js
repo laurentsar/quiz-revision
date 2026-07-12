@@ -20,6 +20,13 @@ const state = {
 
 let DB = null, ALL = [], CATS = [], BYTERM = {};
 
+const CISSP_RE = /^cissp\d+$/;   // cissp1..cissp7 = les domaines ; 'cissp' = les 7 réunis
+function branchLabel(k) {
+  if (k === 'all') return 'Tout';
+  if (k === 'cissp') return 'CISSP';
+  return (DB.branches && DB.branches[k]) || k;
+}
+
 const settings = Object.assign({ autoNext: true, sound: true }, lsGet('quizrev:settings:v1', {}));
 
 // ---------- persistance ----------
@@ -54,7 +61,13 @@ function uniq(a) { return [...new Set(a)]; }
 function uniqKeepFirst(a) { const s = new Set(), o = []; a.forEach(v => { if (v != null && !s.has(v)) { s.add(v); o.push(v); } }); return o; }
 const $ = (id) => document.getElementById(id);
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-function pool() { return state.branch === 'all' ? ALL : ALL.filter(c => c.branch === state.branch); }
+// 'cissp' = thème parent : tous les domaines CISSP d'un coup.
+function inBranch(c, branch) {
+  if (branch === 'all') return true;
+  if (branch === 'cissp') return CISSP_RE.test(c.branch);
+  return c.branch === branch;
+}
+function pool() { return ALL.filter(c => inBranch(c, state.branch)); }
 function fieldVal(term, field) { const c = BYTERM[term]; return c ? c[field] : null; }
 
 // ---------- sélection des concepts (répétition espacée) ----------
@@ -149,18 +162,28 @@ let autoNextTimer = null;
 function showView(name) { Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name)); window.scrollTo(0, 0); }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
 
-const BRANCH_COLORS = {
-  all: '#27B3FF', archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B',
-  cissp1: '#4CE0D2', cissp2: '#4CE0D2', cissp3: '#4CE0D2', cissp4: '#4CE0D2',
-  cissp5: '#4CE0D2', cissp6: '#4CE0D2', cissp7: '#4CE0D2',
-};
-function themeColor() { return BRANCH_COLORS[state.branch] || '#27B3FF'; }
+const BRANCH_COLORS = { all: '#27B3FF', archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
+function themeColor() {
+  if (state.branch === 'cissp' || CISSP_RE.test(state.branch)) return '#4CE0D2';
+  return BRANCH_COLORS[state.branch] || '#27B3FF';
+}
 
+// Les 7 domaines CISSP sont regroupés sous une seule entrée « CISSP », avec les
+// sous-domaines en dessous — sinon le sélecteur de thème devient illisible.
 function renderBranchSelect() {
   const sel = $('branch-select');
-  const count = (k) => k === 'all' ? ALL.length : ALL.filter(c => c.branch === k).length;
-  const entries = [['all', 'Tout']].concat(Object.entries(DB.branches));
-  sel.innerHTML = entries.map(([k, label]) => `<option value="${k}">${esc(label)} (${count(k)})</option>`).join('');
+  const count = (k) => ALL.filter(c => inBranch(c, k)).length;
+  const opt = (k, label) => `<option value="${k}">${esc(label)} (${count(k)})</option>`;
+
+  const plain = Object.entries(DB.branches).filter(([k]) => !CISSP_RE.test(k));
+  const cissp = Object.entries(DB.branches).filter(([k]) => CISSP_RE.test(k));
+
+  let html = opt('all', 'Tout') + plain.map(([k, label]) => opt(k, label)).join('');
+  if (cissp.length) {
+    html += `<optgroup label="CISSP">` + opt('cissp', 'CISSP — tous les domaines') +
+      cissp.map(([k, label]) => opt(k, '  ' + label)).join('') + `</optgroup>`;
+  }
+  sel.innerHTML = html;
   sel.value = state.branch;
 }
 
@@ -193,7 +216,7 @@ function renderQuestion() {
   clearTimeout(autoNextTimer);
   const q = state.questions[state.index], a = state.answers[state.index];
   $('quiz-progress').textContent = `Question ${state.index + 1}/${state.questions.length}`;
-  $('quiz-level').textContent = state.mode === 'review' ? '⟳ Révision erreurs' : (state.branch === 'all' ? 'Tout' : DB.branches[state.branch]);
+  $('quiz-level').textContent = state.mode === 'review' ? '⟳ Révision erreurs' : branchLabel(state.branch);
   $('quiz-level').style.color = themeColor();
   const bar = $('quiz-bar');
   bar.style.background = themeColor();
@@ -276,7 +299,7 @@ function startLearn() {
 function renderFlash() {
   const c = state.learn[state.lidx];
   $('learn-progress').textContent = `Carte ${state.lidx + 1}/${state.learn.length}`;
-  $('learn-level').textContent = state.branch === 'all' ? 'Tout' : DB.branches[state.branch];
+  $('learn-level').textContent = branchLabel(state.branch);
   $('flash-cat').textContent = c.cat;
   $('flash-term').textContent = c.term;
   $('flash-def').textContent = c.def || 'Relève de : ' + c.cat;
@@ -299,8 +322,8 @@ function gradeFlash(ok) {
 
 // ---------- fiches (référence) ----------
 function renderFiches() {
-  const list = state.branch === 'all' ? ALL : ALL.filter(c => c.branch === state.branch);
-  $('fiches-crumb').textContent = state.branch === 'all' ? 'Tout' : DB.branches[state.branch];
+  const list = pool();
+  $('fiches-crumb').textContent = branchLabel(state.branch);
   const byCat = {};
   list.forEach(c => { (byCat[c.cat] = byCat[c.cat] || []).push(c); });
   $('fiches-content').innerHTML = Object.entries(byCat).map(([cat, items]) =>
@@ -323,7 +346,7 @@ async function loadMindmap() {
   return MM.data;
 }
 
-function mmShortTitle(t) { return t.replace(/^Domain\s+(\d+)\.\s*/i, 'D$1 · '); }
+function mmShortTitle(t) { return t.replace(/^Domain\s+\d+\.\s*/i, ''); }
 
 function mmNodeHtml(node, depth) {
   const kids = node.c || [];

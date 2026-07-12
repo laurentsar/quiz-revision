@@ -1,13 +1,13 @@
 {
  "source": "https://github.com/yyds-page/cissp-mind-map (GPL-3.0) — CISSP 2020, OSG/AIO 8e éd.",
  "branches": {
-  "cissp1": "CISSP D1 · Security Management Practices",
-  "cissp2": "CISSP D2 · Asset Security",
-  "cissp3": "CISSP D3 · Security Architecture and Engineering",
-  "cissp4": "CISSP D4 · Communication and Network Security",
-  "cissp5": "CISSP D5 · Identity and Access Management",
-  "cissp6": "CISSP D6 · Security Assessment and Testing",
-  "cissp7": "CISSP D7 · Security Operations"
+  "cissp1": "Security Management Practices",
+  "cissp2": "Asset Security",
+  "cissp3": "Security Architecture and Engineering",
+  "cissp4": "Communication and Network Security",
+  "cissp5": "Identity and Access Management",
+  "cissp6": "Security Assessment and Testing",
+  "cissp7": "Security Operations"
  },
  "concepts": [
   {
