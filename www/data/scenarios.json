@@ -1,0 +1,302 @@
+{
+ "confidentiality": {
+  "lang": "en",
+  "ex": "An HR file is encrypted so only authorized managers can read it."
+ },
+ "integrity": {
+  "lang": "en",
+  "ex": "A system checks a downloaded file's hash to confirm it was not altered."
+ },
+ "availability": {
+  "lang": "en",
+  "ex": "Redundant servers are deployed so the service stays reachable if one fails."
+ },
+ "non repudiation": {
+  "lang": "en",
+  "ex": "A contract is digitally signed, so the sender cannot later deny sending it."
+ },
+ "least privilege": {
+  "lang": "en",
+  "ex": "An intern is given read-only access to just the folder they need, nothing more."
+ },
+ "defense in depth": {
+  "lang": "en",
+  "ex": "Firewall, antivirus and strong authentication stack up so one flaw is not enough."
+ },
+ "separation of duties": {
+  "lang": "en",
+  "ex": "The person who enters an invoice cannot also approve it, to prevent fraud."
+ },
+ "need to know": {
+  "lang": "en",
+  "ex": "A Secret-cleared officer only accesses the files strictly required for their mission."
+ },
+ "accountability": {
+  "lang": "en",
+  "ex": "Every sensitive action is logged and tied to the user who performed it."
+ },
+ "due care": {
+  "lang": "en",
+  "ex": "The company deploys reasonable protections, as a prudent actor would."
+ },
+ "due diligence": {
+  "lang": "en",
+  "ex": "The team regularly verifies that security measures remain effective over time."
+ },
+ "multi factor authentication": {
+  "lang": "en",
+  "ex": "To log in, the user enters a password and then a code sent to their phone."
+ },
+ "role based access control": {
+  "lang": "en",
+  "ex": "Rights are assigned by job function: every accountant has the same access."
+ },
+ "discretionary access control": {
+  "lang": "en",
+  "ex": "The owner of a file decides who may access it."
+ },
+ "mandatory access control": {
+  "lang": "en",
+  "ex": "The system enforces access from classification labels; users cannot override it."
+ },
+ "single sign on": {
+  "lang": "en",
+  "ex": "One login grants access to email, intranet and HR applications."
+ },
+ "privilege escalation": {
+  "lang": "en",
+  "ex": "An attacker exploits a flaw to move from a user account to an administrator account."
+ },
+ "privileged access management": {
+  "lang": "en",
+  "ex": "Administrator accounts are vaulted and their sessions recorded."
+ },
+ "biometrics": {
+  "lang": "en",
+  "ex": "Access to the server room is granted by fingerprint."
+ },
+ "provisioning": {
+  "lang": "en",
+  "ex": "When an employee joins, their accounts and access are created automatically for their role."
+ },
+ "deprovisioning": {
+  "lang": "en",
+  "ex": "When an employee leaves, all their access is revoked immediately."
+ },
+ "risk acceptance": {
+  "lang": "en",
+  "ex": "Management chooses to live with a low risk rather than invest to reduce it."
+ },
+ "risk avoidance": {
+  "lang": "en",
+  "ex": "A risky feature is dropped to eliminate the risk entirely."
+ },
+ "risk mitigation": {
+  "lang": "en",
+  "ex": "A firewall is installed to lower the likelihood of an intrusion."
+ },
+ "risk transference": {
+  "lang": "en",
+  "ex": "The company buys cyber-insurance to transfer part of the risk."
+ },
+ "residual risk": {
+  "lang": "en",
+  "ex": "After all controls are applied, a remaining level of risk is documented."
+ },
+ "annualized loss expectancy": {
+  "lang": "en",
+  "ex": "Expected yearly loss is estimated by multiplying loss per incident by its annual frequency."
+ },
+ "business impact analysis": {
+  "lang": "en",
+  "ex": "Critical functions and the impact of their outage are identified before building the continuity plan."
+ },
+ "symmetric encryption": {
+  "lang": "en",
+  "ex": "Two parties share one secret key to encrypt and decrypt their exchanges."
+ },
+ "asymmetric encryption": {
+  "lang": "en",
+  "ex": "A message is encrypted with the recipient's public key; only their private key decrypts it."
+ },
+ "hashing": {
+  "lang": "en",
+  "ex": "A password's irreversible fingerprint is stored instead of the password itself."
+ },
+ "digital signature": {
+  "lang": "en",
+  "ex": "A document is cryptographically signed, proving its author and integrity."
+ },
+ "public key infrastructure": {
+  "lang": "en",
+  "ex": "A certificate authority issues and manages the organization's digital certificates."
+ },
+ "salt": {
+  "lang": "en",
+  "ex": "A random value is added to each password before hashing to defeat precomputed tables."
+ },
+ "tls": {
+  "lang": "en",
+  "ex": "The browser padlock shows the connection to the site is encrypted in transit."
+ },
+ "firewall": {
+  "lang": "en",
+  "ex": "A device filters traffic between the internal network and the Internet using rules."
+ },
+ "intrusion detection system": {
+  "lang": "en",
+  "ex": "A sensor analyses traffic and alerts the team on suspicious activity, without blocking it."
+ },
+ "intrusion prevention system": {
+  "lang": "en",
+  "ex": "A device detects a network attack and blocks it automatically."
+ },
+ "vpn": {
+  "lang": "en",
+  "ex": "A remote worker sets up an encrypted tunnel to reach the corporate network."
+ },
+ "demilitarized zone": {
+  "lang": "en",
+  "ex": "The public web server is placed in a buffer subnet, isolated from the internal network."
+ },
+ "network segmentation": {
+  "lang": "en",
+  "ex": "The industrial network is separated from the office network to limit an attack's spread."
+ },
+ "zero trust": {
+  "lang": "en",
+  "ex": "No connection is implicitly trusted: every access is verified, even internally."
+ },
+ "network access control": {
+  "lang": "en",
+  "ex": "A device must prove its compliance before being admitted to the network."
+ },
+ "phishing": {
+  "lang": "en",
+  "ex": "A fraudulent email imitates the bank to trick the victim into entering their credentials."
+ },
+ "spear phishing": {
+  "lang": "en",
+  "ex": "A highly personalized email targets the chief financial officer specifically."
+ },
+ "sql injection": {
+  "lang": "en",
+  "ex": "An attacker inserts SQL into a form field to read the database."
+ },
+ "cross site scripting": {
+  "lang": "en",
+  "ex": "A malicious script is injected into a page and runs in other visitors' browsers."
+ },
+ "ransomware": {
+  "lang": "en",
+  "ex": "Software encrypts the company's files and demands a ransom to release them."
+ },
+ "social engineering": {
+  "lang": "en",
+  "ex": "A stranger poses as IT support to obtain a password."
+ },
+ "piggybacking tailgating": {
+  "lang": "en",
+  "ex": "An unauthorized person enters the premises by following an employee who badged in."
+ },
+ "evil twin": {
+  "lang": "en",
+  "ex": "A rogue Wi-Fi access point imitates the hotel's to intercept guests' traffic."
+ },
+ "pass the hash": {
+  "lang": "en",
+  "ex": "The attacker authenticates with a stolen password hash, without knowing the password."
+ },
+ "man in the middle": {
+  "lang": "en",
+  "ex": "An attacker sits between two parties to eavesdrop on their communication."
+ },
+ "distributed denial of service": {
+  "lang": "en",
+  "ex": "Thousands of machines flood a site with requests to make it unavailable."
+ },
+ "rainbow table": {
+  "lang": "en",
+  "ex": "The attacker uses a table of precomputed hashes to recover passwords quickly."
+ },
+ "honeypot": {
+  "lang": "en",
+  "ex": "A decoy server is deployed to lure attackers and study their methods."
+ },
+ "containment": {
+  "lang": "en",
+  "ex": "On detection, the infected machine is isolated from the network to stop the spread."
+ },
+ "eradication": {
+  "lang": "en",
+  "ex": "The malware is removed and the exploited flaw is fixed."
+ },
+ "chain of custody": {
+  "lang": "en",
+  "ex": "Every handling of an evidence item is logged so it stays admissible in court."
+ },
+ "recovery time objective": {
+  "lang": "en",
+  "ex": "A 4-hour maximum is set to restore the service after an outage."
+ },
+ "recovery point objective": {
+  "lang": "en",
+  "ex": "At most 15 minutes of data loss is accepted, which sets the backup frequency."
+ },
+ "hot site": {
+  "lang": "en",
+  "ex": "A fully equipped alternate site lets operations resume within minutes."
+ },
+ "shared responsibility model": {
+  "lang": "en",
+  "ex": "The provider secures the infrastructure; the customer secures their data and access."
+ },
+ "software as a service": {
+  "lang": "en",
+  "ex": "The company uses a ready-to-use online mail service with nothing to install."
+ },
+ "infrastructure as a service": {
+  "lang": "en",
+  "ex": "The team rents virtual servers and manages the operating system itself."
+ },
+ "cloud access security broker": {
+  "lang": "en",
+  "ex": "An intermediary enforces security policy between users and cloud services."
+ },
+ "data sovereignty": {
+  "lang": "en",
+  "ex": "Data hosted in a country is subject to that country's laws."
+ },
+ "tokenization": {
+  "lang": "en",
+  "ex": "A card number is replaced by a token with no exploitable value if stolen."
+ },
+ "data loss prevention": {
+  "lang": "en",
+  "ex": "A tool blocks emailing a file that contains social security numbers."
+ },
+ "droit à l effacement": {
+  "lang": "fr",
+  "ex": "Un client demande la suppression de toutes ses données : l'entreprise doit y donner suite."
+ },
+ "notifier l autorité sous 72 h": {
+  "lang": "fr",
+  "ex": "Après une fuite de données, l'entreprise dispose de 72 heures pour prévenir la CNIL."
+ },
+ "analyse d impact aipd": {
+  "lang": "fr",
+  "ex": "Avant un traitement à risque élevé, on évalue formellement son impact sur la vie privée."
+ },
+ "consentement": {
+  "lang": "fr",
+  "ex": "Une case non pré-cochée invite l'utilisateur à accepter explicitement le traitement de ses données."
+ },
+ "habilitation": {
+  "lang": "fr",
+  "ex": "Une décision formelle autorise un agent à accéder aux informations classifiées d'un niveau donné."
+ },
+ "homologation d un si classifié": {
+  "lang": "fr",
+  "ex": "Une autorité atteste qu'un système atteint le niveau de sécurité requis avant sa mise en service."
+ }
+}

@@ -754,12 +754,13 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 // ---------- démarrage ----------
 (async function init() {
   const empty = { branches: {}, concepts: [] };
-  const [base, cissp, isc2, ceh, ignite] = await Promise.all([
+  const [base, cissp, isc2, ceh, ignite, scen] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
     (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
     (await fetch('data/isc2_concepts.json')).json().catch(() => empty),
     (await fetch('data/ceh_concepts.json')).json().catch(() => empty),
     (await fetch('data/ignite_concepts.json')).json().catch(() => empty),
+    (await fetch('data/scenarios.json')).json().catch(() => ({})),
   ]);
   // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite) apporte
   // ses thèmes ; tous sont traités à l'identique par le quiz, les flashcards et le Leitner.
@@ -769,6 +770,16 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
     concepts: [].concat(...srcs.map(s => s.concepts)),
   };
   ALL = DB.concepts;
+  // Scénarios (« mises en situation ») rattachés par terme normalisé : un concept
+  // doté d'un `ex` débloque la question de mise en situation. On n'applique un
+  // scénario que si sa langue correspond à celle du thème — un thème français
+  // (homologation, Réf. cyber) ne reçoit pas un scénario anglais, et inversement.
+  const normEx = (t) => t.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9à-ÿ]+/g, ' ').trim();
+  const branchLang = (b) => (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_')) ? 'fr' : 'en';
+  ALL.forEach(c => {
+    const s = scen[normEx(c.term)];
+    if (!c.ex && s && s.lang === branchLang(c.branch)) c.ex = s.ex;
+  });
   CATS = uniq(ALL.map(c => c.cat));
   ALL.forEach(c => { BYTERM[c.term] = c; });
   renderBranchSelect();
