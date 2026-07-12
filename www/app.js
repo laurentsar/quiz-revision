@@ -270,6 +270,44 @@ function renderBranchSelect() {
 
   row.querySelectorAll('.branch-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
   sub.querySelectorAll('.sub-chip').forEach(c => c.addEventListener('click', () => toggleBranch(c.dataset.branch)));
+
+  // menu déroulant de sélection rapide (synchronisé avec les chips)
+  const home = $('home-select');
+  const v = scopeToSelectValue();
+  home.innerHTML = (v === '' ? '<option value="" disabled>— sélection multiple —</option>' : '') + themeOptionsHtml();
+  home.value = v;
+}
+
+// Options communes au menu accueil et au menu des fiches : Tout, thèmes simples,
+// puis un optgroup par groupe (Homologation, Certifications) avec « — tout » + membres.
+function themeOptionsHtml() {
+  const opt = (val, l) => `<option value="${val}">${esc(l)}</option>`;
+  const plain = Object.entries(DB.branches).filter(([k]) => !groupOf(k));
+  let h = opt('all', 'Tout') + plain.map(([k, l]) => opt(k, l)).join('');
+  GROUPS.forEach(g => {
+    const m = Object.entries(DB.branches).filter(([k]) => g.test(k));
+    if (!m.length) return;
+    h += `<optgroup label="${esc(g.label)}">` + opt('grp:' + g.id, g.label + ' — tout') +
+      m.map(([k, l]) => opt(k, '  ' + l)).join('') + `</optgroup>`;
+  });
+  return h;
+}
+
+// Valeur du menu correspondant à la sélection courante ('' = multiple/personnalisé).
+function scopeToSelectValue() {
+  const n = state.branches.size;
+  if (!n || n === Object.keys(DB.branches).length) return 'all';
+  if (n === 1) return [...state.branches][0];
+  for (const g of GROUPS) { const ks = groupKeys(g); if (ks.length === n && ks.every(k => state.branches.has(k))) return 'grp:' + g.id; }
+  return '';
+}
+
+// Application d'un choix du menu déroulant : remplace la sélection courante.
+function selectHomeTheme(v) {
+  state.branches.clear();
+  if (v.startsWith('grp:')) groupKeys(groupById(v.slice(4))).forEach(k => state.branches.add(k));
+  else if (v && v !== 'all') state.branches.add(v);
+  renderBranchSelect(); renderHome();
 }
 
 // Une chip « grp:<id> » bascule tous les membres du groupe d'un bloc.
@@ -503,20 +541,10 @@ function gradeFlash(ok) {
 // ou 'grp:<id>' pour tout un groupe (CISSP, Réf. cyber…).
 let fichesSel = 'all';
 
-// Peuple le menu déroulant avec tous les thèmes, groupés en optgroups.
+// Peuple le menu déroulant des fiches (mêmes options que l'accueil).
 function renderFichesSelect() {
   const sel = $('fiches-select');
-  const opt = (v, l) => `<option value="${v}">${esc(l)}</option>`;
-  const plain = Object.entries(DB.branches).filter(([k]) => !groupOf(k));
-  let html = opt('all', 'Tout') + plain.map(([k, l]) => opt(k, l)).join('');
-  GROUPS.forEach(g => {
-    const members = Object.entries(DB.branches).filter(([k]) => g.test(k));
-    if (!members.length) return;
-    html += `<optgroup label="${esc(g.label)}">` +
-      opt('grp:' + g.id, g.label + ' — tout') +
-      members.map(([k, l]) => opt(k, '  ' + l)).join('') + `</optgroup>`;
-  });
-  sel.innerHTML = html;
+  sel.innerHTML = themeOptionsHtml();
   sel.value = fichesSel;
 }
 
@@ -755,6 +783,7 @@ $('btn-branch-none').addEventListener('click', () => {
   state.branches.clear();                  // vide = tout le corpus
   renderBranchSelect(); renderHome();
 });
+$('home-select').addEventListener('change', (e) => selectHomeTheme(e.target.value));
 $('btn-fab-home').addEventListener('click', exitToHome);
 $('btn-stats').addEventListener('click', () => { showView('stats'); renderStatsView(); });
 $('btn-stats-home').addEventListener('click', exitToHome);

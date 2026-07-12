@@ -40,7 +40,10 @@
       </div>
 
       <div class="card hero">
-        <span class="hero-label">Thèmes</span>
+        <span class="hero-label">Thème (sélection rapide)</span>
+        <select id="home-select" class="select"></select>
+
+        <span class="hero-label">ou plusieurs thèmes</span>
         <div id="branch-row" class="chip-row"></div>
         <!-- domaines CISSP : n'apparaît que si le thème CISSP est actif -->
         <div id="cissp-row" class="chip-row hidden" style="margin-top:8px"></div>
@@ -240,7 +243,7 @@
   <button id="btn-fab-home" class="fab-home hidden" title="Accueil">🏠</button>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='3.3';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='3.4';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
