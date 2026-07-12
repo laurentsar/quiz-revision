@@ -381,13 +381,204 @@ MAPS['ccsp6'] = ('CCSP · Legal, Risk & Compliance', {
 })
 
 
+# ═══════════════ Densification SSCP & CCSP ═══════════════
+# Concepts supplémentaires fusionnés dans les thèmes ci-dessus (nouvelles rubriques).
+SUPPLEMENT = {
+    'sscp1': {
+        'Security Governance': [
+            ('Standard', "A mandatory rule specifying how a policy must be implemented."),
+            ('Procedure', "A detailed step-by-step set of instructions to perform a task."),
+            ('Guideline', "A recommended, non-mandatory practice."),
+            ('Baseline', "A minimum security configuration all systems must meet."),
+            ('Due Care', "Taking reasonable steps to protect assets, as a prudent person would."),
+            ('Due Diligence', "Continuously verifying that due care measures remain effective."),
+        ],
+        'Risk & Assurance': [
+            ('Risk Transference', "Shifting risk to a third party (e.g., insurance, outsourcing)."),
+            ('Risk Avoidance', "Eliminating the activity that causes the risk."),
+            ('Residual Risk', "The risk remaining after controls are applied."),
+            ('AAA', "Authentication, Authorization and Accounting — the pillars of access control."),
+        ],
+    },
+    'sscp2': {
+        'Authentication Factors': [
+            ('Something You Know', "Knowledge factor: password, PIN, passphrase."),
+            ('Something You Have', "Possession factor: token, smart card, phone."),
+            ('Something You Are', "Inherence factor: biometrics (fingerprint, face)."),
+            ('Multi-Factor Authentication (MFA)', "Combining two or more distinct authentication factors."),
+            ('Biometrics', "Authentication based on physical or behavioural traits."),
+            ('False Acceptance Rate (FAR)', "Rate at which a biometric system wrongly accepts an impostor."),
+            ('False Rejection Rate (FRR)', "Rate at which a biometric system wrongly rejects a legitimate user."),
+        ],
+        'Access Administration': [
+            ('Identity Proofing', "Verifying a person's identity before issuing credentials."),
+            ('Just-in-Time Access', "Granting elevated access only for the time it is needed."),
+            ('Privileged Access Management (PAM)', "Controlling and monitoring privileged accounts."),
+            ('Access Review / Recertification', "Periodically confirming users still need their access."),
+        ],
+    },
+    'sscp3': {
+        'Risk Treatment': [
+            ('Qualitative Risk Analysis', "Rating risk by descriptive levels (high/medium/low)."),
+            ('Quantitative Risk Analysis', "Assigning monetary values to risk (SLE, ALE)."),
+            ('Single Loss Expectancy (SLE)', "Expected monetary loss from a single incident."),
+            ('Annualized Loss Expectancy (ALE)', "Expected yearly loss = SLE × annual rate of occurrence."),
+        ],
+        'Monitoring Techniques': [
+            ('Security Baseline', "A reference of normal activity used to spot anomalies."),
+            ('False Positive', "An alert on benign activity wrongly flagged as malicious."),
+            ('False Negative', "A real threat that goes undetected."),
+            ('Netflow Analysis', "Inspecting network flow metadata to detect anomalies."),
+            ('Threat Intelligence', "Actionable knowledge about current and emerging threats."),
+        ],
+    },
+    'sscp4': {
+        'Incident Lifecycle': [
+            ('Preparation', "Building the capability to respond before incidents occur."),
+            ('Detection and Analysis', "Identifying and scoping an incident."),
+            ('Recovery', "Restoring systems to normal operation."),
+            ('Lessons Learned', "Post-incident review to improve future response."),
+            ('Chain of Custody', "Documented handling of evidence to keep it admissible."),
+            ('Order of Volatility', "Collecting the most perishable evidence first (RAM before disk)."),
+        ],
+        'Resilience': [
+            ('Hot Site', "Fully equipped alternate site ready almost immediately."),
+            ('Warm Site', "Partially equipped alternate site needing some setup."),
+            ('Cold Site', "Basic alternate site requiring full setup before use."),
+            ('Backup Rotation', "Scheme for cycling backups (e.g., grandfather-father-son)."),
+        ],
+    },
+    'sscp5': {
+        'Algorithms & Modes': [
+            ('AES', "Advanced Encryption Standard, a widely used symmetric block cipher."),
+            ('RSA', "Widely used asymmetric algorithm for encryption and signatures."),
+            ('Elliptic Curve Cryptography (ECC)', "Asymmetric cryptography with small, efficient keys."),
+            ('SHA-256', "A cryptographic hash function producing a 256-bit digest."),
+            ('HMAC', "Hash-based message authentication code providing integrity and authenticity."),
+            ('Salt', "Random data added to a password before hashing to defeat rainbow tables."),
+        ],
+        'Applied Cryptography': [
+            ('TLS', "Transport Layer Security: encrypts data in transit."),
+            ('Digital Certificate', "Binds a public key to an identity, signed by a CA."),
+            ('Non-repudiation', "Cryptographic assurance a signer cannot deny their signature."),
+            ('Key Rotation', "Periodically replacing keys to limit exposure."),
+        ],
+    },
+    'sscp6': {
+        'Protocols & Services': [
+            ('DNS', "Resolves domain names to IP addresses; a frequent attack target."),
+            ('DHCP', "Automatically assigns IP addresses to hosts."),
+            ('DNSSEC', "Adds authentication to DNS to prevent spoofing."),
+            ('Port Number', "Identifies a network service (e.g., 443 HTTPS, 22 SSH)."),
+            ('Network Address Translation (NAT)', "Maps private addresses to public ones."),
+        ],
+        'Wireless & Remote': [
+            ('WPA2 / WPA3', "Wi-Fi security protocols protecting wireless traffic."),
+            ('802.1X', "Port-based network access control requiring authentication."),
+            ('Remote Access VPN', "Encrypted remote connection into a private network."),
+            ('Zero Trust', "Never trust, always verify — no implicit trust by network location."),
+        ],
+    },
+    'sscp7': {
+        'Endpoint Defense': [
+            ('Host-Based Firewall', "Filters traffic on an individual host."),
+            ('HIDS/HIPS', "Host intrusion detection/prevention on a single system."),
+            ('Sandboxing', "Running untrusted code in an isolated environment."),
+            ('Mobile Device Management (MDM)', "Centrally managing and securing mobile devices."),
+            ('Secure Configuration', "Hardening systems by disabling unneeded services and ports."),
+        ],
+        'Data & Cloud': [
+            ('Data at Rest', "Stored data, protected mainly by encryption and access control."),
+            ('Data in Transit', "Moving data, protected by transport encryption (TLS)."),
+            ('Data in Use', "Data being processed in memory, hardest to protect."),
+            ('Container Security', "Securing containerized workloads and their images."),
+            ('Shared Responsibility Model', "Cloud security duties split between provider and customer."),
+        ],
+    },
+    'ccsp1': {
+        'Roles & Standards': [
+            ('Cloud Service Provider (CSP)', "Entity delivering cloud services to customers."),
+            ('Cloud Service Customer', "Organization consuming cloud services."),
+            ('Cloud Broker', "Intermediary managing use and delivery of cloud services."),
+            ('Community Cloud', "Cloud shared by organizations with common concerns."),
+            ('Hybrid Cloud', "Combination of private and public clouds."),
+            ('ISO/IEC 17788', "Standard defining cloud computing vocabulary and concepts."),
+            ('NIST SP 800-145', "NIST definition of cloud computing (models and characteristics)."),
+        ],
+    },
+    'ccsp2': {
+        'Storage & Keys': [
+            ('Data Dispersion', "Splitting and distributing data across multiple locations."),
+            ('Key Management Service (KMS)', "Managed service for creating and controlling encryption keys."),
+            ('Bring Your Own Key (BYOK)', "Customer supplies and controls their own encryption keys."),
+            ('Hardware Security Module (HSM)', "Tamper-resistant device managing cryptographic keys."),
+            ('Data Masking', "Obscuring sensitive data while keeping it usable for testing."),
+            ('Data Retention Policy', "Rules for how long data is kept before disposal."),
+        ],
+    },
+    'ccsp3': {
+        'Cloud Infrastructure': [
+            ('Management Plane', "The interface controlling cloud resources; a high-value target."),
+            ('Availability Zone', "Isolated location within a cloud region for resilience."),
+            ('Auto-Scaling', "Automatically adjusting capacity to match demand."),
+            ('Bastion Host', "Hardened jump server controlling access to internal resources."),
+            ('Zero Trust Network Access (ZTNA)', "Per-request access verification without implicit trust."),
+            ('Cloud Access Security Broker (CASB)', "Enforces security policy between users and cloud services."),
+        ],
+    },
+    'ccsp4': {
+        'Application Assurance': [
+            ('Threat Modeling', "Systematically identifying threats to an application (e.g., STRIDE)."),
+            ('OWASP Top 10', "The most critical web application security risks."),
+            ('Software Composition Analysis (SCA)', "Finding vulnerabilities in open-source dependencies."),
+            ('Web Application Firewall (WAF)', "Filters and blocks malicious web traffic."),
+            ('Runtime Application Self-Protection (RASP)', "In-app protection detecting attacks at runtime."),
+            ('Serverless Security', "Securing function-as-a-service workloads and their triggers."),
+        ],
+    },
+    'ccsp5': {
+        'Operational Security': [
+            ('Baseline Compliance', "Verifying systems match a secure configuration standard."),
+            ('Patch Management', "Applying updates to remediate vulnerabilities."),
+            ('Digital Forensics', "Collecting and analysing cloud evidence after an incident."),
+            ('Security Operations Center (SOC)', "Team monitoring and responding to threats continuously."),
+            ('Backup and Restore', "Copying data and validating recovery in the cloud."),
+            ('Chaos Engineering', "Deliberately injecting failures to test resilience."),
+        ],
+    },
+    'ccsp6': {
+        'Standards & Frameworks': [
+            ('ISO/IEC 27017', "Cloud-specific information security controls."),
+            ('ISO/IEC 27018', "Protection of personal data (PII) in public clouds."),
+            ('Cloud Security Alliance (CSA)', "Body publishing cloud security guidance (CCM, STAR)."),
+            ('SOC 2 Type II', "Audit report on a provider's controls over a period of time."),
+            ('Right to Audit', "Contractual clause allowing the customer to audit the provider."),
+            ('Data Breach Notification', "Legal duty to report breaches within set deadlines."),
+        ],
+    },
+}
+
+# fusionne les compléments dans les thèmes existants
+for _br, _cats in SUPPLEMENT.items():
+    _label, _existing = MAPS[_br]
+    for _cat, _items in _cats.items():
+        _existing.setdefault(_cat, []).extend(_items)
+
+
 def main():
     branches = {}
     concepts = []
+    seen = set()
     for key, (label, cats) in MAPS.items():
         branches[key] = label
         for cat, items in cats.items():
             for term, dfn in items:
+                # dédup par terme DANS un thème (un même terme peut réapparaître
+                # dans une autre certif : c'est légitime, on le garde)
+                sig = (key, term.lower())
+                if sig in seen:
+                    continue
+                seen.add(sig)
                 concepts.append({'term': term, 'def': dfn, 'cat': cat,
                                  'branch': key, 'tip': label + ' · ' + cat})
 
