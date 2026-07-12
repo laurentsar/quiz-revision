@@ -31,11 +31,11 @@ const REGLEM = ['igi1300', 'ii901', 'igi2102'];   // instructions FR (protection
 const GROUPS = [
   { id: 'homolog', label: 'Homologation', icon: '🏛️', dot: '🔵', color: '#27B3FF', test: (k) => k === 'archi' },
   { id: 'reglem', label: 'Réglementation (IGI/II)', icon: '⚖️', dot: '🟠', color: '#FF9F6B', test: (k) => REGLEM.includes(k) },
-  { id: 'cissp', label: 'Certification CISSP', icon: '🎓', dot: '🟢', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
-  { id: 'sscp', label: 'Certification SSCP', icon: '🎓', dot: '🟢', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
-  { id: 'ccsp', label: 'Certification CCSP', icon: '🎓', dot: '🟢', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
-  { id: 'cc', label: 'Certification CC (ISC2)', icon: '🎓', dot: '🟢', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
-  { id: 'ceh', label: 'Certification CEH', icon: '🎓', dot: '🟢', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
+  { id: 'cissp', label: 'Certification CISSP', icon: '🔐', dot: '🟢', color: '#4CE0D2', test: (k) => /^cissp\d+$/.test(k) },
+  { id: 'sscp', label: 'Certification SSCP', icon: '🖥️', dot: '🟢', color: '#35D07F', test: (k) => /^sscp\d+$/.test(k) },
+  { id: 'ccsp', label: 'Certification CCSP', icon: '☁️', dot: '🟢', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
+  { id: 'cc', label: 'Certification CC (ISC2)', icon: '🌱', dot: '🟢', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
+  { id: 'ceh', label: 'Certification CEH', icon: '🕵️', dot: '🟢', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
 function groupById(id) { return GROUPS.find(g => g.id === id); }
@@ -265,11 +265,19 @@ function themeOptionsHtml() {
       opt('grp:' + g.id, (g.dot || '▸') + ' Tout — ' + g.label) +
       m.map(([k, l]) => opt(k, (g.dot || '·') + ' ' + l)).join('') + `</optgroup>`;
   });
-  // thèmes de référence (non regroupés) rassemblés sous un en-tête visuel commun
+  // thèmes de référence : chacun une partie distincte (option de 1er niveau + icône)
   const ref = Object.entries(DB.branches).filter(([k]) => k.startsWith('ig_'));
-  if (ref.length) h += `<optgroup label="🧭 Référence cyber">` + ref.map(([k, l]) => opt(k, '🟣 ' + l)).join('') + `</optgroup>`;
+  if (ref.length) h += `<optgroup label="── Références ──">` +
+    ref.map(([k, l]) => opt(k, (REF_ICONS[k] || '🧭') + ' ' + l)).join('') + `</optgroup>`;
   return h;
 }
+
+// Icône propre à chaque thème de référence (partie distincte dans le menu).
+const REF_ICONS = {
+  ig_nist: '📋', ig_gdpr: '🔏', ig_hipaa: '🏥', ig_http: '🌐', ig_socialeng: '🎭',
+  ig_mitre: '⚔️', ig_blueteam: '🛡️', ig_cybertech: '🧰', ig_sec360: '🎯',
+  ig_secauto: '☠️', ig_devops: '⚙️',
+};
 
 // Valeur du menu correspondant à la sélection courante ('' = multiple/personnalisé).
 function scopeToSelectValue() {
