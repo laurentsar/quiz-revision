@@ -1,1349 +1,1774 @@
 {
- "title": "Cybersécurité, Secret & Homologation",
- "source": "Mind maps homologation (architecture & homologation) + IGI 1300 + II 901 + IGI 2102",
- "branches": {
-  "archi": "Architecture & homologation",
-  "igi1300": "IGI 1300 — Secret Défense",
-  "ii901": "II 901 — SI sensibles",
-  "igi2102": "IGI 2102 — ICUE (UE)"
- },
- "concepts": [
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Principes d'architecture",
-   "term": "Defense in depth",
-   "def": "Empiler des couches de sécurité complémentaires",
-   "tip": "Comme un château : douves + murs + donjon ; si une couche tombe, une autre tient.",
-   "ex": "L'antivirus rate un malware, mais le pare-feu et la segmentation limitent les dégâts.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Principes d'architecture",
-   "term": "Zero Trust",
-   "def": "Ne jamais faire confiance par défaut, toujours vérifier",
-   "tip": "« Jamais confiance, toujours vérifier » — même à l'intérieur du réseau.",
-   "ex": "Un utilisateur déjà connecté doit se ré-authentifier pour une ressource sensible.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Principes d'architecture",
-   "term": "Least privilege",
-   "def": "N'accorder que les droits strictement nécessaires",
-   "tip": "Juste les droits nécessaires, rien de plus.",
-   "ex": "Un comptable accède aux dossiers compta, pas aux serveurs RH.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Principes d'architecture",
-   "term": "Need to know",
-   "def": "Limiter l'accès aux seules informations nécessaires",
-   "tip": "On ne sait que ce qu'on a besoin de savoir.",
-   "ex": "Un projet classifié n'est visible que par les membres de l'équipe concernée.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Principes d'architecture",
-   "term": "Security by design",
-   "def": "Intégrer la sécurité dès la conception du système",
-   "tip": "La sécurité dès le plan, pas en rustine.",
-   "ex": "On définit chiffrement et accès avant même de coder l'application.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Principes d'architecture",
-   "term": "Segregation of duties",
-   "def": "Séparer les rôles sensibles",
-   "tip": "Celui qui demande ≠ celui qui valide.",
-   "ex": "La personne qui crée un paiement ne peut pas l'approuver seule.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Objectifs de sécurité",
-   "term": "Confidentialité",
-   "def": "Réserver l'information aux personnes autorisées",
-   "tip": "C de CID : le secret.",
-   "ex": "Seuls les RH peuvent lire les bulletins de salaire.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Objectifs de sécurité",
-   "term": "Intégrité",
-   "def": "Garantir que les données ne sont pas altérées",
-   "tip": "I de CID : non altéré.",
-   "ex": "Une somme de contrôle révèle qu'un fichier a été modifié.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Objectifs de sécurité",
-   "term": "Disponibilité",
-   "def": "Garantir l'accès au service et aux données",
-   "tip": "D de CID : accessible quand il faut.",
-   "ex": "Le site doit rester joignable malgré un pic de trafic.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Objectifs de sécurité",
-   "term": "Traçabilité",
-   "def": "Pouvoir reconstituer qui a fait quoi et quand",
-   "tip": "Qui ? Quoi ? Quand ?",
-   "ex": "Les logs montrent que l'admin X a modifié la config à 14h02.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Objectifs de sécurité",
-   "term": "Résilience",
-   "def": "Capacité à résister et à se rétablir après un incident",
-   "tip": "Encaisser le coup et se relever.",
-   "ex": "Après une panne, le service redémarre sur un site de secours.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Segmentation & zones de confiance",
-   "term": "Zones de confiance",
-   "def": "Regrouper les composants selon leur criticité et leur exposition",
-   "tip": "On range par criticité et exposition.",
-   "ex": "Serveurs Internet, serveurs internes et systèmes critiques en zones distinctes.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Segmentation & zones de confiance",
-   "term": "Cloisonnement",
-   "def": "Limiter les communications entre zones",
-   "tip": "Des cloisons entre les zones.",
-   "ex": "Le réseau bureautique ne peut pas parler directement aux automates industriels.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Segmentation & zones de confiance",
-   "term": "DMZ",
-   "def": "Zone tampon entre un réseau exposé et le réseau interne sensible",
-   "tip": "Le sas exposé entre dehors et dedans.",
-   "ex": "Le serveur web public est en DMZ, jamais dans le réseau interne.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Segmentation & zones de confiance",
-   "term": "Flux inter-zones",
-   "def": "Identifier précisément les flux autorisés entre zones",
-   "tip": "Qui parle à qui, précisément.",
-   "ex": "On autorise seulement le port 443 de la DMZ vers le serveur applicatif.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Segmentation & zones de confiance",
-   "term": "Matrice de flux",
-   "def": "Recenser les flux réseau autorisés (source, destination, port)",
-   "tip": "Le tableau source → destination → port.",
-   "ex": "Un tableau liste tous les flux réseau autorisés et leur justification.",
-   "confuse": [
-    "Matrice de conformité"
-   ]
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Segmentation & zones de confiance",
-   "term": "Bastion",
-   "def": "Point d'accès contrôlé pour administrer des systèmes sensibles",
-   "tip": "Le donjon : un seul passage gardé pour l'admin.",
-   "ex": "Les administrateurs passent par le bastion pour atteindre les serveurs sensibles.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Identité & contrôle d'accès",
-   "term": "IAM",
-   "def": "Gérer les identités et les accès (Identity and Access Management)",
-   "tip": "Identités + Accès, la gestion globale.",
-   "ex": "Création, modification et suppression des comptes et de leurs droits.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Identité & contrôle d'accès",
-   "term": "RBAC",
-   "def": "Attribuer les droits selon le rôle de l'utilisateur",
-   "tip": "Droits selon le RÔLE.",
-   "ex": "Le rôle « support » donne automatiquement les accès du support.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Identité & contrôle d'accès",
-   "term": "MFA",
-   "def": "Authentifier avec plusieurs facteurs (mot de passe + code…)",
-   "tip": "Deux preuves valent mieux qu'une.",
-   "ex": "Mot de passe + code reçu sur le téléphone pour se connecter.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Identité & contrôle d'accès",
-   "term": "Comptes à privilèges",
-   "def": "Comptes disposant de droits élevés (administration)",
-   "tip": "Les clés du royaume (admin).",
-   "ex": "Le compte administrateur du domaine, ultra-surveillé.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Identité & contrôle d'accès",
-   "term": "Revues d'accès",
-   "def": "Vérifier périodiquement que les droits restent justifiés",
-   "tip": "On refait le tri régulièrement.",
-   "ex": "Chaque trimestre, on vérifie que personne ne garde de droits inutiles.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Identité & contrôle d'accès",
-   "term": "Journalisation des accès",
-   "def": "Enregistrer les connexions et actions des utilisateurs",
-   "tip": "On note qui entre et ce qu'il fait.",
-   "ex": "Chaque connexion réussie ou échouée est enregistrée.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Protection réseau",
-   "term": "Pare-feu",
-   "def": "Filtrer le trafic entre réseaux selon des règles",
-   "tip": "Le videur : règles d'entrée / sortie.",
-   "ex": "Il bloque tout le trafic sauf les ports explicitement autorisés.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Protection réseau",
-   "term": "IDS / IPS",
-   "def": "Détecter ou bloquer les comportements réseau suspects",
-   "tip": "IDS alerte, IPS bloque.",
-   "ex": "L'IPS coupe une connexion qui ressemble à une attaque connue.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Protection réseau",
-   "term": "Proxy",
-   "def": "Contrôler et journaliser les accès sortants",
-   "tip": "Le filtre des sorties web.",
-   "ex": "Les accès Internet des employés passent par le proxy qui journalise tout.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Protection réseau",
-   "term": "VPN",
-   "def": "Établir un tunnel chiffré entre deux réseaux ou postes",
-   "tip": "Tunnel chiffré à travers Internet.",
-   "ex": "Le télétravailleur rejoint le réseau de l'entreprise via un VPN.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Protection réseau",
-   "term": "Filtrage",
-   "def": "Restreindre les ports, protocoles et destinations autorisés",
-   "tip": "On restreint ports / protocoles / destinations.",
-   "ex": "On n'autorise que HTTPS vers une liste de serveurs.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Protection réseau",
-   "term": "Chiffrement des flux",
-   "def": "Protéger les échanges contre l'interception ou l'altération",
-   "tip": "Données illisibles en transit.",
-   "ex": "Le HTTPS protège les échanges entre le navigateur et le site.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Systèmes & durcissement",
-   "term": "Hardening",
-   "def": "Réduire la surface d'attaque d'un système",
-   "tip": "On enlève le superflu = moins de surface.",
-   "ex": "On désactive les services inutiles et on durcit la config d'un serveur.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Systèmes & durcissement",
-   "term": "Patch management",
-   "def": "Appliquer les correctifs de sécurité",
-   "tip": "Boucher les trous connus.",
-   "ex": "On applique vite les correctifs de sécurité publiés.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Systèmes & durcissement",
-   "term": "Configuration sécurisée",
-   "def": "Appliquer des paramètres conformes aux exigences de sécurité",
-   "tip": "Régler conforme aux exigences.",
-   "ex": "On applique un guide de durcissement (CIS) sur chaque machine.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Systèmes & durcissement",
-   "term": "Antivirus / EDR",
-   "def": "Détecter et répondre aux menaces sur les postes et serveurs",
-   "tip": "Le garde du corps du poste.",
-   "ex": "L'EDR détecte un comportement anormal sur un PC et l'isole.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Systèmes & durcissement",
-   "term": "Gestion des vulnérabilités",
-   "def": "Identifier, qualifier, prioriser et traiter les failles",
-   "tip": "Identifier → qualifier → prioriser → traiter.",
-   "ex": "Un scan révèle des failles ; on traite d'abord les critiques.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Systèmes & durcissement",
-   "term": "Contrôle des ports / services",
-   "def": "Désactiver ce qui n'est pas nécessaire",
-   "tip": "Fermer ce qui ne sert pas.",
-   "ex": "On ferme les ports réseau non utilisés d'un serveur.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Supervision & détection",
-   "term": "Logs",
-   "def": "Journaux d'événements, matière première de la supervision",
-   "tip": "Les traces : la matière première.",
-   "ex": "Les journaux des serveurs sont collectés pour analyse.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Supervision & détection",
-   "term": "SIEM",
-   "def": "Centraliser, corréler et analyser les événements",
-   "tip": "Le cerveau qui centralise et corrèle.",
-   "ex": "Le SIEM agrège les logs de tout le SI et lève des alertes.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Supervision & détection",
-   "term": "Alerting",
-   "def": "Déclencher une alerte sur un événement suspect ou critique",
-   "tip": "La sonnette d'alarme.",
-   "ex": "Une alerte se déclenche après 10 échecs de connexion en 1 minute.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Supervision & détection",
-   "term": "Corrélation",
-   "def": "Relier plusieurs événements pour détecter un scénario d'attaque",
-   "tip": "Relier les points → un scénario.",
-   "ex": "Connexion inhabituelle + gros transfert = exfiltration probable.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Supervision & détection",
-   "term": "Détection d'incident",
-   "def": "Identifier une compromission ou un comportement anormal",
-   "tip": "Repérer l'anormal.",
-   "ex": "On repère une machine qui communique avec un serveur malveillant.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Supervision & détection",
-   "term": "Investigation",
-   "def": "Analyser après coup le déroulement d'un incident",
-   "tip": "L'enquête après coup.",
-   "ex": "On analyse les logs pour comprendre comment l'attaquant est entré.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Données",
-   "term": "Classification",
-   "def": "Attribuer un niveau de sensibilité aux données",
-   "tip": "Étiqueter la sensibilité.",
-   "ex": "Un document est marqué « Confidentiel » ou « Public ».",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Données",
-   "term": "Chiffrement",
-   "def": "Rendre les données illisibles sans la clé",
-   "tip": "Illisible sans la clé.",
-   "ex": "Le disque d'un portable est chiffré en cas de vol.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Données",
-   "term": "Intégrité des données",
-   "def": "Garantir l'absence de modification non autorisée",
-   "tip": "Pas de modif sournoise.",
-   "ex": "Un hachage permet de détecter toute altération d'un fichier.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Données",
-   "term": "Rétention",
-   "def": "Définir combien de temps conserver les données et les logs",
-   "tip": "Combien de temps on garde.",
-   "ex": "Les logs sont conservés 12 mois puis supprimés.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Données",
-   "term": "Gestion des secrets",
-   "def": "Stocker et protéger mots de passe, clés et certificats",
-   "tip": "Le coffre-fort des clés et mots de passe.",
-   "ex": "Les mots de passe applicatifs sont dans un coffre (vault), pas en clair.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Résilience & continuité",
-   "term": "Sauvegarde",
-   "def": "Copie de sécurité des données et configurations critiques",
-   "tip": "La copie de secours.",
-   "ex": "Une copie quotidienne des données est stockée hors site.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Résilience & continuité",
-   "term": "PRA",
-   "def": "Plan de Reprise d'Activité (après un sinistre)",
-   "tip": "PRA = Reprise, APRÈS le sinistre.",
-   "ex": "Après l'incendie de la salle serveurs, le PRA permet de repartir.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Résilience & continuité",
-   "term": "PCA",
-   "def": "Plan de Continuité d'Activité (pendant la crise)",
-   "tip": "PCA = Continuité, PENDANT la crise.",
-   "ex": "Le PCA maintient les activités essentielles même en mode dégradé.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Résilience & continuité",
-   "term": "Redondance",
-   "def": "Dupliquer des composants pour éviter un point unique de défaillance",
-   "tip": "En double = pas de point unique.",
-   "ex": "Deux alimentations électriques pour éviter l'arrêt si l'une lâche.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Résilience & continuité",
-   "term": "Haute disponibilité",
-   "def": "Limiter les interruptions de service",
-   "tip": "Le moins d'interruption possible.",
-   "ex": "Un cluster bascule automatiquement si un serveur tombe.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Résilience & continuité",
-   "term": "Tests de restauration",
-   "def": "Vérifier qu'une sauvegarde est réellement exploitable",
-   "tip": "Une sauvegarde non testée = un pari.",
-   "ex": "On restaure régulièrement une sauvegarde pour vérifier qu'elle marche.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Analyse de risque",
-   "term": "Vraisemblance",
-   "def": "Probabilité qu'une menace se réalise",
-   "tip": "La PROBA que ça arrive.",
-   "ex": "Une faille très exploitée a une vraisemblance élevée.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Analyse de risque",
-   "term": "Gravité",
-   "def": "Ampleur des conséquences (impact)",
-   "tip": "La FORCE de l'impact.",
-   "ex": "La fuite de données clients aurait une gravité majeure.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Analyse de risque",
-   "term": "Vulnérabilité",
-   "def": "Faiblesse exploitable d'un système",
-   "tip": "La faille exploitable.",
-   "ex": "Un serveur non patché est une vulnérabilité.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Analyse de risque",
-   "term": "Risque résiduel",
-   "def": "Risque qui subsiste après application des mesures",
-   "tip": "Ce qui reste APRÈS les mesures.",
-   "ex": "Même après correctifs, un risque faible subsiste : le résiduel.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Analyse de risque",
-   "term": "Plan de traitement",
-   "def": "Ensemble des actions décidées pour réduire les risques",
-   "tip": "La to-do des mesures.",
-   "ex": "Le plan liste actions, responsables et échéances pour réduire les risques.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Analyse de risque",
-   "term": "Mesure compensatoire",
-   "def": "Mesure qui réduit un risque lié à un écart",
-   "tip": "Le plan B qui réduit le risque.",
-   "ex": "Faute de patcher tout de suite, on isole le serveur en attendant.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Scénarios de menace",
-   "term": "Attaquant interne",
-   "def": "Menace venant de l'intérieur (employé malveillant ou négligent)",
-   "tip": "L'ennemi de l'intérieur.",
-   "ex": "Un salarié mécontent copie des données avant de partir.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Scénarios de menace",
-   "term": "Attaquant externe",
-   "def": "Menace venant de l'extérieur, via Internet",
-   "tip": "L'ennemi de dehors.",
-   "ex": "Un pirate tente de forcer le portail d'authentification depuis Internet.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Scénarios de menace",
-   "term": "Mouvement latéral",
-   "def": "Progression d'un attaquant d'un système à un autre dans le réseau",
-   "tip": "Rebondir de machine en machine.",
-   "ex": "Depuis un poste compromis, l'attaquant atteint le serveur de fichiers.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Scénarios de menace",
-   "term": "Compromission",
-   "def": "Prise de contrôle d'un système ou d'un compte",
-   "tip": "Prise de contrôle.",
-   "ex": "Un compte admin est piraté et utilisé par l'attaquant.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Scénarios de menace",
-   "term": "Exfiltration",
-   "def": "Sortie de données hors du système d'information",
-   "tip": "Faire SORTIR les données.",
-   "ex": "Des fichiers confidentiels sont envoyés vers un serveur externe.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Scénarios de menace",
-   "term": "Déni de service",
-   "def": "Rendre un service indisponible",
-   "tip": "Rendre indispo par saturation.",
-   "ex": "Un flot de requêtes sature le site qui devient inaccessible.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Exigences",
-   "term": "Exigence contractuelle",
-   "def": "Exigence imposée par un contrat",
-   "tip": "Imposée par le CONTRAT.",
-   "ex": "Le contrat exige le chiffrement des données client.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Exigences",
-   "term": "Exigence organisationnelle",
-   "def": "Exigence portant sur les processus et les rôles",
-   "tip": "Processus et rôles.",
-   "ex": "Une exigence impose une revue d'accès trimestrielle.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Exigences",
-   "term": "Applicabilité",
-   "def": "Étape vérifiant qu'une exigence s'applique au système",
-   "tip": "Est-ce que ça nous concerne ?",
-   "ex": "On vérifie qu'une exigence s'applique bien au système étudié.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Exigences",
-   "term": "GALILEO",
-   "def": "Programme spatial européen (ESA), contexte des exigences",
-   "tip": "Le « GPS » européen (ESA).",
-   "ex": "Le programme GALILEO fixe le contexte des exigences de sécurité.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Conformité & accréditation",
-   "term": "Matrice de conformité",
-   "def": "Relier les exigences, les mesures de sécurité et les risques (avec preuves)",
-   "tip": "Exigence ↔ mesure ↔ risque ↔ preuve.",
-   "ex": "Un tableau montre, pour chaque exigence, la mesure et la preuve associées.",
-   "confuse": [
-    "Matrice de flux"
-   ]
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Conformité & accréditation",
-   "term": "Preuve",
-   "def": "Élément démontrant qu'une exigence est satisfaite",
-   "tip": "Ça prouve que c'est fait.",
-   "ex": "Une capture de config ou un rapport d'audit sert de preuve.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Conformité & accréditation",
-   "term": "Dossier d'accréditation",
-   "def": "Regroupe analyse de risque, conformité, écarts et preuves",
-   "tip": "Le dossier complet d'homologation.",
-   "ex": "Il rassemble risque, conformité, écarts et preuves pour la décision.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Écarts / Waivers",
-   "term": "Waiver",
-   "def": "Non-conformité acceptée temporairement et justifiée",
-   "tip": "Écart accepté, daté, justifié.",
-   "ex": "On accepte temporairement une non-conformité avec une date d'expiration.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Écarts / Waivers",
-   "term": "Écart",
-   "def": "Non-conformité à une exigence de sécurité",
-   "tip": "Une exigence non respectée.",
-   "ex": "La rétention des logs est de 6 mois alors que l'exigence demande 12.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Écarts / Waivers",
-   "term": "Justification",
-   "def": "Raison motivant l'acceptation d'un écart",
-   "tip": "Le POURQUOI de l'acceptation.",
-   "ex": "On justifie un écart par un coût disproportionné à court terme.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Écarts / Waivers",
-   "term": "Plan de remédiation",
-   "def": "Décrit comment résorber un écart dans le temps",
-   "tip": "Comment et quand on corrige.",
-   "ex": "Le plan prévoit de corriger l'écart d'ici trois mois.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Écarts / Waivers",
-   "term": "Responsable du risque",
-   "def": "Personne qui accepte formellement le risque résiduel",
-   "tip": "Celui qui signe l'acceptation.",
-   "ex": "Le responsable métier accepte formellement le risque résiduel.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Écarts / Waivers",
-   "term": "Date d'expiration",
-   "def": "Échéance au-delà de laquelle un waiver n'est plus valable",
-   "tip": "L'écart a une échéance.",
-   "ex": "Le waiver expire le 31/12 ; après, il faut être conforme.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Indicateurs",
-   "term": "KPI",
-   "def": "Indicateur de performance (Key Performance Indicator)",
-   "tip": "P = Performance.",
-   "ex": "Le % d'exigences couvertes est un KPI de l'homologation.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Indicateurs",
-   "term": "KRI",
-   "def": "Indicateur de risque (Key Risk Indicator)",
-   "tip": "R = Risque.",
-   "ex": "Le nombre de vulnérabilités critiques ouvertes est un KRI.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Indicateurs",
-   "term": "Waivers ouverts",
-   "def": "Écarts encore non résolus (suivi de l'homologation)",
-   "tip": "Écarts encore non soldés.",
-   "ex": "15 waivers ouverts dont 3 expirés : signal d'alerte.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Indicateurs",
-   "term": "Actions en retard",
-   "def": "Actions de remédiation ayant dépassé leur échéance",
-   "tip": "Échéances dépassées.",
-   "ex": "Des actions de remédiation non réalisées à temps.",
-   "confuse": []
-  },
-  {
-   "branch": "archi",
-   "branchLabel": "Architecture & homologation",
-   "cat": "Indicateurs",
-   "term": "Reporting mensuel",
-   "def": "Vision périodique de l'état d'accréditation et de la tendance",
-   "tip": "Le point mensuel + la tendance.",
-   "ex": "Un tableau de bord mensuel montre l'état d'accréditation et sa tendance.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Accès au secret",
-   "term": "Besoin d'en connaître",
-   "def": "Accès limité aux seules informations classifiées nécessaires à l'exercice de sa fonction",
-   "tip": "Need to know à la française.",
-   "ex": "Un agent habilité ne consulte que les documents utiles à sa mission.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Accès au secret",
-   "term": "Habilitation",
-   "def": "Décision autorisant une personne à accéder aux informations classifiées d'un niveau donné",
-   "tip": "Le « permis » d'accès au secret.",
-   "ex": "Une habilitation Secret est exigée pour lire un document Secret.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Accès au secret",
-   "term": "Double condition d'accès",
-   "def": "Accéder au secret exige À LA FOIS l'habilitation ET le besoin d'en connaître",
-   "tip": "Habilitation + besoin d'en connaître : les deux.",
-   "ex": "Être habilité ne suffit pas s'il n'y a pas besoin d'en connaître.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Classification (IGI 1300)",
-   "term": "Très Secret",
-   "def": "Niveau le plus élevé : divulgation aux conséquences exceptionnellement graves pour la Nation",
-   "tip": "Le plus haut niveau.",
-   "ex": "Réservé aux informations les plus sensibles de l'État.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Classification (IGI 1300)",
-   "term": "Secret",
-   "def": "Niveau dont la divulgation porterait atteinte à la défense et à la sécurité nationale",
-   "tip": "Niveau intermédiaire.",
-   "ex": "Un plan opérationnel peut être classifié Secret.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Classification (IGI 1300)",
-   "term": "Diffusion Restreinte",
-   "def": "Mention (et non un niveau classifié) protégeant des informations sensibles non classifiées",
-   "tip": "DR = une mention, PAS un niveau de classification.",
-   "ex": "Un document interne sensible porte la mention Diffusion Restreinte.",
-   "confuse": [
-    "Secret",
-    "Très Secret"
-   ]
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Classification (IGI 1300)",
-   "term": "Niveaux de classification",
-   "def": "Échelle de protection (Très Secret, Secret) selon la gravité d'une divulgation",
-   "tip": "Étiqueter selon la gravité.",
-   "ex": "L'autorité émettrice fixe le niveau de classification.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Acteurs & sanctions",
-   "term": "Autorité émettrice",
-   "def": "Autorité qui décide de la classification d'une information et en répond",
-   "tip": "Celle qui classe = celle qui décide.",
-   "ex": "L'autorité émettrice peut aussi déclasser l'information.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Acteurs & sanctions",
-   "term": "SGDSN",
-   "def": "Secrétariat Général de la Défense et de la Sécurité Nationale : coordonne la protection du secret",
-   "tip": "Le coordinateur interministériel.",
-   "ex": "Le SGDSN définit les mesures générales et les coordonne.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Acteurs & sanctions",
-   "term": "HFDS",
-   "def": "Haut Fonctionnaire de Défense et de Sécurité : décline et supervise les mesures dans son ministère",
-   "tip": "Le relais sécurité du ministère.",
-   "ex": "Le HFDS veille à l'application des règles dans son ministère.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Acteurs & sanctions",
-   "term": "Sanctions pénales",
-   "def": "La compromission du secret de la défense nationale est réprimée pénalement",
-   "tip": "Compromission = délit pénal.",
-   "ex": "Divulguer une information classifiée expose à des poursuites pénales.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Procédure d'habilitation",
-   "term": "Enquête administrative",
-   "def": "Criblage préalable évaluant la fiabilité de la personne avant habilitation",
-   "tip": "On enquête avant d'habiliter.",
-   "ex": "L'enquête recherche d'éventuelles vulnérabilités.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Procédure d'habilitation",
-   "term": "Décision d'habilitation",
-   "def": "Acte notifié accordant ou refusant l'accès au secret, assorti d'obligations de discrétion",
-   "tip": "La notification officielle.",
-   "ex": "La décision d'habilitation est notifiée à l'intéressé.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Procédure d'habilitation",
-   "term": "Durée de validité",
-   "def": "L'habilitation est limitée dans le temps et doit être renouvelée",
-   "tip": "Ça expire, ça se renouvelle.",
-   "ex": "Une habilitation arrive à échéance puis est renouvelée.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "Procédure d'habilitation",
-   "term": "Abrogation",
-   "def": "Retrait de l'habilitation avant son terme (besoin ou confiance disparus)",
-   "tip": "Annuler avant l'échéance.",
-   "ex": "L'habilitation est abrogée si le besoin d'en connaître disparaît.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "SI classifiés & supports",
-   "term": "Homologation d'un SI classifié",
-   "def": "Décision attestant qu'un SI classifié atteint un niveau de sécurité suffisant pour être exploité",
-   "tip": "Le feu vert d'exploitation du SI.",
-   "ex": "Un SI classifié est homologué avant sa mise en service.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "SI classifiés & supports",
-   "term": "Marquage des supports",
-   "def": "Apposition visible du niveau de classification sur les supports",
-   "tip": "On marque le niveau sur le support.",
-   "ex": "Chaque page d'un document classifié porte sa mention.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "SI classifiés & supports",
-   "term": "Traçabilité des supports",
-   "def": "Enregistrement et conservation permettant de suivre les informations classifiées",
-   "tip": "Qui détient quoi, et où.",
-   "ex": "Les supports Secret sont inventoriés et tracés.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "SI classifiés & supports",
-   "term": "Destruction",
-   "def": "Procédure d'élimination sécurisée des supports en fin d'exploitation",
-   "tip": "Détruire proprement.",
-   "ex": "Les supports classifiés sont détruits selon une procédure contrôlée.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "SI classifiés & supports",
-   "term": "Inventaire",
-   "def": "Recensement périodique des supports classifiés (Secret et Très Secret)",
-   "tip": "On compte les supports sensibles.",
-   "ex": "Un inventaire vérifie régulièrement la présence des supports Très Secret.",
-   "confuse": []
-  },
-  {
-   "branch": "igi1300",
-   "branchLabel": "IGI 1300 — Secret Défense",
-   "cat": "SI classifiés & supports",
-   "term": "Contrôle physique des accès",
-   "def": "Restriction et vérification de l'accès physique aux zones abritant le classifié",
-   "tip": "Qui entre physiquement.",
-   "ex": "L'accès des personnes non habilitées est encadré et tracé.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Organisation de la SSI",
-   "term": "RSSI",
-   "def": "Responsable de la Sécurité des SI, désigné pour piloter la SSI de l'entité",
-   "tip": "Le pilote de la SSI.",
-   "ex": "L'entité désigne un RSSI responsable de la sécurité de ses SI.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Organisation de la SSI",
-   "term": "PSSI",
-   "def": "Politique de Sécurité des SI : document cadre fixant les règles de sécurité",
-   "tip": "La politique = le cadre de règles.",
-   "ex": "La PSSI définit les règles applicables dans l'entité.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Organisation de la SSI",
-   "term": "Charte d'application",
-   "def": "Charte précisant aux utilisateurs les règles d'usage des SI",
-   "tip": "Les règles côté utilisateur.",
-   "ex": "Chaque utilisateur signe la charte d'usage des SI.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Organisation de la SSI",
-   "term": "Homologation d'un SI sensible",
-   "def": "Validation du niveau de sécurité d'un SI sensible avant son exploitation",
-   "tip": "Feu vert avant exploitation.",
-   "ex": "Un SI traitant des informations sensibles est homologué avant mise en production.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Organisation de la SSI",
-   "term": "Gestion des risques (II 901)",
-   "def": "Démarche d'évaluation et de traitement des risques pesant sur les SI sensibles",
-   "tip": "Évaluer puis traiter.",
-   "ex": "On applique une méthode d'évaluation des risques (type EBIOS).",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Utilisateurs & personnel",
-   "term": "Sensibilisation",
-   "def": "Actions informant et responsabilisant les utilisateurs sur la sécurité des SI",
-   "tip": "Former pour responsabiliser.",
-   "ex": "Des campagnes de sensibilisation préviennent l'hameçonnage.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Utilisateurs & personnel",
-   "term": "Personnels de confiance",
-   "def": "Personnes occupant des postes clés de la SSI, choisies selon des critères de confiance",
-   "tip": "Les postes clés, triés sur le volet.",
-   "ex": "Les administrateurs SI sont des personnels de confiance.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Utilisateurs & personnel",
-   "term": "Gestion des arrivées et départs",
-   "def": "Procédures encadrant les droits lors des mouvements de personnel",
-   "tip": "Ouvrir et fermer les accès au bon moment.",
-   "ex": "Au départ d'un agent, ses accès sont immédiatement révoqués.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Diffusion Restreinte & exploitation",
-   "term": "Protection physique des locaux",
-   "def": "Mesures protégeant l'accès physique aux locaux hébergeant les SI sensibles",
-   "tip": "Protéger les lieux.",
-   "ex": "La salle serveurs est en zone à accès contrôlé.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Diffusion Restreinte & exploitation",
-   "term": "Externalisation",
-   "def": "Règles encadrant le recours à un prestataire pour des SI sensibles",
-   "tip": "Encadrer le sous-traitant.",
-   "ex": "Un hébergeur traitant des données DR respecte des clauses de sécurité.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Diffusion Restreinte & exploitation",
-   "term": "Utilisation en milieu non maîtrisé",
-   "def": "Précautions quand un SI sensible est utilisé hors d'un environnement contrôlé",
-   "tip": "Hors de chez soi = prudence.",
-   "ex": "Un poste nomade en déplacement applique des précautions renforcées.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Diffusion Restreinte & exploitation",
-   "term": "Classes de réseau",
-   "def": "Classification des réseaux (classe 0 non connecté, 1, 2) selon leur exposition",
-   "tip": "Classe 0 = isolé.",
-   "ex": "Un réseau de classe 0 n'est connecté à aucun autre réseau.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Diffusion Restreinte & exploitation",
-   "term": "Dérogation",
-   "def": "Autorisation exceptionnelle de s'écarter d'une règle, sous conditions",
-   "tip": "Une exception encadrée.",
-   "ex": "Une dérogation justifiée autorise une configuration non standard.",
-   "confuse": []
-  },
-  {
-   "branch": "ii901",
-   "branchLabel": "II 901 — SI sensibles",
-   "cat": "Diffusion Restreinte & exploitation",
-   "term": "Gestion des incidents",
-   "def": "Détection, traitement et suivi des incidents de sécurité des SI",
-   "tip": "Gérer l'incident de bout en bout.",
-   "ex": "Tout incident SSI est déclaré et traité selon une procédure.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Principes ICUE",
-   "term": "ICUE",
-   "def": "Information Classifiée de l'Union Européenne dont la divulgation nuirait aux intérêts de l'UE",
-   "tip": "Le secret… version UE.",
-   "ex": "Un document de l'UE peut être classifié ICUE.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Principes ICUE",
-   "term": "Niveaux ICUE",
-   "def": "Échelle UE : TRÈS SECRET UE / SECRET UE / CONFIDENTIEL UE / RESTREINT UE",
-   "tip": "4 niveaux, du plus au moins sensible.",
-   "ex": "CONFIDENTIEL UE est plus sensible que RESTREINT UE.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Principes ICUE",
-   "term": "RESTREINT UE",
-   "def": "Niveau le plus bas des ICUE (EU RESTRICTED) ; contrats et SI font l'objet de mesures particulières",
-   "tip": "Le niveau ICUE le plus bas.",
-   "ex": "Un contrat RESTREINT UE / EU RESTRICTED déclenche des mesures particulières.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Principes ICUE",
-   "term": "Autorité nationale de sécurité",
-   "def": "Autorité responsable de la protection des ICUE dans le pays",
-   "tip": "Le garant national des ICUE.",
-   "ex": "L'ANS supervise la protection des ICUE en France.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Personnes (ICUE)",
-   "term": "Habilitation UE",
-   "def": "Décision autorisant l'accès aux ICUE d'un niveau donné",
-   "tip": "Le permis d'accès aux ICUE.",
-   "ex": "Accéder à du SECRET UE requiert l'habilitation UE correspondante.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Personnes (ICUE)",
-   "term": "Catalogue des emplois",
-   "def": "Liste des postes nécessitant une habilitation et précisant son niveau",
-   "tip": "Quels postes, quel niveau.",
-   "ex": "Le catalogue recense les emplois exigeant une habilitation.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Personnes (ICUE)",
-   "term": "Habilitation des ressortissants étrangers",
-   "def": "Modalités spécifiques pour habiliter des personnes non nationales",
-   "tip": "Cas particulier des étrangers.",
-   "ex": "Un ressortissant étranger suit une procédure spécifique.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Informations & compromission (ICUE)",
-   "term": "Circulation des ICUE",
-   "def": "Règles de transmission, transport et échange des informations classifiées UE",
-   "tip": "Comment ça circule.",
-   "ex": "Le transport d'ICUE suit des règles strictes.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Informations & compromission (ICUE)",
-   "term": "Compromission ICUE",
-   "def": "Divulgation non autorisée d'une ICUE ; déclenche enquête et sanctions",
-   "tip": "Fuite d'ICUE = enquête.",
-   "ex": "Une compromission supposée ou avérée ouvre une procédure.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "Informations & compromission (ICUE)",
-   "term": "Sanctions disciplinaires",
-   "def": "Mesures disciplinaires en cas de manquement aux règles de protection",
-   "tip": "Sanction côté employeur.",
-   "ex": "Le non-respect des règles ICUE peut entraîner une sanction disciplinaire.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "SI & contrats (ICUE)",
-   "term": "Homologation des systèmes ICUE",
-   "def": "Validation de sécurité d'un SI traitant des ICUE avant son exploitation",
-   "tip": "Feu vert pour un SI ICUE.",
-   "ex": "Un SI manipulant des ICUE doit être homologué.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "SI & contrats (ICUE)",
-   "term": "Agrément des dispositifs",
-   "def": "Validation officielle des produits ou dispositifs de sécurité utilisés pour les ICUE",
-   "tip": "Le produit doit être agréé.",
-   "ex": "Seuls des dispositifs agréés protègent les ICUE.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "SI & contrats (ICUE)",
-   "term": "Matériel cryptographique",
-   "def": "Moyens de chiffrement agréés protégeant la confidentialité des ICUE",
-   "tip": "La crypto doit être agréée.",
-   "ex": "Le matériel cryptographique chiffre les ICUE en transit.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "SI & contrats (ICUE)",
-   "term": "Contrat classifié UE",
-   "def": "Contrat impliquant des ICUE, soumis à des clauses et habilitations spécifiques",
-   "tip": "Un marché qui touche des ICUE.",
-   "ex": "Un contrat classifié de l'UE impose des mesures de sécurité au titulaire.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "SI & contrats (ICUE)",
-   "term": "Attestation de sécurité",
-   "def": "Document attestant la capacité d'une entité à protéger des ICUE",
-   "tip": "Le « label » sécurité de l'entité.",
-   "ex": "Une attestation d'habilitation est requise pour le contrat.",
-   "confuse": []
-  },
-  {
-   "branch": "igi2102",
-   "branchLabel": "IGI 2102 — ICUE (UE)",
-   "cat": "SI & contrats (ICUE)",
-   "term": "Protection des réunions",
-   "def": "Mesures sécurisant les réunions et salles où sont traitées des ICUE",
-   "tip": "Sécuriser les salles.",
-   "ex": "Les réunions classifiées se tiennent en salle protégée.",
-   "confuse": []
-  }
- ]
+  "title": "Cybersécurité, Secret & Homologation",
+  "source": "Mind maps homologation (architecture & homologation) + IGI 1300 + II 901 + IGI 2102",
+  "branches": {
+    "archi": "Architecture & homologation",
+    "igi1300": "IGI 1300 — Secret Défense",
+    "ii901": "II 901 — SI sensibles",
+    "igi2102": "IGI 2102 — ICUE (UE)"
+  },
+  "concepts": [
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Principes d'architecture",
+      "term": "Defense in depth",
+      "def": "Empiler des couches de sécurité complémentaires",
+      "tip": "Comme un château : douves + murs + donjon ; si une couche tombe, une autre tient.",
+      "ex": "L'antivirus rate un malware, mais le pare-feu et la segmentation limitent les dégâts.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Principes d'architecture",
+      "term": "Zero Trust",
+      "def": "Ne jamais faire confiance par défaut, toujours vérifier",
+      "tip": "« Jamais confiance, toujours vérifier » — même à l'intérieur du réseau.",
+      "ex": "Un utilisateur déjà connecté doit se ré-authentifier pour une ressource sensible.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Principes d'architecture",
+      "term": "Least privilege",
+      "def": "N'accorder que les droits strictement nécessaires",
+      "tip": "Juste les droits nécessaires, rien de plus.",
+      "ex": "Un comptable accède aux dossiers compta, pas aux serveurs RH.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Principes d'architecture",
+      "term": "Need to know",
+      "def": "Limiter l'accès aux seules informations nécessaires",
+      "tip": "On ne sait que ce qu'on a besoin de savoir.",
+      "ex": "Un projet classifié n'est visible que par les membres de l'équipe concernée.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Principes d'architecture",
+      "term": "Security by design",
+      "def": "Intégrer la sécurité dès la conception du système",
+      "tip": "La sécurité dès le plan, pas en rustine.",
+      "ex": "On définit chiffrement et accès avant même de coder l'application.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Principes d'architecture",
+      "term": "Segregation of duties",
+      "def": "Séparer les rôles sensibles",
+      "tip": "Celui qui demande ≠ celui qui valide.",
+      "ex": "La personne qui crée un paiement ne peut pas l'approuver seule.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Objectifs de sécurité",
+      "term": "Confidentialité",
+      "def": "Réserver l'information aux personnes autorisées",
+      "tip": "C de CID : le secret.",
+      "ex": "Seuls les RH peuvent lire les bulletins de salaire.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Objectifs de sécurité",
+      "term": "Intégrité",
+      "def": "Garantir que les données ne sont pas altérées",
+      "tip": "I de CID : non altéré.",
+      "ex": "Une somme de contrôle révèle qu'un fichier a été modifié.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Objectifs de sécurité",
+      "term": "Disponibilité",
+      "def": "Garantir l'accès au service et aux données",
+      "tip": "D de CID : accessible quand il faut.",
+      "ex": "Le site doit rester joignable malgré un pic de trafic.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Objectifs de sécurité",
+      "term": "Traçabilité",
+      "def": "Pouvoir reconstituer qui a fait quoi et quand",
+      "tip": "Qui ? Quoi ? Quand ?",
+      "ex": "Les logs montrent que l'admin X a modifié la config à 14h02.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Objectifs de sécurité",
+      "term": "Résilience",
+      "def": "Capacité à résister et à se rétablir après un incident",
+      "tip": "Encaisser le coup et se relever.",
+      "ex": "Après une panne, le service redémarre sur un site de secours.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Segmentation & zones de confiance",
+      "term": "Zones de confiance",
+      "def": "Regrouper les composants selon leur criticité et leur exposition",
+      "tip": "On range par criticité et exposition.",
+      "ex": "Serveurs Internet, serveurs internes et systèmes critiques en zones distinctes.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Segmentation & zones de confiance",
+      "term": "Cloisonnement",
+      "def": "Limiter les communications entre zones",
+      "tip": "Des cloisons entre les zones.",
+      "ex": "Le réseau bureautique ne peut pas parler directement aux automates industriels.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Segmentation & zones de confiance",
+      "term": "DMZ",
+      "def": "Zone tampon entre un réseau exposé et le réseau interne sensible",
+      "tip": "Le sas exposé entre dehors et dedans.",
+      "ex": "Le serveur web public est en DMZ, jamais dans le réseau interne.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Segmentation & zones de confiance",
+      "term": "Flux inter-zones",
+      "def": "Identifier précisément les flux autorisés entre zones",
+      "tip": "Qui parle à qui, précisément.",
+      "ex": "On autorise seulement le port 443 de la DMZ vers le serveur applicatif.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Segmentation & zones de confiance",
+      "term": "Matrice de flux",
+      "def": "Recenser les flux réseau autorisés (source, destination, port)",
+      "tip": "Le tableau source → destination → port.",
+      "ex": "Un tableau liste tous les flux réseau autorisés et leur justification.",
+      "confuse": [
+        "Matrice de conformité"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Segmentation & zones de confiance",
+      "term": "Bastion",
+      "def": "Point d'accès contrôlé pour administrer des systèmes sensibles",
+      "tip": "Le donjon : un seul passage gardé pour l'admin.",
+      "ex": "Les administrateurs passent par le bastion pour atteindre les serveurs sensibles.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "IAM",
+      "def": "Gérer les identités et les accès (Identity and Access Management)",
+      "tip": "Identités + Accès, la gestion globale.",
+      "ex": "Création, modification et suppression des comptes et de leurs droits.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "RBAC",
+      "def": "Attribuer les droits selon le rôle de l'utilisateur",
+      "tip": "Droits selon le RÔLE.",
+      "ex": "Le rôle « support » donne automatiquement les accès du support.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "MFA",
+      "def": "Authentifier avec plusieurs facteurs (mot de passe + code…)",
+      "tip": "Deux preuves valent mieux qu'une.",
+      "ex": "Mot de passe + code reçu sur le téléphone pour se connecter.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "Comptes à privilèges",
+      "def": "Comptes disposant de droits élevés (administration)",
+      "tip": "Les clés du royaume (admin).",
+      "ex": "Le compte administrateur du domaine, ultra-surveillé.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "Revues d'accès",
+      "def": "Vérifier périodiquement que les droits restent justifiés",
+      "tip": "On refait le tri régulièrement.",
+      "ex": "Chaque trimestre, on vérifie que personne ne garde de droits inutiles.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "Journalisation des accès",
+      "def": "Enregistrer les connexions et actions des utilisateurs",
+      "tip": "On note qui entre et ce qu'il fait.",
+      "ex": "Chaque connexion réussie ou échouée est enregistrée.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Protection réseau",
+      "term": "Pare-feu",
+      "def": "Filtrer le trafic entre réseaux selon des règles",
+      "tip": "Le videur : règles d'entrée / sortie.",
+      "ex": "Il bloque tout le trafic sauf les ports explicitement autorisés.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Protection réseau",
+      "term": "IDS / IPS",
+      "def": "Détecter ou bloquer les comportements réseau suspects",
+      "tip": "IDS alerte, IPS bloque.",
+      "ex": "L'IPS coupe une connexion qui ressemble à une attaque connue.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Protection réseau",
+      "term": "Proxy",
+      "def": "Contrôler et journaliser les accès sortants",
+      "tip": "Le filtre des sorties web.",
+      "ex": "Les accès Internet des employés passent par le proxy qui journalise tout.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Protection réseau",
+      "term": "VPN",
+      "def": "Établir un tunnel chiffré entre deux réseaux ou postes",
+      "tip": "Tunnel chiffré à travers Internet.",
+      "ex": "Le télétravailleur rejoint le réseau de l'entreprise via un VPN.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Protection réseau",
+      "term": "Filtrage",
+      "def": "Restreindre les ports, protocoles et destinations autorisés",
+      "tip": "On restreint ports / protocoles / destinations.",
+      "ex": "On n'autorise que HTTPS vers une liste de serveurs.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Protection réseau",
+      "term": "Chiffrement des flux",
+      "def": "Protéger les échanges contre l'interception ou l'altération",
+      "tip": "Données illisibles en transit.",
+      "ex": "Le HTTPS protège les échanges entre le navigateur et le site.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Hardening",
+      "def": "Réduire la surface d'attaque d'un système",
+      "tip": "On enlève le superflu = moins de surface.",
+      "ex": "On désactive les services inutiles et on durcit la config d'un serveur.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Patch management",
+      "def": "Appliquer les correctifs de sécurité",
+      "tip": "Boucher les trous connus.",
+      "ex": "On applique vite les correctifs de sécurité publiés.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Configuration sécurisée",
+      "def": "Appliquer des paramètres conformes aux exigences de sécurité",
+      "tip": "Régler conforme aux exigences.",
+      "ex": "On applique un guide de durcissement (CIS) sur chaque machine.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Antivirus / EDR",
+      "def": "Détecter et répondre aux menaces sur les postes et serveurs",
+      "tip": "Le garde du corps du poste.",
+      "ex": "L'EDR détecte un comportement anormal sur un PC et l'isole.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Gestion des vulnérabilités",
+      "def": "Identifier, qualifier, prioriser et traiter les failles",
+      "tip": "Identifier → qualifier → prioriser → traiter.",
+      "ex": "Un scan révèle des failles ; on traite d'abord les critiques.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Contrôle des ports / services",
+      "def": "Désactiver ce qui n'est pas nécessaire",
+      "tip": "Fermer ce qui ne sert pas.",
+      "ex": "On ferme les ports réseau non utilisés d'un serveur.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "Logs",
+      "def": "Journaux d'événements, matière première de la supervision",
+      "tip": "Les traces : la matière première.",
+      "ex": "Les journaux des serveurs sont collectés pour analyse.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "SIEM",
+      "def": "Centraliser, corréler et analyser les événements",
+      "tip": "Le cerveau qui centralise et corrèle.",
+      "ex": "Le SIEM agrège les logs de tout le SI et lève des alertes.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "Alerting",
+      "def": "Déclencher une alerte sur un événement suspect ou critique",
+      "tip": "La sonnette d'alarme.",
+      "ex": "Une alerte se déclenche après 10 échecs de connexion en 1 minute.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "Corrélation",
+      "def": "Relier plusieurs événements pour détecter un scénario d'attaque",
+      "tip": "Relier les points → un scénario.",
+      "ex": "Connexion inhabituelle + gros transfert = exfiltration probable.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "Détection d'incident",
+      "def": "Identifier une compromission ou un comportement anormal",
+      "tip": "Repérer l'anormal.",
+      "ex": "On repère une machine qui communique avec un serveur malveillant.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "Investigation",
+      "def": "Analyser après coup le déroulement d'un incident",
+      "tip": "L'enquête après coup.",
+      "ex": "On analyse les logs pour comprendre comment l'attaquant est entré.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Données",
+      "term": "Classification",
+      "def": "Attribuer un niveau de sensibilité aux données",
+      "tip": "Étiqueter la sensibilité.",
+      "ex": "Un document est marqué « Confidentiel » ou « Public ».",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Données",
+      "term": "Chiffrement",
+      "def": "Rendre les données illisibles sans la clé",
+      "tip": "Illisible sans la clé.",
+      "ex": "Le disque d'un portable est chiffré en cas de vol.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Données",
+      "term": "Intégrité des données",
+      "def": "Garantir l'absence de modification non autorisée",
+      "tip": "Pas de modif sournoise.",
+      "ex": "Un hachage permet de détecter toute altération d'un fichier.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Données",
+      "term": "Rétention",
+      "def": "Définir combien de temps conserver les données et les logs",
+      "tip": "Combien de temps on garde.",
+      "ex": "Les logs sont conservés 12 mois puis supprimés.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Données",
+      "term": "Gestion des secrets",
+      "def": "Stocker et protéger mots de passe, clés et certificats",
+      "tip": "Le coffre-fort des clés et mots de passe.",
+      "ex": "Les mots de passe applicatifs sont dans un coffre (vault), pas en clair.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "Sauvegarde",
+      "def": "Copie de sécurité des données et configurations critiques",
+      "tip": "La copie de secours.",
+      "ex": "Une copie quotidienne des données est stockée hors site.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "PRA",
+      "def": "Plan de Reprise d'Activité (après un sinistre)",
+      "tip": "PRA = Reprise, APRÈS le sinistre.",
+      "ex": "Après l'incendie de la salle serveurs, le PRA permet de repartir.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "PCA",
+      "def": "Plan de Continuité d'Activité (pendant la crise)",
+      "tip": "PCA = Continuité, PENDANT la crise.",
+      "ex": "Le PCA maintient les activités essentielles même en mode dégradé.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "Redondance",
+      "def": "Dupliquer des composants pour éviter un point unique de défaillance",
+      "tip": "En double = pas de point unique.",
+      "ex": "Deux alimentations électriques pour éviter l'arrêt si l'une lâche.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "Haute disponibilité",
+      "def": "Limiter les interruptions de service",
+      "tip": "Le moins d'interruption possible.",
+      "ex": "Un cluster bascule automatiquement si un serveur tombe.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "Tests de restauration",
+      "def": "Vérifier qu'une sauvegarde est réellement exploitable",
+      "tip": "Une sauvegarde non testée = un pari.",
+      "ex": "On restaure régulièrement une sauvegarde pour vérifier qu'elle marche.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Vraisemblance",
+      "def": "Probabilité qu'une menace se réalise",
+      "tip": "La PROBA que ça arrive.",
+      "ex": "Une faille très exploitée a une vraisemblance élevée.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Gravité",
+      "def": "Ampleur des conséquences (impact)",
+      "tip": "La FORCE de l'impact.",
+      "ex": "La fuite de données clients aurait une gravité majeure.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Vulnérabilité",
+      "def": "Faiblesse exploitable d'un système",
+      "tip": "La faille exploitable.",
+      "ex": "Un serveur non patché est une vulnérabilité.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Risque résiduel",
+      "def": "Risque qui subsiste après application des mesures",
+      "tip": "Ce qui reste APRÈS les mesures.",
+      "ex": "Même après correctifs, un risque faible subsiste : le résiduel.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Plan de traitement",
+      "def": "Ensemble des actions décidées pour réduire les risques",
+      "tip": "La to-do des mesures.",
+      "ex": "Le plan liste actions, responsables et échéances pour réduire les risques.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Mesure compensatoire",
+      "def": "Mesure qui réduit un risque lié à un écart",
+      "tip": "Le plan B qui réduit le risque.",
+      "ex": "Faute de patcher tout de suite, on isole le serveur en attendant.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Scénarios de menace",
+      "term": "Attaquant interne",
+      "def": "Menace venant de l'intérieur (employé malveillant ou négligent)",
+      "tip": "L'ennemi de l'intérieur.",
+      "ex": "Un salarié mécontent copie des données avant de partir.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Scénarios de menace",
+      "term": "Attaquant externe",
+      "def": "Menace venant de l'extérieur, via Internet",
+      "tip": "L'ennemi de dehors.",
+      "ex": "Un pirate tente de forcer le portail d'authentification depuis Internet.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Scénarios de menace",
+      "term": "Mouvement latéral",
+      "def": "Progression d'un attaquant d'un système à un autre dans le réseau",
+      "tip": "Rebondir de machine en machine.",
+      "ex": "Depuis un poste compromis, l'attaquant atteint le serveur de fichiers.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Scénarios de menace",
+      "term": "Compromission",
+      "def": "Prise de contrôle d'un système ou d'un compte",
+      "tip": "Prise de contrôle.",
+      "ex": "Un compte admin est piraté et utilisé par l'attaquant.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Scénarios de menace",
+      "term": "Exfiltration",
+      "def": "Sortie de données hors du système d'information",
+      "tip": "Faire SORTIR les données.",
+      "ex": "Des fichiers confidentiels sont envoyés vers un serveur externe.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Scénarios de menace",
+      "term": "Déni de service",
+      "def": "Rendre un service indisponible",
+      "tip": "Rendre indispo par saturation.",
+      "ex": "Un flot de requêtes sature le site qui devient inaccessible.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Exigences",
+      "term": "Exigence contractuelle",
+      "def": "Exigence imposée par un contrat",
+      "tip": "Imposée par le CONTRAT.",
+      "ex": "Le contrat exige le chiffrement des données client.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Exigences",
+      "term": "Exigence organisationnelle",
+      "def": "Exigence portant sur les processus et les rôles",
+      "tip": "Processus et rôles.",
+      "ex": "Une exigence impose une revue d'accès trimestrielle.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Exigences",
+      "term": "Applicabilité",
+      "def": "Étape vérifiant qu'une exigence s'applique au système",
+      "tip": "Est-ce que ça nous concerne ?",
+      "ex": "On vérifie qu'une exigence s'applique bien au système étudié.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Exigences",
+      "term": "GALILEO",
+      "def": "Programme spatial européen (ESA), contexte des exigences",
+      "tip": "Le « GPS » européen (ESA).",
+      "ex": "Le programme GALILEO fixe le contexte des exigences de sécurité.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "Matrice de conformité",
+      "def": "Relier les exigences, les mesures de sécurité et les risques (avec preuves)",
+      "tip": "Exigence ↔ mesure ↔ risque ↔ preuve.",
+      "ex": "Un tableau montre, pour chaque exigence, la mesure et la preuve associées.",
+      "confuse": [
+        "Matrice de flux"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "Preuve",
+      "def": "Élément démontrant qu'une exigence est satisfaite",
+      "tip": "Ça prouve que c'est fait.",
+      "ex": "Une capture de config ou un rapport d'audit sert de preuve.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "Dossier d'accréditation",
+      "def": "Regroupe analyse de risque, conformité, écarts et preuves",
+      "tip": "Le dossier complet d'homologation.",
+      "ex": "Il rassemble risque, conformité, écarts et preuves pour la décision.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Écarts / Waivers",
+      "term": "Waiver",
+      "def": "Non-conformité acceptée temporairement et justifiée",
+      "tip": "Écart accepté, daté, justifié.",
+      "ex": "On accepte temporairement une non-conformité avec une date d'expiration.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Écarts / Waivers",
+      "term": "Écart",
+      "def": "Non-conformité à une exigence de sécurité",
+      "tip": "Une exigence non respectée.",
+      "ex": "La rétention des logs est de 6 mois alors que l'exigence demande 12.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Écarts / Waivers",
+      "term": "Justification",
+      "def": "Raison motivant l'acceptation d'un écart",
+      "tip": "Le POURQUOI de l'acceptation.",
+      "ex": "On justifie un écart par un coût disproportionné à court terme.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Écarts / Waivers",
+      "term": "Plan de remédiation",
+      "def": "Décrit comment résorber un écart dans le temps",
+      "tip": "Comment et quand on corrige.",
+      "ex": "Le plan prévoit de corriger l'écart d'ici trois mois.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Écarts / Waivers",
+      "term": "Responsable du risque",
+      "def": "Personne qui accepte formellement le risque résiduel",
+      "tip": "Celui qui signe l'acceptation.",
+      "ex": "Le responsable métier accepte formellement le risque résiduel.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Écarts / Waivers",
+      "term": "Date d'expiration",
+      "def": "Échéance au-delà de laquelle un waiver n'est plus valable",
+      "tip": "L'écart a une échéance.",
+      "ex": "Le waiver expire le 31/12 ; après, il faut être conforme.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Indicateurs",
+      "term": "KPI",
+      "def": "Indicateur de performance (Key Performance Indicator)",
+      "tip": "P = Performance.",
+      "ex": "Le % d'exigences couvertes est un KPI de l'homologation.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Indicateurs",
+      "term": "KRI",
+      "def": "Indicateur de risque (Key Risk Indicator)",
+      "tip": "R = Risque.",
+      "ex": "Le nombre de vulnérabilités critiques ouvertes est un KRI.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Indicateurs",
+      "term": "Waivers ouverts",
+      "def": "Écarts encore non résolus (suivi de l'homologation)",
+      "tip": "Écarts encore non soldés.",
+      "ex": "15 waivers ouverts dont 3 expirés : signal d'alerte.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Indicateurs",
+      "term": "Actions en retard",
+      "def": "Actions de remédiation ayant dépassé leur échéance",
+      "tip": "Échéances dépassées.",
+      "ex": "Des actions de remédiation non réalisées à temps.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Indicateurs",
+      "term": "Reporting mensuel",
+      "def": "Vision périodique de l'état d'accréditation et de la tendance",
+      "tip": "Le point mensuel + la tendance.",
+      "ex": "Un tableau de bord mensuel montre l'état d'accréditation et sa tendance.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Accès au secret",
+      "term": "Besoin d'en connaître",
+      "def": "Accès limité aux seules informations classifiées nécessaires à l'exercice de sa fonction",
+      "tip": "Need to know à la française.",
+      "ex": "Un agent habilité ne consulte que les documents utiles à sa mission.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Accès au secret",
+      "term": "Habilitation",
+      "def": "Décision autorisant une personne à accéder aux informations classifiées d'un niveau donné",
+      "tip": "Le « permis » d'accès au secret.",
+      "ex": "Une habilitation Secret est exigée pour lire un document Secret.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Accès au secret",
+      "term": "Double condition d'accès",
+      "def": "Accéder au secret exige À LA FOIS l'habilitation ET le besoin d'en connaître",
+      "tip": "Habilitation + besoin d'en connaître : les deux.",
+      "ex": "Être habilité ne suffit pas s'il n'y a pas besoin d'en connaître.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Classification (IGI 1300)",
+      "term": "Très Secret",
+      "def": "Niveau le plus élevé : divulgation aux conséquences exceptionnellement graves pour la Nation",
+      "tip": "Le plus haut niveau.",
+      "ex": "Réservé aux informations les plus sensibles de l'État.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Classification (IGI 1300)",
+      "term": "Secret",
+      "def": "Niveau dont la divulgation porterait atteinte à la défense et à la sécurité nationale",
+      "tip": "Niveau intermédiaire.",
+      "ex": "Un plan opérationnel peut être classifié Secret.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Classification (IGI 1300)",
+      "term": "Diffusion Restreinte",
+      "def": "Mention (et non un niveau classifié) protégeant des informations sensibles non classifiées",
+      "tip": "DR = une mention, PAS un niveau de classification.",
+      "ex": "Un document interne sensible porte la mention Diffusion Restreinte.",
+      "confuse": [
+        "Secret",
+        "Très Secret"
+      ]
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Classification (IGI 1300)",
+      "term": "Niveaux de classification",
+      "def": "Échelle de protection (Très Secret, Secret) selon la gravité d'une divulgation",
+      "tip": "Étiqueter selon la gravité.",
+      "ex": "L'autorité émettrice fixe le niveau de classification.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Acteurs & sanctions",
+      "term": "Autorité émettrice",
+      "def": "Autorité qui décide de la classification d'une information et en répond",
+      "tip": "Celle qui classe = celle qui décide.",
+      "ex": "L'autorité émettrice peut aussi déclasser l'information.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Acteurs & sanctions",
+      "term": "SGDSN",
+      "def": "Secrétariat Général de la Défense et de la Sécurité Nationale : coordonne la protection du secret",
+      "tip": "Le coordinateur interministériel.",
+      "ex": "Le SGDSN définit les mesures générales et les coordonne.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Acteurs & sanctions",
+      "term": "HFDS",
+      "def": "Haut Fonctionnaire de Défense et de Sécurité : décline et supervise les mesures dans son ministère",
+      "tip": "Le relais sécurité du ministère.",
+      "ex": "Le HFDS veille à l'application des règles dans son ministère.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Acteurs & sanctions",
+      "term": "Sanctions pénales",
+      "def": "La compromission du secret de la défense nationale est réprimée pénalement",
+      "tip": "Compromission = délit pénal.",
+      "ex": "Divulguer une information classifiée expose à des poursuites pénales.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Procédure d'habilitation",
+      "term": "Enquête administrative",
+      "def": "Criblage préalable évaluant la fiabilité de la personne avant habilitation",
+      "tip": "On enquête avant d'habiliter.",
+      "ex": "L'enquête recherche d'éventuelles vulnérabilités.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Procédure d'habilitation",
+      "term": "Décision d'habilitation",
+      "def": "Acte notifié accordant ou refusant l'accès au secret, assorti d'obligations de discrétion",
+      "tip": "La notification officielle.",
+      "ex": "La décision d'habilitation est notifiée à l'intéressé.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Procédure d'habilitation",
+      "term": "Durée de validité",
+      "def": "L'habilitation est limitée dans le temps et doit être renouvelée",
+      "tip": "Ça expire, ça se renouvelle.",
+      "ex": "Une habilitation arrive à échéance puis est renouvelée.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Procédure d'habilitation",
+      "term": "Abrogation",
+      "def": "Retrait de l'habilitation avant son terme (besoin ou confiance disparus)",
+      "tip": "Annuler avant l'échéance.",
+      "ex": "L'habilitation est abrogée si le besoin d'en connaître disparaît.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Homologation d'un SI classifié",
+      "def": "Décision attestant qu'un SI classifié atteint un niveau de sécurité suffisant pour être exploité",
+      "tip": "Le feu vert d'exploitation du SI.",
+      "ex": "Un SI classifié est homologué avant sa mise en service.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Marquage des supports",
+      "def": "Apposition visible du niveau de classification sur les supports",
+      "tip": "On marque le niveau sur le support.",
+      "ex": "Chaque page d'un document classifié porte sa mention.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Traçabilité des supports",
+      "def": "Enregistrement et conservation permettant de suivre les informations classifiées",
+      "tip": "Qui détient quoi, et où.",
+      "ex": "Les supports Secret sont inventoriés et tracés.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Destruction",
+      "def": "Procédure d'élimination sécurisée des supports en fin d'exploitation",
+      "tip": "Détruire proprement.",
+      "ex": "Les supports classifiés sont détruits selon une procédure contrôlée.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Inventaire",
+      "def": "Recensement périodique des supports classifiés (Secret et Très Secret)",
+      "tip": "On compte les supports sensibles.",
+      "ex": "Un inventaire vérifie régulièrement la présence des supports Très Secret.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Contrôle physique des accès",
+      "def": "Restriction et vérification de l'accès physique aux zones abritant le classifié",
+      "tip": "Qui entre physiquement.",
+      "ex": "L'accès des personnes non habilitées est encadré et tracé.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "RSSI",
+      "def": "Responsable de la Sécurité des SI, désigné pour piloter la SSI de l'entité",
+      "tip": "Le pilote de la SSI.",
+      "ex": "L'entité désigne un RSSI responsable de la sécurité de ses SI.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "PSSI",
+      "def": "Politique de Sécurité des SI : document cadre fixant les règles de sécurité",
+      "tip": "La politique = le cadre de règles.",
+      "ex": "La PSSI définit les règles applicables dans l'entité.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "Charte d'application",
+      "def": "Charte précisant aux utilisateurs les règles d'usage des SI",
+      "tip": "Les règles côté utilisateur.",
+      "ex": "Chaque utilisateur signe la charte d'usage des SI.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "Homologation d'un SI sensible",
+      "def": "Validation du niveau de sécurité d'un SI sensible avant son exploitation",
+      "tip": "Feu vert avant exploitation.",
+      "ex": "Un SI traitant des informations sensibles est homologué avant mise en production.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "Gestion des risques (II 901)",
+      "def": "Démarche d'évaluation et de traitement des risques pesant sur les SI sensibles",
+      "tip": "Évaluer puis traiter.",
+      "ex": "On applique une méthode d'évaluation des risques (type EBIOS).",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Utilisateurs & personnel",
+      "term": "Sensibilisation",
+      "def": "Actions informant et responsabilisant les utilisateurs sur la sécurité des SI",
+      "tip": "Former pour responsabiliser.",
+      "ex": "Des campagnes de sensibilisation préviennent l'hameçonnage.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Utilisateurs & personnel",
+      "term": "Personnels de confiance",
+      "def": "Personnes occupant des postes clés de la SSI, choisies selon des critères de confiance",
+      "tip": "Les postes clés, triés sur le volet.",
+      "ex": "Les administrateurs SI sont des personnels de confiance.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Utilisateurs & personnel",
+      "term": "Gestion des arrivées et départs",
+      "def": "Procédures encadrant les droits lors des mouvements de personnel",
+      "tip": "Ouvrir et fermer les accès au bon moment.",
+      "ex": "Au départ d'un agent, ses accès sont immédiatement révoqués.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Diffusion Restreinte & exploitation",
+      "term": "Protection physique des locaux",
+      "def": "Mesures protégeant l'accès physique aux locaux hébergeant les SI sensibles",
+      "tip": "Protéger les lieux.",
+      "ex": "La salle serveurs est en zone à accès contrôlé.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Diffusion Restreinte & exploitation",
+      "term": "Externalisation",
+      "def": "Règles encadrant le recours à un prestataire pour des SI sensibles",
+      "tip": "Encadrer le sous-traitant.",
+      "ex": "Un hébergeur traitant des données DR respecte des clauses de sécurité.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Diffusion Restreinte & exploitation",
+      "term": "Utilisation en milieu non maîtrisé",
+      "def": "Précautions quand un SI sensible est utilisé hors d'un environnement contrôlé",
+      "tip": "Hors de chez soi = prudence.",
+      "ex": "Un poste nomade en déplacement applique des précautions renforcées.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Diffusion Restreinte & exploitation",
+      "term": "Classes de réseau",
+      "def": "Classification des réseaux (classe 0 non connecté, 1, 2) selon leur exposition",
+      "tip": "Classe 0 = isolé.",
+      "ex": "Un réseau de classe 0 n'est connecté à aucun autre réseau.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Diffusion Restreinte & exploitation",
+      "term": "Dérogation",
+      "def": "Autorisation exceptionnelle de s'écarter d'une règle, sous conditions",
+      "tip": "Une exception encadrée.",
+      "ex": "Une dérogation justifiée autorise une configuration non standard.",
+      "confuse": []
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Diffusion Restreinte & exploitation",
+      "term": "Gestion des incidents",
+      "def": "Détection, traitement et suivi des incidents de sécurité des SI",
+      "tip": "Gérer l'incident de bout en bout.",
+      "ex": "Tout incident SSI est déclaré et traité selon une procédure.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "ICUE",
+      "def": "Information Classifiée de l'Union Européenne dont la divulgation nuirait aux intérêts de l'UE",
+      "tip": "Le secret… version UE.",
+      "ex": "Un document de l'UE peut être classifié ICUE.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "Niveaux ICUE",
+      "def": "Échelle UE : TRÈS SECRET UE / SECRET UE / CONFIDENTIEL UE / RESTREINT UE",
+      "tip": "4 niveaux, du plus au moins sensible.",
+      "ex": "CONFIDENTIEL UE est plus sensible que RESTREINT UE.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "RESTREINT UE",
+      "def": "Niveau le plus bas des ICUE (EU RESTRICTED) ; contrats et SI font l'objet de mesures particulières",
+      "tip": "Le niveau ICUE le plus bas.",
+      "ex": "Un contrat RESTREINT UE / EU RESTRICTED déclenche des mesures particulières.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "Autorité nationale de sécurité",
+      "def": "Autorité responsable de la protection des ICUE dans le pays",
+      "tip": "Le garant national des ICUE.",
+      "ex": "L'ANS supervise la protection des ICUE en France.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Personnes (ICUE)",
+      "term": "Habilitation UE",
+      "def": "Décision autorisant l'accès aux ICUE d'un niveau donné",
+      "tip": "Le permis d'accès aux ICUE.",
+      "ex": "Accéder à du SECRET UE requiert l'habilitation UE correspondante.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Personnes (ICUE)",
+      "term": "Catalogue des emplois",
+      "def": "Liste des postes nécessitant une habilitation et précisant son niveau",
+      "tip": "Quels postes, quel niveau.",
+      "ex": "Le catalogue recense les emplois exigeant une habilitation.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Personnes (ICUE)",
+      "term": "Habilitation des ressortissants étrangers",
+      "def": "Modalités spécifiques pour habiliter des personnes non nationales",
+      "tip": "Cas particulier des étrangers.",
+      "ex": "Un ressortissant étranger suit une procédure spécifique.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Informations & compromission (ICUE)",
+      "term": "Circulation des ICUE",
+      "def": "Règles de transmission, transport et échange des informations classifiées UE",
+      "tip": "Comment ça circule.",
+      "ex": "Le transport d'ICUE suit des règles strictes.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Informations & compromission (ICUE)",
+      "term": "Compromission ICUE",
+      "def": "Divulgation non autorisée d'une ICUE ; déclenche enquête et sanctions",
+      "tip": "Fuite d'ICUE = enquête.",
+      "ex": "Une compromission supposée ou avérée ouvre une procédure.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Informations & compromission (ICUE)",
+      "term": "Sanctions disciplinaires",
+      "def": "Mesures disciplinaires en cas de manquement aux règles de protection",
+      "tip": "Sanction côté employeur.",
+      "ex": "Le non-respect des règles ICUE peut entraîner une sanction disciplinaire.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Homologation des systèmes ICUE",
+      "def": "Validation de sécurité d'un SI traitant des ICUE avant son exploitation",
+      "tip": "Feu vert pour un SI ICUE.",
+      "ex": "Un SI manipulant des ICUE doit être homologué.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Agrément des dispositifs",
+      "def": "Validation officielle des produits ou dispositifs de sécurité utilisés pour les ICUE",
+      "tip": "Le produit doit être agréé.",
+      "ex": "Seuls des dispositifs agréés protègent les ICUE.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Matériel cryptographique",
+      "def": "Moyens de chiffrement agréés protégeant la confidentialité des ICUE",
+      "tip": "La crypto doit être agréée.",
+      "ex": "Le matériel cryptographique chiffre les ICUE en transit.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Contrat classifié UE",
+      "def": "Contrat impliquant des ICUE, soumis à des clauses et habilitations spécifiques",
+      "tip": "Un marché qui touche des ICUE.",
+      "ex": "Un contrat classifié de l'UE impose des mesures de sécurité au titulaire.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Attestation de sécurité",
+      "def": "Document attestant la capacité d'une entité à protéger des ICUE",
+      "tip": "Le « label » sécurité de l'entité.",
+      "ex": "Une attestation d'habilitation est requise pour le contrat.",
+      "confuse": []
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Protection des réunions",
+      "def": "Mesures sécurisant les réunions et salles où sont traitées des ICUE",
+      "tip": "Sécuriser les salles.",
+      "ex": "Les réunions classifiées se tiennent en salle protégée.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Menace",
+      "def": "Source potentielle d'événement susceptible de porter atteinte à un actif du système d'information",
+      "tip": "Ce qui POURRAIT faire du mal (la source, pas l'impact).",
+      "ex": "Un groupe cybercriminel ciblant le secteur est une menace à intégrer dans l'analyse de risque.",
+      "confuse": [
+        "Vulnérabilité",
+        "Source de risque",
+        "Événement redouté"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Actif",
+      "def": "Tout composant ayant de la valeur pour l'organisation : données, service, système, réputation",
+      "tip": "Ce que l'on cherche à protéger.",
+      "ex": "La base de données clients et le logiciel métier sont des actifs à protéger.",
+      "confuse": [
+        "Valeur métier",
+        "Bien support"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "SOC",
+      "def": "Security Operations Center : centre opérationnel dédié à la surveillance en continu et à la réponse aux incidents de sécurité",
+      "tip": "La tour de contrôle de la sécurité opérationnelle.",
+      "ex": "Le SOC reçoit les alertes du SIEM 24h/24 et coordonne la réponse aux incidents.",
+      "confuse": [
+        "CERT / CSIRT"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "CERT / CSIRT",
+      "def": "Équipe de réponse aux incidents de sécurité (Computer Emergency Response / Security Incident Response Team)",
+      "tip": "Les pompiers de la cybersécurité.",
+      "ex": "Le CERT-FR coordonne la réponse nationale aux cyberattaques visant les opérateurs d'importance vitale.",
+      "confuse": [
+        "SOC"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Identité & contrôle d'accès",
+      "term": "PKI",
+      "def": "Infrastructure à clés publiques gérant la création, la distribution et la révocation de certificats numériques",
+      "tip": "Le notaire de l'identité numérique.",
+      "ex": "La PKI émet les certificats TLS des serveurs et les certificats d'authentification des agents.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Systèmes & durcissement",
+      "term": "Test d'intrusion",
+      "def": "Évaluation de la sécurité d'un système par simulation d'attaques réelles conduite par des experts mandatés",
+      "tip": "On attaque avant les vrais attaquants pour trouver les failles.",
+      "ex": "Le pentest révèle une élévation de privilèges non détectée par les scans automatiques.",
+      "confuse": [
+        "Gestion des vulnérabilités"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "Homologation",
+      "def": "Décision formelle autorisant l'exploitation d'un SI après évaluation de son niveau de sécurité et acceptation du risque résiduel",
+      "tip": "Le feu vert officiel avant exploitation du SI.",
+      "ex": "L'autorité compétente prononce l'homologation pour 3 ans après examen du dossier de sécurité.",
+      "confuse": [
+        "Dossier d'accréditation",
+        "Homologation d'un SI classifié",
+        "Homologation d'un SI sensible",
+        "Homologation des systèmes ICUE"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "ANSSI",
+      "def": "Agence Nationale de la Sécurité des Systèmes d'Information : autorité nationale française en cybersécurité, rattachée au SGDSN",
+      "tip": "L'autorité nationale française de la cybersécurité.",
+      "ex": "L'ANSSI publie les guides de sécurité, qualifie des produits et intervient lors d'incidents majeurs.",
+      "confuse": []
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Acteurs & sanctions",
+      "term": "Officier de sécurité",
+      "def": "Personne désignée au sein de chaque organisme détenteur d'informations classifiées pour veiller à l'application des mesures de protection du secret de la défense nationale",
+      "tip": "Le gardien du secret au sein de l'organisme.",
+      "ex": "L'officier de sécurité tient à jour le registre des habilitations et contrôle les accès au classifié.",
+      "confuse": [
+        "RSSI",
+        "HFDS"
+      ]
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Acteurs & sanctions",
+      "term": "Compromission du secret",
+      "def": "Accès ou divulgation non autorisés d'une information classifiée, avérés ou supposés, entraînant une procédure obligatoire de signalement auprès du HFDS",
+      "tip": "Toute fuite — même supposée — déclenche une procédure immédiate.",
+      "ex": "La perte d'un document Secret oblige à déclarer une compromission supposée auprès du HFDS.",
+      "confuse": [
+        "Sanctions pénales",
+        "Compromission",
+        "Compromission ICUE"
+      ]
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "Classification (IGI 1300)",
+      "term": "Déclassification",
+      "def": "Acte par lequel l'autorité émettrice supprime le caractère classifié d'une information, rendant sa diffusion libre",
+      "tip": "Retirer l'étiquette — seule l'autorité émettrice peut le décider.",
+      "ex": "Un document Secret peut être déclassifié après expiration du délai prévu ou sur décision motivée.",
+      "confuse": [
+        "Autorité émettrice"
+      ]
+    },
+    {
+      "branch": "igi1300",
+      "branchLabel": "IGI 1300 — Secret Défense",
+      "cat": "SI classifiés & supports",
+      "term": "Zone de sécurité",
+      "def": "Espace physique spécialement constitué et protégé dans lequel des informations classifiées peuvent être traitées, dont l'accès est strictement contrôlé",
+      "tip": "La bulle physique sécurisée pour travailler sur le classifié.",
+      "ex": "Seules les personnes habilitées et détentrices du besoin d'en connaître sont admises en zone de sécurité.",
+      "confuse": [
+        "Contrôle physique des accès",
+        "Zone de sécurité ICUE"
+      ]
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "Autorité d'homologation",
+      "def": "Autorité responsable de la décision formelle d'homologation d'un SI sensible sur la base du dossier de sécurité présenté",
+      "tip": "Celle qui signe l'homologation.",
+      "ex": "L'autorité d'homologation prononce sa décision après examen du risque résiduel et du dossier de sécurité.",
+      "confuse": [
+        "Homologation d'un SI sensible"
+      ]
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "EBIOS RM",
+      "def": "Expression des Besoins et Identification des Objectifs de Sécurité Risk Manager : méthode d'analyse de risque publiée par l'ANSSI (2018)",
+      "tip": "La méthode ANSSI officielle d'analyse de risque.",
+      "ex": "L'analyse EBIOS RM est conduite par ateliers et ses résultats alimentent le dossier d'homologation.",
+      "confuse": [
+        "Gestion des risques (II 901)"
+      ]
+    },
+    {
+      "branch": "ii901",
+      "branchLabel": "II 901 — SI sensibles",
+      "cat": "Organisation de la SSI",
+      "term": "Audit SSI",
+      "def": "Examen méthodique d'un SI visant à évaluer sa conformité à la PSSI et à identifier les vulnérabilités résiduelles",
+      "tip": "La vérification formelle de la posture de sécurité.",
+      "ex": "Un audit SSI est conduit avant chaque renouvellement d'homologation pour valider l'état du SI.",
+      "confuse": [
+        "Gestion des vulnérabilités"
+      ]
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "TRÈS SECRET UE",
+      "def": "Niveau ICUE le plus élevé (EU TOP SECRET) : divulgation susceptible de nuire de façon exceptionnellement grave aux intérêts essentiels de l'UE ou d'un ou plusieurs États membres",
+      "tip": "Le niveau ICUE le plus haut.",
+      "ex": "Les opérations militaires les plus sensibles de l'UE peuvent être classifiées TRÈS SECRET UE.",
+      "confuse": [
+        "Très Secret",
+        "SECRET UE"
+      ]
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "SECRET UE",
+      "def": "Deuxième niveau ICUE (EU SECRET) : divulgation susceptible de nuire sérieusement aux intérêts essentiels de l'UE ou d'un ou plusieurs États membres",
+      "tip": "Le 2ᵉ niveau ICUE sur 4.",
+      "ex": "Des plans opérationnels de l'UE peuvent être classifiés SECRET UE.",
+      "confuse": [
+        "Secret",
+        "TRÈS SECRET UE",
+        "CONFIDENTIEL UE"
+      ]
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "Principes ICUE",
+      "term": "CONFIDENTIEL UE",
+      "def": "Troisième niveau ICUE (EU CONFIDENTIAL) : divulgation susceptible de nuire aux intérêts essentiels de l'UE ou d'un ou plusieurs États membres",
+      "tip": "Le 3ᵉ niveau ICUE, au-dessus de RESTREINT UE.",
+      "ex": "Des évaluations diplomatiques sensibles peuvent être classifiées CONFIDENTIEL UE.",
+      "confuse": [
+        "SECRET UE",
+        "RESTREINT UE"
+      ]
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Zone de sécurité ICUE",
+      "def": "Espace physique agréé par l'autorité nationale de sécurité dans lequel des ICUE peuvent être manipulées",
+      "tip": "La salle agréée pour traiter les ICUE.",
+      "ex": "Un local agréé pour traiter des TRÈS SECRET UE constitue une zone de sécurité de type I.",
+      "confuse": [
+        "Zone de sécurité"
+      ]
+    },
+    {
+      "branch": "igi2102",
+      "branchLabel": "IGI 2102 — ICUE (UE)",
+      "cat": "SI & contrats (ICUE)",
+      "term": "Accord de sécurité",
+      "def": "Accord bilatéral ou multilatéral fixant les conditions de protection et d'échange des ICUE entre entités ou États",
+      "tip": "Le cadre légal avant tout échange d'ICUE.",
+      "ex": "Un accord de sécurité entre États membres est nécessaire avant tout échange d'ICUE.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Objectifs de sécurité",
+      "term": "Non-répudiation",
+      "def": "Garantie qu'un acteur ne peut nier avoir effectué une action ou émis un message",
+      "tip": "On ne peut pas nier ce qu'on a signé.",
+      "ex": "La signature électronique prouve qu'un contrat a bien été signé par la personne identifiée.",
+      "confuse": []
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "BIA",
+      "def": "Business Impact Analysis : analyse identifiant les fonctions critiques et l'impact financier ou opérationnel de leur interruption",
+      "tip": "Identifier ce qui fait vraiment mal en cas d'arrêt.",
+      "ex": "Le BIA révèle que l'arrêt du SI de paiement coûte 50 k€/heure.",
+      "confuse": [
+        "PRA",
+        "PCA"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "RTO",
+      "def": "Recovery Time Objective : durée maximale tolérée d'interruption d'un service avant reprise d'activité",
+      "tip": "Combien de temps tolère-t-on l'arrêt ?",
+      "ex": "Un RTO de 4 h signifie que le service doit être rétabli en moins de 4 h après sinistre.",
+      "confuse": [
+        "RPO",
+        "PRA"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Résilience & continuité",
+      "term": "RPO",
+      "def": "Recovery Point Objective : perte maximale de données tolérée, exprimée en durée depuis la dernière sauvegarde valide",
+      "tip": "Combien de données peut-on se permettre de perdre ?",
+      "ex": "Un RPO de 1 h impose une sauvegarde au moins toutes les heures.",
+      "confuse": [
+        "RTO",
+        "Sauvegarde"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "SMSI",
+      "def": "Système de Management de la Sécurité de l'Information : ensemble cohérent de politiques, processus et contrôles gérant la sécurité de façon systématique (ISO/IEC 27001)",
+      "tip": "Le cadre global ISO 27001 de gestion de la sécurité.",
+      "ex": "La certification ISO 27001 atteste de la conformité et de la maturité du SMSI.",
+      "confuse": [
+        "PSSI"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Conformité & accréditation",
+      "term": "Déclaration d'applicabilité",
+      "def": "Document ISO 27001 listant les mesures de l'Annexe A retenues ou exclues, avec justification pour chaque choix (Statement of Applicability — SoA)",
+      "tip": "Quels contrôles ISO 27001 on applique et pourquoi.",
+      "ex": "La SoA justifie chaque mesure incluse ou exclue de l'Annexe A d'ISO 27001.",
+      "confuse": [
+        "Matrice de conformité",
+        "Applicabilité"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Traitement du risque",
+      "def": "Choix d'une des quatre options face à un risque identifié : réduire, accepter, transférer ou éviter",
+      "tip": "4 options : réduire / accepter / transférer / éviter.",
+      "ex": "Un risque trop coûteux à corriger peut être transféré via une assurance cyber.",
+      "confuse": [
+        "Plan de traitement",
+        "Risque résiduel"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Valeur métier",
+      "def": "Mission, service ou information essentielle qu'une organisation doit pouvoir assurer ou protéger (EBIOS RM — atelier 1)",
+      "tip": "Ce qui compte vraiment pour l'organisation.",
+      "ex": "La capacité à facturer les clients est une valeur métier à protéger.",
+      "confuse": [
+        "Actif",
+        "Bien support"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Bien support",
+      "def": "Composant technique ou organisationnel (serveur, application, personne) sur lequel repose une valeur métier (EBIOS RM — atelier 1)",
+      "tip": "Ce qui porte la valeur métier.",
+      "ex": "Le serveur de facturation est le bien support de la valeur métier de facturation.",
+      "confuse": [
+        "Actif",
+        "Valeur métier"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Source de risque",
+      "def": "Entité humaine ou non humaine susceptible d'être à l'origine d'un incident de sécurité (EBIOS RM — atelier 2)",
+      "tip": "Qui peut attaquer, et pourquoi.",
+      "ex": "Un État étranger cherchant des plans industriels est une source de risque.",
+      "confuse": [
+        "Menace",
+        "Attaquant externe"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Événement redouté",
+      "def": "Situation négative affectant une valeur métier et ses propriétés de sécurité, caractérisée par sa gravité (EBIOS RM — atelier 3)",
+      "tip": "Ce qu'on redoute qu'il arrive à la valeur métier.",
+      "ex": "L'indisponibilité du SI de production est un événement redouté de gravité majeure.",
+      "confuse": [
+        "Menace",
+        "Gravité"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Scénario stratégique",
+      "def": "Chemin d'attaque haut niveau reliant une source de risque à un événement redouté via des parties prenantes ou l'écosystème (EBIOS RM — atelier 3)",
+      "tip": "La vue d'ensemble : de qui → quoi → par quelle voie.",
+      "ex": "Un concurrent attaque via un sous-traitant pour accéder aux plans de fabrication.",
+      "confuse": [
+        "Scénario opérationnel",
+        "Mouvement latéral"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Analyse de risque",
+      "term": "Scénario opérationnel",
+      "def": "Séquence technique détaillée exploitant des vulnérabilités de biens supports pour atteindre un événement redouté (EBIOS RM — atelier 4)",
+      "tip": "La vue technique : comment l'attaquant procède concrètement.",
+      "ex": "Phishing → compromission compte VPN → mouvement latéral → exfiltration des plans.",
+      "confuse": [
+        "Scénario stratégique",
+        "Vulnérabilité"
+      ]
+    },
+    {
+      "branch": "archi",
+      "branchLabel": "Architecture & homologation",
+      "cat": "Supervision & détection",
+      "term": "Forensique numérique",
+      "def": "Collecte, préservation et analyse de preuves numériques après un incident, en respectant la chaîne de traçabilité",
+      "tip": "L'enquête numérique après incident.",
+      "ex": "L'analyse forensique des logs et de la RAM révèle le vecteur d'entrée initial de l'attaque.",
+      "confuse": [
+        "Investigation"
+      ]
+    }
+  ]
 }

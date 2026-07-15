@@ -61,6 +61,13 @@
             <button class="chip qtype-chip" data-qtype="situation">Mise en situation</button>
             <button class="chip qtype-chip" data-qtype="cat">Catégorie</button>
           </div>
+          <label class="toggle adv-toggle">
+            <span>🎓 Mode examen (chrono session · 50 % mises en situation)</span>
+            <input type="checkbox" id="opt-exammode" />
+          </label>
+          <button id="btn-concepts" class="secondary" style="margin-top:4px">
+            Gérer les concepts <span id="concept-badge" class="concept-badge"></span>
+          </button>
         </details>
       </div>
 
@@ -219,6 +226,23 @@
       <button id="btn-home" class="secondary">Accueil</button>
     </section>
 
+    <!-- GESTIONNAIRE DE CONCEPTS (modal) -->
+    <div id="concept-modal" class="modal hidden">
+      <div class="modal-card concept-modal-card">
+        <div class="modal-head">
+          <span>Concepts actifs</span>
+          <button id="concept-modal-close" class="gear">✕</button>
+        </div>
+        <input id="concept-search" class="search-input" type="search" placeholder="Rechercher un concept…" autocomplete="off" />
+        <div class="concept-actions">
+          <button id="btn-enable-all" class="chip">Tout activer</button>
+          <button id="btn-disable-branch" class="chip">Désactiver le thème sélectionné</button>
+        </div>
+        <span id="concept-count" class="concept-count"></span>
+        <div id="concept-list" class="concept-list"></div>
+      </div>
+    </div>
+
     <!-- PAUSE POMODORO -->
     <div id="pomodoro-modal" class="modal hidden">
       <div class="modal-card pomo-card">
@@ -234,7 +258,7 @@
   <button id="btn-fab-home" class="fab-home hidden" title="Accueil">🏠</button>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.1';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.2';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
