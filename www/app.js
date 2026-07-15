@@ -9,11 +9,25 @@ const BOX_DAYS = [0, 1, 3, 7, 16, 30];   // Leitner : box -> jours avant réappa
 const MAX_BOX = BOX_DAYS.length - 1;     // box >= 4 = maîtrisé
 const DAY = 86400000;
 
+// Durées de session pour les simulations d'examen (par groupe de branche)
+const EXAM_CONFIG = {
+  cissp:   { label: 'CISSP',          minutes: 180 },
+  sscp:    { label: 'SSCP',           minutes: 180 },
+  ccsp:    { label: 'CCSP',           minutes: 180 },
+  cc:      { label: 'CC (ISC2)',       minutes: 120 },
+  ceh:     { label: 'CEH',            minutes: 240 },
+  reglem:  { label: 'Réglementation', minutes: 90  },
+  homolog: { label: 'Homologation',   minutes: 90  },
+};
+
 const state = {
   branches: new Set(),   // vide = tous les thèmes ; sinon clés de branche concrètes
   qtype: 'mix',       // 'mix' | 'def' | 'term' | 'situation' | 'cat'
   count: 10,          // 0 = tout
   mode: 'srs',        // 'srs' | 'review'
+  examMode: false,    // chrono session + priorité mises en situation
+  examInterval: null,
+  examEndTime: 0,
   questions: [], answers: [], index: 0,
   learn: [], lidx: 0,
 };
@@ -73,6 +87,9 @@ function saveWrong(w) { lsSet('quizrev:wrong:v1', w); }
 function addWrong(t) { const w = getWrong(); if (!w.includes(t)) { w.push(t); saveWrong(w); } }
 function removeWrong(t) { saveWrong(getWrong().filter(x => x !== t)); }
 
+function getDisabled() { return new Set(lsGet('quizrev:disabled:v1', [])); }
+function saveDisabled(s) { lsSet('quizrev:disabled:v1', [...s]); }
+
 // Journal d'activité quotidien (alimente le graphe « 14 derniers jours »).
 function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function logDaily(correct) {
@@ -115,9 +132,11 @@ function uniq(a) { return [...new Set(a)]; }
 function uniqKeepFirst(a) { const s = new Set(), o = []; a.forEach(v => { if (v != null && !s.has(v)) { s.add(v); o.push(v); } }); return o; }
 const $ = (id) => document.getElementById(id);
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-// Sélection vide = pas de filtre (tout le corpus).
+// Sélection vide = pas de filtre (tout le corpus). Concepts désactivés exclus.
 function pool() {
-  return state.branches.size ? ALL.filter(c => state.branches.has(c.branch)) : ALL;
+  const disabled = getDisabled();
+  const base = state.branches.size ? ALL.filter(c => state.branches.has(c.branch)) : ALL;
+  return disabled.size ? base.filter(c => !disabled.has(c.term)) : base;
 }
 function fieldVal(term, field) { const c = BYTERM[term]; return c ? c[field] : null; }
 
@@ -170,10 +189,11 @@ function hasDef(concept) { return !!concept.def; }
 function makeQuestion(concept) {
   let type = state.qtype;
   if (type === 'mix') {
-    // Concept défini : questions de fond (terme↔définition, situation). La question
-    // de « catégorie » n'apporte rien de plus ici, on la réserve aux concepts SANS
-    // définition (surtout CISSP « structure »), où c'est le seul type possible.
-    const types = hasDef(concept) ? ['def', 'term', 'situation']
+    // En mode examen : priorité aux mises en situation (50 %) pour coller aux vrais examens.
+    // Sinon : question de fond pour les concepts définis, catégorie pour les structures CISSP.
+    const types = state.examMode && hasDef(concept) && concept.ex
+      ? ['situation', 'situation', 'def', 'term']
+      : hasDef(concept) ? ['def', 'term', 'situation']
       : (CATS.length >= OPTION_COUNT ? ['cat'] : ['def']);
     type = types[Math.floor(Math.random() * types.length)];
   }
@@ -318,10 +338,15 @@ function renderHome() {
 function startSession(mode) {
   state.mode = mode;
   state.questions = buildSession();
-  if (!state.questions.length) return;
+  if (!state.questions.length) { alert('Aucun concept disponible avec ces filtres.'); return; }
   state.answers = []; state.index = 0;
   studying = true; pomoStart();
-  showView('quiz'); renderQuestion();
+  showView('quiz');
+  if (state.examMode) {
+    const gid = examCurrentGroup();
+    if (gid) startExamTimer(EXAM_CONFIG[gid].minutes); else stopExamTimer();
+  } else { stopExamTimer(); }
+  renderQuestion();
 }
 
 function renderQuestion() {
@@ -369,18 +394,43 @@ function renderQuestion() {
   next.textContent = state.index < state.questions.length - 1 ? 'Suivant' : 'Voir le score';
 }
 
+// ---------- chrono de session examen ----------
+function examCurrentGroup() {
+  for (const g of GROUPS) if (groupActive(g) && EXAM_CONFIG[g.id]) return g.id;
+  return null;
+}
+function startExamTimer(minutes) {
+  clearInterval(state.examInterval);
+  state.examEndTime = Date.now() + minutes * 60000;
+  const el = $('quiz-timer');
+  el.classList.remove('urgent');
+  function tick() {
+    const left = Math.max(0, state.examEndTime - Date.now());
+    const m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+    el.textContent = '⏳ ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    el.classList.toggle('urgent', left > 0 && left < 300000);
+    if (left === 0) { clearInterval(state.examInterval); state.examInterval = null; finishQuiz(); }
+  }
+  tick();
+  state.examInterval = setInterval(tick, 1000);
+}
+function stopExamTimer() {
+  clearInterval(state.examInterval); state.examInterval = null;
+  const el = $('quiz-timer'); if (el && !settings.timer) el.textContent = '';
+}
+
 // ---------- minuteur par question (pausable) ----------
 let qTimer = null, qRemain = 0;
 function qPaint() { $('quiz-timer').textContent = qRemain > 0 ? '⏱️ ' + qRemain + 's' : ''; $('quiz-timer').classList.toggle('urgent', qRemain <= 5); }
 function stopQTick() { clearInterval(qTimer); qTimer = null; }           // gèle (garde qRemain)
-function clearQTimer() { stopQTick(); qRemain = 0; $('quiz-timer').textContent = ''; }
+function clearQTimer() { stopQTick(); qRemain = 0; if (!state.examMode) $('quiz-timer').textContent = ''; }
 function qTick() {                                                        // (re)lance depuis qRemain
   stopQTick();
-  if (!settings.timer || qRemain <= 0) return;
+  if (!settings.timer || state.examMode || qRemain <= 0) return;
   qPaint();
   qTimer = setInterval(() => { qRemain--; if (qRemain <= 0) { stopQTick(); qPaint(); timeUp(); } else qPaint(); }, 1000);
 }
-function startQTimer() { clearQTimer(); if (!settings.timer) return; qRemain = TIMER_SECS; qTick(); }
+function startQTimer() { clearQTimer(); if (!settings.timer || state.examMode) return; qRemain = TIMER_SECS; qTick(); }
 function timeUp() {
   if (state.answers[state.index]) return;
   const q = state.questions[state.index];
@@ -470,7 +520,7 @@ function finishQuiz() {
   wbox.innerHTML = wrong.length
     ? '<span class="wrong-title">À retravailler</span>' + wrong.map(w => `<div class="wrong-row"><span class="wrong-word">${esc(w.prompt)}</span><span class="wrong-answer">${esc(w.correct)}</span></div>`).join('')
     : '<span class="wrong-title">Parfait 🎉</span><span class="wrong-answer">Aucune erreur</span>';
-  clearQTimer(); studying = false; pomoStop();
+  clearQTimer(); stopExamTimer(); studying = false; pomoStop();
   showView('result');
   if (perfect && total >= 3) launchFireworks();
 }
@@ -747,6 +797,43 @@ function launchFireworks() {
   requestAnimationFrame(frame);
 }
 
+// ---------- gestionnaire de concepts ----------
+function updateConceptBadge() {
+  const d = getDisabled(), el = $('concept-badge');
+  if (el) el.textContent = d.size > 0 ? d.size : '';
+}
+
+function renderConceptManager() {
+  const disabled = getDisabled();
+  const search = ($('concept-search').value || '').toLowerCase();
+  const src = search ? ALL.filter(c =>
+    c.term.toLowerCase().includes(search) ||
+    (c.def || '').toLowerCase().includes(search) ||
+    c.cat.toLowerCase().includes(search)) : ALL;
+
+  const byBranch = {};
+  src.forEach(c => { (byBranch[c.branch] = byBranch[c.branch] || []).push(c); });
+
+  $('concept-list').innerHTML = Object.entries(byBranch).map(([branch, items]) =>
+    `<div class="concept-branch-head">${esc(branchLabel(branch))}</div>` +
+    items.map(c => {
+      const off = disabled.has(c.term);
+      return `<div class="concept-row"><div class="concept-info"><div class="concept-term">${esc(c.term)}</div><div class="concept-cat">${esc(c.cat)}</div></div><button class="concept-toggle ${off ? 'toggle-off' : 'toggle-on'}" data-term="${esc(c.term)}">${off ? 'Désactivé' : 'Actif'}</button></div>`;
+    }).join('')
+  ).join('');
+
+  $('concept-list').querySelectorAll('.concept-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const d = getDisabled(), term = btn.dataset.term;
+      if (d.has(term)) d.delete(term); else d.add(term);
+      saveDisabled(d); updateConceptBadge(); renderConceptManager();
+    });
+  });
+
+  const dis = getDisabled().size;
+  $('concept-count').textContent = `${ALL.length - dis} actifs · ${dis} désactivés`;
+}
+
 // ---------- câblage ----------
 $('home-select').addEventListener('change', (e) => selectHomeTheme(e.target.value));
 $('btn-fab-home').addEventListener('click', exitToHome);
@@ -756,7 +843,7 @@ window.addEventListener('resize', () => { if (!views.stats.classList.contains('h
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
-function exitToHome() { clearTimeout(autoNextTimer); clearQTimer(); studying = false; pomoStop(); showView('home'); renderHome(); }
+function exitToHome() { clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop(); showView('home'); renderHome(); }
 $('btn-start').addEventListener('click', () => startSession('srs'));
 $('btn-review').addEventListener('click', () => startSession('review'));
 $('btn-next').addEventListener('click', goNext);
@@ -779,6 +866,21 @@ $('fiches-select').addEventListener('change', (e) => { fichesSel = e.target.valu
 $('btn-fiches-home').addEventListener('click', exitToHome);
 $('btn-resources').addEventListener('click', () => { renderResources(); showView('resources'); });
 $('btn-resources-home').addEventListener('click', exitToHome);
+
+const optExam = $('opt-exammode');
+optExam.addEventListener('change', () => { state.examMode = optExam.checked; });
+
+const conceptModal = $('concept-modal');
+$('btn-concepts').addEventListener('click', () => { conceptModal.classList.remove('hidden'); renderConceptManager(); });
+$('concept-modal-close').addEventListener('click', () => { conceptModal.classList.add('hidden'); renderHome(); });
+conceptModal.addEventListener('click', (e) => { if (e.target === conceptModal) { conceptModal.classList.add('hidden'); renderHome(); } });
+$('concept-search').addEventListener('input', renderConceptManager);
+$('btn-enable-all').addEventListener('click', () => { saveDisabled(new Set()); updateConceptBadge(); renderConceptManager(); });
+$('btn-disable-branch').addEventListener('click', () => {
+  const d = getDisabled();
+  (state.branches.size ? ALL.filter(c => state.branches.has(c.branch)) : ALL).forEach(c => d.add(c.term));
+  saveDisabled(d); updateConceptBadge(); renderConceptManager();
+});
 
 function bindToggle(id, key, after) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); if (after) after(); }); }
 bindToggle('opt-autonext', 'autoNext');
@@ -811,8 +913,8 @@ $('settings-close').addEventListener('click', () => settingsModal.classList.add(
 settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.add('hidden'); });
 $('btn-reset').addEventListener('click', () => {
   if (confirm('Réinitialiser progression, stats et erreurs ?')) {
-    ['quizrev:stats:v1', 'quizrev:wrong:v1', 'quizrev:srs:v1', 'quizrev:daily:v1'].forEach(k => localStorage.removeItem(k));
-    settingsModal.classList.add('hidden'); renderHome();
+    ['quizrev:stats:v1', 'quizrev:wrong:v1', 'quizrev:srs:v1', 'quizrev:daily:v1', 'quizrev:disabled:v1'].forEach(k => localStorage.removeItem(k));
+    settingsModal.classList.add('hidden'); updateConceptBadge(); renderHome();
   }
 });
 
@@ -862,5 +964,6 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
   renderBranchSelect();
   renderChips('.qtype-chip', state.qtype, 'qtype');
   renderChips('.count-chip', state.count, 'count');
+  updateConceptBadge();
   renderHome();
 })();
