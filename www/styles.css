@@ -509,3 +509,8 @@ html, body {
 .lb-me { background: rgba(76,224,210,0.08); border-radius: 10px; }
 .lb-me .lb-pseudo { color: var(--mint); }
 .lb-me .lb-pct { color: var(--mint); }
+
+/* ===== Challenge modal layout ===== */
+.challenge-modal-card { max-height: 88vh; overflow-y: auto; }
+.challenge-share-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.btn-whatsapp { background: #25D366; color: #fff; border: none; border-radius: 20px; padding: 8px 16px; font-size: 14px; font-weight: 700; cursor: pointer; }

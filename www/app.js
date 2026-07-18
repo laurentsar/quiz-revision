@@ -937,18 +937,37 @@ function renderLeaderboard(rows, myPseudo) {
 }
 
 // ---------- défi multijoueur ----------
-function openChallengeModal() {
-  const scope = challengeScope();
-  const seed = (Math.random() * 0x100000000) >>> 0;
-  const code = encodeChallenge(scope, state.count, state.qtype, seed) || '—';
+let _challengeSeed = 0;
+
+function valueToScope(v) {
+  if (CHALLENGE_SCOPES.includes(v)) return v;
+  const g = groupOf(v);
+  return g ? 'grp:' + g.id : 'all';
+}
+
+function refreshChallengeCode() {
+  const v = $('challenge-theme-select').value;
+  const scope = valueToScope(v);
+  const count = state.count;
+  const qtype = state.qtype;
+  const code = encodeChallenge(scope, count, qtype, _challengeSeed) || '—';
   $('challenge-code').textContent = code;
-  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[state.qtype] || state.qtype;
+  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[qtype] || qtype;
   const fireReady = window.FirebaseChallenge && FirebaseChallenge.isReady();
-  $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (state.count || 'Tout') + ' questions · ' + qtypeLabel +
+  $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (count || 'Tout') + ' questions · ' + qtypeLabel +
     (fireReady ? ' · 🟢 classement en direct' : ' · ⚫ classement hors ligne');
+  $('challenge-modal')._challenge = { scope, count, qtype, seed: _challengeSeed, code };
+}
+
+function openChallengeModal() {
+  _challengeSeed = (Math.random() * 0x100000000) >>> 0;
+  const sel = $('challenge-theme-select');
+  sel.innerHTML = themeOptionsHtml();
+  sel.value = scopeToSelectValue();
+  if (!sel.value) sel.value = 'all';
+  refreshChallengeCode();
   $('challenge-error').classList.add('hidden');
   $('challenge-code-input').value = '';
-  $('challenge-modal')._challenge = { scope, count: state.count, qtype: state.qtype, seed, code };
   $('challenge-modal').classList.remove('hidden');
 }
 
@@ -1039,13 +1058,13 @@ $('btn-copy-code').addEventListener('click', async () => {
     setTimeout(() => { btn.textContent = '📋 Copier'; }, 2000);
   } catch (e) {}
 });
-$('btn-share-code').addEventListener('click', async () => {
+$('btn-whatsapp-code').addEventListener('click', () => {
   const code = $('challenge-code').textContent;
   const info = $('challenge-scope-info').textContent;
   const text = `⚔️ Défi Quizz Révision\nCode : ${code}\n(${info})\nRelève le défi !`;
-  if (navigator.share) { try { await navigator.share({ title: 'Défi Quizz Révision', text }); return; } catch (e) {} }
-  try { await navigator.clipboard.writeText(text); } catch (e) {}
+  openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
+$('challenge-theme-select').addEventListener('change', refreshChallengeCode);
 $('btn-start-my-challenge').addEventListener('click', () => {
   const ch = $('challenge-modal')._challenge;
   if (ch) startChallengeSession(ch, ch.code);
