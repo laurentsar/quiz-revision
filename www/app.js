@@ -9,6 +9,11 @@ const BOX_DAYS = [0, 1, 3, 7, 16, 30];   // Leitner : box -> jours avant réappa
 const MAX_BOX = BOX_DAYS.length - 1;     // box >= 4 = maîtrisé
 const DAY = 86400000;
 
+// Défi multijoueur : valeurs encodables dans un code partageable
+const CHALLENGE_SCOPES = ['all', 'grp:homolog', 'grp:reglem', 'grp:cissp', 'grp:sscp', 'grp:ccsp', 'grp:cc', 'grp:ceh'];
+const CHALLENGE_COUNTS = [5, 10, 20, 0];     // 0 = tout
+const CHALLENGE_QTYPES = ['mix', 'def', 'term', 'situation', 'cat'];
+
 // Durées de session pour les simulations d'examen (par groupe de branche)
 const EXAM_CONFIG = {
   cissp:   { label: 'CISSP',          minutes: 180 },
@@ -28,6 +33,7 @@ const state = {
   examMode: false,    // chrono session + priorité mises en situation
   examInterval: null,
   examEndTime: 0,
+  challenge: null,    // { seed, code } — non-null quand un défi est en cours
   questions: [], answers: [], index: 0,
   learn: [], lidx: 0,
 };
@@ -90,6 +96,12 @@ function removeWrong(t) { saveWrong(getWrong().filter(x => x !== t)); }
 function getDisabled() { return new Set(lsGet('quizrev:disabled:v1', [])); }
 function saveDisabled(s) { lsSet('quizrev:disabled:v1', [...s]); }
 
+// Pseudo joueur (défis multijoueur) : auto-généré à la première utilisation
+const PSEUDO_ADJ = ['Agile','Brave','Cyber','Dark','Elite','Flash','Ghost','Hyper','Iron','Ninja','Omega','Proto','Quick','Recon','Swift'];
+const PSEUDO_NOM = ['Aigle','Bison','Cobra','Dingo','Faucon','Gecko','Ibis','Lapin','Loup','Lynx','Orque','Panda','Renard','Tigre','Varan'];
+function genPseudo() { return PSEUDO_ADJ[Math.floor(Math.random()*PSEUDO_ADJ.length)] + PSEUDO_NOM[Math.floor(Math.random()*PSEUDO_NOM.length)] + Math.floor(10+Math.random()*90); }
+function getPseudo() { let p = lsGet('quizrev:pseudo:v1',''); if (!p) { p = genPseudo(); lsSet('quizrev:pseudo:v1', p); } return p; }
+
 // Journal d'activité quotidien (alimente le graphe « 14 derniers jours »).
 function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function logDaily(correct) {
@@ -128,6 +140,49 @@ function srsUpdate(term, ok) {
 
 // ---------- helpers ----------
 function shuffle(list) { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+// Générateur pseudo-aléatoire LCG déterministe (seed → séquence reproductible)
+function seededRng(seed) {
+  let s = (seed ^ 0xDEADBEEF) >>> 0;
+  return function() { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; };
+}
+function seededShuffle(list, rng) {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+// Encode la config du défi en un code 11 chars (XXXXX-XXXXX) partageable.
+// Format : 8 hex (seed uint32) + 2 hex (config = si*20 + ci*5 + qi).
+function encodeChallenge(scope, count, qtype, seed) {
+  const si = CHALLENGE_SCOPES.indexOf(scope), ci = CHALLENGE_COUNTS.indexOf(count), qi = CHALLENGE_QTYPES.indexOf(qtype);
+  if (si < 0 || ci < 0 || qi < 0) return null;
+  const raw = (seed >>> 0).toString(16).toUpperCase().padStart(8, '0') +
+              (si * 20 + ci * 5 + qi).toString(16).toUpperCase().padStart(2, '0');
+  return raw.slice(0, 5) + '-' + raw.slice(5);
+}
+function decodeChallenge(input) {
+  const raw = input.replace(/-/g, '').trim().toUpperCase();
+  if (!/^[0-9A-F]{10}$/.test(raw)) return null;
+  const seed = parseInt(raw.slice(0, 8), 16);
+  const config = parseInt(raw.slice(8), 16);
+  const qi = config % 5, ci = Math.floor(config / 5) % 4, si = Math.floor(config / 20);
+  if (si >= CHALLENGE_SCOPES.length) return null;
+  return { scope: CHALLENGE_SCOPES[si], count: CHALLENGE_COUNTS[ci], qtype: CHALLENGE_QTYPES[qi], seed };
+}
+// Scope encodable le plus proche de la sélection courante (groupes uniquement)
+function challengeScope() {
+  const v = scopeToSelectValue();
+  if (CHALLENGE_SCOPES.includes(v)) return v;
+  const k = [...state.branches];
+  if (k.length === 1) { const g = groupOf(k[0]); return g ? 'grp:' + g.id : 'all'; }
+  return 'all';
+}
+function challengeScopeLabel(scope) {
+  if (scope === 'all') return 'Tous les thèmes';
+  if (scope.startsWith('grp:')) { const g = groupById(scope.slice(4)); return g ? g.label : scope; }
+  return branchLabel(scope);
+}
 function uniq(a) { return [...new Set(a)]; }
 function uniqKeepFirst(a) { const s = new Set(), o = []; a.forEach(v => { if (v != null && !s.has(v)) { s.add(v); o.push(v); } }); return o; }
 const $ = (id) => document.getElementById(id);
@@ -225,6 +280,13 @@ function makeQuestion(concept) {
 }
 
 function buildSession() {
+  if (state.challenge) {
+    const rng = seededRng(state.challenge.seed);
+    const p = pool();
+    const shuffled = seededShuffle(p, rng);
+    const cnt = state.count > 0 ? state.count : shuffled.length;
+    return shuffled.slice(0, cnt).map(makeQuestion);
+  }
   let concepts = pickConcepts(state.mode);
   if (state.count > 0) concepts = concepts.slice(0, state.count);
   return shuffle(concepts).map(makeQuestion);
@@ -521,6 +583,32 @@ function finishQuiz() {
     ? '<span class="wrong-title">À retravailler</span>' + wrong.map(w => `<div class="wrong-row"><span class="wrong-word">${esc(w.prompt)}</span><span class="wrong-answer">${esc(w.correct)}</span></div>`).join('')
     : '<span class="wrong-title">Parfait 🎉</span><span class="wrong-answer">Aucune erreur</span>';
   clearQTimer(); stopExamTimer(); studying = false; pomoStop();
+
+  const cr = $('challenge-result');
+  const lb = $('challenge-leaderboard');
+  if (state.challenge) {
+    const code = state.challenge.code;
+    const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '✅' : '💪';
+    const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
+    $('challenge-result-code').textContent = code;
+    $('btn-share-result').dataset.shareText = shareText;
+    cr.classList.remove('hidden');
+    if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
+      const pseudo = getPseudo();
+      FirebaseChallenge.pushScore(code, pseudo, score, total);
+      lb.classList.remove('hidden');
+      $('leaderboard-status').textContent = `Vous jouez en tant que : ${pseudo}`;
+      renderLeaderboard([], pseudo);
+      FirebaseChallenge.listenLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+    } else {
+      lb.classList.add('hidden');
+    }
+    state.challenge = null;
+  } else {
+    cr.classList.add('hidden');
+    lb.classList.add('hidden');
+  }
+
   showView('result');
   if (perfect && total >= 3) launchFireworks();
 }
@@ -834,6 +922,59 @@ function renderConceptManager() {
   $('concept-count').textContent = `${ALL.length - dis} actifs · ${dis} désactivés`;
 }
 
+// ---------- classement temps réel ----------
+function renderLeaderboard(rows, myPseudo) {
+  const MEDALS = ['🥇','🥈','🥉'];
+  $('leaderboard-rows').innerHTML = rows.length
+    ? rows.map((r, i) =>
+        `<div class="lb-row${r.pseudo === myPseudo ? ' lb-me' : ''}">` +
+        `<span class="lb-rank">${MEDALS[i] || '#'+(i+1)}</span>` +
+        `<span class="lb-pseudo">${esc(r.pseudo)}</span>` +
+        `<span class="lb-score">${r.score}/${r.total}</span>` +
+        `<span class="lb-pct">${r.pct}%</span>` +
+        `</div>`).join('')
+    : '<p class="mm-source" style="margin:10px 0">En attente des autres joueurs…</p>';
+}
+
+// ---------- défi multijoueur ----------
+function openChallengeModal() {
+  const scope = challengeScope();
+  const seed = (Math.random() * 0x100000000) >>> 0;
+  const code = encodeChallenge(scope, state.count, state.qtype, seed) || '—';
+  $('challenge-code').textContent = code;
+  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[state.qtype] || state.qtype;
+  const fireReady = window.FirebaseChallenge && FirebaseChallenge.isReady();
+  $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (state.count || 'Tout') + ' questions · ' + qtypeLabel +
+    (fireReady ? ' · 🟢 classement en direct' : ' · ⚫ classement hors ligne');
+  $('challenge-error').classList.add('hidden');
+  $('challenge-code-input').value = '';
+  $('challenge-modal')._challenge = { scope, count: state.count, qtype: state.qtype, seed, code };
+  $('challenge-modal').classList.remove('hidden');
+}
+
+function startChallengeSession(challenge, code) {
+  state.branches.clear();
+  if (challenge.scope.startsWith('grp:')) {
+    const g = groupById(challenge.scope.slice(4));
+    if (g) groupKeys(g).forEach(k => state.branches.add(k));
+  } else if (challenge.scope !== 'all') {
+    state.branches.add(challenge.scope);
+  }
+  state.count = challenge.count;
+  state.qtype = challenge.qtype;
+  state.challenge = { seed: challenge.seed, code };
+  state.examMode = false;
+  state.mode = 'srs';
+  state.questions = buildSession();
+  if (!state.questions.length) { state.challenge = null; alert('Aucun concept disponible pour ce défi.'); return; }
+  state.answers = []; state.index = 0;
+  studying = true; pomoStart();
+  $('challenge-modal').classList.add('hidden');
+  showView('quiz');
+  stopExamTimer();
+  renderQuestion();
+}
+
 // ---------- câblage ----------
 $('home-select').addEventListener('change', (e) => selectHomeTheme(e.target.value));
 $('btn-fab-home').addEventListener('click', exitToHome);
@@ -843,7 +984,12 @@ window.addEventListener('resize', () => { if (!views.stats.classList.contains('h
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
-function exitToHome() { clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop(); showView('home'); renderHome(); }
+function exitToHome() {
+  clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop();
+  state.challenge = null;
+  if (window.FirebaseChallenge) FirebaseChallenge.removeListener();
+  showView('home'); renderHome();
+}
 $('btn-start').addEventListener('click', () => startSession('srs'));
 $('btn-review').addEventListener('click', () => startSession('review'));
 $('btn-next').addEventListener('click', goNext);
@@ -882,6 +1028,41 @@ $('btn-disable-branch').addEventListener('click', () => {
   saveDisabled(d); updateConceptBadge(); renderConceptManager();
 });
 
+$('btn-challenge').addEventListener('click', openChallengeModal);
+$('challenge-modal-close').addEventListener('click', () => $('challenge-modal').classList.add('hidden'));
+$('challenge-modal').addEventListener('click', (e) => { if (e.target === $('challenge-modal')) $('challenge-modal').classList.add('hidden'); });
+$('btn-copy-code').addEventListener('click', async () => {
+  const code = $('challenge-code').textContent;
+  try {
+    await navigator.clipboard.writeText(code);
+    const btn = $('btn-copy-code'); btn.textContent = '✅ Copié';
+    setTimeout(() => { btn.textContent = '📋 Copier'; }, 2000);
+  } catch (e) {}
+});
+$('btn-share-code').addEventListener('click', async () => {
+  const code = $('challenge-code').textContent;
+  const info = $('challenge-scope-info').textContent;
+  const text = `⚔️ Défi Quizz Révision\nCode : ${code}\n(${info})\nRelève le défi !`;
+  if (navigator.share) { try { await navigator.share({ title: 'Défi Quizz Révision', text }); return; } catch (e) {} }
+  try { await navigator.clipboard.writeText(text); } catch (e) {}
+});
+$('btn-start-my-challenge').addEventListener('click', () => {
+  const ch = $('challenge-modal')._challenge;
+  if (ch) startChallengeSession(ch, ch.code);
+});
+$('btn-join-challenge').addEventListener('click', () => {
+  const raw = $('challenge-code-input').value.trim();
+  const ch = decodeChallenge(raw);
+  if (!ch) { $('challenge-error').classList.remove('hidden'); return; }
+  $('challenge-error').classList.add('hidden');
+  startChallengeSession(ch, raw.toUpperCase().replace(/[^0-9A-F]/g, '').replace(/(.{5})(.{5})/, '$1-$2'));
+});
+$('btn-share-result').addEventListener('click', async () => {
+  const text = ($('btn-share-result').dataset.shareText || '').trim();
+  if (navigator.share) { try { await navigator.share({ title: 'Défi Quizz Révision', text }); return; } catch (e) {} }
+  try { await navigator.clipboard.writeText(text); } catch (e) {}
+});
+
 function bindToggle(id, key, after) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); if (after) after(); }); }
 bindToggle('opt-autonext', 'autoNext');
 bindToggle('opt-sound', 'sound');
@@ -889,6 +1070,15 @@ bindToggle('opt-counts', 'showCounts', renderBranchSelect);
 bindToggle('opt-close', 'closeDistractors');
 bindToggle('opt-timer', 'timer');
 bindToggle('opt-pomodoro', 'pomodoro', () => { if (settings.pomodoro) pomoStart(); else pomoStop(); });
+
+const pseudoInput = $('pseudo-input');
+pseudoInput.value = getPseudo();
+pseudoInput.addEventListener('change', () => {
+  const v = pseudoInput.value.replace(/[^\w\-À-ÿ]/g, '').slice(0, 20).trim();
+  const final = v || genPseudo();
+  lsSet('quizrev:pseudo:v1', final);
+  pseudoInput.value = final;
+});
 
 const settingsModal = $('settings-modal');
 $('app-version').textContent = 'v' + (window.APP_VERSION || '?');

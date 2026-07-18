@@ -1,10 +1,12 @@
-const CACHE = 'quizrev-v32';
+const CACHE = 'quizrev-v34';
 const ASSETS = [
   './',
   'index.html',
   'styles.css',
   'app.js',
   'update-check.js',
+  'firebase-config.js',
+  'firebase-challenge.js',
   'manifest.webmanifest',
   'data/secu_concepts.json',
   'data/cissp_concepts.json',
