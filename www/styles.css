@@ -510,6 +510,13 @@ html, body {
 .lb-me .lb-pseudo { color: var(--mint); }
 .lb-me .lb-pct { color: var(--mint); }
 
+/* ===== Audit qualité ===== */
+.audit-modal-card { max-height: 88vh; overflow-y: auto; }
+.audit-preview { display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto; padding: 4px 0; }
+.audit-item { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.audit-term { font-weight: 600; font-size: 14px; color: var(--white); }
+.audit-tag { font-size: 11px; background: rgba(255,107,129,0.15); color: var(--danger); border-radius: 8px; padding: 2px 7px; }
+
 /* ===== Signalements ===== */
 .flag-badge {
   display: inline-flex; align-items: center; justify-content: center;
