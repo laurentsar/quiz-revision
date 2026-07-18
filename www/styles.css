@@ -510,6 +510,42 @@ html, body {
 .lb-me .lb-pseudo { color: var(--mint); }
 .lb-me .lb-pct { color: var(--mint); }
 
+/* ===== Signalements ===== */
+.flag-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--danger); color: #fff;
+  border-radius: 999px; font-size: 11px; font-weight: 700;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  margin-left: 6px; vertical-align: middle;
+}
+.flag-btn {
+  margin-top: 8px; font-size: 12px; padding: 5px 10px;
+  color: var(--text-dim); opacity: 0.7;
+}
+.flag-btn:hover { opacity: 1; }
+.flag-concept-label { font-weight: 600; color: var(--text); margin: 0; word-break: break-word; }
+.flag-note-input {
+  width: 100%; background: rgba(255,255,255,0.06); color: var(--text);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+  padding: 10px 12px; font-size: 14px; font-family: inherit; resize: vertical;
+}
+.flags-modal-card { max-height: 88vh; overflow-y: auto; }
+.flag-item { display: flex; flex-direction: column; gap: 8px; padding: 4px 0; }
+.flag-item-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.flag-item-term { font-weight: 700; font-size: 15px; color: var(--white); }
+.flag-item-typelabel { font-size: 12px; color: var(--text-dim); }
+.flag-ctx { margin: 0; font-size: 12px; color: var(--text-dim); }
+.flag-note-display { margin: 0; font-size: 13px; color: var(--text-dim); font-style: italic; }
+.flag-field-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+.flag-textarea {
+  width: 100%; background: rgba(255,255,255,0.06); color: var(--text);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+  padding: 8px 10px; font-size: 13px; font-family: inherit; resize: vertical;
+}
+.flag-item-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.flag-resolve-btn { background: rgba(53,208,127,0.15); color: var(--success); border: 1px solid rgba(53,208,127,0.3); }
+.flag-sep { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 10px 0; }
+
 /* ===== Challenge modal layout ===== */
 .challenge-modal-card { max-height: 88vh; overflow-y: auto; }
 .challenge-share-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
