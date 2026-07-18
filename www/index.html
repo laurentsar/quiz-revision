@@ -263,23 +263,26 @@
 
     <!-- DÉFI MULTIJOUEUR (modal) -->
     <div id="challenge-modal" class="modal hidden">
-      <div class="modal-card">
+      <div class="modal-card challenge-modal-card">
         <div class="modal-head">
           <span>⚔️ Défi multijoueur</span>
           <button id="challenge-modal-close" class="gear">✕</button>
         </div>
 
         <p class="challenge-section-title">Créer un défi</p>
-        <p class="mm-source">Partage ce code avec tes amis. Ils jouent le même quiz et comparent leurs scores.</p>
+        <span class="hero-label">Thème</span>
+        <select id="challenge-theme-select" class="select" style="margin-bottom:10px"></select>
+
         <div class="challenge-code-box">
           <span id="challenge-code" class="challenge-code">——————</span>
         </div>
         <p id="challenge-scope-info" class="challenge-info"></p>
-        <div class="concept-actions">
-          <button id="btn-copy-code" class="chip">📋 Copier</button>
-          <button id="btn-share-code" class="chip">📤 Partager</button>
+
+        <div class="challenge-share-row">
+          <button id="btn-copy-code" class="chip">📋 Copier le code</button>
+          <button id="btn-whatsapp-code" class="btn-whatsapp">&#128172; WhatsApp</button>
         </div>
-        <button id="btn-start-my-challenge" class="primary" style="margin-top:12px">▶ Jouer ce défi</button>
+        <button id="btn-start-my-challenge" class="primary" style="margin-top:10px">▶ Jouer ce défi</button>
 
         <div class="modal-sep"></div>
 
