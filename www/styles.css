@@ -542,9 +542,20 @@ html, body {
   border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
   padding: 8px 10px; font-size: 13px; font-family: inherit; resize: vertical;
 }
-.flag-item-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-.flag-resolve-btn { background: rgba(53,208,127,0.15); color: var(--success); border: 1px solid rgba(53,208,127,0.3); }
-.flag-sep { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 10px 0; }
+.flag-item-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.flag-resolve-btn { color: var(--text-dim); }
+.flag-sep { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 14px 0; }
+.flag-current-block { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; }
+.flag-current-line { margin: 0; font-size: 13px; color: var(--text-dim); }
+.flag-claude-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #7C3AED, #4F46E5);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 10px 16px; font-size: 14px; font-weight: 700; cursor: pointer;
+  margin-top: 4px;
+}
+.flag-claude-btn:active { opacity: 0.85; }
+.flag-claude-hint { margin: 4px 0 8px; font-size: 12px; color: var(--text-dim); }
 
 /* ===== Challenge modal layout ===== */
 .challenge-modal-card { max-height: 88vh; overflow-y: auto; }
