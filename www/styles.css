@@ -456,6 +456,13 @@ html, body {
 .quiz-timer.urgent { animation: pulse-timer 1s ease-in-out infinite alternate; }
 @keyframes pulse-timer { from { opacity: 1; } to { opacity: 0.55; } }
 
+/* ===== Pseudo joueur (défis) ===== */
+.pseudo-input {
+  background: rgba(255,255,255,0.08); color: var(--text); font-size: 14px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+  padding: 5px 10px; width: 120px; text-align: right;
+}
+
 /* ===== Défi multijoueur (v4.3) ===== */
 .challenge-section-title {
   font-size: 13px; font-weight: 700; text-transform: uppercase;
@@ -484,3 +491,21 @@ html, body {
   display: block; font-family: 'Courier New', monospace; font-size: 1.5rem;
   font-weight: 800; letter-spacing: .18em; color: var(--mint); margin-bottom: 14px;
 }
+
+/* Classement temps réel */
+.leaderboard-title {
+  display: block; font-size: 15px; font-weight: 700; margin-bottom: 10px;
+}
+.lb-row {
+  display: grid; grid-template-columns: 2.2rem 1fr 4rem 3.5rem;
+  align-items: center; gap: 6px; padding: 9px 4px;
+  border-top: 1px solid rgba(255,255,255,0.07); font-size: 14px;
+}
+.lb-row:first-child { border-top: none; }
+.lb-rank { font-size: 18px; text-align: center; }
+.lb-pseudo { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-score { color: var(--text-dim); font-size: 13px; text-align: right; }
+.lb-pct { font-weight: 700; text-align: right; }
+.lb-me { background: rgba(76,224,210,0.08); border-radius: 10px; }
+.lb-me .lb-pseudo { color: var(--mint); }
+.lb-me .lb-pct { color: var(--mint); }

@@ -96,6 +96,12 @@ function removeWrong(t) { saveWrong(getWrong().filter(x => x !== t)); }
 function getDisabled() { return new Set(lsGet('quizrev:disabled:v1', [])); }
 function saveDisabled(s) { lsSet('quizrev:disabled:v1', [...s]); }
 
+// Pseudo joueur (défis multijoueur) : auto-généré à la première utilisation
+const PSEUDO_ADJ = ['Agile','Brave','Cyber','Dark','Elite','Flash','Ghost','Hyper','Iron','Ninja','Omega','Proto','Quick','Recon','Swift'];
+const PSEUDO_NOM = ['Aigle','Bison','Cobra','Dingo','Faucon','Gecko','Ibis','Lapin','Loup','Lynx','Orque','Panda','Renard','Tigre','Varan'];
+function genPseudo() { return PSEUDO_ADJ[Math.floor(Math.random()*PSEUDO_ADJ.length)] + PSEUDO_NOM[Math.floor(Math.random()*PSEUDO_NOM.length)] + Math.floor(10+Math.random()*90); }
+function getPseudo() { let p = lsGet('quizrev:pseudo:v1',''); if (!p) { p = genPseudo(); lsSet('quizrev:pseudo:v1', p); } return p; }
+
 // Journal d'activité quotidien (alimente le graphe « 14 derniers jours »).
 function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function logDaily(correct) {
@@ -579,15 +585,28 @@ function finishQuiz() {
   clearQTimer(); stopExamTimer(); studying = false; pomoStop();
 
   const cr = $('challenge-result');
+  const lb = $('challenge-leaderboard');
   if (state.challenge) {
+    const code = state.challenge.code;
     const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '✅' : '💪';
-    const shareText = `⚔️ Défi Quizz Révision [${state.challenge.code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
-    $('challenge-result-code').textContent = state.challenge.code;
+    const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
+    $('challenge-result-code').textContent = code;
     $('btn-share-result').dataset.shareText = shareText;
     cr.classList.remove('hidden');
+    if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
+      const pseudo = getPseudo();
+      FirebaseChallenge.pushScore(code, pseudo, score, total);
+      lb.classList.remove('hidden');
+      $('leaderboard-status').textContent = `Vous jouez en tant que : ${pseudo}`;
+      renderLeaderboard([], pseudo);
+      FirebaseChallenge.listenLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+    } else {
+      lb.classList.add('hidden');
+    }
     state.challenge = null;
   } else {
     cr.classList.add('hidden');
+    lb.classList.add('hidden');
   }
 
   showView('result');
@@ -903,6 +922,20 @@ function renderConceptManager() {
   $('concept-count').textContent = `${ALL.length - dis} actifs · ${dis} désactivés`;
 }
 
+// ---------- classement temps réel ----------
+function renderLeaderboard(rows, myPseudo) {
+  const MEDALS = ['🥇','🥈','🥉'];
+  $('leaderboard-rows').innerHTML = rows.length
+    ? rows.map((r, i) =>
+        `<div class="lb-row${r.pseudo === myPseudo ? ' lb-me' : ''}">` +
+        `<span class="lb-rank">${MEDALS[i] || '#'+(i+1)}</span>` +
+        `<span class="lb-pseudo">${esc(r.pseudo)}</span>` +
+        `<span class="lb-score">${r.score}/${r.total}</span>` +
+        `<span class="lb-pct">${r.pct}%</span>` +
+        `</div>`).join('')
+    : '<p class="mm-source" style="margin:10px 0">En attente des autres joueurs…</p>';
+}
+
 // ---------- défi multijoueur ----------
 function openChallengeModal() {
   const scope = challengeScope();
@@ -910,7 +943,9 @@ function openChallengeModal() {
   const code = encodeChallenge(scope, state.count, state.qtype, seed) || '—';
   $('challenge-code').textContent = code;
   const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[state.qtype] || state.qtype;
-  $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (state.count || 'Tout') + ' questions · ' + qtypeLabel;
+  const fireReady = window.FirebaseChallenge && FirebaseChallenge.isReady();
+  $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (state.count || 'Tout') + ' questions · ' + qtypeLabel +
+    (fireReady ? ' · 🟢 classement en direct' : ' · ⚫ classement hors ligne');
   $('challenge-error').classList.add('hidden');
   $('challenge-code-input').value = '';
   $('challenge-modal')._challenge = { scope, count: state.count, qtype: state.qtype, seed, code };
@@ -949,7 +984,12 @@ window.addEventListener('resize', () => { if (!views.stats.classList.contains('h
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
-function exitToHome() { clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop(); state.challenge = null; showView('home'); renderHome(); }
+function exitToHome() {
+  clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop();
+  state.challenge = null;
+  if (window.FirebaseChallenge) FirebaseChallenge.removeListener();
+  showView('home'); renderHome();
+}
 $('btn-start').addEventListener('click', () => startSession('srs'));
 $('btn-review').addEventListener('click', () => startSession('review'));
 $('btn-next').addEventListener('click', goNext);
@@ -1030,6 +1070,15 @@ bindToggle('opt-counts', 'showCounts', renderBranchSelect);
 bindToggle('opt-close', 'closeDistractors');
 bindToggle('opt-timer', 'timer');
 bindToggle('opt-pomodoro', 'pomodoro', () => { if (settings.pomodoro) pomoStart(); else pomoStop(); });
+
+const pseudoInput = $('pseudo-input');
+pseudoInput.value = getPseudo();
+pseudoInput.addEventListener('change', () => {
+  const v = pseudoInput.value.replace(/[^\w\-À-ÿ]/g, '').slice(0, 20).trim();
+  const final = v || genPseudo();
+  lsSet('quizrev:pseudo:v1', final);
+  pseudoInput.value = final;
+});
 
 const settingsModal = $('settings-modal');
 $('app-version').textContent = 'v' + (window.APP_VERSION || '?');
