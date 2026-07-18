@@ -1007,6 +1007,31 @@ function openFlagModal(term, promptLabel) {
   $('flag-modal').classList.remove('hidden');
 }
 
+function buildReformulationPrompt(term, flag, c, curDef, curEx, curTip) {
+  const TYPE_LABELS = { floue: 'Formulation floue', rep: 'Mauvaise réponse attendue', ex: 'Exemple trompeur', autre: 'Autre' };
+  const lines = [
+    `Je développe un quiz de révision en cybersécurité (app mobile). Ce concept a été signalé comme mal formulé — aide-moi à l'améliorer.`,
+    ``,
+    `**Terme :** ${term}`,
+    `**Catégorie :** ${c.cat || '—'}`,
+    curDef  ? `**Définition actuelle :** ${curDef}` : '',
+    curEx   ? `**Exemple / situation actuel(le) :** ${curEx}` : '',
+    curTip  ? `**Conseil actuel :** ${curTip}` : '',
+    ``,
+    `**Problème signalé :** ${TYPE_LABELS[flag.type] || flag.type || 'Non précisé'}`,
+    flag.note ? `**Note :** ${flag.note}` : '',
+    flag.promptLabel ? `**Type de question concernée :** ${flag.promptLabel}` : '',
+    ``,
+    `Propose une version améliorée de chaque champ présent (garde le même format court, adapté à un quiz à choix multiples) :`,
+    curDef  ? `- **Définition :** (1–2 phrases, claire et précise)` : '',
+    curEx   ? `- **Exemple / situation :** (scénario concret, sans ambiguïté)` : '',
+    curTip  ? `- **Conseil :** (aide mnémotechnique ou approfondissement bref)` : '',
+    ``,
+    `Réponds uniquement avec les champs reformulés, sans explication.`,
+  ].filter(l => l !== null && l !== undefined);
+  return lines.join('\n');
+}
+
 function renderFlagsManager() {
   const flags = getFlags();
   const ov = getOverrides();
@@ -1027,27 +1052,54 @@ function renderFlagsManager() {
         <span class="flag-item-term">${esc(term)}</span>
         <span class="flag-item-typelabel">${TYPE_LABELS[flag.type] || flag.type || ''}</span>
       </div>
-      ${flag.promptLabel ? `<p class="flag-ctx">${esc(flag.promptLabel)}</p>` : ''}
       ${flag.note ? `<p class="flag-note-display">💬 ${esc(flag.note)}</p>` : ''}
-      ${curDef ? `<label class="flag-field-label">Définition</label><textarea class="flag-textarea" data-field="def" rows="2">${esc(curDef)}</textarea>` : ''}
-      ${curEx  ? `<label class="flag-field-label">Exemple / situation</label><textarea class="flag-textarea" data-field="ex" rows="2">${esc(curEx)}</textarea>` : ''}
-      ${curTip ? `<label class="flag-field-label">Conseil</label><textarea class="flag-textarea" data-field="tip" rows="2">${esc(curTip)}</textarea>` : ''}
+
+      <div class="flag-current-block">
+        ${curDef ? `<p class="flag-current-line"><span class="flag-field-label">Déf.</span> ${esc(curDef)}</p>` : ''}
+        ${curEx  ? `<p class="flag-current-line"><span class="flag-field-label">Ex.</span> ${esc(curEx)}</p>`  : ''}
+        ${curTip ? `<p class="flag-current-line"><span class="flag-field-label">💡</span> ${esc(curTip)}</p>`  : ''}
+      </div>
+
+      <button class="flag-claude-btn" data-term="${esc(term)}">🤖 Copier le prompt pour Claude</button>
+      <p class="flag-claude-hint">Colle ce prompt dans claude.ai, récupère les champs reformulés et colle-les ci-dessous.</p>
+
+      ${curDef ? `<label class="flag-field-label">Nouvelle définition</label><textarea class="flag-textarea" data-field="def" rows="2" placeholder="Colle ici la reformulation…">${esc(curDef)}</textarea>` : ''}
+      ${curEx  ? `<label class="flag-field-label">Nouvel exemple / situation</label><textarea class="flag-textarea" data-field="ex" rows="2" placeholder="Colle ici la reformulation…">${esc(curEx)}</textarea>` : ''}
+      ${curTip ? `<label class="flag-field-label">Nouveau conseil</label><textarea class="flag-textarea" data-field="tip" rows="2" placeholder="Colle ici la reformulation…">${esc(curTip)}</textarea>` : ''}
+
       <div class="flag-item-actions">
-        <button class="ghost flag-save-btn">💾 Sauvegarder</button>
-        <button class="chip flag-resolve-btn">✓ Résolu</button>
+        <button class="primary flag-save-btn" style="margin-top:0">💾 Sauvegarder</button>
+        <button class="ghost-sm flag-resolve-btn">✓ Résolu sans modif</button>
       </div>
     </div>`;
   }).join('<hr class="flag-sep" />');
+
+  $('flags-list').querySelectorAll('.flag-claude-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const term = btn.dataset.term;
+      const flag = getFlags()[term] || {};
+      const c = BYTERM[term] || {};
+      const ov = getOverrides();
+      const curDef = (ov[term] && ov[term].def !== undefined ? ov[term].def : c.def) || '';
+      const curEx  = (ov[term] && ov[term].ex  !== undefined ? ov[term].ex  : c.ex)  || '';
+      const curTip = (ov[term] && ov[term].tip !== undefined ? ov[term].tip : c.tip) || '';
+      const prompt = buildReformulationPrompt(term, flag, c, curDef, curEx, curTip);
+      try { await navigator.clipboard.writeText(prompt); } catch (e) {}
+      btn.textContent = '✅ Prompt copié !';
+      setTimeout(() => { btn.textContent = '🤖 Copier le prompt pour Claude'; }, 2500);
+      openExternal('https://claude.ai');
+    });
+  });
 
   $('flags-list').querySelectorAll('.flag-save-btn').forEach(btn => {
     const item = btn.closest('.flag-item');
     btn.addEventListener('click', () => {
       const term = item.dataset.term;
       const o = getOverrides(); o[term] = o[term] || {};
-      item.querySelectorAll('.flag-textarea').forEach(ta => { o[term][ta.dataset.field] = ta.value.trim(); });
+      item.querySelectorAll('.flag-textarea').forEach(ta => { const v = ta.value.trim(); if (v) o[term][ta.dataset.field] = v; });
       saveOverrides(o);
       if (BYTERM[term]) Object.assign(BYTERM[term], o[term]);
-      btn.textContent = '✅ Sauvegardé';
+      btn.textContent = '✅ Sauvegardé !';
       setTimeout(() => { btn.textContent = '💾 Sauvegarder'; }, 2000);
     });
   });
