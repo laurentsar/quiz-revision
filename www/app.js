@@ -96,6 +96,21 @@ function removeWrong(t) { saveWrong(getWrong().filter(x => x !== t)); }
 function getDisabled() { return new Set(lsGet('quizrev:disabled:v1', [])); }
 function saveDisabled(s) { lsSet('quizrev:disabled:v1', [...s]); }
 
+// Signalements de questions mal formulées
+// { [term]: { type, note, promptLabel, ts, status:'open'|'resolved' } }
+function getFlags() { return lsGet('quizrev:flags:v1', {}); }
+function saveFlags(f) { lsSet('quizrev:flags:v1', f); }
+function countOpenFlags() { return Object.values(getFlags()).filter(v => v.status === 'open').length; }
+
+// Reformulations locales : { [term]: { def?, ex?, tip? } }
+function getOverrides() { return lsGet('quizrev:overrides:v1', {}); }
+function saveOverrides(o) { lsSet('quizrev:overrides:v1', o); }
+function applyOverrides() {
+  const ov = getOverrides();
+  if (!Object.keys(ov).length) return;
+  ALL.forEach(c => { if (ov[c.term]) Object.assign(c, ov[c.term]); });
+}
+
 // Pseudo joueur (défis multijoueur) : auto-généré à la première utilisation
 const PSEUDO_ADJ = ['Agile','Brave','Cyber','Dark','Elite','Flash','Ghost','Hyper','Iron','Ninja','Omega','Proto','Quick','Recon','Swift'];
 const PSEUDO_NOM = ['Aigle','Bison','Cobra','Dingo','Faucon','Gecko','Ibis','Lapin','Loup','Lynx','Orque','Panda','Renard','Tigre','Varan'];
@@ -379,6 +394,12 @@ function selectHomeTheme(v) {
 }
 
 
+function updateFlagBadge() {
+  const n = countOpenFlags();
+  const badge = $('flag-badge');
+  if (badge) { badge.textContent = n || ''; badge.classList.toggle('hidden', !n); }
+}
+
 function renderHome() {
   const p = pool(), srs = getSrs(), now = Date.now();
   $('stat-pool').textContent = p.length + ' concepts';
@@ -394,6 +415,7 @@ function renderHome() {
   const w = getWrong().length;
   $('review-count').textContent = w;
   $('btn-review').disabled = w === 0;
+  updateFlagBadge();
 }
 
 // ---------- déroulé du quiz ----------
@@ -445,10 +467,13 @@ function renderQuestion() {
     if (q.tip) html += `<div class="fb-line tip">💡 ${esc(q.tip)}</div>`;
     if (q.ex) html += `<div class="fb-line ex">🔎 ${esc(q.ex)}</div>`;
     html += `<a class="fb-video" data-term="${esc(q.key)}">🎥 Voir une vidéo sur ce concept</a>`;
+    html += `<button class="ghost-sm flag-btn">🚩 Signaler cette question</button>`;
     fb.innerHTML = html;
     fb.className = 'feedback show ' + (a.correct ? 'good' : 'bad');
     const v = fb.querySelector('.fb-video');
     if (v) v.addEventListener('click', () => openExternal(videoSearchUrl(v.dataset.term)));
+    const flagBtn = fb.querySelector('.flag-btn');
+    if (flagBtn) flagBtn.addEventListener('click', () => openFlagModal(q.key, q.promptLabel));
   } else { fb.innerHTML = ''; fb.className = 'feedback'; startQTimer(); }
 
   const next = $('btn-next');
@@ -971,6 +996,72 @@ function openChallengeModal() {
   $('challenge-modal').classList.remove('hidden');
 }
 
+// ---------- signalements & reformulation ----------
+let _flagTerm = '', _flagPromptLabel = '';
+
+function openFlagModal(term, promptLabel) {
+  _flagTerm = term; _flagPromptLabel = promptLabel || '';
+  $('flag-concept-label').textContent = '« ' + term + ' »' + (promptLabel ? ' — ' + promptLabel : '');
+  document.querySelectorAll('.flag-type-chip').forEach(c => c.classList.remove('active'));
+  $('flag-note').value = '';
+  $('flag-modal').classList.remove('hidden');
+}
+
+function renderFlagsManager() {
+  const flags = getFlags();
+  const ov = getOverrides();
+  const open = Object.entries(flags).filter(([, v]) => v.status === 'open');
+  $('flags-open-count').textContent = open.length;
+  if (!open.length) {
+    $('flags-list').innerHTML = '<p class="mm-source" style="padding:12px 0">Aucun signalement en cours. 🎉</p>';
+    return;
+  }
+  const TYPE_LABELS = { floue: '📝 Formulation floue', rep: '❌ Mauvaise réponse', ex: '🔎 Exemple trompeur', autre: '💬 Autre' };
+  $('flags-list').innerHTML = open.map(([term, flag]) => {
+    const c = BYTERM[term] || {};
+    const curDef = (ov[term] && ov[term].def !== undefined ? ov[term].def : c.def) || '';
+    const curEx  = (ov[term] && ov[term].ex  !== undefined ? ov[term].ex  : c.ex)  || '';
+    const curTip = (ov[term] && ov[term].tip !== undefined ? ov[term].tip : c.tip) || '';
+    return `<div class="flag-item" data-term="${esc(term)}">
+      <div class="flag-item-head">
+        <span class="flag-item-term">${esc(term)}</span>
+        <span class="flag-item-typelabel">${TYPE_LABELS[flag.type] || flag.type || ''}</span>
+      </div>
+      ${flag.promptLabel ? `<p class="flag-ctx">${esc(flag.promptLabel)}</p>` : ''}
+      ${flag.note ? `<p class="flag-note-display">💬 ${esc(flag.note)}</p>` : ''}
+      ${curDef ? `<label class="flag-field-label">Définition</label><textarea class="flag-textarea" data-field="def" rows="2">${esc(curDef)}</textarea>` : ''}
+      ${curEx  ? `<label class="flag-field-label">Exemple / situation</label><textarea class="flag-textarea" data-field="ex" rows="2">${esc(curEx)}</textarea>` : ''}
+      ${curTip ? `<label class="flag-field-label">Conseil</label><textarea class="flag-textarea" data-field="tip" rows="2">${esc(curTip)}</textarea>` : ''}
+      <div class="flag-item-actions">
+        <button class="ghost flag-save-btn">💾 Sauvegarder</button>
+        <button class="chip flag-resolve-btn">✓ Résolu</button>
+      </div>
+    </div>`;
+  }).join('<hr class="flag-sep" />');
+
+  $('flags-list').querySelectorAll('.flag-save-btn').forEach(btn => {
+    const item = btn.closest('.flag-item');
+    btn.addEventListener('click', () => {
+      const term = item.dataset.term;
+      const o = getOverrides(); o[term] = o[term] || {};
+      item.querySelectorAll('.flag-textarea').forEach(ta => { o[term][ta.dataset.field] = ta.value.trim(); });
+      saveOverrides(o);
+      if (BYTERM[term]) Object.assign(BYTERM[term], o[term]);
+      btn.textContent = '✅ Sauvegardé';
+      setTimeout(() => { btn.textContent = '💾 Sauvegarder'; }, 2000);
+    });
+  });
+
+  $('flags-list').querySelectorAll('.flag-resolve-btn').forEach(btn => {
+    const item = btn.closest('.flag-item');
+    btn.addEventListener('click', () => {
+      const f = getFlags(); const term = item.dataset.term;
+      if (f[term]) { f[term].status = 'resolved'; saveFlags(f); }
+      updateFlagBadge(); renderFlagsManager();
+    });
+  });
+}
+
 function startChallengeSession(challenge, code) {
   state.branches.clear();
   if (challenge.scope.startsWith('grp:')) {
@@ -1082,6 +1173,28 @@ $('btn-share-result').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(text); } catch (e) {}
 });
 
+// Signalements
+$('btn-flags').addEventListener('click', () => { renderFlagsManager(); $('flags-modal').classList.remove('hidden'); });
+$('flags-modal-close').addEventListener('click', () => $('flags-modal').classList.add('hidden'));
+$('flags-modal').addEventListener('click', (e) => { if (e.target === $('flags-modal')) $('flags-modal').classList.add('hidden'); });
+$('flag-modal-close').addEventListener('click', () => $('flag-modal').classList.add('hidden'));
+$('flag-modal').addEventListener('click', (e) => { if (e.target === $('flag-modal')) $('flag-modal').classList.add('hidden'); });
+document.querySelectorAll('.flag-type-chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.flag-type-chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+}));
+$('btn-flag-submit').addEventListener('click', () => {
+  const typeChip = document.querySelector('.flag-type-chip.active');
+  const type = typeChip ? typeChip.dataset.type : 'autre';
+  const note = $('flag-note').value.trim();
+  const f = getFlags();
+  f[_flagTerm] = { type, note, promptLabel: _flagPromptLabel, ts: Date.now(), status: 'open' };
+  saveFlags(f); updateFlagBadge();
+  $('flag-modal').classList.add('hidden');
+  const btn = $('btn-flag-submit'); btn.textContent = '✅ Signalé !';
+  setTimeout(() => { btn.textContent = 'Signaler'; }, 1800);
+});
+
 function bindToggle(id, key, after) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); if (after) after(); }); }
 bindToggle('opt-autonext', 'autoNext');
 bindToggle('opt-sound', 'sound');
@@ -1170,6 +1283,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
   });
   CATS = uniq(ALL.map(c => c.cat));
   ALL.forEach(c => { BYTERM[c.term] = c; });
+  applyOverrides();
   renderBranchSelect();
   renderChips('.qtype-chip', state.qtype, 'qtype');
   renderChips('.count-chip', state.count, 'count');

@@ -38,6 +38,7 @@
         <button id="btn-fiches" class="secondary">📑 Fiches</button>
         <button id="btn-challenge" class="secondary top-wide">⚔️ Défi multijoueur</button>
         <button id="btn-resources" class="secondary top-wide">🎧 Podcasts &amp; vidéos</button>
+        <button id="btn-flags" class="secondary top-wide">🚩 Signalements <span id="flag-badge" class="flag-badge hidden"></span></button>
       </div>
 
       <div class="card hero">
@@ -294,6 +295,38 @@
       </div>
     </div>
 
+    <!-- SIGNALEMENT D'UNE QUESTION -->
+    <div id="flag-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <span>🚩 Signaler la question</span>
+          <button id="flag-modal-close" class="gear">✕</button>
+        </div>
+        <p id="flag-concept-label" class="flag-concept-label"></p>
+        <span class="hero-label">Problème constaté</span>
+        <div class="chip-row" style="flex-wrap:wrap;gap:8px">
+          <button class="chip flag-type-chip" data-type="floue">📝 Formulation floue</button>
+          <button class="chip flag-type-chip" data-type="rep">❌ Mauvaise réponse</button>
+          <button class="chip flag-type-chip" data-type="ex">🔎 Exemple trompeur</button>
+          <button class="chip flag-type-chip" data-type="autre">💬 Autre</button>
+        </div>
+        <textarea id="flag-note" class="flag-note-input" rows="3" placeholder="Préciser le problème (optionnel)…"></textarea>
+        <button id="btn-flag-submit" class="primary">Signaler</button>
+      </div>
+    </div>
+
+    <!-- GESTIONNAIRE DE SIGNALEMENTS -->
+    <div id="flags-modal" class="modal hidden">
+      <div class="modal-card flags-modal-card">
+        <div class="modal-head">
+          <span>🚩 Signalements (<span id="flags-open-count">0</span>)</span>
+          <button id="flags-modal-close" class="gear">✕</button>
+        </div>
+        <p class="mm-source">Corrige la formulation, sauvegarde, puis marque comme résolu.</p>
+        <div id="flags-list"></div>
+      </div>
+    </div>
+
     <!-- PAUSE POMODORO -->
     <div id="pomodoro-modal" class="modal hidden">
       <div class="modal-card pomo-card">
@@ -315,7 +348,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.4';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.5';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
