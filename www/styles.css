@@ -455,3 +455,32 @@ html, body {
 /* Animation urgence chrono session examen */
 .quiz-timer.urgent { animation: pulse-timer 1s ease-in-out infinite alternate; }
 @keyframes pulse-timer { from { opacity: 1; } to { opacity: 0.55; } }
+
+/* ===== Défi multijoueur (v4.3) ===== */
+.challenge-section-title {
+  font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--sky); margin: 14px 0 4px;
+}
+.challenge-code-box {
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(76,224,210,0.08); border: 1px solid rgba(76,224,210,0.25);
+  border-radius: 14px; padding: 14px 18px; margin: 8px 0;
+}
+.challenge-code {
+  font-family: 'Courier New', monospace; font-size: 1.85rem; font-weight: 800;
+  letter-spacing: .18em; color: var(--mint); user-select: all;
+}
+.challenge-info { font-size: 12px; color: var(--text-dim); margin: 0 0 10px; }
+.modal-sep { height: 1px; background: rgba(255,255,255,0.09); margin: 18px 0; }
+.challenge-error { color: var(--danger); font-size: 13px; margin-top: 8px; }
+
+/* Bloc résultat dans la vue fin de quiz */
+.challenge-result-card { text-align: center; padding: 18px 16px; }
+.challenge-result-label {
+  display: block; font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--sky); margin-bottom: 8px;
+}
+.challenge-result-code {
+  display: block; font-family: 'Courier New', monospace; font-size: 1.5rem;
+  font-weight: 800; letter-spacing: .18em; color: var(--mint); margin-bottom: 14px;
+}

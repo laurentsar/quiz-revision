@@ -36,6 +36,7 @@
         <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
         <button id="btn-stats" class="secondary">📊 Stats</button>
         <button id="btn-fiches" class="secondary">📑 Fiches</button>
+        <button id="btn-challenge" class="secondary top-wide">⚔️ Défi multijoueur</button>
         <button id="btn-resources" class="secondary top-wide">🎧 Podcasts &amp; vidéos</button>
       </div>
 
@@ -222,6 +223,12 @@
 
       <div id="result-wrong" class="card wrong-card"></div>
 
+      <div id="challenge-result" class="card challenge-result-card hidden">
+        <span class="challenge-result-label">⚔️ Code du défi</span>
+        <span id="challenge-result-code" class="challenge-result-code"></span>
+        <button id="btn-share-result" class="ghost">📤 Partager mon score</button>
+      </div>
+
       <button id="btn-replay" class="primary">Nouvelle révision</button>
       <button id="btn-home" class="secondary">Accueil</button>
     </section>
@@ -243,6 +250,36 @@
       </div>
     </div>
 
+    <!-- DÉFI MULTIJOUEUR (modal) -->
+    <div id="challenge-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <span>⚔️ Défi multijoueur</span>
+          <button id="challenge-modal-close" class="gear">✕</button>
+        </div>
+
+        <p class="challenge-section-title">Créer un défi</p>
+        <p class="mm-source">Partage ce code avec tes amis. Ils jouent le même quiz et comparent leurs scores.</p>
+        <div class="challenge-code-box">
+          <span id="challenge-code" class="challenge-code">——————</span>
+        </div>
+        <p id="challenge-scope-info" class="challenge-info"></p>
+        <div class="concept-actions">
+          <button id="btn-copy-code" class="chip">📋 Copier</button>
+          <button id="btn-share-code" class="chip">📤 Partager</button>
+        </div>
+        <button id="btn-start-my-challenge" class="primary" style="margin-top:12px">▶ Jouer ce défi</button>
+
+        <div class="modal-sep"></div>
+
+        <p class="challenge-section-title">Rejoindre un défi</p>
+        <p class="mm-source">Entre un code reçu pour jouer le même quiz.</p>
+        <input id="challenge-code-input" class="search-input" type="text" placeholder="Ex : A3F9B-2C14E" autocomplete="off" maxlength="12" style="margin-bottom:8px" />
+        <button id="btn-join-challenge" class="primary">Rejoindre</button>
+        <p id="challenge-error" class="challenge-error hidden">Code invalide. Vérifie la saisie.</p>
+      </div>
+    </div>
+
     <!-- PAUSE POMODORO -->
     <div id="pomodoro-modal" class="modal hidden">
       <div class="modal-card pomo-card">
@@ -258,7 +295,7 @@
   <button id="btn-fab-home" class="fab-home hidden" title="Accueil">🏠</button>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.2';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.3';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
