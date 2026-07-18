@@ -111,6 +111,150 @@ function applyOverrides() {
   ALL.forEach(c => { if (ov[c.term]) Object.assign(c, ov[c.term]); });
 }
 
+// ---------- audit qualité ----------
+const AUDIT_ISSUES = {
+  def_short:   'Définition trop courte',
+  def_missing: 'Définition manquante',
+  ex_short:    'Exemple trop court',
+};
+
+function conceptIssues(c) {
+  const ov = getOverrides()[c.term] || {};
+  const def = (ov.def !== undefined ? ov.def : c.def) || '';
+  const ex  = (ov.ex  !== undefined ? ov.ex  : c.ex)  || '';
+  const issues = [];
+  if (!def) issues.push('def_missing');
+  else if (def.trim().length < 20) issues.push('def_short');
+  if (ex && ex.trim().length < 20) issues.push('ex_short');
+  return issues;
+}
+
+// Scan léger : auto-flag uniquement les vrais défauts (def trop courte)
+function runQualityCheck() {
+  const flags = getFlags();
+  let changed = false;
+  ALL.forEach(c => {
+    if (flags[c.term] && flags[c.term].status === 'open') return;
+    const issues = conceptIssues(c).filter(i => i !== 'def_missing'); // ne pas mass-flaguer
+    if (!issues.length) return;
+    flags[c.term] = { type: 'auto', note: issues.map(i => AUDIT_ISSUES[i]).join(', '),
+      promptLabel: '', ts: Date.now(), status: 'open', source: 'auto' };
+    changed = true;
+  });
+  if (changed) saveFlags(flags);
+}
+
+// Stats par branche pour l'audit
+function auditStatsByBranch() {
+  const result = {};
+  ALL.forEach(c => {
+    if (!result[c.branch]) result[c.branch] = { branch: c.branch, label: branchLabel(c.branch), total: 0, no_def: 0, short_def: 0, short_ex: 0 };
+    const s = result[c.branch]; s.total++;
+    const issues = conceptIssues(c);
+    if (issues.includes('def_missing')) s.no_def++;
+    if (issues.includes('def_short'))   s.short_def++;
+    if (issues.includes('ex_short'))    s.short_ex++;
+  });
+  return Object.values(result).sort((a, b) => (b.no_def + b.short_def) - (a.no_def + a.short_def));
+}
+
+// Génère le prompt structuré à coller dans Claude
+function buildAuditExport(branchKey, limit = 25) {
+  const ov = getOverrides();
+  const isMindmapTip = (t) => t && /^Mind map /i.test(t.trim());
+  const candidates = ALL.filter(c => {
+    if (branchKey !== 'all' && c.branch !== branchKey) return false;
+    return conceptIssues(c).length > 0;
+  });
+  const batch = candidates.slice(0, limit);
+  const branchLbl = branchKey === 'all' ? 'Tous les thèmes' : branchLabel(branchKey);
+  const today = new Date().toLocaleDateString('fr-FR');
+  const lines = [
+    `# Quizz Révision — Audit qualité · ${branchLbl} · ${today}`,
+    `# ${batch.length} concepts à compléter (sur ${candidates.length} identifiés)`,
+    ``,
+    `## Contexte`,
+    `Application quiz de cybersécurité (PWA + APK). Les questions à choix multiples`,
+    `utilisent ces champs : **def** (affiché comme réponse), **ex** (mise en situation),`,
+    `**tip** (conseil affiché après réponse). Format court, précis, sans jargon excessif.`,
+    ``,
+    `## Tâche`,
+    `Pour chaque concept ci-dessous, propose :`,
+    `- **def** : définition 1-2 phrases, max 180 caractères, claire pour un quiz QCM`,
+    `- **ex** : mise en situation concrète 1 phrase, max 150 caractères (optionnel si trop abstrait)`,
+    `- **tip** : conseil mnémotechnique ou info clé 1 phrase (optionnel)`,
+    ``,
+    `Format de réponse attendu (un bloc par terme) :`,
+    `### [Terme]`,
+    `- def: ...`,
+    `- ex: ...`,
+    `- tip: ...`,
+    ``,
+    `---`,
+    ``,
+    `## Concepts`,
+    ``,
+  ];
+  batch.forEach(c => {
+    const ovC = ov[c.term] || {};
+    const curDef = (ovC.def !== undefined ? ovC.def : c.def) || '';
+    const curEx  = (ovC.ex  !== undefined ? ovC.ex  : c.ex)  || '';
+    const curTip = (ovC.tip !== undefined ? ovC.tip : c.tip) || '';
+    const realTip = isMindmapTip(curTip) ? '' : curTip;
+    const issues = conceptIssues(c).map(i => AUDIT_ISSUES[i]).join(', ');
+    lines.push(`### ${c.term} (${c.cat})`);
+    lines.push(`- Branche : ${branchLabel(c.branch)}`);
+    lines.push(`- Problème : ${issues}`);
+    if (curDef) lines.push(`- def actuelle : ${curDef}`);
+    if (curEx)  lines.push(`- ex actuel : ${curEx}`);
+    if (realTip) lines.push(`- tip actuel : ${realTip}`);
+    lines.push('');
+  });
+  if (candidates.length > limit) lines.push(`*(${candidates.length - limit} autres concepts non inclus dans ce batch)*`);
+  return lines.join('\n');
+}
+
+// Rendu de la modale audit
+function renderAuditModal() {
+  const stats = auditStatsByBranch();
+  const totalIssues = stats.reduce((s, b) => s + b.no_def + b.short_def + b.short_ex, 0);
+  const selVal = $('audit-branch-select').value || 'all';
+
+  // Summary tiles
+  const totalNoDef   = stats.reduce((s, b) => s + b.no_def, 0);
+  const totalShortDef = stats.reduce((s, b) => s + b.short_def, 0);
+  $('audit-summary').innerHTML =
+    `<div class="stile"><b>${totalIssues}</b><span>anomalies</span></div>` +
+    `<div class="stile"><b>${totalNoDef}</b><span>sans définition</span></div>` +
+    `<div class="stile"><b>${totalShortDef}</b><span>déf. trop courtes</span></div>`;
+
+  // Branch select
+  const sel = $('audit-branch-select');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="all">⭐ Tous les thèmes</option>' +
+    stats.filter(b => b.no_def + b.short_def + b.short_ex > 0).map(b =>
+      `<option value="${esc(b.branch)}">${esc(b.label)} (${b.no_def + b.short_def + b.short_ex})</option>`
+    ).join('');
+  if (prev) sel.value = prev;
+
+  // Concept list preview
+  const branchFilter = sel.value || 'all';
+  const candidates = ALL.filter(c => {
+    if (branchFilter !== 'all' && c.branch !== branchFilter) return false;
+    return conceptIssues(c).length > 0;
+  }).slice(0, 8);
+  $('audit-preview').innerHTML = candidates.length
+    ? candidates.map(c => {
+        const issues = conceptIssues(c).map(i => `<span class="audit-tag">${esc(AUDIT_ISSUES[i])}</span>`).join(' ');
+        return `<div class="audit-item"><span class="audit-term">${esc(c.term)}</span>${issues}</div>`;
+      }).join('')
+    : '<p class="mm-source">Aucune anomalie pour ce thème. 🎉</p>';
+
+  const count = ALL.filter(c => (branchFilter === 'all' || c.branch === branchFilter) && conceptIssues(c).length > 0).length;
+  $('audit-export-btn').textContent = `📋 Copier l'export pour Claude (${Math.min(count, 25)}/${count})`;
+  $('audit-export-btn').disabled = count === 0;
+}
+
 // Pseudo joueur (défis multijoueur) : auto-généré à la première utilisation
 const PSEUDO_ADJ = ['Agile','Brave','Cyber','Dark','Elite','Flash','Ghost','Hyper','Iron','Ninja','Omega','Proto','Quick','Recon','Swift'];
 const PSEUDO_NOM = ['Aigle','Bison','Cobra','Dingo','Faucon','Gecko','Ibis','Lapin','Loup','Lynx','Orque','Panda','Renard','Tigre','Varan'];
@@ -1247,6 +1391,24 @@ $('btn-flag-submit').addEventListener('click', () => {
   setTimeout(() => { btn.textContent = 'Signaler'; }, 1800);
 });
 
+// Audit qualité
+$('btn-audit').addEventListener('click', () => {
+  renderAuditModal();
+  $('audit-modal').classList.remove('hidden');
+});
+$('audit-modal-close').addEventListener('click', () => $('audit-modal').classList.add('hidden'));
+$('audit-modal').addEventListener('click', (e) => { if (e.target === $('audit-modal')) $('audit-modal').classList.add('hidden'); });
+$('audit-branch-select').addEventListener('change', renderAuditModal);
+$('audit-export-btn').addEventListener('click', async () => {
+  const branch = $('audit-branch-select').value || 'all';
+  const text = buildAuditExport(branch, 25);
+  try { await navigator.clipboard.writeText(text); } catch (e) {}
+  const btn = $('audit-export-btn');
+  const prev = btn.textContent;
+  btn.textContent = '✅ Copié ! Colle dans Claude.';
+  setTimeout(() => { btn.textContent = prev; }, 3000);
+});
+
 function bindToggle(id, key, after) { const el = $(id); el.checked = settings[key]; el.addEventListener('change', () => { settings[key] = el.checked; saveSettings(); if (after) after(); }); }
 bindToggle('opt-autonext', 'autoNext');
 bindToggle('opt-sound', 'sound');
@@ -1336,6 +1498,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
   CATS = uniq(ALL.map(c => c.cat));
   ALL.forEach(c => { BYTERM[c.term] = c; });
   applyOverrides();
+  runQualityCheck();
   renderBranchSelect();
   renderChips('.qtype-chip', state.qtype, 'qtype');
   renderChips('.count-chip', state.count, 'count');

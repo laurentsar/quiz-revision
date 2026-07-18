@@ -39,6 +39,7 @@
         <button id="btn-challenge" class="secondary top-wide">⚔️ Défi multijoueur</button>
         <button id="btn-resources" class="secondary top-wide">🎧 Podcasts &amp; vidéos</button>
         <button id="btn-flags" class="secondary top-wide">🚩 Signalements <span id="flag-badge" class="flag-badge hidden"></span></button>
+        <button id="btn-audit" class="secondary top-wide">🔬 Audit qualité</button>
       </div>
 
       <div class="card hero">
@@ -295,6 +296,22 @@
       </div>
     </div>
 
+    <!-- AUDIT QUALITÉ -->
+    <div id="audit-modal" class="modal hidden">
+      <div class="modal-card audit-modal-card">
+        <div class="modal-head">
+          <span>🔬 Audit qualité</span>
+          <button id="audit-modal-close" class="gear">✕</button>
+        </div>
+        <div id="audit-summary" class="card stats-tiles" style="padding:12px"></div>
+        <span class="hero-label">Filtrer par thème</span>
+        <select id="audit-branch-select" class="select"></select>
+        <div id="audit-preview" class="audit-preview"></div>
+        <button id="audit-export-btn" class="primary">📋 Copier l'export pour Claude</button>
+        <p class="mm-source">Colle l'export dans une conversation Claude pour obtenir les définitions et exemples manquants, puis reviens dans Signalements pour les appliquer.</p>
+      </div>
+    </div>
+
     <!-- SIGNALEMENT D'UNE QUESTION -->
     <div id="flag-modal" class="modal hidden">
       <div class="modal-card">
@@ -348,7 +365,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.6';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.7';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
