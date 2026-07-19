@@ -74,9 +74,32 @@
         </details>
       </div>
 
+      <!-- Tableau de bord de progression globale -->
+      <div id="progress-dashboard" class="card progress-dashboard">
+        <div class="dash-top">
+          <div class="dash-stat">
+            <span id="dash-streak" class="dash-streak-val">🔥 0</span>
+            <span class="dash-label">jours consécutifs</span>
+          </div>
+          <div class="dash-stat">
+            <span id="dash-seen-global" class="dash-seen-val">0</span>
+            <span class="dash-label">concepts étudiés</span>
+          </div>
+          <div class="dash-stat">
+            <span id="dash-mastered-global" class="dash-mastered-val">0</span>
+            <span class="dash-label">maîtrisés</span>
+          </div>
+        </div>
+        <div class="dash-track">
+          <div id="dash-fill" class="dash-fill" style="width:0%"></div>
+        </div>
+        <p id="dash-label" class="dash-pct-label">0 % maîtrisé — tous thèmes</p>
+      </div>
+
       <div class="card meta">
         <div class="meta-row"><span class="meta-label">Concepts dans ce thème</span><span id="stat-pool" class="meta-value">—</span></div>
-        <div class="meta-row"><span class="meta-label">Concepts maîtrisés</span><span id="stat-mastered" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Concepts étudiés (thème)</span><span id="stat-seen" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Concepts maîtrisés (thème)</span><span id="stat-mastered" class="meta-value">—</span></div>
         <div class="meta-row"><span class="meta-label">À revoir aujourd'hui</span><span id="stat-due" class="meta-value">—</span></div>
         <div class="meta-row"><span class="meta-label">Dernier score</span><span id="stat-last" class="meta-value">—</span></div>
         <div class="meta-row"><span class="meta-label">Meilleur score</span><span id="stat-best" class="meta-value">—</span></div>
@@ -141,6 +164,11 @@
         <span class="chart-title">Par thème — vus / maîtrisés</span>
         <canvas id="chart-branches" class="chart"></canvas>
         <span class="chart-legend"><i class="dot sky"></i> Vus &nbsp; <i class="dot green"></i> Maîtrisés</span>
+      </div>
+
+      <div class="card chart-card">
+        <span class="chart-title">⚠️ Concepts les plus difficiles</span>
+        <div id="weak-concepts" class="weak-concepts-list"></div>
       </div>
 
       <button id="btn-stats-home" class="secondary">Accueil</button>
@@ -444,7 +472,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.1';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.2';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>

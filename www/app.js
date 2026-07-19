@@ -590,8 +590,10 @@ function updateFlagBadge() {
 function renderHome() {
   const p = pool(), srs = getSrs(), now = Date.now();
   $('stat-pool').textContent = p.length + ' concepts';
+  const seen = p.filter(c => srs[c.term] && srs[c.term].seen > 0).length;
   const mastered = p.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
   const due = p.filter(c => srs[c.term] && srs[c.term].due <= now).length;
+  $('stat-seen').textContent = seen + ' / ' + p.length;
   $('stat-mastered').textContent = mastered + ' / ' + p.length;
   $('stat-due').textContent = due;
   const s = loadStats();
@@ -603,6 +605,15 @@ function renderHome() {
   $('review-count').textContent = w;
   $('btn-review').disabled = w === 0;
   updateFlagBadge();
+  // Tableau de bord global (tous thèmes)
+  const globalSeen = ALL.filter(c => srs[c.term] && srs[c.term].seen > 0).length;
+  const globalMastered = ALL.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+  const pct = ALL.length ? Math.round(100 * globalMastered / ALL.length) : 0;
+  $('dash-streak').textContent = '🔥 ' + (s.streak || 0);
+  $('dash-seen-global').textContent = globalSeen;
+  $('dash-mastered-global').textContent = globalMastered;
+  $('dash-fill').style.width = pct + '%';
+  $('dash-label').textContent = pct + ' % maîtrisé — ' + globalMastered + ' / ' + ALL.length + ' concepts';
 }
 
 // ---------- déroulé du quiz ----------
@@ -1066,6 +1077,15 @@ function renderStatsView() {
   const vus = keys.map(k => ALL.filter(it => it.branch === k && srs[it.term] && srs[it.term].seen > 0).length);
   const mas = keys.map(k => ALL.filter(it => it.branch === k && srs[it.term] && srs[it.term].box >= 4).length);
   drawGrouped($('chart-branches'), keys.map(shortBranch), vus, mas, '#27B3FF', '#35D07F');
+  // Concepts les plus difficiles (box < 4, vus >= 2, taux d'erreur > 0)
+  const weak = Object.entries(srs)
+    .filter(([, e]) => e.seen >= 2 && e.wrong > 0 && e.box < 4)
+    .map(([term, e]) => ({ term, rate: Math.round(100 * e.wrong / e.seen), wrong: e.wrong, seen: e.seen }))
+    .sort((a, b) => b.rate - a.rate || b.wrong - a.wrong)
+    .slice(0, 10);
+  $('weak-concepts').innerHTML = weak.length
+    ? weak.map(e => `<div class="weak-item"><span class="weak-term">${esc(e.term)}</span><span class="weak-rate">${e.rate}% faux (${e.wrong}/${e.seen})</span></div>`).join('')
+    : '<p class="mm-source" style="margin:8px 0">Pas encore assez de données.</p>';
 }
 
 // ---------- feux d'artifice (quiz parfait) ----------
