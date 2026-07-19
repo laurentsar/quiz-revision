@@ -1335,7 +1335,12 @@ async function createCampaignFlow() {
   let ok = false;
   try { ok = await FirebaseChallenge.createCampaign(code, config); } catch (e) { console.warn('createCampaignFlow:', e); }
   btn.disabled = false; btn.textContent = '🚀 Créer la campagne';
-  if (!ok) { $('challenge-fb-warning').classList.remove('hidden'); return; }
+  if (!ok) {
+    const err = window.FirebaseChallenge?.getOpError?.() || 'erreur inconnue';
+    $('challenge-fb-warning').textContent = 'Échec écriture Firebase : ' + err;
+    $('challenge-fb-warning').classList.remove('hidden');
+    return;
+  }
   _currentCampaign = { config, code };
   $('campaign-code').textContent = code;
   const endDate = new Date(config.startTs + durationDays * 86400000);
