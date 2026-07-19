@@ -14,10 +14,6 @@ const CHALLENGE_SCOPES = ['all', 'grp:homolog', 'grp:reglem', 'grp:cissp', 'grp:
 const CHALLENGE_COUNTS = [5, 10, 20, 0];     // 0 = tout
 const CHALLENGE_QTYPES = ['mix', 'def', 'term', 'situation', 'cat'];
 
-// Campagne : options de fréquence (jours) et de durée totale (jours)
-const CAMPAIGN_FREQS = [1, 3, 7];
-const CAMPAIGN_DURATIONS = [7, 14, 30, 90];
-
 // Durées de session pour les simulations d'examen (par groupe de branche)
 const EXAM_CONFIG = {
   cissp:   { label: 'CISSP',          minutes: 180 },
@@ -327,6 +323,22 @@ function lastNDays(n) {
   return out;
 }
 
+function computeDailyStreak() {
+  const m = lsGet('quizrev:daily:v1', {});
+  const d = new Date();
+  // If today has no activity yet, start checking from yesterday
+  const todayKey = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  if (!(m[todayKey] && m[todayKey].q > 0)) d.setDate(d.getDate() - 1);
+  let streak = 0;
+  for (let i = 0; i < 366; i++) {
+    const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    if (!(m[k] && m[k].q > 0)) break;
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
 // Leitner SRS (clé = terme)
 function getSrs() { return lsGet('quizrev:srs:v1', {}); }
 function saveSrs(s) { lsSet('quizrev:srs:v1', s); }
@@ -609,7 +621,8 @@ function renderHome() {
   const globalSeen = ALL.filter(c => srs[c.term] && srs[c.term].seen > 0).length;
   const globalMastered = ALL.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
   const pct = ALL.length ? Math.round(100 * globalMastered / ALL.length) : 0;
-  $('dash-streak').textContent = '🔥 ' + (s.streak || 0);
+  const dayStreak = computeDailyStreak();
+  $('dash-streak').textContent = '🔥 ' + dayStreak;
   $('dash-seen-global').textContent = globalSeen;
   $('dash-mastered-global').textContent = globalMastered;
   $('dash-fill').style.width = pct + '%';
@@ -618,6 +631,7 @@ function renderHome() {
 
 // ---------- déroulé du quiz ----------
 function startSession(mode) {
+  if (window.FirebaseChallenge) FirebaseChallenge.removeListener();
   state.mode = mode;
   state.questions = buildSession();
   if (!state.questions.length) { alert('Aucun concept disponible avec ces filtres.'); return; }
@@ -684,11 +698,10 @@ function examCurrentGroup() {
   for (const g of GROUPS) if (groupActive(g) && EXAM_CONFIG[g.id]) return g.id;
   return null;
 }
-function startExamTimer(minutes) {
+function resumeExamTimer() {
+  if (!state.examEndTime) return;
   clearInterval(state.examInterval);
-  state.examEndTime = Date.now() + minutes * 60000;
   const el = $('quiz-timer');
-  el.classList.remove('urgent');
   function tick() {
     const left = Math.max(0, state.examEndTime - Date.now());
     const m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
@@ -699,8 +712,14 @@ function startExamTimer(minutes) {
   tick();
   state.examInterval = setInterval(tick, 1000);
 }
+function startExamTimer(minutes) {
+  state.examEndTime = Date.now() + minutes * 60000;
+  $('quiz-timer').classList.remove('urgent');
+  resumeExamTimer();
+}
 function stopExamTimer() {
   clearInterval(state.examInterval); state.examInterval = null;
+  state.examEndTime = 0;
   const el = $('quiz-timer'); if (el && !settings.timer) el.textContent = '';
 }
 
@@ -727,7 +746,7 @@ function timeUp() {
 }
 
 // ---------- Pomodoro (écoute active : 25 min révision -> 5 min pause) ----------
-let pomoInterval = null, pomoSeconds = 0, studying = false;
+let pomoInterval = null, pomoSeconds = 0, studying = false, pomoBreakTick = null;
 function pomoStart() {
   if (!settings.pomodoro || pomoInterval || !studying) return;
   pomoInterval = setInterval(() => {
@@ -739,28 +758,42 @@ function pomoStop() { clearInterval(pomoInterval); pomoInterval = null; }
 
 // Pause du temps de révision quand l'utilisateur s'éloigne : l'app en arrière-plan
 // ou l'écran éteint (Page Visibility) sert de proxy fiable au capteur de proximité.
-// On gèle minuteur + Pomodoro, on reprend au retour, sans perdre le temps restant.
-function pauseStudyTimers() { stopQTick(); pomoStop(); }
+// On gèle minuteur + Pomodoro + chrono examen, on reprend au retour sans perdre le contexte.
+function pauseStudyTimers() {
+  stopQTick();
+  pomoStop();
+  if (state.examInterval) { clearInterval(state.examInterval); state.examInterval = null; }
+}
 function resumeStudyTimers() {
   if (!views.quiz.classList.contains('hidden') && !state.answers[state.index]) qTick();
+  if (state.examMode && state.examEndTime > Date.now()) resumeExamTimer();
   pomoStart();
 }
-document.addEventListener('visibilitychange', () => { if (document.hidden) pauseStudyTimers(); else resumeStudyTimers(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    pauseStudyTimers();
+    if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+  } else {
+    resumeStudyTimers();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }
+});
 // Bonus : capteur de proximité s'il est exposé (rare hors natif) — main proche = éloigné.
 if ('ondeviceproximity' in window || 'onuserproximity' in window) {
   window.addEventListener('userproximity', (e) => { if (e.near) pauseStudyTimers(); else resumeStudyTimers(); });
 }
 function showPomodoroBreak() {
   clearTimeout(autoNextTimer); clearQTimer();
+  clearInterval(pomoBreakTick); pomoBreakTick = null;
   const modal = $('pomodoro-modal'), cd = $('pomo-countdown');
   let left = POMODORO_BREAK;
   const fmt = (s) => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
   cd.textContent = fmt(left);
   modal.classList.remove('hidden');
   vibrate(false);
-  const tick = setInterval(() => { left--; cd.textContent = fmt(left); if (left <= 0) end(); }, 1000);
-  function end() { clearInterval(tick); modal.classList.add('hidden'); pomoStart(); }
-  $('btn-pomo-resume').onclick = end;
+  pomoBreakTick = setInterval(() => { left--; cd.textContent = fmt(left); if (left <= 0) endBreak(); }, 1000);
+  function endBreak() { clearInterval(pomoBreakTick); pomoBreakTick = null; modal.classList.add('hidden'); pomoStart(); }
+  $('btn-pomo-resume').onclick = endBreak;
 }
 
 function selectOption(idx) {
@@ -1517,12 +1550,18 @@ $('home-select').addEventListener('change', (e) => selectHomeTheme(e.target.valu
 $('btn-fab-home').addEventListener('click', exitToHome);
 $('btn-stats').addEventListener('click', () => { showView('stats'); renderStatsView(); });
 $('btn-stats-home').addEventListener('click', exitToHome);
-window.addEventListener('resize', () => { if (!views.stats.classList.contains('hidden')) renderStatsView(); });
+let _resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(() => { if (!views.stats.classList.contains('hidden')) renderStatsView(); }, 200);
+});
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
 function exitToHome() {
   clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop();
+  clearInterval(pomoBreakTick); pomoBreakTick = null;
+  $('pomodoro-modal').classList.add('hidden');
   state.challenge = null;
   if (window.FirebaseChallenge) FirebaseChallenge.removeListener();
   showView('home'); renderHome();
