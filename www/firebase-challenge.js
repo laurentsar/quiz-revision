@@ -21,11 +21,12 @@
     return `${dbRoot()}${path}.json`;
   }
 
-  async function dbPut(path, value) {
+  async function dbPut(path, value, signal) {
     const res = await fetch(restUrl(path), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(value),
+      signal,
     });
     if (!res.ok) {
       const text = await res.text().catch(() => res.statusText);
@@ -85,15 +86,15 @@
   async function createCampaign(code, config) {
     if (!isReady()) return false;
     _lastOpError = null;
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => { ctrl.abort(); _lastOpError = 'timeout 8s'; }, 8000);
     try {
-      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout 10s')), 10000));
-      await Promise.race([
-        dbPut(`/campaigns/${code.replace(/-/g, '').toUpperCase()}/config`, config),
-        timeout,
-      ]);
+      await dbPut(`/campaigns/${code.replace(/-/g, '').toUpperCase()}/config`, config, ctrl.signal);
+      clearTimeout(tid);
       return true;
     } catch (e) {
-      _lastOpError = e.message || String(e);
+      clearTimeout(tid);
+      if (!_lastOpError) _lastOpError = e.name === 'AbortError' ? 'timeout 8s' : (e.message || String(e));
       console.warn('[Firebase] createCampaign:', e);
       return false;
     }
