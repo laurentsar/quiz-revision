@@ -1,126 +1,160 @@
 'use strict';
-// Intégration Firebase Realtime Database — initialisation paresseuse.
-// window.FirebaseChallenge est installé immédiatement ; Firebase s'initialise
-// à la première utilisation (plus de dépendance à l'ordre des scripts defer).
+// Intégration Firebase — API REST pure (fetch + EventSource).
+// Pas de SDK Firebase : zéro dépendance, initialisation instantanée.
+// Auth : connexion anonyme via Firebase Auth REST (idToken 1h, auto-renouvelé).
 (function () {
-  let db = null;
-  let activeRef = null;
-  let activeHandler = null;
-  let lastInitError = null;
-  let lastOpError = null;
+  let _idToken = null;
+  let _tokenExpiry = 0;
+  let _tokenPending = null;
+  let _activeSource = null;
+  let _lastOpError = null;
 
-  function getDb() {
-    if (db) return db;
-    const cfg = window.FIREBASE_CONFIG;
-    if (!cfg || !cfg.databaseURL) return null;
-    if (!window.firebase) return null;
-    try {
-      if (!firebase.apps.length) firebase.initializeApp(cfg);
-      db = firebase.database();
-      if (!db) lastInitError = 'firebase.database() a retourné null';
-    } catch (e) {
-      lastInitError = e.message || String(e);
-      console.warn('[Firebase] init error:', e);
+  function cfg() { return window.FIREBASE_CONFIG || null; }
+  function dbRoot() { return cfg()?.databaseURL || null; }
+  function apiKey() { return cfg()?.apiKey || null; }
+
+  function isReady() { return !!(dbRoot() && apiKey()); }
+  function getInitError() {
+    if (!cfg()) return 'FIREBASE_CONFIG absent';
+    if (!cfg().databaseURL) return 'databaseURL manquant';
+    if (!cfg().apiKey) return 'apiKey manquant';
+    return null;
+  }
+  function getOpError() { return _lastOpError; }
+
+  // ── Auth anonyme ─────────────────────────────────────────────────────────
+  async function ensureToken() {
+    if (_idToken && Date.now() < _tokenExpiry - 600_000) return _idToken;
+    if (_tokenPending) return _tokenPending;
+    const key = apiKey();
+    if (!key) return null;
+    _tokenPending = fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"returnSecureToken":true}' }
+    )
+    .then(r => r.json())
+    .then(d => {
+      _idToken = d.idToken || null;
+      _tokenExpiry = _idToken ? Date.now() + parseInt(d.expiresIn || 3600) * 1000 : 0;
+      _tokenPending = null;
+      return _idToken;
+    })
+    .catch(e => { console.warn('[Firebase] auth error:', e); _tokenPending = null; return null; });
+    return _tokenPending;
+  }
+
+  // ── Helpers REST ─────────────────────────────────────────────────────────
+  function restUrl(path, token) {
+    return `${dbRoot()}${path}.json` + (token ? `?auth=${encodeURIComponent(token)}` : '');
+  }
+
+  async function dbPut(path, value) {
+    const token = await ensureToken();
+    const res = await fetch(restUrl(path, token), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(value),
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.statusText);
+      throw new Error(text || `HTTP ${res.status}`);
     }
-    return db;
   }
 
-  function isReady() { return !!getDb(); }
-  function getInitError() { getDb(); return lastInitError; }
-  function getOpError() { return lastOpError; }
-
-  function defiRef(code) {
-    return getDb().ref('defis/' + code.replace(/-/g, '').toUpperCase() + '/joueurs');
+  async function dbGet(path) {
+    const token = await ensureToken();
+    const res = await fetch(restUrl(path, token));
+    if (!res.ok) return null;
+    return res.json().catch(() => null);
   }
 
-  function campaignRef(code) {
-    return getDb().ref('campaigns/' + code.replace(/-/g, '').toUpperCase());
-  }
-
-  async function pushScore(code, pseudo, score, total) {
-    if (!getDb()) return;
-    try {
-      await defiRef(code).child(pseudo).set({
-        score, total,
-        pct: Math.round(100 * score / total),
-        ts: Date.now(),
-      });
-    } catch (e) {
-      lastOpError = e.message || String(e);
-      console.warn('[Firebase] write error:', e);
-    }
-  }
-
-  function listenLeaderboard(code, callback) {
-    if (!getDb()) return;
+  function dbListen(path, onData) {
     removeListener();
-    activeRef = defiRef(code);
-    activeHandler = activeRef.on('value', (snap) => {
-      const data = snap.val() || {};
-      const rows = Object.entries(data)
-        .map(([pseudo, d]) => ({ pseudo, score: d.score, total: d.total, pct: d.pct, ts: d.ts }))
-        .sort((a, b) => b.pct - a.pct || b.score - a.score || a.ts - b.ts);
-      callback(rows);
-    }, (err) => console.warn('[Firebase] read error:', err));
+    ensureToken().then(token => {
+      const url = restUrl(path, token);
+      _activeSource = new EventSource(url);
+      _activeSource.addEventListener('put', e => {
+        try {
+          const msg = JSON.parse(e.data);
+          if (msg && msg.path === '/') { onData(msg.data); return; }
+          // sous-chemin → refetch complet
+          dbGet(path).then(onData).catch(() => {});
+        } catch (_) {}
+      });
+      _activeSource.addEventListener('patch', () => {
+        dbGet(path).then(onData).catch(() => {});
+      });
+      _activeSource.onerror = e => console.warn('[Firebase] SSE error:', e);
+    });
   }
 
   function removeListener() {
-    if (activeRef && activeHandler) {
-      activeRef.off('value', activeHandler);
-      activeRef = null; activeHandler = null;
-    }
+    if (_activeSource) { _activeSource.close(); _activeSource = null; }
+  }
+
+  // ── API publique ──────────────────────────────────────────────────────────
+  async function pushScore(code, pseudo, score, total) {
+    if (!isReady()) return;
+    _lastOpError = null;
+    try {
+      await dbPut(
+        `/defis/${code.replace(/-/g, '').toUpperCase()}/joueurs/${pseudo}`,
+        { score, total, pct: Math.round(100 * score / total), ts: Date.now() }
+      );
+    } catch (e) { _lastOpError = e.message || String(e); console.warn('[Firebase] pushScore:', e); }
+  }
+
+  function listenLeaderboard(code, callback) {
+    if (!isReady()) return;
+    dbListen(`/defis/${code.replace(/-/g, '').toUpperCase()}/joueurs`, data => {
+      const rows = Object.entries(data || {})
+        .map(([pseudo, d]) => ({ pseudo, score: d.score, total: d.total, pct: d.pct, ts: d.ts }))
+        .sort((a, b) => b.pct - a.pct || b.score - a.score || a.ts - b.ts);
+      callback(rows);
+    });
   }
 
   async function createCampaign(code, config) {
-    if (!getDb()) return false;
-    lastOpError = null;
+    if (!isReady()) return false;
+    _lastOpError = null;
     try {
       const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout 10s')), 10000));
-      await Promise.race([campaignRef(code).child('config').set(config), timeout]);
+      await Promise.race([
+        dbPut(`/campaigns/${code.replace(/-/g, '').toUpperCase()}/config`, config),
+        timeout,
+      ]);
       return true;
     } catch (e) {
-      lastOpError = e.message || String(e);
-      console.warn('[Firebase] createCampaign error:', e);
+      _lastOpError = e.message || String(e);
+      console.warn('[Firebase] createCampaign:', e);
       return false;
     }
   }
 
   async function fetchCampaign(code) {
-    if (!getDb()) return null;
+    if (!isReady()) return null;
     try {
-      const snap = await campaignRef(code).child('config').once('value');
-      return snap.val();
-    } catch (e) {
-      lastOpError = e.message || String(e);
-      console.warn('[Firebase] fetchCampaign error:', e);
-      return null;
-    }
+      return await dbGet(`/campaigns/${code.replace(/-/g, '').toUpperCase()}/config`);
+    } catch (e) { _lastOpError = e.message || String(e); return null; }
   }
 
   async function pushCampaignScore(code, roundN, pseudo, score, total) {
-    if (!getDb()) return;
+    if (!isReady()) return;
+    _lastOpError = null;
     try {
-      await campaignRef(code).child('rounds/' + roundN + '/joueurs/' + pseudo).set({
-        score, total,
-        pct: Math.round(100 * score / total),
-        ts: Date.now(),
-      });
-    } catch (e) {
-      lastOpError = e.message || String(e);
-      console.warn('[Firebase] pushCampaignScore error:', e);
-    }
+      await dbPut(
+        `/campaigns/${code.replace(/-/g, '').toUpperCase()}/rounds/${roundN}/joueurs/${pseudo}`,
+        { score, total, pct: Math.round(100 * score / total), ts: Date.now() }
+      );
+    } catch (e) { _lastOpError = e.message || String(e); console.warn('[Firebase] pushCampaignScore:', e); }
   }
 
   function listenCampaignLeaderboard(code, callback) {
-    if (!getDb()) return;
-    removeListener();
-    activeRef = campaignRef(code).child('rounds');
-    activeHandler = activeRef.on('value', (snap) => {
-      const rounds = snap.val() || {};
+    if (!isReady()) return;
+    dbListen(`/campaigns/${code.replace(/-/g, '').toUpperCase()}/rounds`, rounds => {
       const totals = {};
-      Object.values(rounds).forEach(round => {
-        const joueurs = (round && round.joueurs) ? round.joueurs : {};
-        Object.entries(joueurs).forEach(([pseudo, d]) => {
+      Object.values(rounds || {}).forEach(round => {
+        Object.entries((round && round.joueurs) || {}).forEach(([pseudo, d]) => {
           if (!totals[pseudo]) totals[pseudo] = { pseudo, score: 0, total: 0, sessions: 0, ts: 0 };
           totals[pseudo].score += d.score || 0;
           totals[pseudo].total += d.total || 0;
@@ -132,10 +166,9 @@
         .map(r => ({ ...r, pct: r.total ? Math.round(100 * r.score / r.total) : 0 }))
         .sort((a, b) => b.pct - a.pct || b.sessions - a.sessions || a.ts - b.ts);
       callback(rows);
-    }, err => console.warn('[Firebase] campaign lb error:', err));
+    });
   }
 
-  // Installé immédiatement — pas d'attente du chargement du SDK
   window.FirebaseChallenge = {
     isReady, getInitError, getOpError,
     pushScore, listenLeaderboard, removeListener,
