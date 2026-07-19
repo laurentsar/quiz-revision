@@ -1184,6 +1184,19 @@ function challengeDuration(count) {
   return '≈ ' + min + ' min';
 }
 
+function isCampaignMode() {
+  return parseInt($('challenge-freq-select').value, 10) > 0;
+}
+
+function refreshChallengeMode() {
+  const campaign = isCampaignMode();
+  $('challenge-quick-duration-row').classList.toggle('hidden', campaign);
+  $('challenge-campaign-duration-row').classList.toggle('hidden', !campaign);
+  $('challenge-quick-section').classList.toggle('hidden', campaign);
+  $('challenge-campaign-section').classList.toggle('hidden', !campaign);
+  if (campaign) updateCampaignPreview(); else refreshChallengeCode();
+}
+
 function refreshChallengeCode() {
   const v = $('challenge-theme-select').value;
   const scope = valueToScope(v);
@@ -1209,31 +1222,27 @@ function openChallengeModal() {
   const cntSel = $('challenge-count-select');
   const defaultCount = CHALLENGE_COUNTS.includes(state.count) ? String(state.count) : '10';
   cntSel.value = defaultCount;
-  refreshChallengeCode();
+  $('challenge-freq-select').value = '0';
+  refreshChallengeMode();
   $('challenge-error').classList.add('hidden');
   $('challenge-code-input').value = '';
-  // Init campaign panel
-  $('campaign-theme-select').innerHTML = themeOptionsHtml();
-  $('campaign-theme-select').value = scopeToSelectValue() || 'all';
-  updateCampaignPreview();
-  $('campaign-created').classList.add('hidden');
-  $('campaign-create-form').classList.remove('hidden');
   $('campaign-join-info').classList.add('hidden');
-  $('campaign-join-input').value = '';
-  $('campaign-error').classList.add('hidden');
-  $('campaign-fb-warning').classList.add('hidden');
+  $('challenge-fb-warning').classList.add('hidden');
+  $('challenge-create-row').classList.remove('hidden');
+  $('challenge-created-section').classList.add('hidden');
+  _currentCampaign = null;
   $('challenge-modal').classList.remove('hidden');
 }
 
 function updateCampaignPreview() {
-  const freqDays = parseInt($('campaign-freq-select').value, 10);
-  const durationDays = parseInt($('campaign-duration-select').value, 10);
+  const freqDays = parseInt($('challenge-freq-select').value, 10);
+  const durationDays = parseInt($('challenge-duration-select').value, 10);
   const totalRounds = Math.floor(durationDays / freqDays);
   const endDate = new Date(Date.now() + durationDays * 86400000);
-  const countVal = parseInt($('campaign-count-select').value, 10) || 0;
+  const countVal = parseInt($('challenge-count-select').value, 10) || 0;
   const dur = challengeDuration(countVal);
   const durPart = dur ? ` · ${dur}/session` : '';
-  $('campaign-preview').textContent =
+  $('challenge-campaign-preview').textContent =
     `📅 ${totalRounds} sessions · ${campaignFreqLabel(freqDays)} · du ${fmtDate(new Date())} au ${fmtDate(endDate)}${durPart}`;
 }
 
@@ -1241,15 +1250,15 @@ let _currentCampaign = null; // config en cours pour jointure
 
 async function createCampaignFlow() {
   if (!window.FirebaseChallenge || !FirebaseChallenge.isReady()) {
-    $('campaign-fb-warning').classList.remove('hidden');
+    $('challenge-fb-warning').classList.remove('hidden');
     return;
   }
-  $('campaign-fb-warning').classList.add('hidden');
-  const scope = valueToScope($('campaign-theme-select').value);
-  const count = parseInt($('campaign-count-select').value, 10) || 0;
+  $('challenge-fb-warning').classList.add('hidden');
+  const scope = valueToScope($('challenge-theme-select').value);
+  const count = parseInt($('challenge-count-select').value, 10) || 0;
   const qtype = state.qtype;
-  const freqDays = parseInt($('campaign-freq-select').value, 10);
-  const durationDays = parseInt($('campaign-duration-select').value, 10);
+  const freqDays = parseInt($('challenge-freq-select').value, 10);
+  const durationDays = parseInt($('challenge-duration-select').value, 10);
   const totalRounds = Math.floor(durationDays / freqDays);
   const seed = (Math.random() * 0x100000000) >>> 0;
   const code = generateCampaignCode();
@@ -1258,40 +1267,36 @@ async function createCampaignFlow() {
   btn.disabled = true; btn.textContent = 'Création…';
   const ok = await FirebaseChallenge.createCampaign(code, config);
   btn.disabled = false; btn.textContent = '🚀 Créer la campagne';
-  if (!ok) { $('campaign-fb-warning').classList.remove('hidden'); return; }
+  if (!ok) { $('challenge-fb-warning').classList.remove('hidden'); return; }
   _currentCampaign = { config, code };
   $('campaign-code').textContent = code;
   const endDate = new Date(config.startTs + durationDays * 86400000);
   $('campaign-created-info').textContent =
     `${challengeScopeLabel(scope)} · ${count || 'Tout'} q/session · ${totalRounds} sessions · jusqu'au ${fmtDate(endDate)}`;
   $('btn-start-campaign-round').textContent = '▶ Jouer la session 1';
-  $('campaign-create-form').classList.add('hidden');
-  $('campaign-created').classList.remove('hidden');
+  $('challenge-create-row').classList.add('hidden');
+  $('challenge-created-section').classList.remove('hidden');
 }
 
-async function searchCampaign() {
-  const raw = $('campaign-join-input').value.replace(/-/g, '').trim().toUpperCase();
+async function searchCampaign(rawInput) {
+  const raw = (rawInput || '').replace(/-/g, '').trim().toUpperCase();
   if (!/^[0-9A-F]{8}$/.test(raw)) {
-    $('campaign-error').textContent = 'Format invalide (ex : ABCD-EF12).';
-    $('campaign-error').classList.remove('hidden');
+    $('challenge-error').textContent = 'Format invalide (ex : ABCD-EF12).';
+    $('challenge-error').classList.remove('hidden');
     return;
   }
   const code = raw.slice(0, 4) + '-' + raw.slice(4);
-  const btn = $('btn-join-campaign-btn');
-  btn.disabled = true; btn.textContent = 'Recherche…';
-  $('campaign-error').classList.add('hidden');
+  $('challenge-error').classList.add('hidden');
   $('campaign-join-info').classList.add('hidden');
   if (!window.FirebaseChallenge || !FirebaseChallenge.isReady()) {
-    btn.disabled = false; btn.textContent = 'Rechercher';
-    $('campaign-error').textContent = 'Firebase requis — vérifiez votre connexion.';
-    $('campaign-error').classList.remove('hidden');
+    $('challenge-error').textContent = 'Firebase requis — vérifiez votre connexion.';
+    $('challenge-error').classList.remove('hidden');
     return;
   }
   const config = await FirebaseChallenge.fetchCampaign(code);
-  btn.disabled = false; btn.textContent = 'Rechercher';
   if (!config) {
-    $('campaign-error').textContent = 'Campagne introuvable. Vérifiez le code.';
-    $('campaign-error').classList.remove('hidden');
+    $('challenge-error').textContent = 'Campagne introuvable. Vérifiez le code.';
+    $('challenge-error').classList.remove('hidden');
     return;
   }
   _currentCampaign = { config, code };
@@ -1566,40 +1571,38 @@ $('btn-whatsapp-code').addEventListener('click', () => {
   const text = `⚔️ *Défi Quizz Révision*\n\n📚 Thème : ${themeLabel}\n❓ ${countLabel} · ${qtypeLabel}${durLine}\n\n🔑 Code : *${code}*\n\n👉 Joue ici : ${appUrl}`;
   openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
-$('challenge-theme-select').addEventListener('change', refreshChallengeCode);
-$('challenge-count-select').addEventListener('change', refreshChallengeCode);
 $('btn-start-my-challenge').addEventListener('click', () => {
   const ch = $('challenge-modal')._challenge;
   if (ch) startChallengeSession(ch, ch.code);
 });
-$('btn-join-challenge').addEventListener('click', () => {
+$('btn-join-challenge').addEventListener('click', async () => {
   const raw = $('challenge-code-input').value.trim();
-  const ch = decodeChallenge(raw);
-  if (!ch) { $('challenge-error').classList.remove('hidden'); return; }
-  $('challenge-error').classList.add('hidden');
-  startChallengeSession(ch, raw.toUpperCase().replace(/[^0-9A-F]/g, '').replace(/(.{5})(.{5})/, '$1-$2'));
+  const stripped = raw.replace(/-/g, '').toUpperCase();
+  if (/^[0-9A-F]{10}$/.test(stripped)) {
+    const ch = decodeChallenge(raw);
+    if (!ch) { $('challenge-error').textContent = 'Code invalide. Vérifie la saisie.'; $('challenge-error').classList.remove('hidden'); return; }
+    $('challenge-error').classList.add('hidden');
+    startChallengeSession(ch, stripped.replace(/(.{5})(.{5})/, '$1-$2'));
+  } else if (/^[0-9A-F]{8}$/.test(stripped)) {
+    await searchCampaign(raw);
+  } else {
+    $('challenge-error').textContent = 'Code invalide. Vérifie la saisie.';
+    $('challenge-error').classList.remove('hidden');
+  }
 });
 
-// ---- Onglets challenge ----
-document.querySelectorAll('.challenge-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.challenge-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    const isQuick = tab.dataset.tab === 'quick';
-    $('challenge-quick-panel').classList.toggle('hidden', !isQuick);
-    $('challenge-campaign-panel').classList.toggle('hidden', isQuick);
-  });
-});
+// ---- Paramètres défi / campagne ----
+$('challenge-freq-select').addEventListener('change', refreshChallengeMode);
+$('challenge-theme-select').addEventListener('change', () => { if (!isCampaignMode()) refreshChallengeCode(); else updateCampaignPreview(); });
+$('challenge-count-select').addEventListener('change', () => { if (!isCampaignMode()) refreshChallengeCode(); else updateCampaignPreview(); });
+$('challenge-duration-select').addEventListener('change', updateCampaignPreview);
 
 // ---- Campagne ----
-['campaign-freq-select', 'campaign-duration-select', 'campaign-count-select', 'campaign-theme-select'].forEach(id =>
-  $(id).addEventListener('change', updateCampaignPreview)
-);
 $('btn-create-campaign').addEventListener('click', createCampaignFlow);
 $('btn-campaign-new').addEventListener('click', () => {
   _currentCampaign = null;
-  $('campaign-created').classList.add('hidden');
-  $('campaign-create-form').classList.remove('hidden');
+  $('challenge-created-section').classList.add('hidden');
+  $('challenge-create-row').classList.remove('hidden');
 });
 $('btn-copy-campaign-code').addEventListener('click', async () => {
   const code = $('campaign-code').textContent;
@@ -1622,7 +1625,6 @@ $('btn-whatsapp-campaign').addEventListener('click', () => {
   openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
 $('btn-start-campaign-round').addEventListener('click', startCampaignRound);
-$('btn-join-campaign-btn').addEventListener('click', searchCampaign);
 $('btn-play-campaign-round').addEventListener('click', startCampaignRound);
 $('btn-share-result').addEventListener('click', async () => {
   const text = ($('btn-share-result').dataset.shareText || '').trim();
