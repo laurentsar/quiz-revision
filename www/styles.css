@@ -568,3 +568,8 @@ html, body {
 .challenge-modal-card { max-height: 88vh; overflow-y: auto; }
 .challenge-share-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
 .btn-whatsapp { background: #25D366; color: #fff; border: none; border-radius: 20px; padding: 8px 16px; font-size: 14px; font-weight: 700; cursor: pointer; }
+/* Paramètres du défi */
+.challenge-params-row { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 8px; flex-wrap: wrap; }
+.challenge-param { display: flex; flex-direction: column; gap: 4px; }
+.select-sm { background: rgba(255,255,255,0.08); color: var(--text); font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 5px 10px; min-width: 80px; }
+.challenge-duration-badge { font-size: 14px; font-weight: 700; color: var(--mint); background: rgba(76,224,210,0.1); border: 1px solid rgba(76,224,210,0.2); border-radius: 10px; padding: 5px 12px; display: inline-block; }

@@ -1114,14 +1114,22 @@ function valueToScope(v) {
   return g ? 'grp:' + g.id : 'all';
 }
 
+function challengeDuration(count) {
+  if (!count) return null;
+  const min = Math.round(count * 0.75);
+  return '≈ ' + min + ' min';
+}
+
 function refreshChallengeCode() {
   const v = $('challenge-theme-select').value;
   const scope = valueToScope(v);
-  const count = state.count;
+  const count = parseInt($('challenge-count-select').value, 10) || 0;
   const qtype = state.qtype;
   const code = encodeChallenge(scope, count, qtype, _challengeSeed) || '—';
   $('challenge-code').textContent = code;
   const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[qtype] || qtype;
+  const dur = challengeDuration(count);
+  $('challenge-duration').textContent = dur || '—';
   const fireReady = window.FirebaseChallenge && FirebaseChallenge.isReady();
   $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (count || 'Tout') + ' questions · ' + qtypeLabel +
     (fireReady ? ' · 🟢 classement en direct' : ' · ⚫ classement hors ligne');
@@ -1134,6 +1142,9 @@ function openChallengeModal() {
   sel.innerHTML = themeOptionsHtml();
   sel.value = scopeToSelectValue();
   if (!sel.value) sel.value = 'all';
+  const cntSel = $('challenge-count-select');
+  const defaultCount = CHALLENGE_COUNTS.includes(state.count) ? String(state.count) : '10';
+  cntSel.value = defaultCount;
   refreshChallengeCode();
   $('challenge-error').classList.add('hidden');
   $('challenge-code-input').value = '';
@@ -1346,12 +1357,22 @@ $('btn-copy-code').addEventListener('click', async () => {
   } catch (e) {}
 });
 $('btn-whatsapp-code').addEventListener('click', () => {
-  const code = $('challenge-code').textContent;
-  const info = $('challenge-scope-info').textContent;
-  const text = `⚔️ Défi Quizz Révision\nCode : ${code}\n(${info})\nRelève le défi !`;
+  const ch = $('challenge-modal')._challenge;
+  if (!ch) return;
+  const code = ch.code;
+  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[ch.qtype] || ch.qtype;
+  const countLabel = ch.count ? ch.count + ' questions' : 'Toutes les questions';
+  const themeLabel = challengeScopeLabel(ch.scope);
+  const dur = challengeDuration(ch.count);
+  const repo = window.UPDATE_REPO || 'laurentsar/quiz-revision';
+  const [owner, repoName] = repo.split('/');
+  const appUrl = `https://${owner}.github.io/${repoName}/`;
+  const durLine = dur ? `\n⏱️ Durée estimée : ${dur}` : '';
+  const text = `⚔️ *Défi Quizz Révision*\n\n📚 Thème : ${themeLabel}\n❓ ${countLabel} · ${qtypeLabel}${durLine}\n\n🔑 Code : *${code}*\n\n👉 Joue ici : ${appUrl}`;
   openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
 $('challenge-theme-select').addEventListener('change', refreshChallengeCode);
+$('challenge-count-select').addEventListener('change', refreshChallengeCode);
 $('btn-start-my-challenge').addEventListener('click', () => {
   const ch = $('challenge-modal')._challenge;
   if (ch) startChallengeSession(ch, ch.code);

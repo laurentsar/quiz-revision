@@ -273,7 +273,23 @@
 
         <p class="challenge-section-title">Créer un défi</p>
         <span class="hero-label">Thème</span>
-        <select id="challenge-theme-select" class="select" style="margin-bottom:10px"></select>
+        <select id="challenge-theme-select" class="select" style="margin-bottom:8px"></select>
+
+        <div class="challenge-params-row">
+          <div class="challenge-param">
+            <span class="hero-label">Questions</span>
+            <select id="challenge-count-select" class="select-sm">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="0">Toutes</option>
+            </select>
+          </div>
+          <div class="challenge-param">
+            <span class="hero-label">Durée estimée</span>
+            <span id="challenge-duration" class="challenge-duration-badge">≈ 8 min</span>
+          </div>
+        </div>
 
         <div class="challenge-code-box">
           <span id="challenge-code" class="challenge-code">——————</span>
@@ -365,7 +381,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.8';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.9';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>
