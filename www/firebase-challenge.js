@@ -7,6 +7,7 @@
   let activeRef = null;
   let activeHandler = null;
   let lastInitError = null;
+  let lastOpError = null;
 
   function getDb() {
     if (db) return db;
@@ -26,6 +27,7 @@
 
   function isReady() { return !!getDb(); }
   function getInitError() { getDb(); return lastInitError; }
+  function getOpError() { return lastOpError; }
 
   function defiRef(code) {
     return getDb().ref('defis/' + code.replace(/-/g, '').toUpperCase() + '/joueurs');
@@ -44,6 +46,7 @@
         ts: Date.now(),
       });
     } catch (e) {
+      lastOpError = e.message || String(e);
       console.warn('[Firebase] write error:', e);
     }
   }
@@ -70,11 +73,13 @@
 
   async function createCampaign(code, config) {
     if (!getDb()) return false;
+    lastOpError = null;
     try {
-      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000));
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout 10s')), 10000));
       await Promise.race([campaignRef(code).child('config').set(config), timeout]);
       return true;
     } catch (e) {
+      lastOpError = e.message || String(e);
       console.warn('[Firebase] createCampaign error:', e);
       return false;
     }
@@ -86,6 +91,7 @@
       const snap = await campaignRef(code).child('config').once('value');
       return snap.val();
     } catch (e) {
+      lastOpError = e.message || String(e);
       console.warn('[Firebase] fetchCampaign error:', e);
       return null;
     }
@@ -100,6 +106,7 @@
         ts: Date.now(),
       });
     } catch (e) {
+      lastOpError = e.message || String(e);
       console.warn('[Firebase] pushCampaignScore error:', e);
     }
   }
@@ -130,7 +137,8 @@
 
   // Installé immédiatement — pas d'attente du chargement du SDK
   window.FirebaseChallenge = {
-    isReady, getInitError, pushScore, listenLeaderboard, removeListener,
+    isReady, getInitError, getOpError,
+    pushScore, listenLeaderboard, removeListener,
     createCampaign, fetchCampaign, pushCampaignScore, listenCampaignLeaderboard,
   };
 })();
