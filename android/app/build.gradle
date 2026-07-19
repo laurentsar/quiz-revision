@@ -57,6 +57,20 @@ dependencies {
 
 apply from: 'capacitor.build.gradle'
 
+// Sync automatique des assets web avant chaque build
+task capacitorSync(type: Exec) {
+    def projectRoot = project.rootDir.parentFile
+    workingDir projectRoot
+    def cap = new File(projectRoot, 'node_modules/.bin/cap')
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        commandLine 'cmd', '/c', 'node_modules\\.bin\\cap', 'sync', 'android'
+    } else {
+        commandLine cap.absolutePath, 'sync', 'android'
+    }
+    doFirst { logger.lifecycle(">> cap sync android (${projectRoot})") }
+}
+preBuild.dependsOn capacitorSync
+
 try {
     def servicesJSON = file('google-services.json')
     if (servicesJSON.text) {
