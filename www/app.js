@@ -1302,20 +1302,9 @@ function updateCampaignPreview() {
 let _currentCampaign = null; // config en cours pour jointure
 
 async function createCampaignFlow() {
-  // Diagnostic précis affiché à l'écran pour déboguer
-  const hasFbChallenge = !!window.FirebaseChallenge;
-  const hasFbSdk = !!window.firebase;
-  const hasFbCfg = !!(window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.databaseURL);
-  const ready = hasFbChallenge && FirebaseChallenge.isReady();
+  const ready = window.FirebaseChallenge && FirebaseChallenge.isReady();
   if (!ready) {
-    let reason = '';
-    if (!hasFbSdk) reason = 'SDK Firebase absent (firebase-app-compat.js)';
-    else if (!hasFbCfg) reason = 'Config Firebase absente';
-    else if (!hasFbChallenge) reason = 'Module FirebaseChallenge absent';
-    else {
-      const err = (window.FirebaseChallenge && FirebaseChallenge.getInitError) ? FirebaseChallenge.getInitError() : null;
-      reason = 'firebase.database() a échoué' + (err ? ' : ' + err : '');
-    }
+    const reason = window.FirebaseChallenge?.getInitError?.() || 'module FirebaseChallenge absent';
     $('challenge-fb-warning').textContent = 'Firebase non prêt : ' + reason;
     $('challenge-fb-warning').classList.remove('hidden');
     return;
