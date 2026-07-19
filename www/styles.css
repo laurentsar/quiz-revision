@@ -573,3 +573,15 @@ html, body {
 .challenge-param { display: flex; flex-direction: column; gap: 4px; }
 .select-sm { background: rgba(255,255,255,0.08); color: var(--text); font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 5px 10px; min-width: 80px; }
 .challenge-duration-badge { font-size: 14px; font-weight: 700; color: var(--mint); background: rgba(76,224,210,0.1); border: 1px solid rgba(76,224,210,0.2); border-radius: 10px; padding: 5px 12px; display: inline-block; }
+/* Onglets challenge */
+.challenge-tabs { display: flex; gap: 6px; margin: 8px 0 12px; }
+.challenge-tab { flex: 1; padding: 7px 0; font-size: 13px; font-weight: 700; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--text-dim); cursor: pointer; transition: background .15s, color .15s; }
+.challenge-tab.active { background: rgba(76,224,210,0.15); border-color: rgba(76,224,210,0.35); color: var(--mint); }
+/* Campagne */
+.campaign-preview-text { font-size: 13px; color: var(--mint); background: rgba(76,224,210,0.07); border: 1px solid rgba(76,224,210,0.18); border-radius: 10px; padding: 7px 12px; margin: 10px 0 4px; }
+.campaign-code-small { font-size: 1.45rem; }
+.campaign-join-info { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; }
+.campaign-round-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
+.campaign-round-theme { font-size: 13px; font-weight: 700; color: var(--text); }
+.campaign-round-progress { font-size: 12px; color: var(--mint); font-weight: 700; }
+.campaign-round-next { font-size: 12px; color: var(--text-dim); margin: 0; }

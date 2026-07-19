@@ -271,44 +271,136 @@
           <button id="challenge-modal-close" class="gear">✕</button>
         </div>
 
-        <p class="challenge-section-title">Créer un défi</p>
-        <span class="hero-label">Thème</span>
-        <select id="challenge-theme-select" class="select" style="margin-bottom:8px"></select>
+        <!-- Onglets -->
+        <div class="challenge-tabs">
+          <button class="challenge-tab active" data-tab="quick">⚡ Défi rapide</button>
+          <button class="challenge-tab" data-tab="campaign">📅 Campagne</button>
+        </div>
 
-        <div class="challenge-params-row">
-          <div class="challenge-param">
-            <span class="hero-label">Questions</span>
-            <select id="challenge-count-select" class="select-sm">
-              <option value="5">5</option>
-              <option value="10" selected>10</option>
-              <option value="20">20</option>
-              <option value="0">Toutes</option>
-            </select>
+        <!-- ===== Défi rapide ===== -->
+        <div id="challenge-quick-panel">
+          <p class="challenge-section-title">Créer un défi</p>
+          <span class="hero-label">Thème</span>
+          <select id="challenge-theme-select" class="select" style="margin-bottom:8px"></select>
+
+          <div class="challenge-params-row">
+            <div class="challenge-param">
+              <span class="hero-label">Questions</span>
+              <select id="challenge-count-select" class="select-sm">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="0">Toutes</option>
+              </select>
+            </div>
+            <div class="challenge-param">
+              <span class="hero-label">Durée estimée</span>
+              <span id="challenge-duration" class="challenge-duration-badge">≈ 8 min</span>
+            </div>
           </div>
-          <div class="challenge-param">
-            <span class="hero-label">Durée estimée</span>
-            <span id="challenge-duration" class="challenge-duration-badge">≈ 8 min</span>
+
+          <div class="challenge-code-box">
+            <span id="challenge-code" class="challenge-code">——————</span>
           </div>
+          <p id="challenge-scope-info" class="challenge-info"></p>
+
+          <div class="challenge-share-row">
+            <button id="btn-copy-code" class="chip">📋 Copier le code</button>
+            <button id="btn-whatsapp-code" class="btn-whatsapp">&#128172; WhatsApp</button>
+          </div>
+          <button id="btn-start-my-challenge" class="primary" style="margin-top:10px">▶ Jouer ce défi</button>
+
+          <div class="modal-sep"></div>
+
+          <p class="challenge-section-title">Rejoindre un défi</p>
+          <p class="mm-source">Entre un code reçu pour jouer le même quiz.</p>
+          <input id="challenge-code-input" class="search-input" type="text" placeholder="Ex : A3F9B-2C14E" autocomplete="off" maxlength="12" style="margin-bottom:8px" />
+          <button id="btn-join-challenge" class="primary">Rejoindre</button>
+          <p id="challenge-error" class="challenge-error hidden">Code invalide. Vérifie la saisie.</p>
         </div>
 
-        <div class="challenge-code-box">
-          <span id="challenge-code" class="challenge-code">——————</span>
+        <!-- ===== Campagne ===== -->
+        <div id="challenge-campaign-panel" class="hidden">
+
+          <!-- Créer -->
+          <div id="campaign-create-form">
+            <p class="challenge-section-title">Créer une campagne</p>
+            <span class="hero-label">Thème</span>
+            <select id="campaign-theme-select" class="select" style="margin-bottom:8px"></select>
+
+            <div class="challenge-params-row">
+              <div class="challenge-param">
+                <span class="hero-label">Questions/session</span>
+                <select id="campaign-count-select" class="select-sm">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="20">20</option>
+                  <option value="0">Toutes</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="challenge-params-row" style="margin-top:8px">
+              <div class="challenge-param">
+                <span class="hero-label">Fréquence</span>
+                <select id="campaign-freq-select" class="select-sm">
+                  <option value="1">Quotidien</option>
+                  <option value="3">Tous les 3 jours</option>
+                  <option value="7" selected>Hebdomadaire</option>
+                </select>
+              </div>
+              <div class="challenge-param">
+                <span class="hero-label">Durée</span>
+                <select id="campaign-duration-select" class="select-sm">
+                  <option value="7">1 semaine</option>
+                  <option value="14">2 semaines</option>
+                  <option value="30" selected>1 mois</option>
+                  <option value="90">3 mois</option>
+                </select>
+              </div>
+            </div>
+
+            <p id="campaign-preview" class="campaign-preview-text"></p>
+            <p id="campaign-fb-warning" class="challenge-error hidden">Firebase requis pour les campagnes — vérifiez votre connexion.</p>
+            <button id="btn-create-campaign" class="primary" style="margin-top:10px">🚀 Créer la campagne</button>
+          </div>
+
+          <!-- Campagne créée -->
+          <div id="campaign-created" class="hidden">
+            <p class="challenge-section-title">Campagne créée !</p>
+            <div class="challenge-code-box">
+              <span id="campaign-code" class="challenge-code campaign-code-small">XXXX-XXXX</span>
+            </div>
+            <p id="campaign-created-info" class="challenge-info"></p>
+            <div class="challenge-share-row">
+              <button id="btn-copy-campaign-code" class="chip">📋 Copier</button>
+              <button id="btn-whatsapp-campaign" class="btn-whatsapp">&#128172; WhatsApp</button>
+            </div>
+            <button id="btn-start-campaign-round" class="primary" style="margin-top:10px">▶ Jouer la session 1</button>
+            <button id="btn-campaign-new" class="ghost-sm" style="margin-top:8px; display:block; width:100%; text-align:center">← Nouvelle campagne</button>
+          </div>
+
+          <div class="modal-sep"></div>
+
+          <!-- Rejoindre -->
+          <p class="challenge-section-title">Rejoindre une campagne</p>
+          <p class="mm-source">Code à 9 caractères partagé par l'organisateur.</p>
+          <input id="campaign-join-input" class="search-input" type="text" placeholder="Ex : ABCD-EF12" autocomplete="off" maxlength="9" style="margin-bottom:8px" />
+
+          <!-- Info session (après lookup) -->
+          <div id="campaign-join-info" class="campaign-join-info hidden">
+            <div class="campaign-round-row">
+              <span id="cji-theme" class="campaign-round-theme"></span>
+              <span id="cji-progress" class="campaign-round-progress"></span>
+            </div>
+            <p id="cji-next" class="campaign-round-next"></p>
+            <button id="btn-play-campaign-round" class="primary" style="margin-top:6px">▶ Jouer</button>
+          </div>
+
+          <button id="btn-join-campaign-btn" class="primary">Rechercher</button>
+          <p id="campaign-error" class="challenge-error hidden">Code invalide ou campagne introuvable.</p>
         </div>
-        <p id="challenge-scope-info" class="challenge-info"></p>
 
-        <div class="challenge-share-row">
-          <button id="btn-copy-code" class="chip">📋 Copier le code</button>
-          <button id="btn-whatsapp-code" class="btn-whatsapp">&#128172; WhatsApp</button>
-        </div>
-        <button id="btn-start-my-challenge" class="primary" style="margin-top:10px">▶ Jouer ce défi</button>
-
-        <div class="modal-sep"></div>
-
-        <p class="challenge-section-title">Rejoindre un défi</p>
-        <p class="mm-source">Entre un code reçu pour jouer le même quiz.</p>
-        <input id="challenge-code-input" class="search-input" type="text" placeholder="Ex : A3F9B-2C14E" autocomplete="off" maxlength="12" style="margin-bottom:8px" />
-        <button id="btn-join-challenge" class="primary">Rejoindre</button>
-        <p id="challenge-error" class="challenge-error hidden">Code invalide. Vérifie la saisie.</p>
       </div>
     </div>
 
@@ -381,7 +473,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.9';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.0';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>

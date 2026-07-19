@@ -14,6 +14,10 @@ const CHALLENGE_SCOPES = ['all', 'grp:homolog', 'grp:reglem', 'grp:cissp', 'grp:
 const CHALLENGE_COUNTS = [5, 10, 20, 0];     // 0 = tout
 const CHALLENGE_QTYPES = ['mix', 'def', 'term', 'situation', 'cat'];
 
+// Campagne : options de fréquence (jours) et de durée totale (jours)
+const CAMPAIGN_FREQS = [1, 3, 7];
+const CAMPAIGN_DURATIONS = [7, 14, 30, 90];
+
 // Durées de session pour les simulations d'examen (par groupe de branche)
 const EXAM_CONFIG = {
   cissp:   { label: 'CISSP',          minutes: 180 },
@@ -109,6 +113,45 @@ function applyOverrides() {
   const ov = getOverrides();
   if (!Object.keys(ov).length) return;
   ALL.forEach(c => { if (ov[c.term]) Object.assign(c, ov[c.term]); });
+}
+
+// ---------- campagnes ----------
+function getCampaignStore() { return lsGet('quizrev:campaigns:v1', {}); }
+function saveCampaignStore(c) { lsSet('quizrev:campaigns:v1', c); }
+function markRoundPlayed(campaignCode, roundN) {
+  const c = getCampaignStore();
+  if (!c[campaignCode]) c[campaignCode] = { roundsPlayed: [] };
+  if (!c[campaignCode].roundsPlayed.includes(roundN)) c[campaignCode].roundsPlayed.push(roundN);
+  saveCampaignStore(c);
+}
+function hasPlayedRound(campaignCode, roundN) {
+  const c = getCampaignStore();
+  return !!(c[campaignCode] && c[campaignCode].roundsPlayed.includes(roundN));
+}
+function generateCampaignCode() {
+  const b = new Uint8Array(4);
+  crypto.getRandomValues(b);
+  const h = Array.from(b).map(x => x.toString(16).toUpperCase().padStart(2, '0')).join('');
+  return h.slice(0, 4) + '-' + h.slice(4);
+}
+function campaignCurrentRound(config) {
+  const elapsed = Date.now() - config.startTs;
+  return Math.min(Math.floor(elapsed / (config.freqDays * 86400000)), config.totalRounds - 1);
+}
+function campaignRoundSeed(config, roundN) {
+  return (config.seed ^ (roundN * 0x9E3779B9)) >>> 0;
+}
+function campaignIsEnded(config) {
+  return Date.now() >= config.startTs + config.totalRounds * config.freqDays * 86400000;
+}
+function campaignNextRoundDate(config, roundN) {
+  return new Date(config.startTs + (roundN + 1) * config.freqDays * 86400000);
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+}
+function campaignFreqLabel(freqDays) {
+  return freqDays === 1 ? 'Quotidien' : freqDays === 3 ? 'Tous les 3 jours' : 'Hebdomadaire';
 }
 
 // ---------- audit qualité ----------
@@ -756,21 +799,42 @@ function finishQuiz() {
   const cr = $('challenge-result');
   const lb = $('challenge-leaderboard');
   if (state.challenge) {
-    const code = state.challenge.code;
+    const ch = state.challenge;
+    const code = ch.code;
     const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '✅' : '💪';
-    const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
-    $('challenge-result-code').textContent = code;
-    $('btn-share-result').dataset.shareText = shareText;
-    cr.classList.remove('hidden');
-    if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
-      const pseudo = getPseudo();
-      FirebaseChallenge.pushScore(code, pseudo, score, total);
-      lb.classList.remove('hidden');
-      $('leaderboard-status').textContent = `Vous jouez en tant que : ${pseudo}`;
-      renderLeaderboard([], pseudo);
-      FirebaseChallenge.listenLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+    const pseudo = getPseudo();
+    if (ch.isCampaign) {
+      markRoundPlayed(code, ch.roundN);
+      const nextDate = campaignNextRoundDate(ch, ch.roundN);
+      const nextPart = ch.roundN + 1 < ch.totalRounds ? ` · Prochaine session : ${fmtDate(nextDate)}` : ' · Campagne terminée !';
+      const shareText = `📅 Campagne Quizz Révision [${code}]\nSession ${ch.roundN + 1}/${ch.totalRounds} : ${score}/${total} — ${pct}% ${emoji}${nextPart}`;
+      $('challenge-result-code').textContent = code;
+      $('result-sub').textContent = `Campagne · Session ${ch.roundN + 1}/${ch.totalRounds}`;
+      $('btn-share-result').dataset.shareText = shareText;
+      cr.classList.remove('hidden');
+      if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
+        FirebaseChallenge.pushCampaignScore(code, ch.roundN, pseudo, score, total);
+        lb.classList.remove('hidden');
+        $('leaderboard-status').textContent = `Classement général · ${pseudo}`;
+        renderLeaderboard([], pseudo);
+        FirebaseChallenge.listenCampaignLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+      } else {
+        lb.classList.add('hidden');
+      }
     } else {
-      lb.classList.add('hidden');
+      const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
+      $('challenge-result-code').textContent = code;
+      $('btn-share-result').dataset.shareText = shareText;
+      cr.classList.remove('hidden');
+      if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
+        FirebaseChallenge.pushScore(code, pseudo, score, total);
+        lb.classList.remove('hidden');
+        $('leaderboard-status').textContent = `Vous jouez en tant que : ${pseudo}`;
+        renderLeaderboard([], pseudo);
+        FirebaseChallenge.listenLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+      } else {
+        lb.classList.add('hidden');
+      }
     }
     state.challenge = null;
   } else {
@@ -1148,7 +1212,138 @@ function openChallengeModal() {
   refreshChallengeCode();
   $('challenge-error').classList.add('hidden');
   $('challenge-code-input').value = '';
+  // Init campaign panel
+  $('campaign-theme-select').innerHTML = themeOptionsHtml();
+  $('campaign-theme-select').value = scopeToSelectValue() || 'all';
+  updateCampaignPreview();
+  $('campaign-created').classList.add('hidden');
+  $('campaign-create-form').classList.remove('hidden');
+  $('campaign-join-info').classList.add('hidden');
+  $('campaign-join-input').value = '';
+  $('campaign-error').classList.add('hidden');
+  $('campaign-fb-warning').classList.add('hidden');
   $('challenge-modal').classList.remove('hidden');
+}
+
+function updateCampaignPreview() {
+  const freqDays = parseInt($('campaign-freq-select').value, 10);
+  const durationDays = parseInt($('campaign-duration-select').value, 10);
+  const totalRounds = Math.floor(durationDays / freqDays);
+  const endDate = new Date(Date.now() + durationDays * 86400000);
+  const countVal = parseInt($('campaign-count-select').value, 10) || 0;
+  const dur = challengeDuration(countVal);
+  const durPart = dur ? ` · ${dur}/session` : '';
+  $('campaign-preview').textContent =
+    `📅 ${totalRounds} sessions · ${campaignFreqLabel(freqDays)} · du ${fmtDate(new Date())} au ${fmtDate(endDate)}${durPart}`;
+}
+
+let _currentCampaign = null; // config en cours pour jointure
+
+async function createCampaignFlow() {
+  if (!window.FirebaseChallenge || !FirebaseChallenge.isReady()) {
+    $('campaign-fb-warning').classList.remove('hidden');
+    return;
+  }
+  $('campaign-fb-warning').classList.add('hidden');
+  const scope = valueToScope($('campaign-theme-select').value);
+  const count = parseInt($('campaign-count-select').value, 10) || 0;
+  const qtype = state.qtype;
+  const freqDays = parseInt($('campaign-freq-select').value, 10);
+  const durationDays = parseInt($('campaign-duration-select').value, 10);
+  const totalRounds = Math.floor(durationDays / freqDays);
+  const seed = (Math.random() * 0x100000000) >>> 0;
+  const code = generateCampaignCode();
+  const config = { scope, count, qtype, freqDays, startTs: Date.now(), totalRounds, seed };
+  const btn = $('btn-create-campaign');
+  btn.disabled = true; btn.textContent = 'Création…';
+  const ok = await FirebaseChallenge.createCampaign(code, config);
+  btn.disabled = false; btn.textContent = '🚀 Créer la campagne';
+  if (!ok) { $('campaign-fb-warning').classList.remove('hidden'); return; }
+  _currentCampaign = { config, code };
+  $('campaign-code').textContent = code;
+  const endDate = new Date(config.startTs + durationDays * 86400000);
+  $('campaign-created-info').textContent =
+    `${challengeScopeLabel(scope)} · ${count || 'Tout'} q/session · ${totalRounds} sessions · jusqu'au ${fmtDate(endDate)}`;
+  $('btn-start-campaign-round').textContent = '▶ Jouer la session 1';
+  $('campaign-create-form').classList.add('hidden');
+  $('campaign-created').classList.remove('hidden');
+}
+
+async function searchCampaign() {
+  const raw = $('campaign-join-input').value.replace(/-/g, '').trim().toUpperCase();
+  if (!/^[0-9A-F]{8}$/.test(raw)) {
+    $('campaign-error').textContent = 'Format invalide (ex : ABCD-EF12).';
+    $('campaign-error').classList.remove('hidden');
+    return;
+  }
+  const code = raw.slice(0, 4) + '-' + raw.slice(4);
+  const btn = $('btn-join-campaign-btn');
+  btn.disabled = true; btn.textContent = 'Recherche…';
+  $('campaign-error').classList.add('hidden');
+  $('campaign-join-info').classList.add('hidden');
+  if (!window.FirebaseChallenge || !FirebaseChallenge.isReady()) {
+    btn.disabled = false; btn.textContent = 'Rechercher';
+    $('campaign-error').textContent = 'Firebase requis — vérifiez votre connexion.';
+    $('campaign-error').classList.remove('hidden');
+    return;
+  }
+  const config = await FirebaseChallenge.fetchCampaign(code);
+  btn.disabled = false; btn.textContent = 'Rechercher';
+  if (!config) {
+    $('campaign-error').textContent = 'Campagne introuvable. Vérifiez le code.';
+    $('campaign-error').classList.remove('hidden');
+    return;
+  }
+  _currentCampaign = { config, code };
+  const roundN = campaignCurrentRound(config);
+  const ended = campaignIsEnded(config);
+  const played = hasPlayedRound(code, roundN);
+  $('cji-theme').textContent = `${challengeScopeLabel(config.scope)} · Session ${roundN + 1}/${config.totalRounds}`;
+  if (ended) {
+    $('cji-progress').textContent = 'Terminée';
+    $('cji-next').textContent = '';
+    $('btn-play-campaign-round').classList.add('hidden');
+  } else if (played) {
+    const nextDate = campaignNextRoundDate(config, roundN);
+    $('cji-progress').textContent = '✅ Session jouée';
+    $('cji-next').textContent = `Prochaine session : ${fmtDate(nextDate)}`;
+    $('btn-play-campaign-round').classList.add('hidden');
+  } else {
+    $('cji-progress').textContent = '';
+    $('cji-next').textContent = '';
+    $('btn-play-campaign-round').textContent = `▶ Jouer la session ${roundN + 1}`;
+    $('btn-play-campaign-round').classList.remove('hidden');
+  }
+  $('campaign-join-info').classList.remove('hidden');
+}
+
+function startCampaignRound() {
+  if (!_currentCampaign) return;
+  const { config, code } = _currentCampaign;
+  const roundN = campaignCurrentRound(config);
+  const roundSeed = campaignRoundSeed(config, roundN);
+  state.branches.clear();
+  if (config.scope.startsWith('grp:')) {
+    const g = groupById(config.scope.slice(4));
+    if (g) groupKeys(g).forEach(k => state.branches.add(k));
+  } else if (config.scope !== 'all') {
+    state.branches.add(config.scope);
+  }
+  state.count = config.count;
+  state.qtype = config.qtype;
+  state.challenge = {
+    seed: roundSeed, code,
+    isCampaign: true, roundN, totalRounds: config.totalRounds,
+    freqDays: config.freqDays, startTs: config.startTs,
+    campaignScope: config.scope,
+  };
+  state.examMode = false; state.mode = 'srs';
+  state.questions = buildSession();
+  if (!state.questions.length) { state.challenge = null; alert('Aucun concept disponible pour ce thème.'); return; }
+  state.answers = []; state.index = 0;
+  studying = true; pomoStart();
+  $('challenge-modal').classList.add('hidden');
+  showView('quiz'); stopExamTimer(); renderQuestion();
 }
 
 // ---------- signalements & reformulation ----------
@@ -1384,6 +1579,51 @@ $('btn-join-challenge').addEventListener('click', () => {
   $('challenge-error').classList.add('hidden');
   startChallengeSession(ch, raw.toUpperCase().replace(/[^0-9A-F]/g, '').replace(/(.{5})(.{5})/, '$1-$2'));
 });
+
+// ---- Onglets challenge ----
+document.querySelectorAll('.challenge-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.challenge-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const isQuick = tab.dataset.tab === 'quick';
+    $('challenge-quick-panel').classList.toggle('hidden', !isQuick);
+    $('challenge-campaign-panel').classList.toggle('hidden', isQuick);
+  });
+});
+
+// ---- Campagne ----
+['campaign-freq-select', 'campaign-duration-select', 'campaign-count-select', 'campaign-theme-select'].forEach(id =>
+  $(id).addEventListener('change', updateCampaignPreview)
+);
+$('btn-create-campaign').addEventListener('click', createCampaignFlow);
+$('btn-campaign-new').addEventListener('click', () => {
+  _currentCampaign = null;
+  $('campaign-created').classList.add('hidden');
+  $('campaign-create-form').classList.remove('hidden');
+});
+$('btn-copy-campaign-code').addEventListener('click', async () => {
+  const code = $('campaign-code').textContent;
+  try {
+    await navigator.clipboard.writeText(code);
+    const btn = $('btn-copy-campaign-code'); btn.textContent = '✅ Copié';
+    setTimeout(() => { btn.textContent = '📋 Copier'; }, 2000);
+  } catch (e) {}
+});
+$('btn-whatsapp-campaign').addEventListener('click', () => {
+  if (!_currentCampaign) return;
+  const { config, code } = _currentCampaign;
+  const repo = window.UPDATE_REPO || 'laurentsar/quiz-revision';
+  const [owner, repoName] = repo.split('/');
+  const appUrl = `https://${owner}.github.io/${repoName}/`;
+  const countLabel = config.count ? config.count + ' q/session' : 'Toutes les questions';
+  const durationDays = config.totalRounds * config.freqDays;
+  const endDate = new Date(config.startTs + durationDays * 86400000);
+  const text = `📅 *Campagne Quizz Révision*\n\n📚 Thème : ${challengeScopeLabel(config.scope)}\n❓ ${countLabel} · ${campaignFreqLabel(config.freqDays)}\n🗓️ ${config.totalRounds} sessions · jusqu'au ${fmtDate(endDate)}\n\n🔑 Code : *${code}*\n\n👉 Rejoins la campagne : ${appUrl}`;
+  openExternal('https://wa.me/?text=' + encodeURIComponent(text));
+});
+$('btn-start-campaign-round').addEventListener('click', startCampaignRound);
+$('btn-join-campaign-btn').addEventListener('click', searchCampaign);
+$('btn-play-campaign-round').addEventListener('click', startCampaignRound);
 $('btn-share-result').addEventListener('click', async () => {
   const text = ($('btn-share-result').dataset.shareText || '').trim();
   if (navigator.share) { try { await navigator.share({ title: 'Défi Quizz Révision', text }); return; } catch (e) {} }
