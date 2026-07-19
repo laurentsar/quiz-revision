@@ -6,6 +6,7 @@
   let db = null;
   let activeRef = null;
   let activeHandler = null;
+  let lastInitError = null;
 
   function getDb() {
     if (db) return db;
@@ -15,13 +16,16 @@
     try {
       if (!firebase.apps.length) firebase.initializeApp(cfg);
       db = firebase.database();
+      if (!db) lastInitError = 'firebase.database() a retourné null';
     } catch (e) {
+      lastInitError = e.message || String(e);
       console.warn('[Firebase] init error:', e);
     }
     return db;
   }
 
   function isReady() { return !!getDb(); }
+  function getInitError() { getDb(); return lastInitError; }
 
   function defiRef(code) {
     return getDb().ref('defis/' + code.replace(/-/g, '').toUpperCase() + '/joueurs');
@@ -126,7 +130,7 @@
 
   // Installé immédiatement — pas d'attente du chargement du SDK
   window.FirebaseChallenge = {
-    isReady, pushScore, listenLeaderboard, removeListener,
+    isReady, getInitError, pushScore, listenLeaderboard, removeListener,
     createCampaign, fetchCampaign, pushCampaignScore, listenCampaignLeaderboard,
   };
 })();
