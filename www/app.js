@@ -1340,6 +1340,29 @@ async function createCampaignFlow() {
   $('challenge-created-section').classList.remove('hidden');
 }
 
+async function deleteCampaignFlow() {
+  if (!_currentCampaign) return;
+  const { code } = _currentCampaign;
+  if (!confirm(`Supprimer la campagne ${code} ?\nCette action est irréversible.`)) return;
+  const btn = $('btn-delete-campaign');
+  btn.disabled = true; btn.textContent = 'Suppression…';
+  let ok = false;
+  try { ok = await FirebaseChallenge.deleteCampaign(code); } catch (e) { console.warn('deleteCampaignFlow:', e); }
+  btn.disabled = false; btn.textContent = '🗑 Supprimer cette campagne';
+  if (!ok) {
+    const err = FirebaseChallenge.getOpError?.() || 'erreur inconnue';
+    $('challenge-fb-warning').textContent = 'Échec suppression : ' + err;
+    $('challenge-fb-warning').classList.remove('hidden');
+    return;
+  }
+  _currentCampaign = null;
+  $('challenge-created-section').classList.add('hidden');
+  $('challenge-create-row').classList.remove('hidden');
+  $('challenge-fb-warning').textContent = 'Campagne supprimée.';
+  $('challenge-fb-warning').classList.remove('hidden');
+  setTimeout(() => $('challenge-fb-warning').classList.add('hidden'), 3000);
+}
+
 async function searchCampaign(rawInput) {
   const raw = (rawInput || '').replace(/-/g, '').trim().toUpperCase();
   if (!/^[0-9A-F]{8}$/.test(raw)) {
@@ -1667,6 +1690,7 @@ $('challenge-duration-select').addEventListener('change', updateCampaignPreview)
 
 // ---- Campagne ----
 $('btn-create-campaign').addEventListener('click', createCampaignFlow);
+$('btn-delete-campaign').addEventListener('click', deleteCampaignFlow);
 $('btn-campaign-new').addEventListener('click', () => {
   _currentCampaign = null;
   $('challenge-created-section').classList.add('hidden');
