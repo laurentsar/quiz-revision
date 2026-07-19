@@ -71,7 +71,8 @@
   async function createCampaign(code, config) {
     if (!db) return false;
     try {
-      await campaignRef(code).child('config').set(config);
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000));
+      await Promise.race([campaignRef(code).child('config').set(config), timeout]);
       return true;
     } catch (e) {
       console.warn('[Firebase] createCampaign error:', e);

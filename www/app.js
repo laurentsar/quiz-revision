@@ -1318,7 +1318,8 @@ async function createCampaignFlow() {
   const config = { scope, count, qtype, freqDays, startTs: Date.now(), totalRounds, seed };
   const btn = $('btn-create-campaign');
   btn.disabled = true; btn.textContent = 'Création…';
-  const ok = await FirebaseChallenge.createCampaign(code, config);
+  let ok = false;
+  try { ok = await FirebaseChallenge.createCampaign(code, config); } catch (e) { console.warn('createCampaignFlow:', e); }
   btn.disabled = false; btn.textContent = '🚀 Créer la campagne';
   if (!ok) { $('challenge-fb-warning').classList.remove('hidden'); return; }
   _currentCampaign = { config, code };
