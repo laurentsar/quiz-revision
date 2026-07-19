@@ -16,7 +16,10 @@
       if (!window.firebase) return;
       if (!firebase.apps.length) firebase.initializeApp(cfg);
       db = firebase.database();
-      window.FirebaseChallenge = { isReady, pushScore, listenLeaderboard, removeListener };
+      window.FirebaseChallenge = {
+        isReady, pushScore, listenLeaderboard, removeListener,
+        createCampaign, fetchCampaign, pushCampaignScore, listenCampaignLeaderboard,
+      };
     } catch (e) {
       console.warn('[Firebase] init error:', e);
     }
@@ -128,7 +131,15 @@
     }, err => console.warn('[Firebase] campaign lb error:', err));
   }
 
-  // S'installe dès que le DOM est prêt (scripts defer exécutés après parsing)
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  // S'installe dès que Firebase SDK est prêt (CDN peut charger après le script local)
+  function tryInit() {
+    if (window.firebase) { init(); return; }
+    let tries = 0;
+    const t = setInterval(() => {
+      if (window.firebase) { clearInterval(t); init(); }
+      else if (++tries >= 10) clearInterval(t); // abandon après 5 s
+    }, 500);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tryInit);
+  else tryInit();
 })();
