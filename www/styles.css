@@ -568,3 +568,46 @@ html, body {
 .challenge-modal-card { max-height: 88vh; overflow-y: auto; }
 .challenge-share-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
 .btn-whatsapp { background: #25D366; color: #fff; border: none; border-radius: 20px; padding: 8px 16px; font-size: 14px; font-weight: 700; cursor: pointer; }
+/* Paramètres du défi */
+.challenge-params-row { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 8px; flex-wrap: wrap; }
+.challenge-param { display: flex; flex-direction: column; gap: 4px; }
+.select-sm { background: rgba(255,255,255,0.08); color: var(--text); font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 5px 10px; min-width: 80px; }
+.challenge-duration-badge { font-size: 14px; font-weight: 700; color: var(--mint); background: rgba(76,224,210,0.1); border: 1px solid rgba(76,224,210,0.2); border-radius: 10px; padding: 5px 12px; display: inline-block; }
+/* Campagne */
+.campaign-preview-text { font-size: 13px; color: var(--mint); background: rgba(76,224,210,0.07); border: 1px solid rgba(76,224,210,0.18); border-radius: 10px; padding: 7px 12px; margin: 10px 0 4px; }
+.campaign-code-small { font-size: 1.45rem; }
+.campaign-join-info { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; }
+.campaign-round-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
+.campaign-round-theme { font-size: 13px; font-weight: 700; color: var(--text); }
+.campaign-round-progress { font-size: 12px; color: var(--mint); font-weight: 700; }
+.campaign-round-next { font-size: 12px; color: var(--text-dim); margin: 0; }
+
+/* ===== Tableau de bord de progression ===== */
+.progress-dashboard { padding: 12px 14px 10px; }
+.dash-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.dash-stat { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 72px; }
+.dash-streak-val { font-size: 1.3rem; font-weight: 800; color: #FF9F43; }
+.dash-seen-val { font-size: 1.3rem; font-weight: 800; color: #27B3FF; }
+.dash-mastered-val { font-size: 1.3rem; font-weight: 800; color: #35D07F; }
+.dash-label { font-size: 0.67rem; opacity: .65; text-align: center; line-height: 1.2; }
+.dash-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; margin: 4px 0; }
+.dash-fill { height: 100%; background: linear-gradient(90deg, #27B3FF, #35D07F); border-radius: 4px; transition: width .6s ease; }
+.dash-pct-label { font-size: 0.7rem; opacity: .6; text-align: center; margin: 4px 0 0; }
+
+/* ===== Concepts les plus difficiles ===== */
+.weak-concepts-list { margin-top: 6px; }
+.weak-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 10px; }
+.weak-item:last-child { border-bottom: none; }
+.weak-term { flex: 1; min-width: 0; font-size: 0.82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+.weak-rate { flex-shrink: 0; font-size: 0.75rem; font-weight: 700; color: #FF6B81; }
+
+/* ===== Accessibilité : réduction de mouvement ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .dash-fill { transition: none; }
+  .progress-bar { transition: none; }
+}

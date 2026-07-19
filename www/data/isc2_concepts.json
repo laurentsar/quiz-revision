@@ -1,2518 +1,2483 @@
 {
- "source": "ISC2 official exam outlines — CISSP (15 avr. 2024) & CC (29 août 2022)",
- "branches": {
-  "cissp8": "Software Development Security",
-  "cc1": "CC · Security Principles",
-  "cc2": "CC · BC/DR & Incident Response",
-  "cc3": "CC · Access Controls",
-  "cc4": "CC · Network Security",
-  "cc5": "CC · Security Operations",
-  "sscp1": "SSCP · Security Concepts & Practices",
-  "sscp2": "SSCP · Access Controls",
-  "sscp3": "SSCP · Risk Identification & Analysis",
-  "sscp4": "SSCP · Incident Response & Recovery",
-  "sscp5": "SSCP · Cryptography",
-  "sscp6": "SSCP · Network & Communications Security",
-  "sscp7": "SSCP · Systems & Application Security",
-  "ccsp1": "CCSP · Cloud Concepts & Design",
-  "ccsp2": "CCSP · Cloud Data Security",
-  "ccsp3": "CCSP · Platform & Infrastructure Security",
-  "ccsp4": "CCSP · Cloud Application Security",
-  "ccsp5": "CCSP · Cloud Security Operations",
-  "ccsp6": "CCSP · Legal, Risk & Compliance"
- },
- "concepts": [
-  {
-   "term": "SDLC",
-   "def": "A structured process for building software: requirements, design, development, testing, deployment and maintenance.",
-   "cat": "Software Development Life Cycle",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Software Development Life Cycle"
-  },
-  {
-   "term": "Waterfall Model",
-   "def": "A sequential SDLC where each phase must finish before the next begins.",
-   "cat": "Software Development Life Cycle",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Software Development Life Cycle"
-  },
-  {
-   "term": "Agile",
-   "def": "An iterative, incremental development approach delivering working software in short cycles.",
-   "cat": "Software Development Life Cycle",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Software Development Life Cycle"
-  },
-  {
-   "term": "DevSecOps",
-   "def": "Integrating security practices and automated testing throughout the DevOps pipeline.",
-   "cat": "Software Development Life Cycle",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Software Development Life Cycle"
-  },
-  {
-   "term": "Requirements Gathering",
-   "def": "Defining functional and security requirements before design begins.",
-   "cat": "Software Development Life Cycle",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Software Development Life Cycle"
-  },
-  {
-   "term": "Change Management",
-   "def": "Controlling changes to code and configuration through documentation, approval and rollback.",
-   "cat": "Software Development Life Cycle",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Software Development Life Cycle"
-  },
-  {
-   "term": "Input Validation",
-   "def": "Checking all input for type, length and format to prevent injection and overflow attacks.",
-   "cat": "Secure Coding",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Secure Coding"
-  },
-  {
-   "term": "Output Encoding",
-   "def": "Encoding data before rendering to prevent cross-site scripting (XSS).",
-   "cat": "Secure Coding",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Secure Coding"
-  },
-  {
-   "term": "Secure Coding Standards",
-   "def": "Rules and guidelines (e.g., OWASP, CERT) that reduce common code vulnerabilities.",
-   "cat": "Secure Coding",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Secure Coding"
-  },
-  {
-   "term": "Least Privilege",
-   "def": "Granting code and processes only the minimum rights required to function.",
-   "cat": "Secure Coding",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Secure Coding"
-  },
-  {
-   "term": "Error Handling",
-   "def": "Failing securely without leaking sensitive information in messages or logs.",
-   "cat": "Secure Coding",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Secure Coding"
-  },
-  {
-   "term": "Code Reuse",
-   "def": "Using vetted libraries carefully; third-party components can introduce vulnerabilities.",
-   "cat": "Secure Coding",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Secure Coding"
-  },
-  {
-   "term": "SAST",
-   "def": "Static Application Security Testing: analyses source code for flaws without executing it.",
-   "cat": "Security Testing",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Security Testing"
-  },
-  {
-   "term": "DAST",
-   "def": "Dynamic Application Security Testing: probes a running application for vulnerabilities.",
-   "cat": "Security Testing",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Security Testing"
-  },
-  {
-   "term": "IAST",
-   "def": "Interactive Application Security Testing: combines static and dynamic analysis at runtime.",
-   "cat": "Security Testing",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Security Testing"
-  },
-  {
-   "term": "Software Composition Analysis (SCA)",
-   "def": "Identifies vulnerabilities and licences in open-source dependencies.",
-   "cat": "Security Testing",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Security Testing"
-  },
-  {
-   "term": "Fuzzing",
-   "def": "Feeding malformed or random input to reveal crashes and security bugs.",
-   "cat": "Security Testing",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Security Testing"
-  },
-  {
-   "term": "Penetration Testing",
-   "def": "Simulating attacks against an application to find exploitable weaknesses.",
-   "cat": "Security Testing",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Security Testing"
-  },
-  {
-   "term": "OWASP Top 10",
-   "def": "A ranked list of the most critical web application security risks.",
-   "cat": "Application Vulnerabilities",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Application Vulnerabilities"
-  },
-  {
-   "term": "SQL Injection",
-   "def": "Injecting malicious SQL through unvalidated input to manipulate a database.",
-   "cat": "Application Vulnerabilities",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Application Vulnerabilities"
-  },
-  {
-   "term": "Cross-Site Scripting (XSS)",
-   "def": "Injecting scripts into web pages viewed by other users.",
-   "cat": "Application Vulnerabilities",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Application Vulnerabilities"
-  },
-  {
-   "term": "Cross-Site Request Forgery (CSRF)",
-   "def": "Forcing a user's browser to send unwanted authenticated requests.",
-   "cat": "Application Vulnerabilities",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Application Vulnerabilities"
-  },
-  {
-   "term": "Buffer Overflow",
-   "def": "Writing beyond a buffer's bounds to corrupt memory or execute code.",
-   "cat": "Application Vulnerabilities",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Application Vulnerabilities"
-  },
-  {
-   "term": "Insecure Deserialization",
-   "def": "Processing untrusted serialized data, enabling code execution or tampering.",
-   "cat": "Application Vulnerabilities",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Application Vulnerabilities"
-  },
-  {
-   "term": "Software Maturity Models",
-   "def": "Frameworks (e.g., CMMI, BSIMM, SAMM) measuring the maturity of security practices.",
-   "cat": "Assessing Software Security",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Assessing Software Security"
-  },
-  {
-   "term": "Code Repository Security",
-   "def": "Protecting source control (access, secrets, integrity) against tampering and leaks.",
-   "cat": "Assessing Software Security",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Assessing Software Security"
-  },
-  {
-   "term": "CI/CD Pipeline Security",
-   "def": "Securing automated build and deployment pipelines against compromise.",
-   "cat": "Assessing Software Security",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Assessing Software Security"
-  },
-  {
-   "term": "Application Programming Interface (API) Security",
-   "def": "Protecting APIs with authentication, authorization, rate limiting and validation.",
-   "cat": "Assessing Software Security",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Assessing Software Security"
-  },
-  {
-   "term": "Third-Party Software Risk",
-   "def": "Assessing the security of acquired, outsourced or open-source software.",
-   "cat": "Assessing Software Security",
-   "branch": "cissp8",
-   "tip": "Software Development Security · Assessing Software Security"
-  },
-  {
-   "term": "Confidentiality",
-   "def": "Ensuring information is accessible only to those authorized to have access.",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Integrity",
-   "def": "Ensuring information is accurate and has not been altered without authorization.",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Availability",
-   "def": "Ensuring authorized users have reliable and timely access to information.",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Authentication",
-   "def": "Verifying the identity of a user, process or device.",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Multi-Factor Authentication (MFA)",
-   "def": "Authentication using two or more independent factors (know / have / are).",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Non-repudiation",
-   "def": "Assurance that a party cannot deny the authenticity of their action or signature.",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Privacy",
-   "def": "The right of individuals to control how their personal information is collected and used.",
-   "cat": "1.1 Information Assurance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.1 Information Assurance"
-  },
-  {
-   "term": "Risk",
-   "def": "The likelihood of a threat exploiting a vulnerability and the resulting impact.",
-   "cat": "1.2 Risk Management",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.2 Risk Management"
-  },
-  {
-   "term": "Risk Tolerance",
-   "def": "The level of risk an organization is willing to accept.",
-   "cat": "1.2 Risk Management",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.2 Risk Management"
-  },
-  {
-   "term": "Risk Identification",
-   "def": "Recognizing and documenting risks to assets.",
-   "cat": "1.2 Risk Management",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.2 Risk Management"
-  },
-  {
-   "term": "Risk Assessment",
-   "def": "Analysing risks to determine their likelihood and impact.",
-   "cat": "1.2 Risk Management",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.2 Risk Management"
-  },
-  {
-   "term": "Risk Treatment",
-   "def": "Deciding how to handle a risk: accept, avoid, mitigate or transfer.",
-   "cat": "1.2 Risk Management",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.2 Risk Management"
-  },
-  {
-   "term": "Technical Controls",
-   "def": "Controls implemented through technology (e.g., firewalls, encryption, access control).",
-   "cat": "1.3 Security Controls",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.3 Security Controls"
-  },
-  {
-   "term": "Administrative Controls",
-   "def": "Policies, procedures and training that govern security behaviour.",
-   "cat": "1.3 Security Controls",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.3 Security Controls"
-  },
-  {
-   "term": "Physical Controls",
-   "def": "Controls that protect facilities and hardware (e.g., locks, guards, badges).",
-   "cat": "1.3 Security Controls",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.3 Security Controls"
-  },
-  {
-   "term": "ISC2 Code of Ethics",
-   "def": "Professional code of conduct all ISC2 members must uphold.",
-   "cat": "1.4 & 1.5 Ethics & Governance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
-  },
-  {
-   "term": "Policy",
-   "def": "A high-level management statement of security intent and expectations.",
-   "cat": "1.4 & 1.5 Ethics & Governance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
-  },
-  {
-   "term": "Standard",
-   "def": "A mandatory rule specifying how a policy is to be implemented.",
-   "cat": "1.4 & 1.5 Ethics & Governance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
-  },
-  {
-   "term": "Procedure",
-   "def": "A step-by-step set of instructions to accomplish a task.",
-   "cat": "1.4 & 1.5 Ethics & Governance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
-  },
-  {
-   "term": "Regulations and Laws",
-   "def": "Legal requirements an organization must comply with (e.g., GDPR, HIPAA).",
-   "cat": "1.4 & 1.5 Ethics & Governance",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
-  },
-  {
-   "term": "CIA Triad",
-   "def": "Confidentiality, Integrity, Availability — core security goals.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Least Privilege",
-   "def": "Granting only the access strictly needed.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Defense in Depth",
-   "def": "Layering controls so no single failure is fatal.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Threat",
-   "def": "Any potential danger that could exploit a vulnerability.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Vulnerability",
-   "def": "A weakness that a threat can exploit.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Likelihood",
-   "def": "The probability that a threat exploits a vulnerability.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Impact",
-   "def": "The magnitude of harm if a risk materializes.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Risk Acceptance",
-   "def": "Choosing to live with a risk without further control.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Risk Avoidance",
-   "def": "Eliminating the activity that generates the risk.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Risk Mitigation",
-   "def": "Reducing a risk with controls.",
-   "cat": "More Principles",
-   "branch": "cc1",
-   "tip": "CC · Security Principles · More Principles"
-  },
-  {
-   "term": "Business Continuity Plan (BCP)",
-   "def": "A plan to keep critical business functions running during and after a disruption.",
-   "cat": "2.1 Business Continuity (BC)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
-  },
-  {
-   "term": "Business Impact Analysis (BIA)",
-   "def": "Identifies critical functions and the impact of their disruption.",
-   "cat": "2.1 Business Continuity (BC)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
-  },
-  {
-   "term": "Recovery Time Objective (RTO)",
-   "def": "The maximum acceptable time to restore a function after disruption.",
-   "cat": "2.1 Business Continuity (BC)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
-  },
-  {
-   "term": "Recovery Point Objective (RPO)",
-   "def": "The maximum acceptable amount of data loss measured in time.",
-   "cat": "2.1 Business Continuity (BC)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
-  },
-  {
-   "term": "Disaster Recovery Plan (DRP)",
-   "def": "A plan to restore IT systems and data after a major disruption.",
-   "cat": "2.2 Disaster Recovery (DR)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.2 Disaster Recovery (DR)"
-  },
-  {
-   "term": "Backup",
-   "def": "A copy of data kept to recover from loss or corruption.",
-   "cat": "2.2 Disaster Recovery (DR)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.2 Disaster Recovery (DR)"
-  },
-  {
-   "term": "Recovery Site",
-   "def": "An alternate location (hot, warm or cold) used to resume operations.",
-   "cat": "2.2 Disaster Recovery (DR)",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.2 Disaster Recovery (DR)"
-  },
-  {
-   "term": "Incident",
-   "def": "An event that actually or potentially harms the confidentiality, integrity or availability of information.",
-   "cat": "2.3 Incident Response",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
-  },
-  {
-   "term": "Incident Response Plan",
-   "def": "Documented procedures to detect, respond to and recover from incidents.",
-   "cat": "2.3 Incident Response",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
-  },
-  {
-   "term": "Detection",
-   "def": "Identifying that a security incident has occurred.",
-   "cat": "2.3 Incident Response",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
-  },
-  {
-   "term": "Response",
-   "def": "Containing, eradicating and recovering from a security incident.",
-   "cat": "2.3 Incident Response",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
-  },
-  {
-   "term": "Computer Security Incident Response Team (CSIRT)",
-   "def": "The team responsible for handling security incidents.",
-   "cat": "2.3 Incident Response",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
-  },
-  {
-   "term": "Maximum Tolerable Downtime (MTD)",
-   "def": "Longest time a function can be down before serious harm.",
-   "cat": "Continuity Metrics",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
-  },
-  {
-   "term": "Full Backup",
-   "def": "A complete copy of all selected data.",
-   "cat": "Continuity Metrics",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
-  },
-  {
-   "term": "Incremental Backup",
-   "def": "Copies only data changed since the last backup.",
-   "cat": "Continuity Metrics",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
-  },
-  {
-   "term": "Differential Backup",
-   "def": "Copies data changed since the last full backup.",
-   "cat": "Continuity Metrics",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
-  },
-  {
-   "term": "Tabletop Exercise",
-   "def": "Discussion-based rehearsal of a response plan.",
-   "cat": "Continuity Metrics",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
-  },
-  {
-   "term": "Failover",
-   "def": "Automatic switch to a standby system on failure.",
-   "cat": "Continuity Metrics",
-   "branch": "cc2",
-   "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
-  },
-  {
-   "term": "Badge System",
-   "def": "Physical control granting entry via an identification badge.",
-   "cat": "3.1 Physical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.1 Physical Access Controls"
-  },
-  {
-   "term": "Closed-Circuit Television (CCTV)",
-   "def": "Cameras used to monitor and record physical areas.",
-   "cat": "3.1 Physical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.1 Physical Access Controls"
-  },
-  {
-   "term": "Mantrap",
-   "def": "A physical control with two interlocking doors to prevent tailgating.",
-   "cat": "3.1 Physical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.1 Physical Access Controls"
-  },
-  {
-   "term": "Environmental Design (CPTED)",
-   "def": "Designing spaces to deter crime and control access.",
-   "cat": "3.1 Physical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.1 Physical Access Controls"
-  },
-  {
-   "term": "Authorized vs Unauthorized Personnel",
-   "def": "Distinguishing who may access an area from who may not.",
-   "cat": "3.1 Physical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.1 Physical Access Controls"
-  },
-  {
-   "term": "Principle of Least Privilege",
-   "def": "Granting users only the access strictly required for their role.",
-   "cat": "3.2 Logical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.2 Logical Access Controls"
-  },
-  {
-   "term": "Segregation of Duties",
-   "def": "Splitting critical tasks among people to prevent fraud and error.",
-   "cat": "3.2 Logical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.2 Logical Access Controls"
-  },
-  {
-   "term": "Discretionary Access Control (DAC)",
-   "def": "The data owner decides who may access a resource.",
-   "cat": "3.2 Logical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.2 Logical Access Controls"
-  },
-  {
-   "term": "Mandatory Access Control (MAC)",
-   "def": "Access decided by the system based on classification labels.",
-   "cat": "3.2 Logical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.2 Logical Access Controls"
-  },
-  {
-   "term": "Role-Based Access Control (RBAC)",
-   "def": "Access granted according to a user's role in the organization.",
-   "cat": "3.2 Logical Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · 3.2 Logical Access Controls"
-  },
-  {
-   "term": "Need to Know",
-   "def": "Access limited to information required for one's duties.",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "Turnstile",
-   "def": "Physical barrier admitting one person at a time.",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "Biometrics",
-   "def": "Authentication using physical or behavioural traits.",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "Privileged Account",
-   "def": "An account with elevated administrative rights.",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "Provisioning",
-   "def": "Creating accounts and granting appropriate access.",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "Deprovisioning",
-   "def": "Removing access when no longer needed (e.g., offboarding).",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "Access Control List (ACL)",
-   "def": "A list defining which subjects may access an object.",
-   "cat": "More Access Controls",
-   "branch": "cc3",
-   "tip": "CC · Access Controls · More Access Controls"
-  },
-  {
-   "term": "OSI Model",
-   "def": "A seven-layer reference model describing network communication.",
-   "cat": "4.1 Computer Networking",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.1 Computer Networking"
-  },
-  {
-   "term": "TCP/IP Model",
-   "def": "The four-layer protocol suite underpinning the Internet.",
-   "cat": "4.1 Computer Networking",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.1 Computer Networking"
-  },
-  {
-   "term": "IPv4",
-   "def": "32-bit Internet Protocol addressing scheme.",
-   "cat": "4.1 Computer Networking",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.1 Computer Networking"
-  },
-  {
-   "term": "IPv6",
-   "def": "128-bit Internet Protocol addressing scheme, successor to IPv4.",
-   "cat": "4.1 Computer Networking",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.1 Computer Networking"
-  },
-  {
-   "term": "Port",
-   "def": "A numbered endpoint identifying a specific network service.",
-   "cat": "4.1 Computer Networking",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.1 Computer Networking"
-  },
-  {
-   "term": "Distributed Denial-of-Service (DDoS)",
-   "def": "Overwhelming a target with traffic from many sources to disrupt service.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Virus",
-   "def": "Malware that attaches to a host file and spreads when executed.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Worm",
-   "def": "Self-replicating malware that spreads without user action.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Trojan",
-   "def": "Malware disguised as legitimate software.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Man-in-the-Middle (MITM)",
-   "def": "Intercepting and possibly altering communication between two parties.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Intrusion Detection System (IDS)",
-   "def": "Monitors traffic and alerts on suspicious activity.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Intrusion Prevention System (IPS)",
-   "def": "Detects and actively blocks malicious traffic.",
-   "cat": "4.2 Threats and Attacks",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.2 Threats and Attacks"
-  },
-  {
-   "term": "Demilitarized Zone (DMZ)",
-   "def": "A buffer subnet exposing public services while shielding the internal network.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Virtual Local Area Network (VLAN)",
-   "def": "Logical segmentation of a network at layer 2.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Virtual Private Network (VPN)",
-   "def": "An encrypted tunnel over a public network.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Defense in Depth",
-   "def": "Layering multiple security controls so no single failure is fatal.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Network Access Control (NAC)",
-   "def": "Enforcing policy on devices before granting network access.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Software as a Service (SaaS)",
-   "def": "Cloud model delivering ready-to-use applications over the Internet.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Infrastructure as a Service (IaaS)",
-   "def": "Cloud model providing virtualized compute, storage and network.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Platform as a Service (PaaS)",
-   "def": "Cloud model providing a platform to build and deploy applications.",
-   "cat": "4.3 Security Infrastructure",
-   "branch": "cc4",
-   "tip": "CC · Network Security · 4.3 Security Infrastructure"
-  },
-  {
-   "term": "Firewall",
-   "def": "Filters traffic between networks based on rules.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Router",
-   "def": "Forwards packets between networks.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Switch",
-   "def": "Forwards frames within a local network.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "TCP",
-   "def": "Connection-oriented, reliable transport protocol.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "UDP",
-   "def": "Connectionless, fast transport protocol without guarantees.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Port 443 (HTTPS)",
-   "def": "Standard port for encrypted web traffic.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Ransomware",
-   "def": "Malware that encrypts data and demands payment.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Zero Trust",
-   "def": "No implicit trust; every access request is verified.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Micro-segmentation",
-   "def": "Fine-grained network isolation of workloads.",
-   "cat": "Networking Details",
-   "branch": "cc4",
-   "tip": "CC · Network Security · Networking Details"
-  },
-  {
-   "term": "Symmetric Encryption",
-   "def": "Encryption using the same key to encrypt and decrypt.",
-   "cat": "5.1 Data Security",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.1 Data Security"
-  },
-  {
-   "term": "Asymmetric Encryption",
-   "def": "Encryption using a public/private key pair.",
-   "cat": "5.1 Data Security",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.1 Data Security"
-  },
-  {
-   "term": "Hashing",
-   "def": "A one-way function producing a fixed-length fingerprint of data.",
-   "cat": "5.1 Data Security",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.1 Data Security"
-  },
-  {
-   "term": "Data Classification",
-   "def": "Labeling data by sensitivity to apply appropriate protection.",
-   "cat": "5.1 Data Security",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.1 Data Security"
-  },
-  {
-   "term": "Data Retention",
-   "def": "Policy defining how long data is kept before disposal.",
-   "cat": "5.1 Data Security",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.1 Data Security"
-  },
-  {
-   "term": "Logging and Monitoring",
-   "def": "Recording and reviewing events to detect and investigate incidents.",
-   "cat": "5.1 Data Security",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.1 Data Security"
-  },
-  {
-   "term": "Configuration Management",
-   "def": "Maintaining systems in a known, secure state via baselines and updates.",
-   "cat": "5.2 System Hardening",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.2 System Hardening"
-  },
-  {
-   "term": "Baseline",
-   "def": "A minimum secure configuration standard for a system.",
-   "cat": "5.2 System Hardening",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.2 System Hardening"
-  },
-  {
-   "term": "Patch Management",
-   "def": "Applying updates to fix vulnerabilities and bugs.",
-   "cat": "5.2 System Hardening",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.2 System Hardening"
-  },
-  {
-   "term": "Acceptable Use Policy (AUP)",
-   "def": "Rules defining acceptable use of organizational systems.",
-   "cat": "5.3 Security Policies",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.3 Security Policies"
-  },
-  {
-   "term": "Password Policy",
-   "def": "Rules governing password strength, rotation and reuse.",
-   "cat": "5.3 Security Policies",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.3 Security Policies"
-  },
-  {
-   "term": "Bring Your Own Device (BYOD) Policy",
-   "def": "Rules for using personal devices for work.",
-   "cat": "5.3 Security Policies",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.3 Security Policies"
-  },
-  {
-   "term": "Change Management Policy",
-   "def": "Documentation, approval and rollback rules for changes.",
-   "cat": "5.3 Security Policies",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.3 Security Policies"
-  },
-  {
-   "term": "Privacy Policy",
-   "def": "How the organization collects, uses and protects personal data.",
-   "cat": "5.3 Security Policies",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.3 Security Policies"
-  },
-  {
-   "term": "Security Awareness Training",
-   "def": "Educating staff to recognize and respond to security threats.",
-   "cat": "5.4 Security Awareness Training",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.4 Security Awareness Training"
-  },
-  {
-   "term": "Social Engineering",
-   "def": "Manipulating people into divulging information or granting access.",
-   "cat": "5.4 Security Awareness Training",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.4 Security Awareness Training"
-  },
-  {
-   "term": "Password Protection",
-   "def": "Practices that keep credentials secret and safe.",
-   "cat": "5.4 Security Awareness Training",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · 5.4 Security Awareness Training"
-  },
-  {
-   "term": "Public Key Infrastructure (PKI)",
-   "def": "Framework of certificates and authorities managing keys.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Digital Signature",
-   "def": "Provides authenticity, integrity and non-repudiation.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Data Destruction",
-   "def": "Securely erasing data at end of life (wiping, shredding).",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Data Labeling",
-   "def": "Marking data with its classification level.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Whitelisting",
-   "def": "Allowing only approved applications or addresses.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Blacklisting",
-   "def": "Blocking known-bad applications or addresses.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Phishing",
-   "def": "Fraudulent messages tricking users into revealing data.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "Principle of Least Functionality",
-   "def": "Systems run only the services they need.",
-   "cat": "Operations Details",
-   "branch": "cc5",
-   "tip": "CC · Security Operations · Operations Details"
-  },
-  {
-   "term": "CIA Triad",
-   "def": "Confidentiality, Integrity and Availability — the core security objectives.",
-   "cat": "Foundational Concepts",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
-  },
-  {
-   "term": "Accountability",
-   "def": "Holding individuals responsible for their actions via identification and logging.",
-   "cat": "Foundational Concepts",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
-  },
-  {
-   "term": "Non-repudiation",
-   "def": "Preventing a party from denying an action they performed.",
-   "cat": "Foundational Concepts",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
-  },
-  {
-   "term": "Least Privilege",
-   "def": "Granting only the minimum access required to perform a task.",
-   "cat": "Foundational Concepts",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
-  },
-  {
-   "term": "Defense in Depth",
-   "def": "Layering multiple controls so no single failure is catastrophic.",
-   "cat": "Foundational Concepts",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
-  },
-  {
-   "term": "ISC2 Code of Ethics",
-   "def": "The professional code of conduct binding ISC2 members.",
-   "cat": "Governance & Ethics",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
-  },
-  {
-   "term": "Policy",
-   "def": "A high-level statement of management's security intent.",
-   "cat": "Governance & Ethics",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
-  },
-  {
-   "term": "Security Control",
-   "def": "A safeguard reducing risk (administrative, technical or physical).",
-   "cat": "Governance & Ethics",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
-  },
-  {
-   "term": "Separation of Duties",
-   "def": "Dividing critical tasks to prevent fraud and error.",
-   "cat": "Governance & Ethics",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
-  },
-  {
-   "term": "Standard",
-   "def": "A mandatory rule specifying how a policy must be implemented.",
-   "cat": "Security Governance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Security Governance"
-  },
-  {
-   "term": "Procedure",
-   "def": "A detailed step-by-step set of instructions to perform a task.",
-   "cat": "Security Governance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Security Governance"
-  },
-  {
-   "term": "Guideline",
-   "def": "A recommended, non-mandatory practice.",
-   "cat": "Security Governance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Security Governance"
-  },
-  {
-   "term": "Baseline",
-   "def": "A minimum security configuration all systems must meet.",
-   "cat": "Security Governance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Security Governance"
-  },
-  {
-   "term": "Due Care",
-   "def": "Taking reasonable steps to protect assets, as a prudent person would.",
-   "cat": "Security Governance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Security Governance"
-  },
-  {
-   "term": "Due Diligence",
-   "def": "Continuously verifying that due care measures remain effective.",
-   "cat": "Security Governance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Security Governance"
-  },
-  {
-   "term": "Risk Transference",
-   "def": "Shifting risk to a third party (e.g., insurance, outsourcing).",
-   "cat": "Risk & Assurance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
-  },
-  {
-   "term": "Risk Avoidance",
-   "def": "Eliminating the activity that causes the risk.",
-   "cat": "Risk & Assurance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
-  },
-  {
-   "term": "Residual Risk",
-   "def": "The risk remaining after controls are applied.",
-   "cat": "Risk & Assurance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
-  },
-  {
-   "term": "AAA",
-   "def": "Authentication, Authorization and Accounting — the pillars of access control.",
-   "cat": "Risk & Assurance",
-   "branch": "sscp1",
-   "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
-  },
-  {
-   "term": "Discretionary Access Control (DAC)",
-   "def": "The resource owner decides who gets access.",
-   "cat": "Access Control Models",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Control Models"
-  },
-  {
-   "term": "Mandatory Access Control (MAC)",
-   "def": "The system enforces access based on classification labels.",
-   "cat": "Access Control Models",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Control Models"
-  },
-  {
-   "term": "Role-Based Access Control (RBAC)",
-   "def": "Access is granted according to job role.",
-   "cat": "Access Control Models",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Control Models"
-  },
-  {
-   "term": "Attribute-Based Access Control (ABAC)",
-   "def": "Access decided dynamically from attributes and policies.",
-   "cat": "Access Control Models",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Control Models"
-  },
-  {
-   "term": "Authentication",
-   "def": "Verifying a claimed identity.",
-   "cat": "Identity Management",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Identity Management"
-  },
-  {
-   "term": "Single Sign-On (SSO)",
-   "def": "One authentication grants access to multiple systems.",
-   "cat": "Identity Management",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Identity Management"
-  },
-  {
-   "term": "Federated Identity",
-   "def": "Sharing identity across trust domains (e.g., SAML, OIDC).",
-   "cat": "Identity Management",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Identity Management"
-  },
-  {
-   "term": "Provisioning / Deprovisioning",
-   "def": "Creating and removing accounts and their access over their lifecycle.",
-   "cat": "Identity Management",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Identity Management"
-  },
-  {
-   "term": "Something You Know",
-   "def": "Knowledge factor: password, PIN, passphrase.",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "Something You Have",
-   "def": "Possession factor: token, smart card, phone.",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "Something You Are",
-   "def": "Inherence factor: biometrics (fingerprint, face).",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "Multi-Factor Authentication (MFA)",
-   "def": "Combining two or more distinct authentication factors.",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "Biometrics",
-   "def": "Authentication based on physical or behavioural traits.",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "False Acceptance Rate (FAR)",
-   "def": "Rate at which a biometric system wrongly accepts an impostor.",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "False Rejection Rate (FRR)",
-   "def": "Rate at which a biometric system wrongly rejects a legitimate user.",
-   "cat": "Authentication Factors",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Authentication Factors"
-  },
-  {
-   "term": "Identity Proofing",
-   "def": "Verifying a person's identity before issuing credentials.",
-   "cat": "Access Administration",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Administration"
-  },
-  {
-   "term": "Just-in-Time Access",
-   "def": "Granting elevated access only for the time it is needed.",
-   "cat": "Access Administration",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Administration"
-  },
-  {
-   "term": "Privileged Access Management (PAM)",
-   "def": "Controlling and monitoring privileged accounts.",
-   "cat": "Access Administration",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Administration"
-  },
-  {
-   "term": "Access Review / Recertification",
-   "def": "Periodically confirming users still need their access.",
-   "cat": "Access Administration",
-   "branch": "sscp2",
-   "tip": "SSCP · Access Controls · Access Administration"
-  },
-  {
-   "term": "Threat",
-   "def": "Any potential danger that could exploit a vulnerability.",
-   "cat": "Risk Management",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Management"
-  },
-  {
-   "term": "Vulnerability",
-   "def": "A weakness that a threat can exploit.",
-   "cat": "Risk Management",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Management"
-  },
-  {
-   "term": "Risk Assessment",
-   "def": "Determining the likelihood and impact of risks.",
-   "cat": "Risk Management",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Management"
-  },
-  {
-   "term": "Security Assessment",
-   "def": "Testing controls to verify their effectiveness.",
-   "cat": "Risk Management",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Management"
-  },
-  {
-   "term": "SIEM",
-   "def": "Security Information and Event Management: correlates and analyses log data.",
-   "cat": "Monitoring & Analysis",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
-  },
-  {
-   "term": "Continuous Monitoring",
-   "def": "Ongoing observation of systems to detect issues.",
-   "cat": "Monitoring & Analysis",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
-  },
-  {
-   "term": "Log Management",
-   "def": "Collecting, storing and reviewing event logs.",
-   "cat": "Monitoring & Analysis",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
-  },
-  {
-   "term": "Vulnerability Scanning",
-   "def": "Automated detection of known weaknesses.",
-   "cat": "Monitoring & Analysis",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
-  },
-  {
-   "term": "Qualitative Risk Analysis",
-   "def": "Rating risk by descriptive levels (high/medium/low).",
-   "cat": "Risk Treatment",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
-  },
-  {
-   "term": "Quantitative Risk Analysis",
-   "def": "Assigning monetary values to risk (SLE, ALE).",
-   "cat": "Risk Treatment",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
-  },
-  {
-   "term": "Single Loss Expectancy (SLE)",
-   "def": "Expected monetary loss from a single incident.",
-   "cat": "Risk Treatment",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
-  },
-  {
-   "term": "Annualized Loss Expectancy (ALE)",
-   "def": "Expected yearly loss = SLE × annual rate of occurrence.",
-   "cat": "Risk Treatment",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
-  },
-  {
-   "term": "Security Baseline",
-   "def": "A reference of normal activity used to spot anomalies.",
-   "cat": "Monitoring Techniques",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
-  },
-  {
-   "term": "False Positive",
-   "def": "An alert on benign activity wrongly flagged as malicious.",
-   "cat": "Monitoring Techniques",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
-  },
-  {
-   "term": "False Negative",
-   "def": "A real threat that goes undetected.",
-   "cat": "Monitoring Techniques",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
-  },
-  {
-   "term": "Netflow Analysis",
-   "def": "Inspecting network flow metadata to detect anomalies.",
-   "cat": "Monitoring Techniques",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
-  },
-  {
-   "term": "Threat Intelligence",
-   "def": "Actionable knowledge about current and emerging threats.",
-   "cat": "Monitoring Techniques",
-   "branch": "sscp3",
-   "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
-  },
-  {
-   "term": "Incident Response Plan",
-   "def": "Documented procedures to handle security incidents.",
-   "cat": "Incident Handling",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Handling"
-  },
-  {
-   "term": "Containment",
-   "def": "Limiting the spread and impact of an incident.",
-   "cat": "Incident Handling",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Handling"
-  },
-  {
-   "term": "Eradication",
-   "def": "Removing the cause of an incident.",
-   "cat": "Incident Handling",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Handling"
-  },
-  {
-   "term": "Forensics",
-   "def": "Collecting and preserving evidence for investigation.",
-   "cat": "Incident Handling",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Handling"
-  },
-  {
-   "term": "Business Continuity Plan (BCP)",
-   "def": "Keeps critical functions running during disruption.",
-   "cat": "Continuity & Recovery",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
-  },
-  {
-   "term": "Disaster Recovery Plan (DRP)",
-   "def": "Restores IT systems after a major disruption.",
-   "cat": "Continuity & Recovery",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
-  },
-  {
-   "term": "Recovery Time Objective (RTO)",
-   "def": "Maximum acceptable time to restore a function.",
-   "cat": "Continuity & Recovery",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
-  },
-  {
-   "term": "Recovery Point Objective (RPO)",
-   "def": "Maximum acceptable data loss measured in time.",
-   "cat": "Continuity & Recovery",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
-  },
-  {
-   "term": "Preparation",
-   "def": "Building the capability to respond before incidents occur.",
-   "cat": "Incident Lifecycle",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
-  },
-  {
-   "term": "Detection and Analysis",
-   "def": "Identifying and scoping an incident.",
-   "cat": "Incident Lifecycle",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
-  },
-  {
-   "term": "Recovery",
-   "def": "Restoring systems to normal operation.",
-   "cat": "Incident Lifecycle",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
-  },
-  {
-   "term": "Lessons Learned",
-   "def": "Post-incident review to improve future response.",
-   "cat": "Incident Lifecycle",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
-  },
-  {
-   "term": "Chain of Custody",
-   "def": "Documented handling of evidence to keep it admissible.",
-   "cat": "Incident Lifecycle",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
-  },
-  {
-   "term": "Order of Volatility",
-   "def": "Collecting the most perishable evidence first (RAM before disk).",
-   "cat": "Incident Lifecycle",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
-  },
-  {
-   "term": "Hot Site",
-   "def": "Fully equipped alternate site ready almost immediately.",
-   "cat": "Resilience",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Resilience"
-  },
-  {
-   "term": "Warm Site",
-   "def": "Partially equipped alternate site needing some setup.",
-   "cat": "Resilience",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Resilience"
-  },
-  {
-   "term": "Cold Site",
-   "def": "Basic alternate site requiring full setup before use.",
-   "cat": "Resilience",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Resilience"
-  },
-  {
-   "term": "Backup Rotation",
-   "def": "Scheme for cycling backups (e.g., grandfather-father-son).",
-   "cat": "Resilience",
-   "branch": "sscp4",
-   "tip": "SSCP · Incident Response & Recovery · Resilience"
-  },
-  {
-   "term": "Symmetric Encryption",
-   "def": "One shared key encrypts and decrypts (e.g., AES).",
-   "cat": "Cryptographic Concepts",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Cryptographic Concepts"
-  },
-  {
-   "term": "Asymmetric Encryption",
-   "def": "A public/private key pair (e.g., RSA, ECC).",
-   "cat": "Cryptographic Concepts",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Cryptographic Concepts"
-  },
-  {
-   "term": "Hashing",
-   "def": "A one-way function producing a fixed-length digest (e.g., SHA-256).",
-   "cat": "Cryptographic Concepts",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Cryptographic Concepts"
-  },
-  {
-   "term": "Digital Signature",
-   "def": "Provides authenticity, integrity and non-repudiation of data.",
-   "cat": "Cryptographic Concepts",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Cryptographic Concepts"
-  },
-  {
-   "term": "Public Key Infrastructure (PKI)",
-   "def": "Framework of certificates and authorities managing keys.",
-   "cat": "Key Management & PKI",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Key Management & PKI"
-  },
-  {
-   "term": "Certificate Authority (CA)",
-   "def": "Trusted entity issuing digital certificates.",
-   "cat": "Key Management & PKI",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Key Management & PKI"
-  },
-  {
-   "term": "Key Escrow",
-   "def": "Storing keys with a trusted third party for recovery.",
-   "cat": "Key Management & PKI",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Key Management & PKI"
-  },
-  {
-   "term": "Perfect Forward Secrecy",
-   "def": "Session keys not compromised even if a long-term key is.",
-   "cat": "Key Management & PKI",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Key Management & PKI"
-  },
-  {
-   "term": "AES",
-   "def": "Advanced Encryption Standard, a widely used symmetric block cipher.",
-   "cat": "Algorithms & Modes",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Algorithms & Modes"
-  },
-  {
-   "term": "RSA",
-   "def": "Widely used asymmetric algorithm for encryption and signatures.",
-   "cat": "Algorithms & Modes",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Algorithms & Modes"
-  },
-  {
-   "term": "Elliptic Curve Cryptography (ECC)",
-   "def": "Asymmetric cryptography with small, efficient keys.",
-   "cat": "Algorithms & Modes",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Algorithms & Modes"
-  },
-  {
-   "term": "SHA-256",
-   "def": "A cryptographic hash function producing a 256-bit digest.",
-   "cat": "Algorithms & Modes",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Algorithms & Modes"
-  },
-  {
-   "term": "HMAC",
-   "def": "Hash-based message authentication code providing integrity and authenticity.",
-   "cat": "Algorithms & Modes",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Algorithms & Modes"
-  },
-  {
-   "term": "Salt",
-   "def": "Random data added to a password before hashing to defeat rainbow tables.",
-   "cat": "Algorithms & Modes",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Algorithms & Modes"
-  },
-  {
-   "term": "TLS",
-   "def": "Transport Layer Security: encrypts data in transit.",
-   "cat": "Applied Cryptography",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Applied Cryptography"
-  },
-  {
-   "term": "Digital Certificate",
-   "def": "Binds a public key to an identity, signed by a CA.",
-   "cat": "Applied Cryptography",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Applied Cryptography"
-  },
-  {
-   "term": "Non-repudiation",
-   "def": "Cryptographic assurance a signer cannot deny their signature.",
-   "cat": "Applied Cryptography",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Applied Cryptography"
-  },
-  {
-   "term": "Key Rotation",
-   "def": "Periodically replacing keys to limit exposure.",
-   "cat": "Applied Cryptography",
-   "branch": "sscp5",
-   "tip": "SSCP · Cryptography · Applied Cryptography"
-  },
-  {
-   "term": "OSI Model",
-   "def": "Seven-layer model describing network communication.",
-   "cat": "Network Fundamentals",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Fundamentals"
-  },
-  {
-   "term": "TCP/IP Model",
-   "def": "Four-layer protocol suite of the Internet.",
-   "cat": "Network Fundamentals",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Fundamentals"
-  },
-  {
-   "term": "Firewall",
-   "def": "Filters traffic between networks based on rules.",
-   "cat": "Network Fundamentals",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Fundamentals"
-  },
-  {
-   "term": "VPN",
-   "def": "Encrypted tunnel over an untrusted network.",
-   "cat": "Network Fundamentals",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Fundamentals"
-  },
-  {
-   "term": "Man-in-the-Middle (MITM)",
-   "def": "Intercepting communication between two parties.",
-   "cat": "Network Attacks & Defenses",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
-  },
-  {
-   "term": "DDoS",
-   "def": "Overwhelming a service with traffic from many sources.",
-   "cat": "Network Attacks & Defenses",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
-  },
-  {
-   "term": "IDS / IPS",
-   "def": "Detects (IDS) and blocks (IPS) malicious network activity.",
-   "cat": "Network Attacks & Defenses",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
-  },
-  {
-   "term": "Network Segmentation",
-   "def": "Dividing a network to contain threats (VLAN, DMZ).",
-   "cat": "Network Attacks & Defenses",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
-  },
-  {
-   "term": "DNS",
-   "def": "Resolves domain names to IP addresses; a frequent attack target.",
-   "cat": "Protocols & Services",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Protocols & Services"
-  },
-  {
-   "term": "DHCP",
-   "def": "Automatically assigns IP addresses to hosts.",
-   "cat": "Protocols & Services",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Protocols & Services"
-  },
-  {
-   "term": "DNSSEC",
-   "def": "Adds authentication to DNS to prevent spoofing.",
-   "cat": "Protocols & Services",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Protocols & Services"
-  },
-  {
-   "term": "Port Number",
-   "def": "Identifies a network service (e.g., 443 HTTPS, 22 SSH).",
-   "cat": "Protocols & Services",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Protocols & Services"
-  },
-  {
-   "term": "Network Address Translation (NAT)",
-   "def": "Maps private addresses to public ones.",
-   "cat": "Protocols & Services",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Protocols & Services"
-  },
-  {
-   "term": "WPA2 / WPA3",
-   "def": "Wi-Fi security protocols protecting wireless traffic.",
-   "cat": "Wireless & Remote",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Wireless & Remote"
-  },
-  {
-   "term": "802.1X",
-   "def": "Port-based network access control requiring authentication.",
-   "cat": "Wireless & Remote",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Wireless & Remote"
-  },
-  {
-   "term": "Remote Access VPN",
-   "def": "Encrypted remote connection into a private network.",
-   "cat": "Wireless & Remote",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Wireless & Remote"
-  },
-  {
-   "term": "Zero Trust",
-   "def": "Never trust, always verify — no implicit trust by network location.",
-   "cat": "Wireless & Remote",
-   "branch": "sscp6",
-   "tip": "SSCP · Network & Communications Security · Wireless & Remote"
-  },
-  {
-   "term": "Malware",
-   "def": "Malicious software (virus, worm, trojan, ransomware).",
-   "cat": "Malware & Endpoint",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
-  },
-  {
-   "term": "Endpoint Detection & Response (EDR)",
-   "def": "Detects and responds to threats on endpoints.",
-   "cat": "Malware & Endpoint",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
-  },
-  {
-   "term": "Application Whitelisting",
-   "def": "Allowing only approved applications to run.",
-   "cat": "Malware & Endpoint",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
-  },
-  {
-   "term": "Patch Management",
-   "def": "Applying updates to remediate vulnerabilities.",
-   "cat": "Malware & Endpoint",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
-  },
-  {
-   "term": "Virtualization Security",
-   "def": "Protecting hypervisors and virtual machines.",
-   "cat": "Secure Environments",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Secure Environments"
-  },
-  {
-   "term": "Cloud Security",
-   "def": "Securing data and workloads in cloud services.",
-   "cat": "Secure Environments",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Secure Environments"
-  },
-  {
-   "term": "IoT Security",
-   "def": "Protecting connected devices with limited resources.",
-   "cat": "Secure Environments",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Secure Environments"
-  },
-  {
-   "term": "Data Loss Prevention (DLP)",
-   "def": "Preventing unauthorized exfiltration of data.",
-   "cat": "Secure Environments",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Secure Environments"
-  },
-  {
-   "term": "Host-Based Firewall",
-   "def": "Filters traffic on an individual host.",
-   "cat": "Endpoint Defense",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Endpoint Defense"
-  },
-  {
-   "term": "HIDS/HIPS",
-   "def": "Host intrusion detection/prevention on a single system.",
-   "cat": "Endpoint Defense",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Endpoint Defense"
-  },
-  {
-   "term": "Sandboxing",
-   "def": "Running untrusted code in an isolated environment.",
-   "cat": "Endpoint Defense",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Endpoint Defense"
-  },
-  {
-   "term": "Mobile Device Management (MDM)",
-   "def": "Centrally managing and securing mobile devices.",
-   "cat": "Endpoint Defense",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Endpoint Defense"
-  },
-  {
-   "term": "Secure Configuration",
-   "def": "Hardening systems by disabling unneeded services and ports.",
-   "cat": "Endpoint Defense",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Endpoint Defense"
-  },
-  {
-   "term": "Data at Rest",
-   "def": "Stored data, protected mainly by encryption and access control.",
-   "cat": "Data & Cloud",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Data & Cloud"
-  },
-  {
-   "term": "Data in Transit",
-   "def": "Moving data, protected by transport encryption (TLS).",
-   "cat": "Data & Cloud",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Data & Cloud"
-  },
-  {
-   "term": "Data in Use",
-   "def": "Data being processed in memory, hardest to protect.",
-   "cat": "Data & Cloud",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Data & Cloud"
-  },
-  {
-   "term": "Container Security",
-   "def": "Securing containerized workloads and their images.",
-   "cat": "Data & Cloud",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Data & Cloud"
-  },
-  {
-   "term": "Shared Responsibility Model",
-   "def": "Cloud security duties split between provider and customer.",
-   "cat": "Data & Cloud",
-   "branch": "sscp7",
-   "tip": "SSCP · Systems & Application Security · Data & Cloud"
-  },
-  {
-   "term": "Cloud Computing",
-   "def": "On-demand delivery of computing resources over the Internet.",
-   "cat": "Cloud Fundamentals",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
-  },
-  {
-   "term": "Infrastructure as a Service (IaaS)",
-   "def": "Cloud model providing virtualized compute, storage and network.",
-   "cat": "Cloud Fundamentals",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
-  },
-  {
-   "term": "Platform as a Service (PaaS)",
-   "def": "Cloud model providing a platform to build and run applications.",
-   "cat": "Cloud Fundamentals",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
-  },
-  {
-   "term": "Software as a Service (SaaS)",
-   "def": "Cloud model delivering ready-to-use applications.",
-   "cat": "Cloud Fundamentals",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
-  },
-  {
-   "term": "Shared Responsibility Model",
-   "def": "Security duties split between cloud provider and customer.",
-   "cat": "Cloud Fundamentals",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
-  },
-  {
-   "term": "Multitenancy",
-   "def": "Multiple customers sharing the same physical infrastructure logically isolated.",
-   "cat": "Design Principles",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Design Principles"
-  },
-  {
-   "term": "Elasticity",
-   "def": "Scaling resources up or down automatically with demand.",
-   "cat": "Design Principles",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Design Principles"
-  },
-  {
-   "term": "Cloud Deployment Models",
-   "def": "Public, private, hybrid and community cloud.",
-   "cat": "Design Principles",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Design Principles"
-  },
-  {
-   "term": "Cloud Service Provider (CSP)",
-   "def": "Entity delivering cloud services to customers.",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "Cloud Service Customer",
-   "def": "Organization consuming cloud services.",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "Cloud Broker",
-   "def": "Intermediary managing use and delivery of cloud services.",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "Community Cloud",
-   "def": "Cloud shared by organizations with common concerns.",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "Hybrid Cloud",
-   "def": "Combination of private and public clouds.",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "ISO/IEC 17788",
-   "def": "Standard defining cloud computing vocabulary and concepts.",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "NIST SP 800-145",
-   "def": "NIST definition of cloud computing (models and characteristics).",
-   "cat": "Roles & Standards",
-   "branch": "ccsp1",
-   "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
-  },
-  {
-   "term": "Data Lifecycle",
-   "def": "Create, store, use, share, archive, destroy phases of data.",
-   "cat": "Data Protection",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Protection"
-  },
-  {
-   "term": "Encryption at Rest",
-   "def": "Protecting stored data with cryptography.",
-   "cat": "Data Protection",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Protection"
-  },
-  {
-   "term": "Encryption in Transit",
-   "def": "Protecting data moving across networks (TLS).",
-   "cat": "Data Protection",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Protection"
-  },
-  {
-   "term": "Tokenization",
-   "def": "Replacing sensitive data with non-sensitive tokens.",
-   "cat": "Data Protection",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Protection"
-  },
-  {
-   "term": "Data Loss Prevention (DLP)",
-   "def": "Preventing unauthorized data exfiltration.",
-   "cat": "Data Protection",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Protection"
-  },
-  {
-   "term": "Data Classification",
-   "def": "Labeling data by sensitivity.",
-   "cat": "Data Governance",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Governance"
-  },
-  {
-   "term": "Data Retention",
-   "def": "How long data is kept before disposal.",
-   "cat": "Data Governance",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Governance"
-  },
-  {
-   "term": "Information Rights Management (IRM)",
-   "def": "Controls that travel with the data itself.",
-   "cat": "Data Governance",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Data Governance"
-  },
-  {
-   "term": "Data Dispersion",
-   "def": "Splitting and distributing data across multiple locations.",
-   "cat": "Storage & Keys",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Storage & Keys"
-  },
-  {
-   "term": "Key Management Service (KMS)",
-   "def": "Managed service for creating and controlling encryption keys.",
-   "cat": "Storage & Keys",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Storage & Keys"
-  },
-  {
-   "term": "Bring Your Own Key (BYOK)",
-   "def": "Customer supplies and controls their own encryption keys.",
-   "cat": "Storage & Keys",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Storage & Keys"
-  },
-  {
-   "term": "Hardware Security Module (HSM)",
-   "def": "Tamper-resistant device managing cryptographic keys.",
-   "cat": "Storage & Keys",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Storage & Keys"
-  },
-  {
-   "term": "Data Masking",
-   "def": "Obscuring sensitive data while keeping it usable for testing.",
-   "cat": "Storage & Keys",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Storage & Keys"
-  },
-  {
-   "term": "Data Retention Policy",
-   "def": "Rules for how long data is kept before disposal.",
-   "cat": "Storage & Keys",
-   "branch": "ccsp2",
-   "tip": "CCSP · Cloud Data Security · Storage & Keys"
-  },
-  {
-   "term": "Hypervisor Security",
-   "def": "Protecting the virtualization layer (Type 1 / Type 2).",
-   "cat": "Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
-  },
-  {
-   "term": "Virtual Machine Security",
-   "def": "Hardening and isolating guest workloads.",
-   "cat": "Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
-  },
-  {
-   "term": "Software-Defined Networking (SDN)",
-   "def": "Programmable, centrally managed network control.",
-   "cat": "Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
-  },
-  {
-   "term": "Micro-segmentation",
-   "def": "Fine-grained isolation of workloads.",
-   "cat": "Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
-  },
-  {
-   "term": "Business Continuity (BC)",
-   "def": "Keeping cloud services available during disruption.",
-   "cat": "Resilience",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Resilience"
-  },
-  {
-   "term": "Disaster Recovery (DR)",
-   "def": "Restoring cloud services after a major event.",
-   "cat": "Resilience",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Resilience"
-  },
-  {
-   "term": "Redundancy",
-   "def": "Duplicating components to avoid single points of failure.",
-   "cat": "Resilience",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Resilience"
-  },
-  {
-   "term": "Management Plane",
-   "def": "The interface controlling cloud resources; a high-value target.",
-   "cat": "Cloud Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
-  },
-  {
-   "term": "Availability Zone",
-   "def": "Isolated location within a cloud region for resilience.",
-   "cat": "Cloud Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
-  },
-  {
-   "term": "Auto-Scaling",
-   "def": "Automatically adjusting capacity to match demand.",
-   "cat": "Cloud Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
-  },
-  {
-   "term": "Bastion Host",
-   "def": "Hardened jump server controlling access to internal resources.",
-   "cat": "Cloud Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
-  },
-  {
-   "term": "Zero Trust Network Access (ZTNA)",
-   "def": "Per-request access verification without implicit trust.",
-   "cat": "Cloud Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
-  },
-  {
-   "term": "Cloud Access Security Broker (CASB)",
-   "def": "Enforces security policy between users and cloud services.",
-   "cat": "Cloud Infrastructure",
-   "branch": "ccsp3",
-   "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
-  },
-  {
-   "term": "Secure SDLC",
-   "def": "Embedding security in every development phase.",
-   "cat": "Secure Development",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Secure Development"
-  },
-  {
-   "term": "DevSecOps",
-   "def": "Integrating security into the DevOps pipeline.",
-   "cat": "Secure Development",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Secure Development"
-  },
-  {
-   "term": "SAST / DAST",
-   "def": "Static and dynamic application security testing.",
-   "cat": "Secure Development",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Secure Development"
-  },
-  {
-   "term": "API Security",
-   "def": "Protecting cloud APIs with auth, validation and rate limiting.",
-   "cat": "Secure Development",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Secure Development"
-  },
-  {
-   "term": "Identity and Access Management (IAM)",
-   "def": "Managing identities and their access to cloud resources.",
-   "cat": "Identity for Apps",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Identity for Apps"
-  },
-  {
-   "term": "Federation",
-   "def": "Extending identity across trust domains (SAML, OIDC).",
-   "cat": "Identity for Apps",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Identity for Apps"
-  },
-  {
-   "term": "Secrets Management",
-   "def": "Securely storing API keys, tokens and credentials.",
-   "cat": "Identity for Apps",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Identity for Apps"
-  },
-  {
-   "term": "Threat Modeling",
-   "def": "Systematically identifying threats to an application (e.g., STRIDE).",
-   "cat": "Application Assurance",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Application Assurance"
-  },
-  {
-   "term": "OWASP Top 10",
-   "def": "The most critical web application security risks.",
-   "cat": "Application Assurance",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Application Assurance"
-  },
-  {
-   "term": "Software Composition Analysis (SCA)",
-   "def": "Finding vulnerabilities in open-source dependencies.",
-   "cat": "Application Assurance",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Application Assurance"
-  },
-  {
-   "term": "Web Application Firewall (WAF)",
-   "def": "Filters and blocks malicious web traffic.",
-   "cat": "Application Assurance",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Application Assurance"
-  },
-  {
-   "term": "Runtime Application Self-Protection (RASP)",
-   "def": "In-app protection detecting attacks at runtime.",
-   "cat": "Application Assurance",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Application Assurance"
-  },
-  {
-   "term": "Serverless Security",
-   "def": "Securing function-as-a-service workloads and their triggers.",
-   "cat": "Application Assurance",
-   "branch": "ccsp4",
-   "tip": "CCSP · Cloud Application Security · Application Assurance"
-  },
-  {
-   "term": "Logging and Monitoring",
-   "def": "Collecting and analysing events across cloud services.",
-   "cat": "Operations",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operations"
-  },
-  {
-   "term": "SIEM",
-   "def": "Correlating security events for detection and response.",
-   "cat": "Operations",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operations"
-  },
-  {
-   "term": "Configuration Management",
-   "def": "Maintaining a secure, known cloud configuration baseline.",
-   "cat": "Operations",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operations"
-  },
-  {
-   "term": "Change Management",
-   "def": "Controlled process for modifying cloud systems.",
-   "cat": "Operations",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operations"
-  },
-  {
-   "term": "Incident Response",
-   "def": "Detecting and handling cloud security incidents.",
-   "cat": "Continuity",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Continuity"
-  },
-  {
-   "term": "Cloud Security Posture Management (CSPM)",
-   "def": "Detecting misconfigurations across cloud accounts.",
-   "cat": "Continuity",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Continuity"
-  },
-  {
-   "term": "Availability Management",
-   "def": "Ensuring services meet their availability targets (SLA).",
-   "cat": "Continuity",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Continuity"
-  },
-  {
-   "term": "Baseline Compliance",
-   "def": "Verifying systems match a secure configuration standard.",
-   "cat": "Operational Security",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operational Security"
-  },
-  {
-   "term": "Patch Management",
-   "def": "Applying updates to remediate vulnerabilities.",
-   "cat": "Operational Security",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operational Security"
-  },
-  {
-   "term": "Digital Forensics",
-   "def": "Collecting and analysing cloud evidence after an incident.",
-   "cat": "Operational Security",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operational Security"
-  },
-  {
-   "term": "Security Operations Center (SOC)",
-   "def": "Team monitoring and responding to threats continuously.",
-   "cat": "Operational Security",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operational Security"
-  },
-  {
-   "term": "Backup and Restore",
-   "def": "Copying data and validating recovery in the cloud.",
-   "cat": "Operational Security",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operational Security"
-  },
-  {
-   "term": "Chaos Engineering",
-   "def": "Deliberately injecting failures to test resilience.",
-   "cat": "Operational Security",
-   "branch": "ccsp5",
-   "tip": "CCSP · Cloud Security Operations · Operational Security"
-  },
-  {
-   "term": "GDPR",
-   "def": "EU regulation protecting personal data.",
-   "cat": "Legal & Privacy",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
-  },
-  {
-   "term": "Data Sovereignty",
-   "def": "Data is subject to the laws of the country where it resides.",
-   "cat": "Legal & Privacy",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
-  },
-  {
-   "term": "Privacy",
-   "def": "Protecting personal information handled in the cloud.",
-   "cat": "Legal & Privacy",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
-  },
-  {
-   "term": "e-Discovery",
-   "def": "Identifying and producing electronic evidence in litigation.",
-   "cat": "Legal & Privacy",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
-  },
-  {
-   "term": "Cloud Risk Management",
-   "def": "Identifying and treating risks specific to cloud.",
-   "cat": "Risk & Audit",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
-  },
-  {
-   "term": "Service-Level Agreement (SLA)",
-   "def": "Contract defining expected service levels and metrics.",
-   "cat": "Risk & Audit",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
-  },
-  {
-   "term": "Audit / SOC 2",
-   "def": "Independent assessment of a provider's controls.",
-   "cat": "Risk & Audit",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
-  },
-  {
-   "term": "Vendor Risk Management",
-   "def": "Assessing and managing risk from cloud providers.",
-   "cat": "Risk & Audit",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
-  },
-  {
-   "term": "ISO/IEC 27017",
-   "def": "Cloud-specific information security controls.",
-   "cat": "Standards & Frameworks",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
-  },
-  {
-   "term": "ISO/IEC 27018",
-   "def": "Protection of personal data (PII) in public clouds.",
-   "cat": "Standards & Frameworks",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
-  },
-  {
-   "term": "Cloud Security Alliance (CSA)",
-   "def": "Body publishing cloud security guidance (CCM, STAR).",
-   "cat": "Standards & Frameworks",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
-  },
-  {
-   "term": "SOC 2 Type II",
-   "def": "Audit report on a provider's controls over a period of time.",
-   "cat": "Standards & Frameworks",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
-  },
-  {
-   "term": "Right to Audit",
-   "def": "Contractual clause allowing the customer to audit the provider.",
-   "cat": "Standards & Frameworks",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
-  },
-  {
-   "term": "Data Breach Notification",
-   "def": "Legal duty to report breaches within set deadlines.",
-   "cat": "Standards & Frameworks",
-   "branch": "ccsp6",
-   "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
-  }
- ]
+  "source": "ISC2 official exam outlines — CISSP (15 avr. 2024) & CC (29 août 2022)",
+  "branches": {
+    "cissp8": "Software Development Security",
+    "cc1": "CC · Security Principles",
+    "cc2": "CC · BC/DR & Incident Response",
+    "cc3": "CC · Access Controls",
+    "cc4": "CC · Network Security",
+    "cc5": "CC · Security Operations",
+    "sscp1": "SSCP · Security Concepts & Practices",
+    "sscp2": "SSCP · Access Controls",
+    "sscp3": "SSCP · Risk Identification & Analysis",
+    "sscp4": "SSCP · Incident Response & Recovery",
+    "sscp5": "SSCP · Cryptography",
+    "sscp6": "SSCP · Network & Communications Security",
+    "sscp7": "SSCP · Systems & Application Security",
+    "ccsp1": "CCSP · Cloud Concepts & Design",
+    "ccsp2": "CCSP · Cloud Data Security",
+    "ccsp3": "CCSP · Platform & Infrastructure Security",
+    "ccsp4": "CCSP · Cloud Application Security",
+    "ccsp5": "CCSP · Cloud Security Operations",
+    "ccsp6": "CCSP · Legal, Risk & Compliance"
+  },
+  "concepts": [
+    {
+      "term": "SDLC",
+      "def": "A structured process for building software: requirements, design, development, testing, deployment and maintenance.",
+      "cat": "Software Development Life Cycle",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Software Development Life Cycle"
+    },
+    {
+      "term": "Waterfall Model",
+      "def": "A sequential SDLC where each phase must finish before the next begins.",
+      "cat": "Software Development Life Cycle",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Software Development Life Cycle"
+    },
+    {
+      "term": "Agile",
+      "def": "An iterative, incremental development approach delivering working software in short cycles.",
+      "cat": "Software Development Life Cycle",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Software Development Life Cycle"
+    },
+    {
+      "term": "DevSecOps",
+      "def": "Integrating security practices and automated testing throughout the DevOps pipeline.",
+      "cat": "Software Development Life Cycle",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Software Development Life Cycle"
+    },
+    {
+      "term": "Requirements Gathering",
+      "def": "Defining functional and security requirements before design begins.",
+      "cat": "Software Development Life Cycle",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Software Development Life Cycle"
+    },
+    {
+      "term": "Change Management",
+      "def": "Controlling changes to code and configuration through documentation, approval and rollback.",
+      "cat": "Software Development Life Cycle",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Software Development Life Cycle"
+    },
+    {
+      "term": "Input Validation",
+      "def": "Checking all input for type, length and format to prevent injection and overflow attacks.",
+      "cat": "Secure Coding",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Secure Coding"
+    },
+    {
+      "term": "Output Encoding",
+      "def": "Encoding data before rendering to prevent cross-site scripting (XSS).",
+      "cat": "Secure Coding",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Secure Coding"
+    },
+    {
+      "term": "Secure Coding Standards",
+      "def": "Rules and guidelines (e.g., OWASP, CERT) that reduce common code vulnerabilities.",
+      "cat": "Secure Coding",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Secure Coding"
+    },
+    {
+      "term": "Least Privilege",
+      "def": "Granting code and processes only the minimum rights required to function.",
+      "cat": "Secure Coding",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Secure Coding"
+    },
+    {
+      "term": "Error Handling",
+      "def": "Failing securely without leaking sensitive information in messages or logs.",
+      "cat": "Secure Coding",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Secure Coding"
+    },
+    {
+      "term": "Code Reuse",
+      "def": "Using vetted libraries carefully; third-party components can introduce vulnerabilities.",
+      "cat": "Secure Coding",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Secure Coding"
+    },
+    {
+      "term": "SAST",
+      "def": "Static Application Security Testing: analyses source code for flaws without executing it.",
+      "cat": "Security Testing",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Security Testing"
+    },
+    {
+      "term": "DAST",
+      "def": "Dynamic Application Security Testing: probes a running application for vulnerabilities.",
+      "cat": "Security Testing",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Security Testing"
+    },
+    {
+      "term": "IAST",
+      "def": "Interactive Application Security Testing: combines static and dynamic analysis at runtime.",
+      "cat": "Security Testing",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Security Testing"
+    },
+    {
+      "term": "Software Composition Analysis (SCA)",
+      "def": "Identifies vulnerabilities and licences in open-source dependencies.",
+      "cat": "Security Testing",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Security Testing"
+    },
+    {
+      "term": "Fuzzing",
+      "def": "Feeding malformed or random input to reveal crashes and security bugs.",
+      "cat": "Security Testing",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Security Testing"
+    },
+    {
+      "term": "Penetration Testing",
+      "def": "Simulating attacks against an application to find exploitable weaknesses.",
+      "cat": "Security Testing",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Security Testing"
+    },
+    {
+      "term": "OWASP Top 10",
+      "def": "A ranked list of the most critical web application security risks.",
+      "cat": "Application Vulnerabilities",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Application Vulnerabilities"
+    },
+    {
+      "term": "SQL Injection",
+      "def": "Injecting malicious SQL through unvalidated input to manipulate a database.",
+      "cat": "Application Vulnerabilities",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Application Vulnerabilities"
+    },
+    {
+      "term": "Cross-Site Scripting (XSS)",
+      "def": "Injecting scripts into web pages viewed by other users.",
+      "cat": "Application Vulnerabilities",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Application Vulnerabilities"
+    },
+    {
+      "term": "Cross-Site Request Forgery (CSRF)",
+      "def": "Forcing a user's browser to send unwanted authenticated requests.",
+      "cat": "Application Vulnerabilities",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Application Vulnerabilities"
+    },
+    {
+      "term": "Buffer Overflow",
+      "def": "Writing beyond a buffer's bounds to corrupt memory or execute code.",
+      "cat": "Application Vulnerabilities",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Application Vulnerabilities"
+    },
+    {
+      "term": "Insecure Deserialization",
+      "def": "Processing untrusted serialized data, enabling code execution or tampering.",
+      "cat": "Application Vulnerabilities",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Application Vulnerabilities"
+    },
+    {
+      "term": "Software Maturity Models",
+      "def": "Frameworks (e.g., CMMI, BSIMM, SAMM) measuring the maturity of security practices.",
+      "cat": "Assessing Software Security",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Assessing Software Security"
+    },
+    {
+      "term": "Code Repository Security",
+      "def": "Protecting source control (access, secrets, integrity) against tampering and leaks.",
+      "cat": "Assessing Software Security",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Assessing Software Security"
+    },
+    {
+      "term": "CI/CD Pipeline Security",
+      "def": "Securing automated build and deployment pipelines against compromise.",
+      "cat": "Assessing Software Security",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Assessing Software Security"
+    },
+    {
+      "term": "Application Programming Interface (API) Security",
+      "def": "Protecting APIs with authentication, authorization, rate limiting and validation.",
+      "cat": "Assessing Software Security",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Assessing Software Security"
+    },
+    {
+      "term": "Third-Party Software Risk",
+      "def": "Assessing the security of acquired, outsourced or open-source software.",
+      "cat": "Assessing Software Security",
+      "branch": "cissp8",
+      "tip": "Software Development Security · Assessing Software Security"
+    },
+    {
+      "term": "Confidentiality",
+      "def": "Ensuring information is accessible only to those authorized to have access.",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Integrity",
+      "def": "Ensuring information is accurate and has not been altered without authorization.",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Availability",
+      "def": "Ensuring authorized users have reliable and timely access to information.",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Authentication",
+      "def": "Verifying the identity of a user, process or device.",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Multi-Factor Authentication (MFA)",
+      "def": "Authentication using two or more independent factors (know / have / are).",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Non-repudiation",
+      "def": "Assurance that a party cannot deny the authenticity of their action or signature.",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Privacy",
+      "def": "The right of individuals to control how their personal information is collected and used.",
+      "cat": "1.1 Information Assurance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.1 Information Assurance"
+    },
+    {
+      "term": "Risk",
+      "def": "The likelihood of a threat exploiting a vulnerability and the resulting impact.",
+      "cat": "1.2 Risk Management",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.2 Risk Management"
+    },
+    {
+      "term": "Risk Tolerance",
+      "def": "The level of risk an organization is willing to accept.",
+      "cat": "1.2 Risk Management",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.2 Risk Management"
+    },
+    {
+      "term": "Risk Identification",
+      "def": "Recognizing and documenting risks to assets.",
+      "cat": "1.2 Risk Management",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.2 Risk Management"
+    },
+    {
+      "term": "Risk Assessment",
+      "def": "Analysing risks to determine their likelihood and impact.",
+      "cat": "1.2 Risk Management",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.2 Risk Management"
+    },
+    {
+      "term": "Risk Treatment",
+      "def": "Deciding how to handle a risk: accept, avoid, mitigate or transfer.",
+      "cat": "1.2 Risk Management",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.2 Risk Management"
+    },
+    {
+      "term": "Technical Controls",
+      "def": "Controls implemented through technology (e.g., firewalls, encryption, access control).",
+      "cat": "1.3 Security Controls",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.3 Security Controls"
+    },
+    {
+      "term": "Administrative Controls",
+      "def": "Policies, procedures and training that govern security behaviour.",
+      "cat": "1.3 Security Controls",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.3 Security Controls"
+    },
+    {
+      "term": "Physical Controls",
+      "def": "Controls that protect facilities and hardware (e.g., locks, guards, badges).",
+      "cat": "1.3 Security Controls",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.3 Security Controls"
+    },
+    {
+      "term": "ISC2 Code of Ethics",
+      "def": "Professional code of conduct all ISC2 members must uphold.",
+      "cat": "1.4 & 1.5 Ethics & Governance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
+    },
+    {
+      "term": "Policy",
+      "def": "A high-level management statement of security intent and expectations.",
+      "cat": "1.4 & 1.5 Ethics & Governance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
+    },
+    {
+      "term": "Standard",
+      "def": "A mandatory rule specifying how a policy is to be implemented.",
+      "cat": "1.4 & 1.5 Ethics & Governance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
+    },
+    {
+      "term": "Procedure",
+      "def": "A step-by-step set of instructions to accomplish a task.",
+      "cat": "1.4 & 1.5 Ethics & Governance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
+    },
+    {
+      "term": "Regulations and Laws",
+      "def": "Legal requirements an organization must comply with (e.g., GDPR, HIPAA).",
+      "cat": "1.4 & 1.5 Ethics & Governance",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · 1.4 & 1.5 Ethics & Governance"
+    },
+    {
+      "term": "CIA Triad",
+      "def": "Confidentiality, Integrity, Availability — core security goals.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Least Privilege",
+      "def": "Granting only the access strictly needed.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Defense in Depth",
+      "def": "Layering controls so no single failure is fatal.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Threat",
+      "def": "Any potential danger that could exploit a vulnerability.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Vulnerability",
+      "def": "A weakness that a threat can exploit.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Likelihood",
+      "def": "The probability that a threat exploits a vulnerability.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Impact",
+      "def": "The magnitude of harm if a risk materializes.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Risk Acceptance",
+      "def": "Choosing to live with a risk without further control.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Risk Avoidance",
+      "def": "Eliminating the activity that generates the risk.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Risk Mitigation",
+      "def": "Reducing a risk with controls.",
+      "cat": "More Principles",
+      "branch": "cc1",
+      "tip": "CC · Security Principles · More Principles"
+    },
+    {
+      "term": "Business Continuity Plan (BCP)",
+      "def": "A plan to keep critical business functions running during and after a disruption.",
+      "cat": "2.1 Business Continuity (BC)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
+    },
+    {
+      "term": "Business Impact Analysis (BIA)",
+      "def": "Identifies critical functions and the impact of their disruption.",
+      "cat": "2.1 Business Continuity (BC)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
+    },
+    {
+      "term": "Recovery Time Objective (RTO)",
+      "def": "The maximum acceptable time to restore a function after disruption.",
+      "cat": "2.1 Business Continuity (BC)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
+    },
+    {
+      "term": "Recovery Point Objective (RPO)",
+      "def": "The maximum acceptable amount of data loss measured in time.",
+      "cat": "2.1 Business Continuity (BC)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.1 Business Continuity (BC)"
+    },
+    {
+      "term": "Disaster Recovery Plan (DRP)",
+      "def": "A plan to restore IT systems and data after a major disruption.",
+      "cat": "2.2 Disaster Recovery (DR)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.2 Disaster Recovery (DR)"
+    },
+    {
+      "term": "Backup",
+      "def": "A copy of data kept to recover from loss or corruption.",
+      "cat": "2.2 Disaster Recovery (DR)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.2 Disaster Recovery (DR)"
+    },
+    {
+      "term": "Recovery Site",
+      "def": "An alternate location (hot, warm or cold) used to resume operations.",
+      "cat": "2.2 Disaster Recovery (DR)",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.2 Disaster Recovery (DR)"
+    },
+    {
+      "term": "Incident",
+      "def": "An event that actually or potentially harms the confidentiality, integrity or availability of information.",
+      "cat": "2.3 Incident Response",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
+    },
+    {
+      "term": "Incident Response Plan",
+      "def": "Documented procedures to detect, respond to and recover from incidents.",
+      "cat": "2.3 Incident Response",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
+    },
+    {
+      "term": "Detection",
+      "def": "Identifying that a security incident has occurred.",
+      "cat": "2.3 Incident Response",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
+    },
+    {
+      "term": "Response",
+      "def": "Containing, eradicating and recovering from a security incident.",
+      "cat": "2.3 Incident Response",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
+    },
+    {
+      "term": "Computer Security Incident Response Team (CSIRT)",
+      "def": "The team responsible for handling security incidents.",
+      "cat": "2.3 Incident Response",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · 2.3 Incident Response"
+    },
+    {
+      "term": "Maximum Tolerable Downtime (MTD)",
+      "def": "Longest time a function can be down before serious harm.",
+      "cat": "Continuity Metrics",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+    },
+    {
+      "term": "Full Backup",
+      "def": "A complete copy of all selected data.",
+      "cat": "Continuity Metrics",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+    },
+    {
+      "term": "Incremental Backup",
+      "def": "Copies only data changed since the last backup.",
+      "cat": "Continuity Metrics",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+    },
+    {
+      "term": "Differential Backup",
+      "def": "Copies data changed since the last full backup.",
+      "cat": "Continuity Metrics",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+    },
+    {
+      "term": "Tabletop Exercise",
+      "def": "Discussion-based rehearsal of a response plan.",
+      "cat": "Continuity Metrics",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+    },
+    {
+      "term": "Failover",
+      "def": "Automatic switch to a standby system on failure.",
+      "cat": "Continuity Metrics",
+      "branch": "cc2",
+      "tip": "CC · BC/DR & Incident Response · Continuity Metrics"
+    },
+    {
+      "term": "Badge System",
+      "def": "Physical control granting entry via an identification badge.",
+      "cat": "3.1 Physical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.1 Physical Access Controls"
+    },
+    {
+      "term": "Closed-Circuit Television (CCTV)",
+      "def": "Cameras used to monitor and record physical areas.",
+      "cat": "3.1 Physical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.1 Physical Access Controls"
+    },
+    {
+      "term": "Mantrap",
+      "def": "A physical control with two interlocking doors to prevent tailgating.",
+      "cat": "3.1 Physical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.1 Physical Access Controls"
+    },
+    {
+      "term": "Environmental Design (CPTED)",
+      "def": "Designing spaces to deter crime and control access.",
+      "cat": "3.1 Physical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.1 Physical Access Controls"
+    },
+    {
+      "term": "Authorized vs Unauthorized Personnel",
+      "def": "Distinguishing who may access an area from who may not.",
+      "cat": "3.1 Physical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.1 Physical Access Controls"
+    },
+    {
+      "term": "Principle of Least Privilege",
+      "def": "Granting users only the access strictly required for their role.",
+      "cat": "3.2 Logical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.2 Logical Access Controls"
+    },
+    {
+      "term": "Segregation of Duties",
+      "def": "Splitting critical tasks among people to prevent fraud and error.",
+      "cat": "3.2 Logical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.2 Logical Access Controls"
+    },
+    {
+      "term": "Discretionary Access Control (DAC)",
+      "def": "The data owner decides who may access a resource.",
+      "cat": "3.2 Logical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.2 Logical Access Controls"
+    },
+    {
+      "term": "Mandatory Access Control (MAC)",
+      "def": "Access decided by the system based on classification labels.",
+      "cat": "3.2 Logical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.2 Logical Access Controls"
+    },
+    {
+      "term": "Role-Based Access Control (RBAC)",
+      "def": "Access granted according to a user's role in the organization.",
+      "cat": "3.2 Logical Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · 3.2 Logical Access Controls"
+    },
+    {
+      "term": "Need to Know",
+      "def": "Access limited to information required for one's duties.",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "Turnstile",
+      "def": "Physical barrier admitting one person at a time.",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "Biometrics",
+      "def": "Authentication using physical or behavioural traits.",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "Privileged Account",
+      "def": "An account with elevated administrative rights.",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "Provisioning",
+      "def": "Creating accounts and granting appropriate access.",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "Deprovisioning",
+      "def": "Removing access when no longer needed (e.g., offboarding).",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "Access Control List (ACL)",
+      "def": "A list defining which subjects may access an object.",
+      "cat": "More Access Controls",
+      "branch": "cc3",
+      "tip": "CC · Access Controls · More Access Controls"
+    },
+    {
+      "term": "OSI Model",
+      "def": "A seven-layer reference model describing network communication.",
+      "cat": "4.1 Computer Networking",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.1 Computer Networking"
+    },
+    {
+      "term": "TCP/IP Model",
+      "def": "The four-layer protocol suite underpinning the Internet.",
+      "cat": "4.1 Computer Networking",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.1 Computer Networking"
+    },
+    {
+      "term": "IPv4",
+      "def": "32-bit Internet Protocol addressing scheme.",
+      "cat": "4.1 Computer Networking",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.1 Computer Networking"
+    },
+    {
+      "term": "IPv6",
+      "def": "128-bit Internet Protocol addressing scheme, successor to IPv4.",
+      "cat": "4.1 Computer Networking",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.1 Computer Networking"
+    },
+    {
+      "term": "Port",
+      "def": "A numbered endpoint identifying a specific network service.",
+      "cat": "4.1 Computer Networking",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.1 Computer Networking"
+    },
+    {
+      "term": "Distributed Denial-of-Service (DDoS)",
+      "def": "Overwhelming a target with traffic from many sources to disrupt service.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Virus",
+      "def": "Malware that attaches to a host file and spreads when executed.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Worm",
+      "def": "Self-replicating malware that spreads without user action.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Trojan",
+      "def": "Malware disguised as legitimate software.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Man-in-the-Middle (MITM)",
+      "def": "Intercepting and possibly altering communication between two parties.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Intrusion Detection System (IDS)",
+      "def": "Monitors traffic and alerts on suspicious activity.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Intrusion Prevention System (IPS)",
+      "def": "Detects and actively blocks malicious traffic.",
+      "cat": "4.2 Threats and Attacks",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.2 Threats and Attacks"
+    },
+    {
+      "term": "Demilitarized Zone (DMZ)",
+      "def": "A buffer subnet exposing public services while shielding the internal network.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Virtual Local Area Network (VLAN)",
+      "def": "Logical segmentation of a network at layer 2.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Virtual Private Network (VPN)",
+      "def": "An encrypted tunnel over a public network.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Defense in Depth",
+      "def": "Layering multiple security controls so no single failure is fatal.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Network Access Control (NAC)",
+      "def": "Enforcing policy on devices before granting network access.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Software as a Service (SaaS)",
+      "def": "Cloud model delivering ready-to-use applications over the Internet.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Infrastructure as a Service (IaaS)",
+      "def": "Cloud model providing virtualized compute, storage and network.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Platform as a Service (PaaS)",
+      "def": "Cloud model providing a platform to build and deploy applications.",
+      "cat": "4.3 Security Infrastructure",
+      "branch": "cc4",
+      "tip": "CC · Network Security · 4.3 Security Infrastructure"
+    },
+    {
+      "term": "Firewall",
+      "def": "Filters traffic between networks based on rules.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Router",
+      "def": "Forwards packets between networks.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Switch",
+      "def": "Forwards frames within a local network.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "TCP",
+      "def": "Connection-oriented, reliable transport protocol.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "UDP",
+      "def": "Connectionless, fast transport protocol without guarantees.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Port 443 (HTTPS)",
+      "def": "Standard port for encrypted web traffic.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Ransomware",
+      "def": "Malware that encrypts data and demands payment.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Zero Trust",
+      "def": "No implicit trust; every access request is verified.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Micro-segmentation",
+      "def": "Fine-grained network isolation of workloads.",
+      "cat": "Networking Details",
+      "branch": "cc4",
+      "tip": "CC · Network Security · Networking Details"
+    },
+    {
+      "term": "Symmetric Encryption",
+      "def": "Encryption using the same key to encrypt and decrypt.",
+      "cat": "5.1 Data Security",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.1 Data Security"
+    },
+    {
+      "term": "Asymmetric Encryption",
+      "def": "Encryption using a public/private key pair.",
+      "cat": "5.1 Data Security",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.1 Data Security"
+    },
+    {
+      "term": "Hashing",
+      "def": "A one-way function producing a fixed-length fingerprint of data.",
+      "cat": "5.1 Data Security",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.1 Data Security"
+    },
+    {
+      "term": "Data Classification",
+      "def": "Labeling data by sensitivity to apply appropriate protection.",
+      "cat": "5.1 Data Security",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.1 Data Security"
+    },
+    {
+      "term": "Data Retention",
+      "def": "Policy defining how long data is kept before disposal.",
+      "cat": "5.1 Data Security",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.1 Data Security"
+    },
+    {
+      "term": "Logging and Monitoring",
+      "def": "Recording and reviewing events to detect and investigate incidents.",
+      "cat": "5.1 Data Security",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.1 Data Security"
+    },
+    {
+      "term": "Configuration Management",
+      "def": "Maintaining systems in a known, secure state via baselines and updates.",
+      "cat": "5.2 System Hardening",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.2 System Hardening"
+    },
+    {
+      "term": "Baseline",
+      "def": "A minimum secure configuration standard for a system.",
+      "cat": "5.2 System Hardening",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.2 System Hardening"
+    },
+    {
+      "term": "Patch Management",
+      "def": "Applying updates to fix vulnerabilities and bugs.",
+      "cat": "5.2 System Hardening",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.2 System Hardening"
+    },
+    {
+      "term": "Acceptable Use Policy (AUP)",
+      "def": "Rules defining acceptable use of organizational systems.",
+      "cat": "5.3 Security Policies",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.3 Security Policies"
+    },
+    {
+      "term": "Password Policy",
+      "def": "Rules governing password strength, rotation and reuse.",
+      "cat": "5.3 Security Policies",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.3 Security Policies"
+    },
+    {
+      "term": "Bring Your Own Device (BYOD) Policy",
+      "def": "Rules for using personal devices for work.",
+      "cat": "5.3 Security Policies",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.3 Security Policies"
+    },
+    {
+      "term": "Change Management Policy",
+      "def": "Documentation, approval and rollback rules for changes.",
+      "cat": "5.3 Security Policies",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.3 Security Policies"
+    },
+    {
+      "term": "Privacy Policy",
+      "def": "How the organization collects, uses and protects personal data.",
+      "cat": "5.3 Security Policies",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.3 Security Policies"
+    },
+    {
+      "term": "Security Awareness Training",
+      "def": "Educating staff to recognize and respond to security threats.",
+      "cat": "5.4 Security Awareness Training",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.4 Security Awareness Training"
+    },
+    {
+      "term": "Social Engineering",
+      "def": "Manipulating people into divulging information or granting access.",
+      "cat": "5.4 Security Awareness Training",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.4 Security Awareness Training"
+    },
+    {
+      "term": "Password Protection",
+      "def": "Practices that keep credentials secret and safe.",
+      "cat": "5.4 Security Awareness Training",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · 5.4 Security Awareness Training"
+    },
+    {
+      "term": "Public Key Infrastructure (PKI)",
+      "def": "Framework of certificates and authorities managing keys.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Digital Signature",
+      "def": "Provides authenticity, integrity and non-repudiation.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Data Destruction",
+      "def": "Securely erasing data at end of life (wiping, shredding).",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Data Labeling",
+      "def": "Marking data with its classification level.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Whitelisting",
+      "def": "Allowing only approved applications or addresses.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Blacklisting",
+      "def": "Blocking known-bad applications or addresses.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Phishing",
+      "def": "Fraudulent messages tricking users into revealing data.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "Principle of Least Functionality",
+      "def": "Systems run only the services they need.",
+      "cat": "Operations Details",
+      "branch": "cc5",
+      "tip": "CC · Security Operations · Operations Details"
+    },
+    {
+      "term": "CIA Triad",
+      "def": "Confidentiality, Integrity and Availability — the core security objectives.",
+      "cat": "Foundational Concepts",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
+    },
+    {
+      "term": "Accountability",
+      "def": "Holding individuals responsible for their actions via identification and logging.",
+      "cat": "Foundational Concepts",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
+    },
+    {
+      "term": "Non-repudiation",
+      "def": "Preventing a party from denying an action they performed.",
+      "cat": "Foundational Concepts",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
+    },
+    {
+      "term": "Least Privilege",
+      "def": "Granting only the minimum access required to perform a task.",
+      "cat": "Foundational Concepts",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
+    },
+    {
+      "term": "Defense in Depth",
+      "def": "Layering multiple controls so no single failure is catastrophic.",
+      "cat": "Foundational Concepts",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Foundational Concepts"
+    },
+    {
+      "term": "ISC2 Code of Ethics",
+      "def": "The professional code of conduct binding ISC2 members.",
+      "cat": "Governance & Ethics",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
+    },
+    {
+      "term": "Policy",
+      "def": "A high-level statement of management's security intent.",
+      "cat": "Governance & Ethics",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
+    },
+    {
+      "term": "Security Control",
+      "def": "A safeguard reducing risk (administrative, technical or physical).",
+      "cat": "Governance & Ethics",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
+    },
+    {
+      "term": "Separation of Duties",
+      "def": "Dividing critical tasks to prevent fraud and error.",
+      "cat": "Governance & Ethics",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Governance & Ethics"
+    },
+    {
+      "term": "Standard",
+      "def": "A mandatory rule specifying how a policy must be implemented.",
+      "cat": "Security Governance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Security Governance"
+    },
+    {
+      "term": "Procedure",
+      "def": "A detailed step-by-step set of instructions to perform a task.",
+      "cat": "Security Governance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Security Governance"
+    },
+    {
+      "term": "Guideline",
+      "def": "A recommended, non-mandatory practice.",
+      "cat": "Security Governance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Security Governance"
+    },
+    {
+      "term": "Baseline",
+      "def": "A minimum security configuration all systems must meet.",
+      "cat": "Security Governance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Security Governance"
+    },
+    {
+      "term": "Due Care",
+      "def": "Taking reasonable steps to protect assets, as a prudent person would.",
+      "cat": "Security Governance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Security Governance"
+    },
+    {
+      "term": "Due Diligence",
+      "def": "Continuously verifying that due care measures remain effective.",
+      "cat": "Security Governance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Security Governance"
+    },
+    {
+      "term": "Risk Transference",
+      "def": "Shifting risk to a third party (e.g., insurance, outsourcing).",
+      "cat": "Risk & Assurance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
+    },
+    {
+      "term": "Risk Avoidance",
+      "def": "Eliminating the activity that causes the risk.",
+      "cat": "Risk & Assurance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
+    },
+    {
+      "term": "Residual Risk",
+      "def": "The risk remaining after controls are applied.",
+      "cat": "Risk & Assurance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
+    },
+    {
+      "term": "AAA",
+      "def": "Authentication, Authorization and Accounting — the pillars of access control.",
+      "cat": "Risk & Assurance",
+      "branch": "sscp1",
+      "tip": "SSCP · Security Concepts & Practices · Risk & Assurance"
+    },
+    {
+      "term": "Discretionary Access Control (DAC)",
+      "def": "The resource owner decides who gets access.",
+      "cat": "Access Control Models",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Control Models"
+    },
+    {
+      "term": "Mandatory Access Control (MAC)",
+      "def": "The system enforces access based on classification labels.",
+      "cat": "Access Control Models",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Control Models"
+    },
+    {
+      "term": "Role-Based Access Control (RBAC)",
+      "def": "Access is granted according to job role.",
+      "cat": "Access Control Models",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Control Models"
+    },
+    {
+      "term": "Attribute-Based Access Control (ABAC)",
+      "def": "Access decided dynamically from attributes and policies.",
+      "cat": "Access Control Models",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Control Models"
+    },
+    {
+      "term": "Authentication",
+      "def": "Verifying a claimed identity.",
+      "cat": "Identity Management",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Identity Management"
+    },
+    {
+      "term": "Single Sign-On (SSO)",
+      "def": "One authentication grants access to multiple systems.",
+      "cat": "Identity Management",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Identity Management"
+    },
+    {
+      "term": "Federated Identity",
+      "def": "Sharing identity across trust domains (e.g., SAML, OIDC).",
+      "cat": "Identity Management",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Identity Management"
+    },
+    {
+      "term": "Provisioning / Deprovisioning",
+      "def": "Creating and removing accounts and their access over their lifecycle.",
+      "cat": "Identity Management",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Identity Management"
+    },
+    {
+      "term": "Something You Know",
+      "def": "Knowledge factor: password, PIN, passphrase.",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "Something You Have",
+      "def": "Possession factor: token, smart card, phone.",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "Something You Are",
+      "def": "Inherence factor: biometrics (fingerprint, face).",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "Multi-Factor Authentication (MFA)",
+      "def": "Combining two or more distinct authentication factors.",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "Biometrics",
+      "def": "Authentication based on physical or behavioural traits.",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "False Acceptance Rate (FAR)",
+      "def": "Rate at which a biometric system wrongly accepts an impostor.",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "False Rejection Rate (FRR)",
+      "def": "Rate at which a biometric system wrongly rejects a legitimate user.",
+      "cat": "Authentication Factors",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Authentication Factors"
+    },
+    {
+      "term": "Identity Proofing",
+      "def": "Verifying a person's identity before issuing credentials.",
+      "cat": "Access Administration",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Administration"
+    },
+    {
+      "term": "Just-in-Time Access",
+      "def": "Granting elevated access only for the time it is needed.",
+      "cat": "Access Administration",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Administration"
+    },
+    {
+      "term": "Privileged Access Management (PAM)",
+      "def": "Controlling and monitoring privileged accounts.",
+      "cat": "Access Administration",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Administration"
+    },
+    {
+      "term": "Access Review / Recertification",
+      "def": "Periodically confirming users still need their access.",
+      "cat": "Access Administration",
+      "branch": "sscp2",
+      "tip": "SSCP · Access Controls · Access Administration"
+    },
+    {
+      "term": "Risk Assessment",
+      "def": "Determining the likelihood and impact of risks.",
+      "cat": "Risk Management",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Risk Management"
+    },
+    {
+      "term": "Security Assessment",
+      "def": "Testing controls to verify their effectiveness.",
+      "cat": "Risk Management",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Risk Management"
+    },
+    {
+      "term": "SIEM",
+      "def": "Security Information and Event Management: correlates and analyses log data.",
+      "cat": "Monitoring & Analysis",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
+    },
+    {
+      "term": "Continuous Monitoring",
+      "def": "Ongoing observation of systems to detect issues.",
+      "cat": "Monitoring & Analysis",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
+    },
+    {
+      "term": "Log Management",
+      "def": "Collecting, storing and reviewing event logs.",
+      "cat": "Monitoring & Analysis",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
+    },
+    {
+      "term": "Vulnerability Scanning",
+      "def": "Automated detection of known weaknesses.",
+      "cat": "Monitoring & Analysis",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring & Analysis"
+    },
+    {
+      "term": "Qualitative Risk Analysis",
+      "def": "Rating risk by descriptive levels (high/medium/low).",
+      "cat": "Risk Treatment",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
+    },
+    {
+      "term": "Quantitative Risk Analysis",
+      "def": "Assigning monetary values to risk (SLE, ALE).",
+      "cat": "Risk Treatment",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
+    },
+    {
+      "term": "Single Loss Expectancy (SLE)",
+      "def": "Expected monetary loss from a single incident.",
+      "cat": "Risk Treatment",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
+    },
+    {
+      "term": "Annualized Loss Expectancy (ALE)",
+      "def": "Expected yearly loss = SLE × annual rate of occurrence.",
+      "cat": "Risk Treatment",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Risk Treatment"
+    },
+    {
+      "term": "Security Baseline",
+      "def": "A reference of normal activity used to spot anomalies.",
+      "cat": "Monitoring Techniques",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
+    },
+    {
+      "term": "False Positive",
+      "def": "An alert on benign activity wrongly flagged as malicious.",
+      "cat": "Monitoring Techniques",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
+    },
+    {
+      "term": "False Negative",
+      "def": "A real threat that goes undetected.",
+      "cat": "Monitoring Techniques",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
+    },
+    {
+      "term": "Netflow Analysis",
+      "def": "Inspecting network flow metadata to detect anomalies.",
+      "cat": "Monitoring Techniques",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
+    },
+    {
+      "term": "Threat Intelligence",
+      "def": "Actionable knowledge about current and emerging threats.",
+      "cat": "Monitoring Techniques",
+      "branch": "sscp3",
+      "tip": "SSCP · Risk Identification & Analysis · Monitoring Techniques"
+    },
+    {
+      "term": "Incident Response Plan",
+      "def": "Documented procedures to handle security incidents.",
+      "cat": "Incident Handling",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Handling"
+    },
+    {
+      "term": "Containment",
+      "def": "Limiting the spread and impact of an incident.",
+      "cat": "Incident Handling",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Handling"
+    },
+    {
+      "term": "Eradication",
+      "def": "Removing the cause of an incident.",
+      "cat": "Incident Handling",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Handling"
+    },
+    {
+      "term": "Forensics",
+      "def": "Collecting and preserving evidence for investigation.",
+      "cat": "Incident Handling",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Handling"
+    },
+    {
+      "term": "Business Continuity Plan (BCP)",
+      "def": "Keeps critical functions running during disruption.",
+      "cat": "Continuity & Recovery",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
+    },
+    {
+      "term": "Disaster Recovery Plan (DRP)",
+      "def": "Restores IT systems after a major disruption.",
+      "cat": "Continuity & Recovery",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
+    },
+    {
+      "term": "Recovery Time Objective (RTO)",
+      "def": "Maximum acceptable time to restore a function.",
+      "cat": "Continuity & Recovery",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
+    },
+    {
+      "term": "Recovery Point Objective (RPO)",
+      "def": "Maximum acceptable data loss measured in time.",
+      "cat": "Continuity & Recovery",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Continuity & Recovery"
+    },
+    {
+      "term": "Preparation",
+      "def": "Building the capability to respond before incidents occur.",
+      "cat": "Incident Lifecycle",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
+    },
+    {
+      "term": "Detection and Analysis",
+      "def": "Identifying and scoping an incident.",
+      "cat": "Incident Lifecycle",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
+    },
+    {
+      "term": "Recovery",
+      "def": "Restoring systems to normal operation.",
+      "cat": "Incident Lifecycle",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
+    },
+    {
+      "term": "Lessons Learned",
+      "def": "Post-incident review to improve future response.",
+      "cat": "Incident Lifecycle",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
+    },
+    {
+      "term": "Chain of Custody",
+      "def": "Documented handling of evidence to keep it admissible.",
+      "cat": "Incident Lifecycle",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
+    },
+    {
+      "term": "Order of Volatility",
+      "def": "Collecting the most perishable evidence first (RAM before disk).",
+      "cat": "Incident Lifecycle",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Incident Lifecycle"
+    },
+    {
+      "term": "Hot Site",
+      "def": "Fully equipped alternate site ready almost immediately.",
+      "cat": "Resilience",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Resilience"
+    },
+    {
+      "term": "Warm Site",
+      "def": "Partially equipped alternate site needing some setup.",
+      "cat": "Resilience",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Resilience"
+    },
+    {
+      "term": "Cold Site",
+      "def": "Basic alternate site requiring full setup before use.",
+      "cat": "Resilience",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Resilience"
+    },
+    {
+      "term": "Backup Rotation",
+      "def": "Scheme for cycling backups (e.g., grandfather-father-son).",
+      "cat": "Resilience",
+      "branch": "sscp4",
+      "tip": "SSCP · Incident Response & Recovery · Resilience"
+    },
+    {
+      "term": "Symmetric Encryption",
+      "def": "One shared key encrypts and decrypts (e.g., AES).",
+      "cat": "Cryptographic Concepts",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Cryptographic Concepts"
+    },
+    {
+      "term": "Asymmetric Encryption",
+      "def": "A public/private key pair (e.g., RSA, ECC).",
+      "cat": "Cryptographic Concepts",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Cryptographic Concepts"
+    },
+    {
+      "term": "Hashing",
+      "def": "A one-way function producing a fixed-length digest (e.g., SHA-256).",
+      "cat": "Cryptographic Concepts",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Cryptographic Concepts"
+    },
+    {
+      "term": "Digital Signature",
+      "def": "Provides authenticity, integrity and non-repudiation of data.",
+      "cat": "Cryptographic Concepts",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Cryptographic Concepts"
+    },
+    {
+      "term": "Certificate Authority (CA)",
+      "def": "Trusted entity issuing digital certificates.",
+      "cat": "Key Management & PKI",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Key Management & PKI"
+    },
+    {
+      "term": "Key Escrow",
+      "def": "Storing keys with a trusted third party for recovery.",
+      "cat": "Key Management & PKI",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Key Management & PKI"
+    },
+    {
+      "term": "Perfect Forward Secrecy",
+      "def": "Session keys not compromised even if a long-term key is.",
+      "cat": "Key Management & PKI",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Key Management & PKI"
+    },
+    {
+      "term": "AES",
+      "def": "Advanced Encryption Standard, a widely used symmetric block cipher.",
+      "cat": "Algorithms & Modes",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Algorithms & Modes"
+    },
+    {
+      "term": "RSA",
+      "def": "Widely used asymmetric algorithm for encryption and signatures.",
+      "cat": "Algorithms & Modes",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Algorithms & Modes"
+    },
+    {
+      "term": "Elliptic Curve Cryptography (ECC)",
+      "def": "Asymmetric cryptography with small, efficient keys.",
+      "cat": "Algorithms & Modes",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Algorithms & Modes"
+    },
+    {
+      "term": "SHA-256",
+      "def": "A cryptographic hash function producing a 256-bit digest.",
+      "cat": "Algorithms & Modes",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Algorithms & Modes"
+    },
+    {
+      "term": "HMAC",
+      "def": "Hash-based message authentication code providing integrity and authenticity.",
+      "cat": "Algorithms & Modes",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Algorithms & Modes"
+    },
+    {
+      "term": "Salt",
+      "def": "Random data added to a password before hashing to defeat rainbow tables.",
+      "cat": "Algorithms & Modes",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Algorithms & Modes"
+    },
+    {
+      "term": "TLS",
+      "def": "Transport Layer Security: encrypts data in transit.",
+      "cat": "Applied Cryptography",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Applied Cryptography"
+    },
+    {
+      "term": "Digital Certificate",
+      "def": "Binds a public key to an identity, signed by a CA.",
+      "cat": "Applied Cryptography",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Applied Cryptography"
+    },
+    {
+      "term": "Non-repudiation",
+      "def": "Cryptographic assurance a signer cannot deny their signature.",
+      "cat": "Applied Cryptography",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Applied Cryptography"
+    },
+    {
+      "term": "Key Rotation",
+      "def": "Periodically replacing keys to limit exposure.",
+      "cat": "Applied Cryptography",
+      "branch": "sscp5",
+      "tip": "SSCP · Cryptography · Applied Cryptography"
+    },
+    {
+      "term": "OSI Model",
+      "def": "Seven-layer model describing network communication.",
+      "cat": "Network Fundamentals",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Fundamentals"
+    },
+    {
+      "term": "TCP/IP Model",
+      "def": "Four-layer protocol suite of the Internet.",
+      "cat": "Network Fundamentals",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Fundamentals"
+    },
+    {
+      "term": "VPN",
+      "def": "Encrypted tunnel over an untrusted network.",
+      "cat": "Network Fundamentals",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Fundamentals"
+    },
+    {
+      "term": "Man-in-the-Middle (MITM)",
+      "def": "Intercepting communication between two parties.",
+      "cat": "Network Attacks & Defenses",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
+    },
+    {
+      "term": "DDoS",
+      "def": "Overwhelming a service with traffic from many sources.",
+      "cat": "Network Attacks & Defenses",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
+    },
+    {
+      "term": "IDS / IPS",
+      "def": "Detects (IDS) and blocks (IPS) malicious network activity.",
+      "cat": "Network Attacks & Defenses",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
+    },
+    {
+      "term": "Network Segmentation",
+      "def": "Dividing a network to contain threats (VLAN, DMZ).",
+      "cat": "Network Attacks & Defenses",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Network Attacks & Defenses"
+    },
+    {
+      "term": "DNS",
+      "def": "Resolves domain names to IP addresses; a frequent attack target.",
+      "cat": "Protocols & Services",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Protocols & Services"
+    },
+    {
+      "term": "DHCP",
+      "def": "Automatically assigns IP addresses to hosts.",
+      "cat": "Protocols & Services",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Protocols & Services"
+    },
+    {
+      "term": "DNSSEC",
+      "def": "Adds authentication to DNS to prevent spoofing.",
+      "cat": "Protocols & Services",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Protocols & Services"
+    },
+    {
+      "term": "Port Number",
+      "def": "Identifies a network service (e.g., 443 HTTPS, 22 SSH).",
+      "cat": "Protocols & Services",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Protocols & Services"
+    },
+    {
+      "term": "Network Address Translation (NAT)",
+      "def": "Maps private addresses to public ones.",
+      "cat": "Protocols & Services",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Protocols & Services"
+    },
+    {
+      "term": "WPA2 / WPA3",
+      "def": "Wi-Fi security protocols protecting wireless traffic.",
+      "cat": "Wireless & Remote",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Wireless & Remote"
+    },
+    {
+      "term": "802.1X",
+      "def": "Port-based network access control requiring authentication.",
+      "cat": "Wireless & Remote",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Wireless & Remote"
+    },
+    {
+      "term": "Remote Access VPN",
+      "def": "Encrypted remote connection into a private network.",
+      "cat": "Wireless & Remote",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Wireless & Remote"
+    },
+    {
+      "term": "Zero Trust",
+      "def": "Never trust, always verify — no implicit trust by network location.",
+      "cat": "Wireless & Remote",
+      "branch": "sscp6",
+      "tip": "SSCP · Network & Communications Security · Wireless & Remote"
+    },
+    {
+      "term": "Malware",
+      "def": "Malicious software (virus, worm, trojan, ransomware).",
+      "cat": "Malware & Endpoint",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
+    },
+    {
+      "term": "Endpoint Detection & Response (EDR)",
+      "def": "Detects and responds to threats on endpoints.",
+      "cat": "Malware & Endpoint",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
+    },
+    {
+      "term": "Application Whitelisting",
+      "def": "Allowing only approved applications to run.",
+      "cat": "Malware & Endpoint",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
+    },
+    {
+      "term": "Patch Management",
+      "def": "Applying updates to remediate vulnerabilities.",
+      "cat": "Malware & Endpoint",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Malware & Endpoint"
+    },
+    {
+      "term": "Virtualization Security",
+      "def": "Protecting hypervisors and virtual machines.",
+      "cat": "Secure Environments",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Secure Environments"
+    },
+    {
+      "term": "Cloud Security",
+      "def": "Securing data and workloads in cloud services.",
+      "cat": "Secure Environments",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Secure Environments"
+    },
+    {
+      "term": "IoT Security",
+      "def": "Protecting connected devices with limited resources.",
+      "cat": "Secure Environments",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Secure Environments"
+    },
+    {
+      "term": "Data Loss Prevention (DLP)",
+      "def": "Preventing unauthorized exfiltration of data.",
+      "cat": "Secure Environments",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Secure Environments"
+    },
+    {
+      "term": "Host-Based Firewall",
+      "def": "Filters traffic on an individual host.",
+      "cat": "Endpoint Defense",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Endpoint Defense"
+    },
+    {
+      "term": "HIDS/HIPS",
+      "def": "Host intrusion detection/prevention on a single system.",
+      "cat": "Endpoint Defense",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Endpoint Defense"
+    },
+    {
+      "term": "Sandboxing",
+      "def": "Running untrusted code in an isolated environment.",
+      "cat": "Endpoint Defense",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Endpoint Defense"
+    },
+    {
+      "term": "Mobile Device Management (MDM)",
+      "def": "Centrally managing and securing mobile devices.",
+      "cat": "Endpoint Defense",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Endpoint Defense"
+    },
+    {
+      "term": "Secure Configuration",
+      "def": "Hardening systems by disabling unneeded services and ports.",
+      "cat": "Endpoint Defense",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Endpoint Defense"
+    },
+    {
+      "term": "Data at Rest",
+      "def": "Stored data, protected mainly by encryption and access control.",
+      "cat": "Data & Cloud",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Data & Cloud"
+    },
+    {
+      "term": "Data in Transit",
+      "def": "Moving data, protected by transport encryption (TLS).",
+      "cat": "Data & Cloud",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Data & Cloud"
+    },
+    {
+      "term": "Data in Use",
+      "def": "Data being processed in memory, hardest to protect.",
+      "cat": "Data & Cloud",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Data & Cloud"
+    },
+    {
+      "term": "Container Security",
+      "def": "Securing containerized workloads and their images.",
+      "cat": "Data & Cloud",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Data & Cloud"
+    },
+    {
+      "term": "Shared Responsibility Model",
+      "def": "Cloud security duties split between provider and customer.",
+      "cat": "Data & Cloud",
+      "branch": "sscp7",
+      "tip": "SSCP · Systems & Application Security · Data & Cloud"
+    },
+    {
+      "term": "Cloud Computing",
+      "def": "On-demand delivery of computing resources over the Internet.",
+      "cat": "Cloud Fundamentals",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
+    },
+    {
+      "term": "Platform as a Service (PaaS)",
+      "def": "Cloud model providing a platform to build and run applications.",
+      "cat": "Cloud Fundamentals",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
+    },
+    {
+      "term": "Software as a Service (SaaS)",
+      "def": "Cloud model delivering ready-to-use applications.",
+      "cat": "Cloud Fundamentals",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
+    },
+    {
+      "term": "Shared Responsibility Model",
+      "def": "Security duties split between cloud provider and customer.",
+      "cat": "Cloud Fundamentals",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Cloud Fundamentals"
+    },
+    {
+      "term": "Multitenancy",
+      "def": "Multiple customers sharing the same physical infrastructure logically isolated.",
+      "cat": "Design Principles",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Design Principles"
+    },
+    {
+      "term": "Elasticity",
+      "def": "Scaling resources up or down automatically with demand.",
+      "cat": "Design Principles",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Design Principles"
+    },
+    {
+      "term": "Cloud Deployment Models",
+      "def": "Public, private, hybrid and community cloud.",
+      "cat": "Design Principles",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Design Principles"
+    },
+    {
+      "term": "Cloud Service Provider (CSP)",
+      "def": "Entity delivering cloud services to customers.",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "Cloud Service Customer",
+      "def": "Organization consuming cloud services.",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "Cloud Broker",
+      "def": "Intermediary managing use and delivery of cloud services.",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "Community Cloud",
+      "def": "Cloud shared by organizations with common concerns.",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "Hybrid Cloud",
+      "def": "Combination of private and public clouds.",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "ISO/IEC 17788",
+      "def": "Standard defining cloud computing vocabulary and concepts.",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "NIST SP 800-145",
+      "def": "NIST definition of cloud computing (models and characteristics).",
+      "cat": "Roles & Standards",
+      "branch": "ccsp1",
+      "tip": "CCSP · Cloud Concepts & Design · Roles & Standards"
+    },
+    {
+      "term": "Data Lifecycle",
+      "def": "Create, store, use, share, archive, destroy phases of data.",
+      "cat": "Data Protection",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Protection"
+    },
+    {
+      "term": "Encryption at Rest",
+      "def": "Protecting stored data with cryptography.",
+      "cat": "Data Protection",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Protection"
+    },
+    {
+      "term": "Encryption in Transit",
+      "def": "Protecting data moving across networks (TLS).",
+      "cat": "Data Protection",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Protection"
+    },
+    {
+      "term": "Tokenization",
+      "def": "Replacing sensitive data with non-sensitive tokens.",
+      "cat": "Data Protection",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Protection"
+    },
+    {
+      "term": "Data Loss Prevention (DLP)",
+      "def": "Preventing unauthorized data exfiltration.",
+      "cat": "Data Protection",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Protection"
+    },
+    {
+      "term": "Data Classification",
+      "def": "Labeling data by sensitivity.",
+      "cat": "Data Governance",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Governance"
+    },
+    {
+      "term": "Data Retention",
+      "def": "How long data is kept before disposal.",
+      "cat": "Data Governance",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Governance"
+    },
+    {
+      "term": "Information Rights Management (IRM)",
+      "def": "Controls that travel with the data itself.",
+      "cat": "Data Governance",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Data Governance"
+    },
+    {
+      "term": "Data Dispersion",
+      "def": "Splitting and distributing data across multiple locations.",
+      "cat": "Storage & Keys",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Storage & Keys"
+    },
+    {
+      "term": "Key Management Service (KMS)",
+      "def": "Managed service for creating and controlling encryption keys.",
+      "cat": "Storage & Keys",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Storage & Keys"
+    },
+    {
+      "term": "Bring Your Own Key (BYOK)",
+      "def": "Customer supplies and controls their own encryption keys.",
+      "cat": "Storage & Keys",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Storage & Keys"
+    },
+    {
+      "term": "Hardware Security Module (HSM)",
+      "def": "Tamper-resistant device managing cryptographic keys.",
+      "cat": "Storage & Keys",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Storage & Keys"
+    },
+    {
+      "term": "Data Masking",
+      "def": "Obscuring sensitive data while keeping it usable for testing.",
+      "cat": "Storage & Keys",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Storage & Keys"
+    },
+    {
+      "term": "Data Retention Policy",
+      "def": "Rules for how long data is kept before disposal.",
+      "cat": "Storage & Keys",
+      "branch": "ccsp2",
+      "tip": "CCSP · Cloud Data Security · Storage & Keys"
+    },
+    {
+      "term": "Hypervisor Security",
+      "def": "Protecting the virtualization layer (Type 1 / Type 2).",
+      "cat": "Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
+    },
+    {
+      "term": "Virtual Machine Security",
+      "def": "Hardening and isolating guest workloads.",
+      "cat": "Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
+    },
+    {
+      "term": "Software-Defined Networking (SDN)",
+      "def": "Programmable, centrally managed network control.",
+      "cat": "Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
+    },
+    {
+      "term": "Micro-segmentation",
+      "def": "Fine-grained isolation of workloads.",
+      "cat": "Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Infrastructure"
+    },
+    {
+      "term": "Business Continuity (BC)",
+      "def": "Keeping cloud services available during disruption.",
+      "cat": "Resilience",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Resilience"
+    },
+    {
+      "term": "Disaster Recovery (DR)",
+      "def": "Restoring cloud services after a major event.",
+      "cat": "Resilience",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Resilience"
+    },
+    {
+      "term": "Redundancy",
+      "def": "Duplicating components to avoid single points of failure.",
+      "cat": "Resilience",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Resilience"
+    },
+    {
+      "term": "Management Plane",
+      "def": "The interface controlling cloud resources; a high-value target.",
+      "cat": "Cloud Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
+    },
+    {
+      "term": "Availability Zone",
+      "def": "Isolated location within a cloud region for resilience.",
+      "cat": "Cloud Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
+    },
+    {
+      "term": "Auto-Scaling",
+      "def": "Automatically adjusting capacity to match demand.",
+      "cat": "Cloud Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
+    },
+    {
+      "term": "Bastion Host",
+      "def": "Hardened jump server controlling access to internal resources.",
+      "cat": "Cloud Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
+    },
+    {
+      "term": "Zero Trust Network Access (ZTNA)",
+      "def": "Per-request access verification without implicit trust.",
+      "cat": "Cloud Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
+    },
+    {
+      "term": "Cloud Access Security Broker (CASB)",
+      "def": "Enforces security policy between users and cloud services.",
+      "cat": "Cloud Infrastructure",
+      "branch": "ccsp3",
+      "tip": "CCSP · Platform & Infrastructure Security · Cloud Infrastructure"
+    },
+    {
+      "term": "Secure SDLC",
+      "def": "Embedding security in every development phase.",
+      "cat": "Secure Development",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Secure Development"
+    },
+    {
+      "term": "DevSecOps",
+      "def": "Integrating security into the DevOps pipeline.",
+      "cat": "Secure Development",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Secure Development"
+    },
+    {
+      "term": "SAST / DAST",
+      "def": "Static and dynamic application security testing.",
+      "cat": "Secure Development",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Secure Development"
+    },
+    {
+      "term": "API Security",
+      "def": "Protecting cloud APIs with auth, validation and rate limiting.",
+      "cat": "Secure Development",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Secure Development"
+    },
+    {
+      "term": "Identity and Access Management (IAM)",
+      "def": "Managing identities and their access to cloud resources.",
+      "cat": "Identity for Apps",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Identity for Apps"
+    },
+    {
+      "term": "Federation",
+      "def": "Extending identity across trust domains (SAML, OIDC).",
+      "cat": "Identity for Apps",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Identity for Apps"
+    },
+    {
+      "term": "Secrets Management",
+      "def": "Securely storing API keys, tokens and credentials.",
+      "cat": "Identity for Apps",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Identity for Apps"
+    },
+    {
+      "term": "Threat Modeling",
+      "def": "Systematically identifying threats to an application (e.g., STRIDE).",
+      "cat": "Application Assurance",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Application Assurance"
+    },
+    {
+      "term": "OWASP Top 10",
+      "def": "The most critical web application security risks.",
+      "cat": "Application Assurance",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Application Assurance"
+    },
+    {
+      "term": "Software Composition Analysis (SCA)",
+      "def": "Finding vulnerabilities in open-source dependencies.",
+      "cat": "Application Assurance",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Application Assurance"
+    },
+    {
+      "term": "Web Application Firewall (WAF)",
+      "def": "Filters and blocks malicious web traffic.",
+      "cat": "Application Assurance",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Application Assurance"
+    },
+    {
+      "term": "Runtime Application Self-Protection (RASP)",
+      "def": "In-app protection detecting attacks at runtime.",
+      "cat": "Application Assurance",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Application Assurance"
+    },
+    {
+      "term": "Serverless Security",
+      "def": "Securing function-as-a-service workloads and their triggers.",
+      "cat": "Application Assurance",
+      "branch": "ccsp4",
+      "tip": "CCSP · Cloud Application Security · Application Assurance"
+    },
+    {
+      "term": "Logging and Monitoring",
+      "def": "Collecting and analysing events across cloud services.",
+      "cat": "Operations",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operations"
+    },
+    {
+      "term": "SIEM",
+      "def": "Correlating security events for detection and response.",
+      "cat": "Operations",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operations"
+    },
+    {
+      "term": "Configuration Management",
+      "def": "Maintaining a secure, known cloud configuration baseline.",
+      "cat": "Operations",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operations"
+    },
+    {
+      "term": "Change Management",
+      "def": "Controlled process for modifying cloud systems.",
+      "cat": "Operations",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operations"
+    },
+    {
+      "term": "Incident Response",
+      "def": "Detecting and handling cloud security incidents.",
+      "cat": "Continuity",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Continuity"
+    },
+    {
+      "term": "Cloud Security Posture Management (CSPM)",
+      "def": "Detecting misconfigurations across cloud accounts.",
+      "cat": "Continuity",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Continuity"
+    },
+    {
+      "term": "Availability Management",
+      "def": "Ensuring services meet their availability targets (SLA).",
+      "cat": "Continuity",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Continuity"
+    },
+    {
+      "term": "Baseline Compliance",
+      "def": "Verifying systems match a secure configuration standard.",
+      "cat": "Operational Security",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operational Security"
+    },
+    {
+      "term": "Patch Management",
+      "def": "Applying updates to remediate vulnerabilities.",
+      "cat": "Operational Security",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operational Security"
+    },
+    {
+      "term": "Digital Forensics",
+      "def": "Collecting and analysing cloud evidence after an incident.",
+      "cat": "Operational Security",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operational Security"
+    },
+    {
+      "term": "Security Operations Center (SOC)",
+      "def": "Team monitoring and responding to threats continuously.",
+      "cat": "Operational Security",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operational Security"
+    },
+    {
+      "term": "Backup and Restore",
+      "def": "Copying data and validating recovery in the cloud.",
+      "cat": "Operational Security",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operational Security"
+    },
+    {
+      "term": "Chaos Engineering",
+      "def": "Deliberately injecting failures to test resilience.",
+      "cat": "Operational Security",
+      "branch": "ccsp5",
+      "tip": "CCSP · Cloud Security Operations · Operational Security"
+    },
+    {
+      "term": "GDPR",
+      "def": "EU regulation protecting personal data.",
+      "cat": "Legal & Privacy",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
+    },
+    {
+      "term": "Data Sovereignty",
+      "def": "Data is subject to the laws of the country where it resides.",
+      "cat": "Legal & Privacy",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
+    },
+    {
+      "term": "Privacy",
+      "def": "Protecting personal information handled in the cloud.",
+      "cat": "Legal & Privacy",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
+    },
+    {
+      "term": "e-Discovery",
+      "def": "Identifying and producing electronic evidence in litigation.",
+      "cat": "Legal & Privacy",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Legal & Privacy"
+    },
+    {
+      "term": "Cloud Risk Management",
+      "def": "Identifying and treating risks specific to cloud.",
+      "cat": "Risk & Audit",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
+    },
+    {
+      "term": "Service-Level Agreement (SLA)",
+      "def": "Contract defining expected service levels and metrics.",
+      "cat": "Risk & Audit",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
+    },
+    {
+      "term": "Audit / SOC 2",
+      "def": "Independent assessment of a provider's controls.",
+      "cat": "Risk & Audit",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
+    },
+    {
+      "term": "Vendor Risk Management",
+      "def": "Assessing and managing risk from cloud providers.",
+      "cat": "Risk & Audit",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Risk & Audit"
+    },
+    {
+      "term": "ISO/IEC 27017",
+      "def": "Cloud-specific information security controls.",
+      "cat": "Standards & Frameworks",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
+    },
+    {
+      "term": "ISO/IEC 27018",
+      "def": "Protection of personal data (PII) in public clouds.",
+      "cat": "Standards & Frameworks",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
+    },
+    {
+      "term": "Cloud Security Alliance (CSA)",
+      "def": "Body publishing cloud security guidance (CCM, STAR).",
+      "cat": "Standards & Frameworks",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
+    },
+    {
+      "term": "SOC 2 Type II",
+      "def": "Audit report on a provider's controls over a period of time.",
+      "cat": "Standards & Frameworks",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
+    },
+    {
+      "term": "Right to Audit",
+      "def": "Contractual clause allowing the customer to audit the provider.",
+      "cat": "Standards & Frameworks",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
+    },
+    {
+      "term": "Data Breach Notification",
+      "def": "Legal duty to report breaches within set deadlines.",
+      "cat": "Standards & Frameworks",
+      "branch": "ccsp6",
+      "tip": "CCSP · Legal, Risk & Compliance · Standards & Frameworks"
+    }
+  ]
 }

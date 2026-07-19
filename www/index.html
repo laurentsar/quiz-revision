@@ -74,9 +74,32 @@
         </details>
       </div>
 
+      <!-- Tableau de bord de progression globale -->
+      <div id="progress-dashboard" class="card progress-dashboard">
+        <div class="dash-top">
+          <div class="dash-stat">
+            <span id="dash-streak" class="dash-streak-val">🔥 0</span>
+            <span class="dash-label">jours consécutifs</span>
+          </div>
+          <div class="dash-stat">
+            <span id="dash-seen-global" class="dash-seen-val">0</span>
+            <span class="dash-label">concepts étudiés</span>
+          </div>
+          <div class="dash-stat">
+            <span id="dash-mastered-global" class="dash-mastered-val">0</span>
+            <span class="dash-label">maîtrisés</span>
+          </div>
+        </div>
+        <div class="dash-track">
+          <div id="dash-fill" class="dash-fill" style="width:0%"></div>
+        </div>
+        <p id="dash-label" class="dash-pct-label">0 % maîtrisé — tous thèmes</p>
+      </div>
+
       <div class="card meta">
         <div class="meta-row"><span class="meta-label">Concepts dans ce thème</span><span id="stat-pool" class="meta-value">—</span></div>
-        <div class="meta-row"><span class="meta-label">Concepts maîtrisés</span><span id="stat-mastered" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Concepts étudiés (thème)</span><span id="stat-seen" class="meta-value">—</span></div>
+        <div class="meta-row"><span class="meta-label">Concepts maîtrisés (thème)</span><span id="stat-mastered" class="meta-value">—</span></div>
         <div class="meta-row"><span class="meta-label">À revoir aujourd'hui</span><span id="stat-due" class="meta-value">—</span></div>
         <div class="meta-row"><span class="meta-label">Dernier score</span><span id="stat-last" class="meta-value">—</span></div>
         <div class="meta-row"><span class="meta-label">Meilleur score</span><span id="stat-best" class="meta-value">—</span></div>
@@ -141,6 +164,11 @@
         <span class="chart-title">Par thème — vus / maîtrisés</span>
         <canvas id="chart-branches" class="chart"></canvas>
         <span class="chart-legend"><i class="dot sky"></i> Vus &nbsp; <i class="dot green"></i> Maîtrisés</span>
+      </div>
+
+      <div class="card chart-card">
+        <span class="chart-title">⚠️ Concepts les plus difficiles</span>
+        <div id="weak-concepts" class="weak-concepts-list"></div>
       </div>
 
       <button id="btn-stats-home" class="secondary">Accueil</button>
@@ -271,28 +299,107 @@
           <button id="challenge-modal-close" class="gear">✕</button>
         </div>
 
+        <!-- Créer un défi -->
         <p class="challenge-section-title">Créer un défi</p>
         <span class="hero-label">Thème</span>
-        <select id="challenge-theme-select" class="select" style="margin-bottom:10px"></select>
+        <select id="challenge-theme-select" class="select" style="margin-bottom:8px"></select>
 
-        <div class="challenge-code-box">
-          <span id="challenge-code" class="challenge-code">——————</span>
+        <div class="challenge-params-row">
+          <div class="challenge-param">
+            <span class="hero-label">Questions</span>
+            <select id="challenge-count-select" class="select-sm">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="0">Toutes</option>
+            </select>
+          </div>
+          <div class="challenge-param">
+            <span class="hero-label">Fréquence</span>
+            <select id="challenge-freq-select" class="select-sm">
+              <option value="0" selected>Une seule fois</option>
+              <option value="1">Quotidien</option>
+              <option value="3">Tous les 3 jours</option>
+              <option value="7">Hebdomadaire</option>
+            </select>
+          </div>
         </div>
-        <p id="challenge-scope-info" class="challenge-info"></p>
 
-        <div class="challenge-share-row">
-          <button id="btn-copy-code" class="chip">📋 Copier le code</button>
-          <button id="btn-whatsapp-code" class="btn-whatsapp">&#128172; WhatsApp</button>
+        <!-- Durée estimée (défi unique) -->
+        <div id="challenge-quick-duration-row" class="challenge-params-row" style="margin-top:4px">
+          <div class="challenge-param">
+            <span class="hero-label">Durée estimée</span>
+            <span id="challenge-duration" class="challenge-duration-badge">≈ 8 min</span>
+          </div>
         </div>
-        <button id="btn-start-my-challenge" class="primary" style="margin-top:10px">▶ Jouer ce défi</button>
+
+        <!-- Durée totale (campagne) -->
+        <div id="challenge-campaign-duration-row" class="challenge-params-row hidden" style="margin-top:4px">
+          <div class="challenge-param">
+            <span class="hero-label">Durée totale</span>
+            <select id="challenge-duration-select" class="select-sm">
+              <option value="7">1 semaine</option>
+              <option value="14">2 semaines</option>
+              <option value="30" selected>1 mois</option>
+              <option value="90">3 mois</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Défi rapide -->
+        <div id="challenge-quick-section">
+          <div class="challenge-code-box">
+            <span id="challenge-code" class="challenge-code">——————</span>
+          </div>
+          <p id="challenge-scope-info" class="challenge-info"></p>
+          <div class="challenge-share-row">
+            <button id="btn-copy-code" class="chip">📋 Copier le code</button>
+            <button id="btn-whatsapp-code" class="btn-whatsapp">&#128172; WhatsApp</button>
+          </div>
+          <button id="btn-start-my-challenge" class="primary" style="margin-top:10px">▶ Jouer ce défi</button>
+        </div>
+
+        <!-- Campagne (fréquence > 0) -->
+        <div id="challenge-campaign-section" class="hidden">
+          <p id="challenge-campaign-preview" class="campaign-preview-text"></p>
+          <p id="challenge-fb-warning" class="challenge-error hidden">Firebase requis pour les campagnes — vérifiez votre connexion.</p>
+          <div id="challenge-create-row">
+            <button id="btn-create-campaign" class="primary" style="margin-top:10px">🚀 Créer la campagne</button>
+          </div>
+          <div id="challenge-created-section" class="hidden">
+            <div class="challenge-code-box">
+              <span id="campaign-code" class="challenge-code campaign-code-small">XXXX-XXXX</span>
+            </div>
+            <p id="campaign-created-info" class="challenge-info"></p>
+            <div class="challenge-share-row">
+              <button id="btn-copy-campaign-code" class="chip">📋 Copier</button>
+              <button id="btn-whatsapp-campaign" class="btn-whatsapp">&#128172; WhatsApp</button>
+            </div>
+            <button id="btn-start-campaign-round" class="primary" style="margin-top:10px">▶ Jouer la session 1</button>
+            <button id="btn-campaign-new" class="ghost-sm" style="margin-top:8px; display:block; width:100%; text-align:center">← Nouveau défi</button>
+          </div>
+        </div>
 
         <div class="modal-sep"></div>
 
+        <!-- Rejoindre -->
         <p class="challenge-section-title">Rejoindre un défi</p>
-        <p class="mm-source">Entre un code reçu pour jouer le même quiz.</p>
-        <input id="challenge-code-input" class="search-input" type="text" placeholder="Ex : A3F9B-2C14E" autocomplete="off" maxlength="12" style="margin-bottom:8px" />
+        <p class="mm-source">Entre un code reçu (défi rapide ou campagne).</p>
+        <input id="challenge-code-input" class="search-input" type="text" placeholder="Ex : A3F9B-2C14E ou ABCD-EF12" autocomplete="off" maxlength="12" style="margin-bottom:8px" />
+
+        <!-- Info campagne (après lookup) -->
+        <div id="campaign-join-info" class="campaign-join-info hidden">
+          <div class="campaign-round-row">
+            <span id="cji-theme" class="campaign-round-theme"></span>
+            <span id="cji-progress" class="campaign-round-progress"></span>
+          </div>
+          <p id="cji-next" class="campaign-round-next"></p>
+          <button id="btn-play-campaign-round" class="primary" style="margin-top:6px">▶ Jouer</button>
+        </div>
+
         <button id="btn-join-challenge" class="primary">Rejoindre</button>
         <p id="challenge-error" class="challenge-error hidden">Code invalide. Vérifie la saisie.</p>
+
       </div>
     </div>
 
@@ -365,7 +472,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='4.7';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.3';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
 </body>

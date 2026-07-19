@@ -111,6 +111,45 @@ function applyOverrides() {
   ALL.forEach(c => { if (ov[c.term]) Object.assign(c, ov[c.term]); });
 }
 
+// ---------- campagnes ----------
+function getCampaignStore() { return lsGet('quizrev:campaigns:v1', {}); }
+function saveCampaignStore(c) { lsSet('quizrev:campaigns:v1', c); }
+function markRoundPlayed(campaignCode, roundN) {
+  const c = getCampaignStore();
+  if (!c[campaignCode]) c[campaignCode] = { roundsPlayed: [] };
+  if (!c[campaignCode].roundsPlayed.includes(roundN)) c[campaignCode].roundsPlayed.push(roundN);
+  saveCampaignStore(c);
+}
+function hasPlayedRound(campaignCode, roundN) {
+  const c = getCampaignStore();
+  return !!(c[campaignCode] && c[campaignCode].roundsPlayed.includes(roundN));
+}
+function generateCampaignCode() {
+  const b = new Uint8Array(4);
+  crypto.getRandomValues(b);
+  const h = Array.from(b).map(x => x.toString(16).toUpperCase().padStart(2, '0')).join('');
+  return h.slice(0, 4) + '-' + h.slice(4);
+}
+function campaignCurrentRound(config) {
+  const elapsed = Date.now() - config.startTs;
+  return Math.min(Math.floor(elapsed / (config.freqDays * 86400000)), config.totalRounds - 1);
+}
+function campaignRoundSeed(config, roundN) {
+  return (config.seed ^ (roundN * 0x9E3779B9)) >>> 0;
+}
+function campaignIsEnded(config) {
+  return Date.now() >= config.startTs + config.totalRounds * config.freqDays * 86400000;
+}
+function campaignNextRoundDate(config, roundN) {
+  return new Date(config.startTs + (roundN + 1) * config.freqDays * 86400000);
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+}
+function campaignFreqLabel(freqDays) {
+  return freqDays === 1 ? 'Quotidien' : freqDays === 3 ? 'Tous les 3 jours' : 'Hebdomadaire';
+}
+
 // ---------- audit qualité ----------
 const AUDIT_ISSUES = {
   def_short:   'Définition trop courte',
@@ -282,6 +321,22 @@ function lastNDays(n) {
     out.push({ day: d.getDate(), q: (m[k] || {}).q || 0 });
   }
   return out;
+}
+
+function computeDailyStreak() {
+  const m = lsGet('quizrev:daily:v1', {});
+  const d = new Date();
+  // If today has no activity yet, start checking from yesterday
+  const todayKey = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  if (!(m[todayKey] && m[todayKey].q > 0)) d.setDate(d.getDate() - 1);
+  let streak = 0;
+  for (let i = 0; i < 366; i++) {
+    const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    if (!(m[k] && m[k].q > 0)) break;
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
 }
 
 // Leitner SRS (clé = terme)
@@ -547,8 +602,10 @@ function updateFlagBadge() {
 function renderHome() {
   const p = pool(), srs = getSrs(), now = Date.now();
   $('stat-pool').textContent = p.length + ' concepts';
+  const seen = p.filter(c => srs[c.term] && srs[c.term].seen > 0).length;
   const mastered = p.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
   const due = p.filter(c => srs[c.term] && srs[c.term].due <= now).length;
+  $('stat-seen').textContent = seen + ' / ' + p.length;
   $('stat-mastered').textContent = mastered + ' / ' + p.length;
   $('stat-due').textContent = due;
   const s = loadStats();
@@ -560,10 +617,21 @@ function renderHome() {
   $('review-count').textContent = w;
   $('btn-review').disabled = w === 0;
   updateFlagBadge();
+  // Tableau de bord global (tous thèmes)
+  const globalSeen = ALL.filter(c => srs[c.term] && srs[c.term].seen > 0).length;
+  const globalMastered = ALL.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+  const pct = ALL.length ? Math.round(100 * globalMastered / ALL.length) : 0;
+  const dayStreak = computeDailyStreak();
+  $('dash-streak').textContent = '🔥 ' + dayStreak;
+  $('dash-seen-global').textContent = globalSeen;
+  $('dash-mastered-global').textContent = globalMastered;
+  $('dash-fill').style.width = pct + '%';
+  $('dash-label').textContent = pct + ' % maîtrisé — ' + globalMastered + ' / ' + ALL.length + ' concepts';
 }
 
 // ---------- déroulé du quiz ----------
 function startSession(mode) {
+  if (window.FirebaseChallenge) FirebaseChallenge.removeListener();
   state.mode = mode;
   state.questions = buildSession();
   if (!state.questions.length) { alert('Aucun concept disponible avec ces filtres.'); return; }
@@ -630,11 +698,10 @@ function examCurrentGroup() {
   for (const g of GROUPS) if (groupActive(g) && EXAM_CONFIG[g.id]) return g.id;
   return null;
 }
-function startExamTimer(minutes) {
+function resumeExamTimer() {
+  if (!state.examEndTime) return;
   clearInterval(state.examInterval);
-  state.examEndTime = Date.now() + minutes * 60000;
   const el = $('quiz-timer');
-  el.classList.remove('urgent');
   function tick() {
     const left = Math.max(0, state.examEndTime - Date.now());
     const m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
@@ -645,8 +712,14 @@ function startExamTimer(minutes) {
   tick();
   state.examInterval = setInterval(tick, 1000);
 }
+function startExamTimer(minutes) {
+  state.examEndTime = Date.now() + minutes * 60000;
+  $('quiz-timer').classList.remove('urgent');
+  resumeExamTimer();
+}
 function stopExamTimer() {
   clearInterval(state.examInterval); state.examInterval = null;
+  state.examEndTime = 0;
   const el = $('quiz-timer'); if (el && !settings.timer) el.textContent = '';
 }
 
@@ -673,7 +746,7 @@ function timeUp() {
 }
 
 // ---------- Pomodoro (écoute active : 25 min révision -> 5 min pause) ----------
-let pomoInterval = null, pomoSeconds = 0, studying = false;
+let pomoInterval = null, pomoSeconds = 0, studying = false, pomoBreakTick = null;
 function pomoStart() {
   if (!settings.pomodoro || pomoInterval || !studying) return;
   pomoInterval = setInterval(() => {
@@ -685,28 +758,42 @@ function pomoStop() { clearInterval(pomoInterval); pomoInterval = null; }
 
 // Pause du temps de révision quand l'utilisateur s'éloigne : l'app en arrière-plan
 // ou l'écran éteint (Page Visibility) sert de proxy fiable au capteur de proximité.
-// On gèle minuteur + Pomodoro, on reprend au retour, sans perdre le temps restant.
-function pauseStudyTimers() { stopQTick(); pomoStop(); }
+// On gèle minuteur + Pomodoro + chrono examen, on reprend au retour sans perdre le contexte.
+function pauseStudyTimers() {
+  stopQTick();
+  pomoStop();
+  if (state.examInterval) { clearInterval(state.examInterval); state.examInterval = null; }
+}
 function resumeStudyTimers() {
   if (!views.quiz.classList.contains('hidden') && !state.answers[state.index]) qTick();
+  if (state.examMode && state.examEndTime > Date.now()) resumeExamTimer();
   pomoStart();
 }
-document.addEventListener('visibilitychange', () => { if (document.hidden) pauseStudyTimers(); else resumeStudyTimers(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    pauseStudyTimers();
+    if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+  } else {
+    resumeStudyTimers();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }
+});
 // Bonus : capteur de proximité s'il est exposé (rare hors natif) — main proche = éloigné.
 if ('ondeviceproximity' in window || 'onuserproximity' in window) {
   window.addEventListener('userproximity', (e) => { if (e.near) pauseStudyTimers(); else resumeStudyTimers(); });
 }
 function showPomodoroBreak() {
   clearTimeout(autoNextTimer); clearQTimer();
+  clearInterval(pomoBreakTick); pomoBreakTick = null;
   const modal = $('pomodoro-modal'), cd = $('pomo-countdown');
   let left = POMODORO_BREAK;
   const fmt = (s) => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
   cd.textContent = fmt(left);
   modal.classList.remove('hidden');
   vibrate(false);
-  const tick = setInterval(() => { left--; cd.textContent = fmt(left); if (left <= 0) end(); }, 1000);
-  function end() { clearInterval(tick); modal.classList.add('hidden'); pomoStart(); }
-  $('btn-pomo-resume').onclick = end;
+  pomoBreakTick = setInterval(() => { left--; cd.textContent = fmt(left); if (left <= 0) endBreak(); }, 1000);
+  function endBreak() { clearInterval(pomoBreakTick); pomoBreakTick = null; modal.classList.add('hidden'); pomoStart(); }
+  $('btn-pomo-resume').onclick = endBreak;
 }
 
 function selectOption(idx) {
@@ -756,21 +843,42 @@ function finishQuiz() {
   const cr = $('challenge-result');
   const lb = $('challenge-leaderboard');
   if (state.challenge) {
-    const code = state.challenge.code;
+    const ch = state.challenge;
+    const code = ch.code;
     const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '✅' : '💪';
-    const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
-    $('challenge-result-code').textContent = code;
-    $('btn-share-result').dataset.shareText = shareText;
-    cr.classList.remove('hidden');
-    if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
-      const pseudo = getPseudo();
-      FirebaseChallenge.pushScore(code, pseudo, score, total);
-      lb.classList.remove('hidden');
-      $('leaderboard-status').textContent = `Vous jouez en tant que : ${pseudo}`;
-      renderLeaderboard([], pseudo);
-      FirebaseChallenge.listenLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+    const pseudo = getPseudo();
+    if (ch.isCampaign) {
+      markRoundPlayed(code, ch.roundN);
+      const nextDate = campaignNextRoundDate(ch, ch.roundN);
+      const nextPart = ch.roundN + 1 < ch.totalRounds ? ` · Prochaine session : ${fmtDate(nextDate)}` : ' · Campagne terminée !';
+      const shareText = `📅 Campagne Quizz Révision [${code}]\nSession ${ch.roundN + 1}/${ch.totalRounds} : ${score}/${total} — ${pct}% ${emoji}${nextPart}`;
+      $('challenge-result-code').textContent = code;
+      $('result-sub').textContent = `Campagne · Session ${ch.roundN + 1}/${ch.totalRounds}`;
+      $('btn-share-result').dataset.shareText = shareText;
+      cr.classList.remove('hidden');
+      if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
+        FirebaseChallenge.pushCampaignScore(code, ch.roundN, pseudo, score, total);
+        lb.classList.remove('hidden');
+        $('leaderboard-status').textContent = `Classement général · ${pseudo}`;
+        renderLeaderboard([], pseudo);
+        FirebaseChallenge.listenCampaignLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+      } else {
+        lb.classList.add('hidden');
+      }
     } else {
-      lb.classList.add('hidden');
+      const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
+      $('challenge-result-code').textContent = code;
+      $('btn-share-result').dataset.shareText = shareText;
+      cr.classList.remove('hidden');
+      if (window.FirebaseChallenge && FirebaseChallenge.isReady()) {
+        FirebaseChallenge.pushScore(code, pseudo, score, total);
+        lb.classList.remove('hidden');
+        $('leaderboard-status').textContent = `Vous jouez en tant que : ${pseudo}`;
+        renderLeaderboard([], pseudo);
+        FirebaseChallenge.listenLeaderboard(code, rows => renderLeaderboard(rows, pseudo));
+      } else {
+        lb.classList.add('hidden');
+      }
     }
     state.challenge = null;
   } else {
@@ -1002,6 +1110,15 @@ function renderStatsView() {
   const vus = keys.map(k => ALL.filter(it => it.branch === k && srs[it.term] && srs[it.term].seen > 0).length);
   const mas = keys.map(k => ALL.filter(it => it.branch === k && srs[it.term] && srs[it.term].box >= 4).length);
   drawGrouped($('chart-branches'), keys.map(shortBranch), vus, mas, '#27B3FF', '#35D07F');
+  // Concepts les plus difficiles (box < 4, vus >= 2, taux d'erreur > 0)
+  const weak = Object.entries(srs)
+    .filter(([, e]) => e.seen >= 2 && e.wrong > 0 && e.box < 4)
+    .map(([term, e]) => ({ term, rate: Math.round(100 * e.wrong / e.seen), wrong: e.wrong, seen: e.seen }))
+    .sort((a, b) => b.rate - a.rate || b.wrong - a.wrong)
+    .slice(0, 10);
+  $('weak-concepts').innerHTML = weak.length
+    ? weak.map(e => `<div class="weak-item"><span class="weak-term">${esc(e.term)}</span><span class="weak-rate">${e.rate}% faux (${e.wrong}/${e.seen})</span></div>`).join('')
+    : '<p class="mm-source" style="margin:8px 0">Pas encore assez de données.</p>';
 }
 
 // ---------- feux d'artifice (quiz parfait) ----------
@@ -1114,14 +1231,35 @@ function valueToScope(v) {
   return g ? 'grp:' + g.id : 'all';
 }
 
+function challengeDuration(count) {
+  if (!count) return null;
+  const min = Math.round(count * 0.75);
+  return '≈ ' + min + ' min';
+}
+
+function isCampaignMode() {
+  return parseInt($('challenge-freq-select').value, 10) > 0;
+}
+
+function refreshChallengeMode() {
+  const campaign = isCampaignMode();
+  $('challenge-quick-duration-row').classList.toggle('hidden', campaign);
+  $('challenge-campaign-duration-row').classList.toggle('hidden', !campaign);
+  $('challenge-quick-section').classList.toggle('hidden', campaign);
+  $('challenge-campaign-section').classList.toggle('hidden', !campaign);
+  if (campaign) updateCampaignPreview(); else refreshChallengeCode();
+}
+
 function refreshChallengeCode() {
   const v = $('challenge-theme-select').value;
   const scope = valueToScope(v);
-  const count = state.count;
+  const count = parseInt($('challenge-count-select').value, 10) || 0;
   const qtype = state.qtype;
   const code = encodeChallenge(scope, count, qtype, _challengeSeed) || '—';
   $('challenge-code').textContent = code;
   const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[qtype] || qtype;
+  const dur = challengeDuration(count);
+  $('challenge-duration').textContent = dur || '—';
   const fireReady = window.FirebaseChallenge && FirebaseChallenge.isReady();
   $('challenge-scope-info').textContent = challengeScopeLabel(scope) + ' · ' + (count || 'Tout') + ' questions · ' + qtypeLabel +
     (fireReady ? ' · 🟢 classement en direct' : ' · ⚫ classement hors ligne');
@@ -1134,10 +1272,136 @@ function openChallengeModal() {
   sel.innerHTML = themeOptionsHtml();
   sel.value = scopeToSelectValue();
   if (!sel.value) sel.value = 'all';
-  refreshChallengeCode();
+  const cntSel = $('challenge-count-select');
+  const defaultCount = CHALLENGE_COUNTS.includes(state.count) ? String(state.count) : '10';
+  cntSel.value = defaultCount;
+  $('challenge-freq-select').value = '0';
+  refreshChallengeMode();
   $('challenge-error').classList.add('hidden');
   $('challenge-code-input').value = '';
+  $('campaign-join-info').classList.add('hidden');
+  $('challenge-fb-warning').classList.add('hidden');
+  $('challenge-create-row').classList.remove('hidden');
+  $('challenge-created-section').classList.add('hidden');
+  _currentCampaign = null;
   $('challenge-modal').classList.remove('hidden');
+}
+
+function updateCampaignPreview() {
+  const freqDays = parseInt($('challenge-freq-select').value, 10);
+  const durationDays = parseInt($('challenge-duration-select').value, 10);
+  const totalRounds = Math.floor(durationDays / freqDays);
+  const endDate = new Date(Date.now() + durationDays * 86400000);
+  const countVal = parseInt($('challenge-count-select').value, 10) || 0;
+  const dur = challengeDuration(countVal);
+  const durPart = dur ? ` · ${dur}/session` : '';
+  $('challenge-campaign-preview').textContent =
+    `📅 ${totalRounds} sessions · ${campaignFreqLabel(freqDays)} · du ${fmtDate(new Date())} au ${fmtDate(endDate)}${durPart}`;
+}
+
+let _currentCampaign = null; // config en cours pour jointure
+
+async function createCampaignFlow() {
+  if (!window.FirebaseChallenge || !FirebaseChallenge.isReady()) {
+    $('challenge-fb-warning').classList.remove('hidden');
+    return;
+  }
+  $('challenge-fb-warning').classList.add('hidden');
+  const scope = valueToScope($('challenge-theme-select').value);
+  const count = parseInt($('challenge-count-select').value, 10) || 0;
+  const qtype = state.qtype;
+  const freqDays = parseInt($('challenge-freq-select').value, 10);
+  const durationDays = parseInt($('challenge-duration-select').value, 10);
+  const totalRounds = Math.floor(durationDays / freqDays);
+  const seed = (Math.random() * 0x100000000) >>> 0;
+  const code = generateCampaignCode();
+  const config = { scope, count, qtype, freqDays, startTs: Date.now(), totalRounds, seed };
+  const btn = $('btn-create-campaign');
+  btn.disabled = true; btn.textContent = 'Création…';
+  const ok = await FirebaseChallenge.createCampaign(code, config);
+  btn.disabled = false; btn.textContent = '🚀 Créer la campagne';
+  if (!ok) { $('challenge-fb-warning').classList.remove('hidden'); return; }
+  _currentCampaign = { config, code };
+  $('campaign-code').textContent = code;
+  const endDate = new Date(config.startTs + durationDays * 86400000);
+  $('campaign-created-info').textContent =
+    `${challengeScopeLabel(scope)} · ${count || 'Tout'} q/session · ${totalRounds} sessions · jusqu'au ${fmtDate(endDate)}`;
+  $('btn-start-campaign-round').textContent = '▶ Jouer la session 1';
+  $('challenge-create-row').classList.add('hidden');
+  $('challenge-created-section').classList.remove('hidden');
+}
+
+async function searchCampaign(rawInput) {
+  const raw = (rawInput || '').replace(/-/g, '').trim().toUpperCase();
+  if (!/^[0-9A-F]{8}$/.test(raw)) {
+    $('challenge-error').textContent = 'Format invalide (ex : ABCD-EF12).';
+    $('challenge-error').classList.remove('hidden');
+    return;
+  }
+  const code = raw.slice(0, 4) + '-' + raw.slice(4);
+  $('challenge-error').classList.add('hidden');
+  $('campaign-join-info').classList.add('hidden');
+  if (!window.FirebaseChallenge || !FirebaseChallenge.isReady()) {
+    $('challenge-error').textContent = 'Firebase requis — vérifiez votre connexion.';
+    $('challenge-error').classList.remove('hidden');
+    return;
+  }
+  const config = await FirebaseChallenge.fetchCampaign(code);
+  if (!config) {
+    $('challenge-error').textContent = 'Campagne introuvable. Vérifiez le code.';
+    $('challenge-error').classList.remove('hidden');
+    return;
+  }
+  _currentCampaign = { config, code };
+  const roundN = campaignCurrentRound(config);
+  const ended = campaignIsEnded(config);
+  const played = hasPlayedRound(code, roundN);
+  $('cji-theme').textContent = `${challengeScopeLabel(config.scope)} · Session ${roundN + 1}/${config.totalRounds}`;
+  if (ended) {
+    $('cji-progress').textContent = 'Terminée';
+    $('cji-next').textContent = '';
+    $('btn-play-campaign-round').classList.add('hidden');
+  } else if (played) {
+    const nextDate = campaignNextRoundDate(config, roundN);
+    $('cji-progress').textContent = '✅ Session jouée';
+    $('cji-next').textContent = `Prochaine session : ${fmtDate(nextDate)}`;
+    $('btn-play-campaign-round').classList.add('hidden');
+  } else {
+    $('cji-progress').textContent = '';
+    $('cji-next').textContent = '';
+    $('btn-play-campaign-round').textContent = `▶ Jouer la session ${roundN + 1}`;
+    $('btn-play-campaign-round').classList.remove('hidden');
+  }
+  $('campaign-join-info').classList.remove('hidden');
+}
+
+function startCampaignRound() {
+  if (!_currentCampaign) return;
+  const { config, code } = _currentCampaign;
+  const roundN = campaignCurrentRound(config);
+  const roundSeed = campaignRoundSeed(config, roundN);
+  state.branches.clear();
+  if (config.scope.startsWith('grp:')) {
+    const g = groupById(config.scope.slice(4));
+    if (g) groupKeys(g).forEach(k => state.branches.add(k));
+  } else if (config.scope !== 'all') {
+    state.branches.add(config.scope);
+  }
+  state.count = config.count;
+  state.qtype = config.qtype;
+  state.challenge = {
+    seed: roundSeed, code,
+    isCampaign: true, roundN, totalRounds: config.totalRounds,
+    freqDays: config.freqDays, startTs: config.startTs,
+    campaignScope: config.scope,
+  };
+  state.examMode = false; state.mode = 'srs';
+  state.questions = buildSession();
+  if (!state.questions.length) { state.challenge = null; alert('Aucun concept disponible pour ce thème.'); return; }
+  state.answers = []; state.index = 0;
+  studying = true; pomoStart();
+  $('challenge-modal').classList.add('hidden');
+  showView('quiz'); stopExamTimer(); renderQuestion();
 }
 
 // ---------- signalements & reformulation ----------
@@ -1286,12 +1550,18 @@ $('home-select').addEventListener('change', (e) => selectHomeTheme(e.target.valu
 $('btn-fab-home').addEventListener('click', exitToHome);
 $('btn-stats').addEventListener('click', () => { showView('stats'); renderStatsView(); });
 $('btn-stats-home').addEventListener('click', exitToHome);
-window.addEventListener('resize', () => { if (!views.stats.classList.contains('hidden')) renderStatsView(); });
+let _resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(() => { if (!views.stats.classList.contains('hidden')) renderStatsView(); }, 200);
+});
 document.querySelectorAll('.qtype-chip').forEach(c => c.addEventListener('click', () => { state.qtype = c.dataset.qtype; renderChips('.qtype-chip', state.qtype, 'qtype'); }));
 document.querySelectorAll('.count-chip').forEach(c => c.addEventListener('click', () => { state.count = +c.dataset.count; renderChips('.count-chip', state.count, 'count'); }));
 
 function exitToHome() {
   clearTimeout(autoNextTimer); clearQTimer(); stopExamTimer(); studying = false; pomoStop();
+  clearInterval(pomoBreakTick); pomoBreakTick = null;
+  $('pomodoro-modal').classList.add('hidden');
   state.challenge = null;
   if (window.FirebaseChallenge) FirebaseChallenge.removeListener();
   showView('home'); renderHome();
@@ -1346,23 +1616,75 @@ $('btn-copy-code').addEventListener('click', async () => {
   } catch (e) {}
 });
 $('btn-whatsapp-code').addEventListener('click', () => {
-  const code = $('challenge-code').textContent;
-  const info = $('challenge-scope-info').textContent;
-  const text = `⚔️ Défi Quizz Révision\nCode : ${code}\n(${info})\nRelève le défi !`;
+  const ch = $('challenge-modal')._challenge;
+  if (!ch) return;
+  const code = ch.code;
+  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[ch.qtype] || ch.qtype;
+  const countLabel = ch.count ? ch.count + ' questions' : 'Toutes les questions';
+  const themeLabel = challengeScopeLabel(ch.scope);
+  const dur = challengeDuration(ch.count);
+  const repo = window.UPDATE_REPO || 'laurentsar/quiz-revision';
+  const [owner, repoName] = repo.split('/');
+  const appUrl = `https://${owner}.github.io/${repoName}/`;
+  const durLine = dur ? `\n⏱️ Durée estimée : ${dur}` : '';
+  const text = `⚔️ *Défi Quizz Révision*\n\n📚 Thème : ${themeLabel}\n❓ ${countLabel} · ${qtypeLabel}${durLine}\n\n🔑 Code : *${code}*\n\n👉 Joue ici : ${appUrl}`;
   openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
-$('challenge-theme-select').addEventListener('change', refreshChallengeCode);
 $('btn-start-my-challenge').addEventListener('click', () => {
   const ch = $('challenge-modal')._challenge;
   if (ch) startChallengeSession(ch, ch.code);
 });
-$('btn-join-challenge').addEventListener('click', () => {
+$('btn-join-challenge').addEventListener('click', async () => {
   const raw = $('challenge-code-input').value.trim();
-  const ch = decodeChallenge(raw);
-  if (!ch) { $('challenge-error').classList.remove('hidden'); return; }
-  $('challenge-error').classList.add('hidden');
-  startChallengeSession(ch, raw.toUpperCase().replace(/[^0-9A-F]/g, '').replace(/(.{5})(.{5})/, '$1-$2'));
+  const stripped = raw.replace(/-/g, '').toUpperCase();
+  if (/^[0-9A-F]{10}$/.test(stripped)) {
+    const ch = decodeChallenge(raw);
+    if (!ch) { $('challenge-error').textContent = 'Code invalide. Vérifie la saisie.'; $('challenge-error').classList.remove('hidden'); return; }
+    $('challenge-error').classList.add('hidden');
+    startChallengeSession(ch, stripped.replace(/(.{5})(.{5})/, '$1-$2'));
+  } else if (/^[0-9A-F]{8}$/.test(stripped)) {
+    await searchCampaign(raw);
+  } else {
+    $('challenge-error').textContent = 'Code invalide. Vérifie la saisie.';
+    $('challenge-error').classList.remove('hidden');
+  }
 });
+
+// ---- Paramètres défi / campagne ----
+$('challenge-freq-select').addEventListener('change', refreshChallengeMode);
+$('challenge-theme-select').addEventListener('change', () => { if (!isCampaignMode()) refreshChallengeCode(); else updateCampaignPreview(); });
+$('challenge-count-select').addEventListener('change', () => { if (!isCampaignMode()) refreshChallengeCode(); else updateCampaignPreview(); });
+$('challenge-duration-select').addEventListener('change', updateCampaignPreview);
+
+// ---- Campagne ----
+$('btn-create-campaign').addEventListener('click', createCampaignFlow);
+$('btn-campaign-new').addEventListener('click', () => {
+  _currentCampaign = null;
+  $('challenge-created-section').classList.add('hidden');
+  $('challenge-create-row').classList.remove('hidden');
+});
+$('btn-copy-campaign-code').addEventListener('click', async () => {
+  const code = $('campaign-code').textContent;
+  try {
+    await navigator.clipboard.writeText(code);
+    const btn = $('btn-copy-campaign-code'); btn.textContent = '✅ Copié';
+    setTimeout(() => { btn.textContent = '📋 Copier'; }, 2000);
+  } catch (e) {}
+});
+$('btn-whatsapp-campaign').addEventListener('click', () => {
+  if (!_currentCampaign) return;
+  const { config, code } = _currentCampaign;
+  const repo = window.UPDATE_REPO || 'laurentsar/quiz-revision';
+  const [owner, repoName] = repo.split('/');
+  const appUrl = `https://${owner}.github.io/${repoName}/`;
+  const countLabel = config.count ? config.count + ' q/session' : 'Toutes les questions';
+  const durationDays = config.totalRounds * config.freqDays;
+  const endDate = new Date(config.startTs + durationDays * 86400000);
+  const text = `📅 *Campagne Quizz Révision*\n\n📚 Thème : ${challengeScopeLabel(config.scope)}\n❓ ${countLabel} · ${campaignFreqLabel(config.freqDays)}\n🗓️ ${config.totalRounds} sessions · jusqu'au ${fmtDate(endDate)}\n\n🔑 Code : *${code}*\n\n👉 Rejoins la campagne : ${appUrl}`;
+  openExternal('https://wa.me/?text=' + encodeURIComponent(text));
+});
+$('btn-start-campaign-round').addEventListener('click', startCampaignRound);
+$('btn-play-campaign-round').addEventListener('click', startCampaignRound);
 $('btn-share-result').addEventListener('click', async () => {
   const text = ($('btn-share-result').dataset.shareText || '').trim();
   if (navigator.share) { try { await navigator.share({ title: 'Défi Quizz Révision', text }); return; } catch (e) {} }
