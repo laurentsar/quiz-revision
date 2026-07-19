@@ -1,39 +1,38 @@
 'use strict';
-// Intégration Firebase Realtime Database pour les classements de défis.
-// Exposé via window.FirebaseChallenge une fois initialisé.
-// Si la config est absente ou incomplète, le module ne s'installe pas et
-// toutes les fonctionnalités Firebase sont silencieusement ignorées.
+// Intégration Firebase Realtime Database — initialisation paresseuse.
+// window.FirebaseChallenge est installé immédiatement ; Firebase s'initialise
+// à la première utilisation (plus de dépendance à l'ordre des scripts defer).
 (function () {
-  const cfg = window.FIREBASE_CONFIG;
-  if (!cfg || !cfg.databaseURL || cfg.databaseURL === '') return;
-
   let db = null;
   let activeRef = null;
   let activeHandler = null;
 
-  function init() {
+  function getDb() {
+    if (db) return db;
+    const cfg = window.FIREBASE_CONFIG;
+    if (!cfg || !cfg.databaseURL) return null;
+    if (!window.firebase) return null;
     try {
-      if (!window.firebase) return;
       if (!firebase.apps.length) firebase.initializeApp(cfg);
       db = firebase.database();
-      window.FirebaseChallenge = {
-        isReady, pushScore, listenLeaderboard, removeListener,
-        createCampaign, fetchCampaign, pushCampaignScore, listenCampaignLeaderboard,
-      };
     } catch (e) {
       console.warn('[Firebase] init error:', e);
     }
+    return db;
   }
 
-  function isReady() { return !!db; }
+  function isReady() { return !!getDb(); }
 
-  // Clé de collection : code sans tiret, en majuscules
   function defiRef(code) {
-    return db.ref('defis/' + code.replace(/-/g, '').toUpperCase() + '/joueurs');
+    return getDb().ref('defis/' + code.replace(/-/g, '').toUpperCase() + '/joueurs');
+  }
+
+  function campaignRef(code) {
+    return getDb().ref('campaigns/' + code.replace(/-/g, '').toUpperCase());
   }
 
   async function pushScore(code, pseudo, score, total) {
-    if (!db) return;
+    if (!getDb()) return;
     try {
       await defiRef(code).child(pseudo).set({
         score, total,
@@ -46,7 +45,7 @@
   }
 
   function listenLeaderboard(code, callback) {
-    if (!db) return;
+    if (!getDb()) return;
     removeListener();
     activeRef = defiRef(code);
     activeHandler = activeRef.on('value', (snap) => {
@@ -65,14 +64,8 @@
     }
   }
 
-  // ---- Campagnes multi-sessions ----
-
-  function campaignRef(code) {
-    return db.ref('campaigns/' + code.replace(/-/g, '').toUpperCase());
-  }
-
   async function createCampaign(code, config) {
-    if (!db) return false;
+    if (!getDb()) return false;
     try {
       const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000));
       await Promise.race([campaignRef(code).child('config').set(config), timeout]);
@@ -84,7 +77,7 @@
   }
 
   async function fetchCampaign(code) {
-    if (!db) return null;
+    if (!getDb()) return null;
     try {
       const snap = await campaignRef(code).child('config').once('value');
       return snap.val();
@@ -95,7 +88,7 @@
   }
 
   async function pushCampaignScore(code, roundN, pseudo, score, total) {
-    if (!db) return;
+    if (!getDb()) return;
     try {
       await campaignRef(code).child('rounds/' + roundN + '/joueurs/' + pseudo).set({
         score, total,
@@ -108,7 +101,7 @@
   }
 
   function listenCampaignLeaderboard(code, callback) {
-    if (!db) return;
+    if (!getDb()) return;
     removeListener();
     activeRef = campaignRef(code).child('rounds');
     activeHandler = activeRef.on('value', (snap) => {
@@ -131,15 +124,9 @@
     }, err => console.warn('[Firebase] campaign lb error:', err));
   }
 
-  // S'installe dès que Firebase SDK est prêt (CDN peut charger après le script local)
-  function tryInit() {
-    if (window.firebase) { init(); return; }
-    let tries = 0;
-    const t = setInterval(() => {
-      if (window.firebase) { clearInterval(t); init(); }
-      else if (++tries >= 10) clearInterval(t); // abandon après 5 s
-    }, 500);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tryInit);
-  else tryInit();
+  // Installé immédiatement — pas d'attente du chargement du SDK
+  window.FirebaseChallenge = {
+    isReady, pushScore, listenLeaderboard, removeListener,
+    createCampaign, fetchCampaign, pushCampaignScore, listenCampaignLeaderboard,
+  };
 })();
