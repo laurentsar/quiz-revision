@@ -1,56 +1,28 @@
 'use strict';
-// Intégration Firebase — API REST pure (fetch + EventSource).
-// Pas de SDK Firebase : zéro dépendance, initialisation instantanée.
-// Auth : connexion anonyme via Firebase Auth REST (idToken 1h, auto-renouvelé).
+// Intégration Firebase — API REST pure (fetch + EventSource), sans SDK, sans auth.
+// Les règles Firebase doivent autoriser les lectures/écritures publiques sur les chemins ciblés.
 (function () {
-  let _idToken = null;
-  let _tokenExpiry = 0;
-  let _tokenPending = null;
   let _activeSource = null;
   let _lastOpError = null;
 
   function cfg() { return window.FIREBASE_CONFIG || null; }
   function dbRoot() { return cfg()?.databaseURL || null; }
-  function apiKey() { return cfg()?.apiKey || null; }
 
-  function isReady() { return !!(dbRoot() && apiKey()); }
+  function isReady() { return !!dbRoot(); }
   function getInitError() {
     if (!cfg()) return 'FIREBASE_CONFIG absent';
     if (!cfg().databaseURL) return 'databaseURL manquant';
-    if (!cfg().apiKey) return 'apiKey manquant';
     return null;
   }
   function getOpError() { return _lastOpError; }
 
-  // ── Auth anonyme ─────────────────────────────────────────────────────────
-  async function ensureToken() {
-    if (_idToken && Date.now() < _tokenExpiry - 600_000) return _idToken;
-    if (_tokenPending) return _tokenPending;
-    const key = apiKey();
-    if (!key) return null;
-    _tokenPending = fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"returnSecureToken":true}' }
-    )
-    .then(r => r.json())
-    .then(d => {
-      _idToken = d.idToken || null;
-      _tokenExpiry = _idToken ? Date.now() + parseInt(d.expiresIn || 3600) * 1000 : 0;
-      _tokenPending = null;
-      return _idToken;
-    })
-    .catch(e => { console.warn('[Firebase] auth error:', e); _tokenPending = null; return null; });
-    return _tokenPending;
-  }
-
   // ── Helpers REST ─────────────────────────────────────────────────────────
-  function restUrl(path, token) {
-    return `${dbRoot()}${path}.json` + (token ? `?auth=${encodeURIComponent(token)}` : '');
+  function restUrl(path) {
+    return `${dbRoot()}${path}.json`;
   }
 
   async function dbPut(path, value) {
-    const token = await ensureToken();
-    const res = await fetch(restUrl(path, token), {
+    const res = await fetch(restUrl(path), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(value),
@@ -62,30 +34,26 @@
   }
 
   async function dbGet(path) {
-    const token = await ensureToken();
-    const res = await fetch(restUrl(path, token));
+    const res = await fetch(restUrl(path));
     if (!res.ok) return null;
     return res.json().catch(() => null);
   }
 
   function dbListen(path, onData) {
     removeListener();
-    ensureToken().then(token => {
-      const url = restUrl(path, token);
-      _activeSource = new EventSource(url);
-      _activeSource.addEventListener('put', e => {
-        try {
-          const msg = JSON.parse(e.data);
-          if (msg && msg.path === '/') { onData(msg.data); return; }
-          // sous-chemin → refetch complet
-          dbGet(path).then(onData).catch(() => {});
-        } catch (_) {}
-      });
-      _activeSource.addEventListener('patch', () => {
+    const url = restUrl(path);
+    _activeSource = new EventSource(url);
+    _activeSource.addEventListener('put', e => {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg && msg.path === '/') { onData(msg.data); return; }
         dbGet(path).then(onData).catch(() => {});
-      });
-      _activeSource.onerror = e => console.warn('[Firebase] SSE error:', e);
+      } catch (_) {}
     });
+    _activeSource.addEventListener('patch', () => {
+      dbGet(path).then(onData).catch(() => {});
+    });
+    _activeSource.onerror = e => console.warn('[Firebase] SSE error:', e);
   }
 
   function removeListener() {
