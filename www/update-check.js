@@ -36,50 +36,27 @@
     return 0;
   }
 
-  // Dans l'APK, on passe par CapacitorHttp : la requête part du natif, hors WebView,
-  // donc ni CORS ni service worker ne peuvent l'intercepter. Repli fetch ailleurs.
-  function getLatest() {
-    var url = 'https://api.github.com/repos/' + REPO + '/releases/latest?_=' + Date.now();
-    var http = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp;
-    if (http) {
-      return http.get({ url: url, headers: { Accept: 'application/vnd.github+json' }, responseType: 'json', connectTimeout: 8000, readTimeout: 10000 })
-        .then(function (r) {
-          if (r.status >= 400) throw new Error('HTTP ' + r.status);
-          return typeof r.data === 'string' ? JSON.parse(r.data) : r.data;
-        });
-    }
-    return fetch(url, { headers: { Accept: 'application/vnd.github+json' } })
-      .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      });
-  }
+  var last = parseInt(ls(true, KEY_POLL), 10) || 0;
+  if (Date.now() - last < POLL_INTERVAL) return;
 
-  // force = déclenché par l'utilisateur : ignore le throttle et la version ignorée.
-  // Résout { status: 'update'|'uptodate', version } ou rejette avec l'erreur réseau.
-  function check(force) {
-    var last = parseInt(ls(true, KEY_POLL), 10) || 0;
-    if (!force && Date.now() - last < POLL_INTERVAL) {
-      return Promise.resolve({ status: 'throttled', version: CURRENT });
-    }
-    return getLatest().then(function (rel) {
-      if (!rel || !rel.tag_name) throw new Error('Release illisible');
+  // Cache-buster (_) : évite qu'un service worker "cache-first" serve une
+  // réponse d'API périmée. GitHub ignore les paramètres inconnus.
+  fetch('https://api.github.com/repos/' + REPO + '/releases/latest?_=' + Date.now(), {
+    headers: { Accept: 'application/vnd.github+json' }
+  })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (rel) {
+      if (!rel || !rel.tag_name) return;
       ls(false, KEY_POLL, Date.now());
       var latest = String(rel.tag_name).replace(/^v/, '');
-      if (cmp(latest, CURRENT) <= 0) return { status: 'uptodate', version: latest };
-      if (!force && ls(true, KEY_DISMISS) === latest) return { status: 'dismissed', version: latest };
-      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/i.test(a.name); })[0];
+      if (cmp(latest, CURRENT) <= 0) return;          // déjà à jour
+      if (ls(true, KEY_DISMISS) === latest) return;    // version déjà ignorée
+      var apk = (rel.assets || []).filter(function (a) {
+        return /\.apk$/i.test(a.name);
+      })[0];
       showBanner(latest, apk ? apk.browser_download_url : rel.html_url);
-      return { status: 'update', version: latest };
-    });
-  }
-
-  // Vérification à l'ouverture, puis à chaque retour au premier plan (throttlée).
-  window.UpdateCheck = { check: check, current: CURRENT };
-  check(false).catch(function () { /* hors ligne : silencieux */ });
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) check(false).catch(function () {});
-  });
+    })
+    .catch(function () { /* hors-ligne : silencieux */ });
 
   function showBanner(version, url) {
     if (document.getElementById('update-banner')) return;
@@ -92,11 +69,10 @@
       'max-width:520px;margin:0 auto}' +
       '#update-banner .ub-txt{flex:1;min-width:0}' +
       '#update-banner b{color:#fff}' +
-      '#update-banner .ub-go{flex:none;background:#22c55e;color:#06210f;text-decoration:none;' +
-      'font:700 14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;border:0;' +
+      '#update-banner a.ub-act,#update-banner button.ub-act{flex:none;background:#22c55e;' +
+      'color:#06210f;text-decoration:none;border:0;font-weight:700;font-size:14px;' +
       'padding:8px 14px;border-radius:10px;cursor:pointer}' +
-      '#update-banner .ub-go:disabled{opacity:.6}' +
-      '#update-banner .ub-x{flex:none;background:transparent;border:0;color:#9ca3af;' +
+      '#update-banner button.ub-x{flex:none;background:transparent;border:0;color:#9ca3af;' +
       'font-size:18px;line-height:1;cursor:pointer;padding:4px}';
     document.head.appendChild(css);
 
@@ -106,37 +82,33 @@
     txt.className = 'ub-txt';
     txt.innerHTML = '🔄 Nouvelle version <b>v' + version + '</b> disponible';
 
-    // Dans l'APK : téléchargement + installation sans quitter l'app (UpdatePlugin natif).
-    // En PWA / navigateur : simple lien vers l'asset de la Release.
-    var up = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.UpdatePlugin;
-    var dl;
-    if (up && /\.apk$/i.test(url)) {
-      dl = document.createElement('button');
-      dl.className = 'ub-go';
-      dl.textContent = '⬇ Installer';
-      dl.onclick = function () {
-        dl.textContent = '⏳ …'; dl.disabled = true;
-        up.downloadAndInstall({ url: url })
-          .catch(function (e) {
-            dl.textContent = '⬇ Installer'; dl.disabled = false;
-            var msg = (e && e.message) || String(e);
-            alert(/permission/i.test(msg)
-              ? "Autorise l'installation d'apps depuis cette source dans les paramètres Android, puis réessaie."
-              : 'Erreur : ' + msg);
-          });
+    // Si le plugin natif est présent (APK) : bouton qui télécharge + INSTALLE
+    // directement. Sinon lien de téléchargement navigateur (PWA).
+    var canInstall = typeof window.installApkUpdate === 'function' &&
+      window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.UpdatePlugin;
+    var act;
+    if (canInstall) {
+      act = document.createElement('button');
+      act.className = 'ub-act';
+      act.textContent = '⬇ Installer';
+      act.onclick = function () {
+        act.disabled = true; act.textContent = '⏳ Installation…';
+        window.installApkUpdate(url, act, function () {
+          act.disabled = false; act.textContent = '⬇ Installer';
+        });
       };
     } else {
-      dl = document.createElement('a');
-      dl.className = 'ub-go';
-      dl.href = url; dl.target = '_blank'; dl.rel = 'noopener';
-      dl.textContent = 'Télécharger';
+      act = document.createElement('a');
+      act.className = 'ub-act';
+      act.href = url; act.target = '_blank'; act.rel = 'noopener';
+      act.textContent = 'Télécharger';
     }
 
     var x = document.createElement('button');
     x.className = 'ub-x';
     x.setAttribute('aria-label', 'Ignorer'); x.textContent = '✕';
     x.onclick = function () { ls(false, KEY_DISMISS, version); b.remove(); };
-    b.appendChild(txt); b.appendChild(dl); b.appendChild(x);
+    b.appendChild(txt); b.appendChild(act); b.appendChild(x);
     (document.body || document.documentElement).appendChild(b);
   }
 })();
