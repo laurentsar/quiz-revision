@@ -1,10 +1,10 @@
-const CACHE = 'quiz-thales-v5.14';
+const CACHE = 'quiz-thales-v5.15';
 const ASSETS = [
   './',
   'index.html',
   'styles.css',
   'app.js',
-  'update-check.js',
+  'update-check.js', 'autobackup.js',
   'firebase-config.js',
   'firebase-challenge.js',
   'manifest.webmanifest',
