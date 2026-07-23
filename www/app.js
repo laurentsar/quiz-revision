@@ -1,6 +1,6 @@
 'use strict';
 
-// Quizz Révision — questions GÉNÉRÉES à la volée depuis une base de concepts,
+// CyberRévision — questions GÉNÉRÉES à la volée depuis une base de concepts,
 // avec répétition espacée (Leitner), mode Apprendre (flashcards),
 // distracteurs ciblés (confusions / même catégorie) et feedback enrichi.
 
@@ -209,7 +209,7 @@ function buildAuditExport(branchKey, limit = 25) {
   const branchLbl = branchKey === 'all' ? 'Tous les thèmes' : branchLabel(branchKey);
   const today = new Date().toLocaleDateString('fr-FR');
   const lines = [
-    `# Quizz Révision — Audit qualité · ${branchLbl} · ${today}`,
+    `# CyberRévision — Audit qualité · ${branchLbl} · ${today}`,
     `# ${batch.length} concepts à compléter (sur ${candidates.length} identifiés)`,
     ``,
     `## Contexte`,
@@ -851,7 +851,7 @@ function finishQuiz() {
       markRoundPlayed(code, ch.roundN);
       const nextDate = campaignNextRoundDate(ch, ch.roundN);
       const nextPart = ch.roundN + 1 < ch.totalRounds ? ` · Prochaine session : ${fmtDate(nextDate)}` : ' · Campagne terminée !';
-      const shareText = `📅 Campagne Quizz Révision [${code}]\nSession ${ch.roundN + 1}/${ch.totalRounds} : ${score}/${total} — ${pct}% ${emoji}${nextPart}`;
+      const shareText = `📅 Campagne CyberRévision [${code}]\nSession ${ch.roundN + 1}/${ch.totalRounds} : ${score}/${total} — ${pct}% ${emoji}${nextPart}`;
       $('challenge-result-code').textContent = code;
       $('result-sub').textContent = `Campagne · Session ${ch.roundN + 1}/${ch.totalRounds}`;
       $('btn-share-result').dataset.shareText = shareText;
@@ -866,7 +866,7 @@ function finishQuiz() {
         lb.classList.add('hidden');
       }
     } else {
-      const shareText = `⚔️ Défi Quizz Révision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
+      const shareText = `⚔️ Défi CyberRévision [${code}]\n${score}/${total} — ${pct}% ${emoji}\nTu fais mieux ?`;
       $('challenge-result-code').textContent = code;
       $('btn-share-result').dataset.shareText = shareText;
       cr.classList.remove('hidden');
@@ -1659,7 +1659,7 @@ $('btn-whatsapp-code').addEventListener('click', () => {
   const [owner, repoName] = repo.split('/');
   const appUrl = `https://${owner}.github.io/${repoName}/`;
   const durLine = dur ? `\n⏱️ Durée estimée : ${dur}` : '';
-  const text = `⚔️ *Défi Quizz Révision*\n\n📚 Thème : ${themeLabel}\n❓ ${countLabel} · ${qtypeLabel}${durLine}\n\n🔑 Code : *${code}*\n\n👉 Joue ici : ${appUrl}`;
+  const text = `⚔️ *Défi CyberRévision*\n\n📚 Thème : ${themeLabel}\n❓ ${countLabel} · ${qtypeLabel}${durLine}\n\n🔑 Code : *${code}*\n\n👉 Joue ici : ${appUrl}`;
   openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
 $('btn-start-my-challenge').addEventListener('click', () => {
@@ -1713,14 +1713,14 @@ $('btn-whatsapp-campaign').addEventListener('click', () => {
   const countLabel = config.count ? config.count + ' q/session' : 'Toutes les questions';
   const durationDays = config.totalRounds * config.freqDays;
   const endDate = new Date(config.startTs + durationDays * 86400000);
-  const text = `📅 *Campagne Quizz Révision*\n\n📚 Thème : ${challengeScopeLabel(config.scope)}\n❓ ${countLabel} · ${campaignFreqLabel(config.freqDays)}\n🗓️ ${config.totalRounds} sessions · jusqu'au ${fmtDate(endDate)}\n\n🔑 Code : *${code}*\n\n👉 Rejoins la campagne : ${appUrl}`;
+  const text = `📅 *Campagne CyberRévision*\n\n📚 Thème : ${challengeScopeLabel(config.scope)}\n❓ ${countLabel} · ${campaignFreqLabel(config.freqDays)}\n🗓️ ${config.totalRounds} sessions · jusqu'au ${fmtDate(endDate)}\n\n🔑 Code : *${code}*\n\n👉 Rejoins la campagne : ${appUrl}`;
   openExternal('https://wa.me/?text=' + encodeURIComponent(text));
 });
 $('btn-start-campaign-round').addEventListener('click', startCampaignRound);
 $('btn-play-campaign-round').addEventListener('click', startCampaignRound);
 $('btn-share-result').addEventListener('click', async () => {
   const text = ($('btn-share-result').dataset.shareText || '').trim();
-  if (navigator.share) { try { await navigator.share({ title: 'Défi Quizz Révision', text }); return; } catch (e) {} }
+  if (navigator.share) { try { await navigator.share({ title: 'Défi CyberRévision', text }); return; } catch (e) {} }
   try { await navigator.clipboard.writeText(text); } catch (e) {}
 });
 

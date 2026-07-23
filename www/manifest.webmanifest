@@ -1,6 +1,6 @@
 {
-  "name": "Quizz Révision",
-  "short_name": "Quizz Révision",
+  "name": "CyberRévision",
+  "short_name": "CyberRévision",
   "description": "Quiz de révision cybersécurité & homologation (hors ligne)",
   "start_url": "./",
   "display": "standalone",

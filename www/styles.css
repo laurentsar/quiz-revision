@@ -143,11 +143,14 @@ html, body {
 
 .modal {
   position: fixed; inset: 0; z-index: 10;
-  background: rgba(3,10,20,0.6); backdrop-filter: blur(3px);
+  background: rgba(3,10,20,0.78);
   display: flex; align-items: flex-end; justify-content: center;
   padding: 16px;
 }
 .modal-card {
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   width: 100%; max-width: 528px;
   background: var(--card); border: 1px solid rgba(255,255,255,0.10);
   border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 16px;

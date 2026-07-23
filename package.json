@@ -1,6 +1,6 @@
 {
   "name": "quiz-secu",
-  "version": "5.17",
+  "version": "5.18",
   "private": true,
   "description": "Quiz de révision cybersécurité / homologation (offline)",
   "scripts": {

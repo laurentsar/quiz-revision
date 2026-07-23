@@ -1,6 +1,6 @@
 {
   "appId": "com.laurent.quizsecu",
-  "appName": "Quizz Révision",
+  "appName": "CyberRévision",
   "webDir": "www",
   "android": {
     "allowMixedContent": true
