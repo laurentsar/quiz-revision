@@ -15,6 +15,10 @@ Architecture sécurité, Analyse de risque, Accréditation/Homologation, Indicat
   même catégorie ou les confusions classiques (PCA/PRA, IDS/IPS, KPI/KRI…).
 - **Feedback enrichi** : après chaque réponse, rappel de la définition + mnémonique + exemple.
 - **Fiches de révision** : toute la mindmap sous forme de fiches consultables, par catégorie.
+- **Mind Map** : vue visuelle par thème/certification — anneau de maîtrise global, domaines en
+  chips colorées (avec compteur maîtrisé/total), catégories en cartes et concepts en pastilles
+  dépliables (définition + mnémonique + exemple + vidéo), recherche transverse. 100 % hors ligne
+  (reconstruite depuis les données déjà chargées, aucun fichier supplémentaire à télécharger).
 
 Tout est **local** (localStorage) et **hors ligne**.
 
@@ -76,6 +80,8 @@ officielles (isc2.org/certifications, eccouncil.org) avant chaque session d'exam
 ## Ressources & vidéos
 Section « 🎧 Podcasts & vidéos » : sélection francophone (NoLimitSecu, Comptoir Sécu,
 Cookie connecté, Micode, ANSSI, CNIL…) + meilleures références EN pour les certifs.
-Chaque concept a un lien « 🎥 Vidéo » (recherche YouTube FR). La vue mind map CISSP a
-été retirée : les chapitres sont couverts par les Fiches (concepts groupés par rubrique).
-Source de régénération des concepts CISSP déplacée dans tools/cissp_mindmap.json.
+Chaque concept a un lien « 🎥 Vidéo » (recherche YouTube FR). La vue « 🧠 Mind Map »
+couvre toutes les certifications (et les autres thèmes) sous une forme visuelle
+domaine → catégorie → concept, générée depuis les données du quiz — elle remplace
+l'ancienne mind map CISSP dédiée (source de régénération conservée dans
+tools/cissp_mindmap.json, non utilisée par l'app).
