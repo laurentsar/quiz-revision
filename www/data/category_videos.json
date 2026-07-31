@@ -1,6 +1,7 @@
 {
   "cissp1": {
     "Business Continuity and Disaster Recovery": { "url": "https://www.youtube.com/watch?v=X9JmfljT5go", "title": "Domain 1: CISSP Business Continuity and Disaster Recovery" },
+    "Complexities in Cybercrime": { "url": "https://www.youtube.com/watch?v=bP6g2elVrds", "title": "Computer Crime (CISSP Free by Skillset.com)" },
     "Control Types": { "url": "https://www.youtube.com/watch?v=UsiJODXQRyY", "title": "CISSP #25 - Domain 1 - Security Control Types" },
     "Fundamental Principles of Security": { "url": "https://www.youtube.com/watch?v=SP8cr0fg5Sg", "title": "CIA Triad (Security Triad) - CISSP Training Series" },
     "Intellectual Property Laws": { "url": "https://www.youtube.com/watch?v=kwqcutwCcgU", "title": "CISSP Domain 1: Security and Risk Management - Intellectual property" },
@@ -8,14 +9,18 @@
     "Policies, Standards, Baselines, Guidelines, and Procedures": { "url": "https://www.youtube.com/watch?v=9uyqD5aNets", "title": "CISSP | Domain 1.6 | Policies, Standards, Baselines, Procedures, Guidelines" },
     "Privacy": { "url": "https://www.youtube.com/watch?v=94XrPk3FJDY", "title": "CISSP Series Domain1 Episode 36 - Privacy Laws for CISSP in 15 minutes" },
     "Risk Assessment and Analysis": { "url": "https://www.youtube.com/watch?v=jB3Ka0x3TCo", "title": "Risk Assessment (CISSP Free by Skillset.com)" },
+    "Risk Management": { "url": "https://www.youtube.com/watch?v=hsCLM4MOGLQ", "title": "Risk Definitions (CISSP Free by Skillset.com)" },
     "Risk Management Frameworks": { "url": "https://www.youtube.com/watch?v=sQe0FZs-i-U", "title": "CISSP Domain 1: NIST Risk Management Framework & Practice Question" },
     "Security Frameworks": { "url": "https://www.youtube.com/watch?v=-7_dMa6RmmQ", "title": "CISSP Domain 1.2 Memorizing Security Frameworks" },
-    "Supply Chain Risk Management": { "url": "https://www.youtube.com/watch?v=bc8GuVyiPS4", "title": "CISSP Lesson#22 - Objective 1.11 - Supply Chain Risk Management (SCRM)" }
+    "Supply Chain Risk Management": { "url": "https://www.youtube.com/watch?v=bc8GuVyiPS4", "title": "CISSP Lesson#22 - Objective 1.11 - Supply Chain Risk Management (SCRM)" },
+    "The Crux of Computer Crime Laws": { "url": "https://www.youtube.com/watch?v=vMzbFWzTGJY", "title": "Overview on the Laws, Regulations, and Requirements for the CISSP in 5 minutes - Domain 1" }
   },
   "cissp2": {
     "Classification": { "url": "https://www.youtube.com/watch?v=WBlQQ6qTlGI", "title": "Asset Classification MindMap (1 of 1) | CISSP Domain 2" },
+    "Data Leakage": { "url": "https://www.youtube.com/watch?v=HvW2vWeEhH8", "title": "CISSP Domain 2: Asset Security - Data remanence and destruction" },
     "Information Life Cycle": { "url": "https://www.youtube.com/watch?v=tlhemE1b6e0", "title": "CISSP Domain 2 - 3. Data Lifecycle Management" },
     "Layers of Responsibility": { "url": "https://www.youtube.com/watch?v=wAjoJloYnH0", "title": "Data Roles & Responsibilities Explained | CISSP" },
+    "Protecting Assets": { "url": "https://www.youtube.com/watch?v=j3a1JEfxWHk", "title": "CISSP Domain 2 Asset Security Quick Lesson 1 - The Basics" },
     "Protecting Privacy": { "url": "https://www.youtube.com/watch?v=ZWt5j-i5c2Y", "title": "Protecting Privacy (CISSP Free by Skillset.com)" },
     "Retention Policies": { "url": "https://www.youtube.com/watch?v=4t3yGlY3F8w", "title": "CISSP Domain 2.5: Ensuring Proper Asset Retention & End-of-Life Security" }
   },
@@ -53,6 +58,7 @@
   "cissp5": {
     "Access Control Mechanisms": { "url": "https://www.youtube.com/watch?v=Exv329-T4e8", "title": "Access Control Models (CISSP Free by Skillset.com)" },
     "Access Control Monitoring": { "url": "https://www.youtube.com/watch?v=atvB5F6ieKU", "title": "CISSP domain 5 - Part 146 A | Monitoring and Threats to Access Control" },
+    "Access Control Practices": { "url": "https://www.youtube.com/watch?v=s4XdPctitiM", "title": "Access Control MindMap (1 of 2) | CISSP Domain 5" },
     "Access Control Techniques and Technologies": { "url": "https://www.youtube.com/watch?v=kqLlWMrOKxw", "title": "Access Control Techniques (CISSP Free by Skillset.com)" },
     "Controlling Physical and Logical Access": { "url": "https://www.youtube.com/watch?v=TJG7xoGE92U", "title": "CCT 264: Control Physical and Logical Access to Assets (CISSP Domain 5.1)" },
     "Identification, Authentication, Authorization, and Accountability": { "url": "https://www.youtube.com/watch?v=X4-eM01l6EM", "title": "CISSP - IAAA - Identification, Authentication, Authorization and Accountability" },
@@ -63,13 +69,15 @@
   "cissp6": {
     "Assessment, Test, and Audit Strategies": { "url": "https://www.youtube.com/watch?v=A-aNmhB_WjM", "title": "Security Assessment and Testing MindMap (1 of 3) | CISSP Domain 6" },
     "Auditing Administrative Controls": { "url": "https://www.youtube.com/watch?v=_lwXekXGlJ8", "title": "Account Management (CISSP Free by Skillset.com)" },
-    "Auditing Technical Controls": { "url": "https://www.youtube.com/watch?v=EgU3dLB2O0M", "title": "Identifying Vulnerabilities (2 of 3) | CISSP Domain 6" }
+    "Auditing Technical Controls": { "url": "https://www.youtube.com/watch?v=EgU3dLB2O0M", "title": "Identifying Vulnerabilities (2 of 3) | CISSP Domain 6" },
+    "Reporting": { "url": "https://www.youtube.com/watch?v=y_DJYVcGcZU", "title": "CISSP 104: Security Assessment and Testing - Conduct or facilitate security audits" }
   },
   "cissp7": {
     "Administrative Management": { "url": "https://www.youtube.com/watch?v=1zGgjR5vdsI", "title": "MicroNuggets: CISSP Administrative Controls Explained" },
     "Disaster Recovery": { "url": "https://www.youtube.com/watch?v=upbyxBDWIC0", "title": "Recovery Strategies MindMap (5 of 6) | CISSP Domain 7" },
     "Implementing Disaster Recovery": { "url": "https://www.youtube.com/watch?v=lLbK5Twv6GM", "title": "DRP - Disaster Recovery Plan Testing (CISSP Free by Skillset.com)" },
     "Investigations": { "url": "https://www.youtube.com/watch?v=ECUnAw3uDLY", "title": "Investigations MindMap (1 of 6) | CISSP Domain 7" },
+    "Liability and Its Ramifications": { "url": "https://www.youtube.com/watch?v=5URflbWoBH8", "title": "Due Diligence and Due Care (CISSP Free by Skillset.com)" },
     "Network and Resource Availability": { "url": "https://www.youtube.com/watch?v=96F4SstiwfU", "title": "CISSP 18.2 - System Resilience, High Availability & Fault Tolerance" },
     "Personal Safety Concerns": { "url": "https://www.youtube.com/watch?v=sf0DqKskcaA", "title": "Personnel Safety and Privacy (CISSP Free by Skillset.com)" },
     "Physical Security": { "url": "https://www.youtube.com/watch?v=xm_gznvJIsY", "title": "Physical Security (CISSP Free by Skillset.com)" },
@@ -78,8 +86,10 @@
     "The Incident Management Process": { "url": "https://www.youtube.com/watch?v=5a5ZscedRYE", "title": "Incident Response MindMap (2 of 6) | CISSP Domain 7" }
   },
   "cissp8": {
+    "Application Vulnerabilities": { "url": "https://www.youtube.com/watch?v=V7qm_wDYKkE", "title": "CISSP Domain 8 | Database Models, Storage Threats, Malware Prevention & App Security" },
     "Assessing Software Security": { "url": "https://www.youtube.com/watch?v=XiNgkBwRlnY", "title": "CCT 238: Assessing the Effectiveness of Software Security (Domain 8.3)" },
     "Secure Coding": { "url": "https://www.youtube.com/watch?v=iQgbPFRo1SQ", "title": "CISSP Secure Coding Guidelines & Standards" },
+    "Security Testing": { "url": "https://www.youtube.com/watch?v=fS5WWjuyFmQ", "title": "CISSP Domain 8 Review / Mind Map (1 of 2) | Secure Software Development" },
     "Software Development Life Cycle": { "url": "https://www.youtube.com/watch?v=GT306d4jJpY", "title": "CISSP Software Development Life Cycle (SDLC) Process" }
   },
   "sscp1": {
@@ -295,6 +305,29 @@
     "Baiting": { "url": "https://www.youtube.com/watch?v=4ejQXO_m834", "title": "J'ai déposé 100 clés USB avec un virus... (pour voir si les gens les branchent)" },
     "Phishing": { "url": "https://www.youtube.com/watch?v=kREWBrQWQZo", "title": "Qu'est-ce que le phishing ou hameçonnage ?" },
     "Pretexting": { "url": "https://www.youtube.com/watch?v=LZLuLBrPNVU", "title": "What Is a Pretexting Attack?" },
+    "Quid Pro Quo": { "url": "https://www.youtube.com/watch?v=soHEoUybfrg", "title": "Social Engineering Part 6: Quid Pro Quo Scams" },
     "Tailgating & physique": { "url": "https://www.youtube.com/watch?v=7n10Bt6OtGY", "title": "Tailgating and Impersonation - Security+ SY0-501 1.2" }
+  },
+  "igi1300": {
+    "Accès au secret": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" },
+    "Acteurs & sanctions": { "url": "https://www.youtube.com/watch?v=sikFyKVROCo", "title": "Réformer la protection du secret de la défense nationale" },
+    "Classification (IGI 1300)": { "url": "https://www.youtube.com/watch?v=JFlE4CK2gb8", "title": "C'est quoi le \"Secret Défense\" ?" },
+    "Procédure d'habilitation": { "url": "https://www.youtube.com/watch?v=sikFyKVROCo", "title": "Réformer la protection du secret de la défense nationale" },
+    "SI classifiés & supports": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" }
+  },
+  "igi2102": {
+    "Informations & compromission (ICUE)": { "url": "https://www.youtube.com/watch?v=sikFyKVROCo", "title": "Réformer la protection du secret de la défense nationale" },
+    "Personnes (ICUE)": { "url": "https://www.youtube.com/watch?v=JFlE4CK2gb8", "title": "C'est quoi le \"Secret Défense\" ?" },
+    "Principes ICUE": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" },
+    "SI & contrats (ICUE)": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" }
+  },
+  "ii901": {
+    "Diffusion Restreinte & exploitation": { "url": "https://www.youtube.com/watch?v=-_MYLID33w0", "title": "Présentation du guide d'hygiène numérique de l'ANSSI" },
+    "Organisation de la SSI": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" },
+    "Utilisateurs & personnel": { "url": "https://www.youtube.com/watch?v=JFlE4CK2gb8", "title": "C'est quoi le \"Secret Défense\" ?" }
+  },
+  "py": {
+    "Dictionnaires (dict)": { "url": "https://www.youtube.com/watch?v=a10AeJ_o-44", "title": "Python : Les dictionnaires" },
+    "Ensembles (set)": { "url": "https://www.youtube.com/watch?v=CcX0NUeOGZ8", "title": "Apprendre Python - Les ensembles (sets)" }
   }
 }
