@@ -485,6 +485,18 @@
       </div>
     </div>
 
+    <!-- LECTEUR VIDÉO (modal) -->
+    <div id="video-modal" class="modal hidden">
+      <div class="modal-card video-modal-card">
+        <div class="modal-head">
+          <span id="video-title">🎥 Vidéo</span>
+          <button id="video-modal-close" class="gear">✕</button>
+        </div>
+        <div id="video-frame-wrap" class="video-frame-wrap"></div>
+        <p class="mm-source">Vidéo trouvée automatiquement sur YouTube — peut ne pas toujours correspondre exactement au concept.</p>
+      </div>
+    </div>
+
     <!-- PAUSE POMODORO -->
     <div id="pomodoro-modal" class="modal hidden">
       <div class="modal-card pomo-card">
@@ -504,7 +516,11 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.22';</script>
+  <!-- YOUTUBE_API_KEY : clé API YouTube Data v3 (console.cloud.google.com), nécessaire
+       au lecteur vidéo intégré (🎥 Vidéo) — sans clé, retombe sur un lien de recherche
+       externe. Voir README « Lecteur vidéo intégré » pour la configuration et les
+       restrictions de clé recommandées. -->
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.24';window.YOUTUBE_API_KEY='';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
   <script>window.BACKUP_APP = 'quiz-revision';</script>
