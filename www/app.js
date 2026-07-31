@@ -524,7 +524,7 @@ function beep(ok) {
 function vibrate(ok) { try { navigator.vibrate && navigator.vibrate(ok ? 25 : [40, 50, 40]); } catch (e) {} }
 
 // ---------- vues ----------
-const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), learn: $('view-learn'), resources: $('view-resources'), stats: $('view-stats') };
+const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), mindmap: $('view-mindmap'), learn: $('view-learn'), resources: $('view-resources'), stats: $('view-stats') };
 let autoNextTimer = null;
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
@@ -956,6 +956,132 @@ function renderFiches() {
     `</div>`).join('') || '<div class="card"><div class="mm-source">Aucune fiche.</div></div>';
   $('fiches-content').querySelectorAll('.fiche-video').forEach(a =>
     a.addEventListener('click', () => openExternal(videoSearchUrl(a.dataset.term))));
+}
+
+// ---------- mind map (vision par thème / certification) ----------
+// Reconstruit l'arbre branche -> catégorie -> concept depuis les données déjà en
+// mémoire (ALL) : aucun fetch supplémentaire, disponible hors ligne dès le 1er lancement.
+let mmSel = 'grp:cissp', mmDomain = null, mmQuery = '';
+const MM_SEARCH_MIN = 2;
+
+function mmSelLabel() {
+  if (mmSel === 'all') return 'Tous les thèmes';
+  if (mmSel.startsWith('grp:')) { const g = groupById(mmSel.slice(4)); return g ? g.label : mmSel; }
+  return branchLabel(mmSel);
+}
+function mmList() {
+  if (mmSel === 'all') return ALL;
+  if (mmSel.startsWith('grp:')) { const g = groupById(mmSel.slice(4)); return ALL.filter(c => g.test(c.branch)); }
+  return ALL.filter(c => c.branch === mmSel);
+}
+// Ordre stable des branches présentes, celui de DB.branches (cohérent avec le reste de l'appli).
+function mmBranchesOf(list) {
+  const present = new Set(list.map(c => c.branch));
+  return Object.keys(DB.branches).filter(k => present.has(k));
+}
+// Libellé court d'un domaine : sans préfixe de groupe (« CC · », « SSCP · »…) pour tenir en chip.
+function mmDomainShort(b) { return branchLabel(b).replace(/^[^·]+·\s*/, ''); }
+function mmMastery(list) {
+  const srs = getSrs();
+  const total = list.length;
+  const mastered = list.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+  return { total, mastered, pct: total ? Math.round(100 * mastered / total) : 0 };
+}
+function mmBoxClass(term, srs) {
+  const e = srs[term];
+  if (!e || !e.seen) return 'mm-box-new';
+  if (e.box >= 4) return 'mm-box-mastered';
+  if (e.box === 0) return 'mm-box-due';
+  return 'mm-box-progress';
+}
+function mmHighlight(text, q) {
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return esc(text);
+  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+}
+
+function renderMindmapSelect() {
+  const sel = $('mm-select');
+  sel.innerHTML = themeOptionsHtml();
+  sel.value = mmSel;
+}
+
+// Anneau de progression (maîtrise Leitner) au centre de la mind map : motive à
+// continuer, cohérent avec le tableau de bord de l'accueil.
+function renderMindmapHub(list) {
+  const m = mmMastery(list);
+  $('mm-hub-ring').style.background = `conic-gradient(var(--sky) ${m.pct * 3.6}deg, rgba(255,255,255,0.12) 0deg)`;
+  $('mm-hub-pct').textContent = m.pct + '%';
+  $('mm-hub-title').textContent = mmSelLabel();
+  $('mm-hub-sub').textContent = `${m.mastered} / ${m.total} concepts maîtrisés`;
+}
+
+function renderMindmapDomains(list) {
+  const branches = mmBranchesOf(list);
+  if (!branches.includes(mmDomain)) mmDomain = branches[0] || null;
+  const srs = getSrs();
+  $('mm-domains').innerHTML = branches.map(b => {
+    const items = list.filter(c => c.branch === b);
+    const mastered = items.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+    const active = b === mmDomain && !mmQuery;
+    return `<button class="chip mm-chip${active ? ' active' : ''}" data-mm-domain="${esc(b)}">${esc(mmDomainShort(b))}<span class="mm-count">${mastered}/${items.length}</span></button>`;
+  }).join('');
+  $('mm-domains').querySelectorAll('[data-mm-domain]').forEach(btn => btn.addEventListener('click', () => {
+    mmDomain = btn.dataset.mmDomain; mmQuery = ''; $('mm-search').value = '';
+    renderMindmapDomains(mmList()); renderMindmapBody(); window.scrollTo(0, 0);
+  }));
+}
+
+function mmTermBody(c) {
+  return `<div class="mm-term-body">` +
+    `<p class="mm-term-def">${esc(c.def || 'Relève de : ' + c.cat)}</p>` +
+    (c.tip ? `<p class="mm-term-tip">💡 ${esc(c.tip)}</p>` : '') +
+    (c.ex ? `<p class="mm-term-ex">🔎 ${esc(c.ex)}</p>` : '') +
+    `<a class="fiche-video" data-term="${esc(c.term)}">🎥 Vidéo</a>` +
+    `</div>`;
+}
+function mmTermHtml(c, srs) {
+  return `<details class="mm-term ${mmBoxClass(c.term, srs)}"><summary><span class="mm-term-row"><span class="mm-dot"></span>${esc(c.term)}</span></summary>${mmTermBody(c)}</details>`;
+}
+function mmHitHtml(c, srs) {
+  return `<details class="mm-term ${mmBoxClass(c.term, srs)}"><summary><span class="mm-term-row"><span class="mm-dot"></span>${mmHighlight(c.term, mmQuery)}</span><span class="mm-hit-crumb">${esc(mmDomainShort(c.branch))} › ${esc(c.cat)}</span></summary>${mmTermBody(c)}</details>`;
+}
+
+function renderMindmapBody() {
+  const list = mmList();
+  const box = $('mm-content');
+  const srs = getSrs();
+  if (mmQuery.length >= MM_SEARCH_MIN) {
+    const needle = mmQuery.toLowerCase();
+    const hits = list.filter(c => c.term.toLowerCase().includes(needle) || c.cat.toLowerCase().includes(needle));
+    $('mm-crumb').textContent = hits.length + ' résultat' + (hits.length > 1 ? 's' : '');
+    box.innerHTML = hits.length
+      ? `<div class="card mm-terms">${hits.slice(0, 150).map(c => mmHitHtml(c, srs)).join('')}</div>`
+      : '<div class="card"><p class="mm-hit-p">Aucun résultat</p></div>';
+  } else {
+    const items = list.filter(c => c.branch === mmDomain);
+    $('mm-crumb').textContent = mmDomain ? mmDomainShort(mmDomain) : '';
+    const byCat = {};
+    items.forEach(c => (byCat[c.cat] = byCat[c.cat] || []).push(c));
+    box.innerHTML = Object.entries(byCat).map(([cat, arr]) => {
+      const mastered = arr.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+      return `<div class="card mm-cat-card"><div class="mm-cat-head"><h3 class="gram-h3">${esc(cat)}</h3><span class="mm-count">${mastered}/${arr.length}</span></div>` +
+        `<div class="mm-terms">${arr.map(c => mmTermHtml(c, srs)).join('')}</div></div>`;
+    }).join('') || '<div class="card"><p class="mm-hit-p">Aucun concept.</p></div>';
+  }
+  box.querySelectorAll('.fiche-video').forEach(a => a.addEventListener('click', () => openExternal(videoSearchUrl(a.dataset.term))));
+}
+
+function renderMindmap() {
+  renderMindmapSelect();
+  const list = mmList();
+  renderMindmapHub(list);
+  renderMindmapDomains(list);
+  renderMindmapBody();
+}
+function openMindmap() {
+  mmQuery = ''; const s = $('mm-search'); if (s) s.value = '';
+  showView('mindmap'); renderMindmap();
 }
 
 // ---------- ressources (podcasts / vidéos) ----------
@@ -1620,6 +1746,10 @@ $('fiches-select').addEventListener('change', (e) => { fichesSel = e.target.valu
 $('btn-fiches-home').addEventListener('click', exitToHome);
 $('btn-resources').addEventListener('click', () => { renderResources(); showView('resources'); });
 $('btn-resources-home').addEventListener('click', exitToHome);
+$('btn-mindmap').addEventListener('click', openMindmap);
+$('btn-mindmap-home').addEventListener('click', exitToHome);
+$('mm-select').addEventListener('change', (e) => { mmSel = e.target.value; mmDomain = null; mmQuery = ''; $('mm-search').value = ''; renderMindmap(); window.scrollTo(0, 0); });
+$('mm-search').addEventListener('input', (e) => { mmQuery = e.target.value.trim(); renderMindmapDomains(mmList()); renderMindmapBody(); });
 
 const optExam = $('opt-exammode');
 optExam.addEventListener('change', () => { state.examMode = optExam.checked; });

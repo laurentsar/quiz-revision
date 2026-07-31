@@ -36,6 +36,7 @@
         <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
         <button id="btn-stats" class="secondary">📊 Stats</button>
         <button id="btn-fiches" class="secondary">📑 Fiches</button>
+        <button id="btn-mindmap" class="secondary top-wide">🧠 Mind Map</button>
         <button id="btn-challenge" class="secondary top-wide">⚔️ Défi multijoueur</button>
         <button id="btn-resources" class="secondary top-wide">🎧 Podcasts &amp; vidéos</button>
         <button id="btn-flags" class="secondary top-wide">🚩 Signalements <span id="flag-badge" class="flag-badge hidden"></span></button>
@@ -216,6 +217,30 @@
       <select id="fiches-select" class="select"></select>
       <div id="fiches-content"></div>
       <button id="btn-fiches-home" class="secondary">Accueil</button>
+    </section>
+
+    <!-- MIND MAP (vue visuelle par thème / certification) -->
+    <section id="view-mindmap" class="view hidden">
+      <div class="quiz-header">
+        <span class="quiz-progress">🧠 Mind Map</span>
+      </div>
+      <span class="hero-label">Choisir un thème</span>
+      <select id="mm-select" class="select"></select>
+
+      <div class="card mm-hub">
+        <div id="mm-hub-ring" class="mm-hub-ring"><span id="mm-hub-pct" class="mm-hub-pct">0%</span></div>
+        <div class="mm-hub-info">
+          <span id="mm-hub-title" class="mm-hub-title"></span>
+          <span id="mm-hub-sub" class="mm-hub-sub"></span>
+        </div>
+      </div>
+
+      <input id="mm-search" class="mm-search" type="search" placeholder="Rechercher un concept…" autocomplete="off" />
+      <div id="mm-domains" class="mm-domains"></div>
+      <span id="mm-crumb" class="mm-crumb"></span>
+      <div id="mm-content"></div>
+
+      <button id="btn-mindmap-home" class="secondary">Accueil</button>
     </section>
 
     <!-- RESSOURCES (podcasts & vidéos) -->
@@ -479,7 +504,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.19';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.20';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
   <script>window.BACKUP_APP = 'quiz-revision';</script>
