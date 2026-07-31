@@ -38,7 +38,7 @@ const state = {
   learn: [], lidx: 0,
 };
 
-let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {};
+let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {}, CATEGORY_VIDEOS = {};
 
 // Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
@@ -1143,13 +1143,15 @@ function videoSearchUrl(term) {
   return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' cybersécurité');
 }
 
-// Vidéo de référence choisie à la main par domaine/branche (data/branch_videos.json),
+// Vidéo de référence choisie à la main (data/category_videos.json, data/branch_videos.json),
 // même principe que quiz-langue (video Url/title curés, pas de recherche live ni de
-// clé API). Un concept ouvre la vidéo de son domaine ; si le domaine n'a pas encore
-// de vidéo curée, on retombe sur la recherche YouTube externe.
+// clé API). Priorité : vidéo de la catégorie précise du concept > vidéo du domaine
+// entier > recherche YouTube externe (si rien n'est encore curé pour ce concept).
 function openConceptVideo(term) {
   const c = BYTERM[term];
-  const curated = c && BRANCH_VIDEOS[c.branch];
+  const catVideo = c && CATEGORY_VIDEOS[c.branch] && CATEGORY_VIDEOS[c.branch][c.cat];
+  const branchVideo = c && BRANCH_VIDEOS[c.branch];
+  const curated = catVideo || branchVideo;
   openExternal(curated ? curated.url : videoSearchUrl(term));
 }
 
@@ -1966,7 +1968,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 // ---------- démarrage ----------
 (async function init() {
   const empty = { branches: {}, concepts: [] };
-  const [base, cissp, isc2, ceh, ignite, prog, scen, branchVideos] = await Promise.all([
+  const [base, cissp, isc2, ceh, ignite, prog, scen, branchVideos, categoryVideos] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
     (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
     (await fetch('data/isc2_concepts.json')).json().catch(() => empty),
@@ -1975,8 +1977,10 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
     (await fetch('data/prog_concepts.json')).json().catch(() => empty),
     (await fetch('data/scenarios.json')).json().catch(() => ({})),
     (await fetch('data/branch_videos.json')).json().catch(() => ({})),
+    (await fetch('data/category_videos.json')).json().catch(() => ({})),
   ]);
   BRANCH_VIDEOS = branchVideos;
+  CATEGORY_VIDEOS = categoryVideos;
   // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite, langages
   // de programmation) apporte ses thèmes ; tous sont traités à l'identique par le
   // quiz, les flashcards et le Leitner.
