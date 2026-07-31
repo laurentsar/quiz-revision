@@ -62,6 +62,9 @@ function groupById(id) { return GROUPS.find(g => g.id === id); }
 function groupKeys(g) { return Object.keys(DB.branches).filter(g.test); }
 function groupActive(g) { return [...state.branches].some(g.test); }
 function branchLabel(k) { return (DB.branches && DB.branches[k]) || k; }
+// Langue du contenu d'un thème : homologation/réglementation/réf. FR sont en français,
+// tout le reste (certifications ISC2/EC-Council) est en anglais (référentiels officiels EN).
+function branchLang(b) { return (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_')) ? 'fr' : 'en'; }
 
 // Libellé de la sélection courante : rien de sélectionné = tout.
 function scopeLabel() {
@@ -1124,9 +1127,18 @@ function openExternal(url) {
   } catch (e) {}
   window.open(url, '_blank', 'noopener');
 }
-// Recherche vidéo YouTube (résultats français) pour un concept.
+// Recherche vidéo YouTube adaptée à la langue/contexte du concept : un terme de
+// certification (contenu EN) cherche en anglais avec le nom de la certif en contexte
+// (« AIC triad CISSP explained » >> « AIC triad cybersécurité », hors sujet en FR) ;
+// un concept francophone (homologation, réglementation, réf. cyber) garde la recherche FR.
 function videoSearchUrl(term) {
+  const c = BYTERM[term];
   const q = term.replace(/\([^)]*\)/g, '').trim();
+  if (c && branchLang(c.branch) === 'en') {
+    const g = groupOf(c.branch);
+    const ctx = g ? g.label.replace(/^Certification\s+/, '') : '';
+    return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + (ctx ? ' ' + ctx : '') + ' explained') + '&hl=en&gl=US';
+  }
   return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' cybersécurité');
 }
 
@@ -1974,7 +1986,6 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
   // doté d'un `ex` débloque la question de mise en situation. On n'applique un
   // scénario que si sa langue correspond à celle du thème — un thème français
   // (homologation, Réf. cyber) ne reçoit pas un scénario anglais, et inversement.
-  const branchLang = (b) => (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_')) ? 'fr' : 'en';
   ALL.forEach(c => {
     const s = scen[normEx(c.term)];
     if (!c.ex && s && s.lang === branchLang(c.branch)) c.ex = s.ex;
