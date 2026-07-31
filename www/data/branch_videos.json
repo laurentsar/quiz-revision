@@ -1,0 +1,44 @@
+{
+  "cissp1": { "url": "https://www.youtube.com/watch?v=geGALIfOxtI", "title": "CISSP Domain 1 Review / Mind Map — Destination Certification" },
+  "cissp2": { "url": "https://www.youtube.com/watch?v=567CI0Afp3o", "title": "CISSP Domain 2 Mastery: Protecting and Managing Information Assets — InfosecTrain" },
+  "cissp3": { "url": "https://www.youtube.com/watch?v=ksOqYUDdI8o", "title": "CISSP Domain 3 — InfosecTrain" },
+  "cissp4": { "url": "https://www.youtube.com/watch?v=QYRnxXPSvmk", "title": "CISSP Domain 4 — Communication and Network Security — InfosecTrain" },
+  "cissp5": { "url": "https://www.youtube.com/watch?v=7iLvI5BKosY", "title": "CISSP Domain 5 — Identity & Access Controls — InfosecTrain" },
+  "cissp6": { "url": "https://www.youtube.com/watch?v=0ZEdKpjMdYs", "title": "CISSP Domain 6 — Security Assessment and Testing — InfosecTrain" },
+  "cissp7": { "url": "https://www.youtube.com/watch?v=cov--8cbhkg", "title": "CISSP Domain 7 — Security Operations — InfosecTrain" },
+  "cissp8": { "url": "https://www.youtube.com/watch?v=otprAHB6oC8", "title": "CISSP Domain 8 — Software Development Security — InfosecTrain" },
+
+  "sscp3": { "url": "https://www.youtube.com/watch?v=cSZb7j6jfok", "title": "Impact Assessment | Threat Modeling | Risk Management Concepts — SSCP" },
+  "sscp4": { "url": "https://www.youtube.com/watch?v=zzH0xSfzSp4", "title": "SSCP — Lesson 10 — Incident Response and Recovery" },
+  "sscp7": { "url": "https://www.youtube.com/watch?v=mfzq9y_IlZE", "title": "SSCP — Lesson 08 — Hardware and System Security" },
+
+  "cc1": { "url": "https://www.youtube.com/watch?v=6mG7q0jIW3w", "title": "Mastering ISC2 CC Domain 1: Security Principles" },
+  "cc2": { "url": "https://www.youtube.com/watch?v=p7XJZITLlQY", "title": "Mastering ISC2 CC Domain 2: BC, DR & IR" },
+  "cc3": { "url": "https://www.youtube.com/watch?v=dO-4QSs2Hrs", "title": "Mastering ISC2 CC Domain 3: Access Control (DAC, MAC, RBAC)" },
+  "cc4": { "url": "https://www.youtube.com/watch?v=WfY_HAMSPOQ", "title": "Mastering ISC2 CC Domain 4: Network Security" },
+  "cc5": { "url": "https://www.youtube.com/watch?v=9YYvg3OhWwM", "title": "ISC2 CC Domain 5 — Security Operations & Incident Response" },
+
+  "ccsp1": { "url": "https://www.youtube.com/watch?v=bQSUsRCv19w", "title": "CCSP Exam Cram — Domain 1 — Inside Cloud and Security" },
+  "ccsp2": { "url": "https://www.youtube.com/watch?v=tK2LiepVC8E", "title": "CCSP Exam Cram — Domain 2 — Inside Cloud and Security" },
+  "ccsp3": { "url": "https://www.youtube.com/watch?v=s99QazL9Smo", "title": "CCSP Exam Cram — Domain 3 — Inside Cloud and Security" },
+  "ccsp4": { "url": "https://www.youtube.com/watch?v=e0cq-kD9BP0", "title": "CCSP Exam Cram — Domain 4 — Inside Cloud and Security" },
+  "ccsp5": { "url": "https://www.youtube.com/watch?v=0xtzHae8nb0", "title": "CCSP Exam Cram — Domain 5 — Inside Cloud and Security" },
+  "ccsp6": { "url": "https://www.youtube.com/watch?v=asuzaS0wpM8", "title": "CCSP Exam Cram — Domain 6 — Inside Cloud and Security" },
+
+  "ceh1": { "url": "https://www.youtube.com/watch?v=oNy-U71dQpI", "title": "Everything About CEH v13 Certification — Simplilearn" },
+
+  "archi": { "url": "https://www.youtube.com/watch?v=m1oJnweJwKE", "title": "EBIOS Risk Manager — 1. Pourquoi ? — Club EBIOS" },
+  "igi1300": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" },
+
+  "ig_nist": { "url": "https://www.youtube.com/watch?v=QzWTnsPlLt0", "title": "NIST Cybersecurity Framework (NIST CSF) — Introduction (VF)" },
+  "ig_gdpr": { "url": "https://www.youtube.com/watch?v=OUMGp3HHel4", "title": "RGPD / GDPR : FAQ avec la CNIL" },
+  "ig_hipaa": { "url": "https://www.youtube.com/watch?v=H7LQUf8iyO4", "title": "HIPAA Explained: Your Quick Guide" },
+  "ig_http": { "url": "https://www.youtube.com/watch?v=twKgr_ERZJI", "title": "Connaître tous les status codes HTTP par cœur" },
+  "ig_socialeng": { "url": "https://www.youtube.com/watch?v=S3kHbYdS9AE", "title": "L'ingénierie sociale ou l'art de la manipulation" },
+  "ig_mitre": { "url": "https://www.youtube.com/watch?v=tJ0Co1ORFao", "title": "MITRE ATT&CK : son importance et son utilisation avec des cas pratiques" },
+  "ig_blueteam": { "url": "https://www.youtube.com/watch?v=zGC34K1oPY0", "title": "Découvrez la palette Cyber : Red Team, Blue Team, Purple Team" },
+  "ig_cybertech": { "url": "https://www.youtube.com/watch?v=V171QAXJVTg", "title": "Maîtrisez la Cybersécurité : Guide Complet en 10 Minutes" },
+  "ig_sec360": { "url": "https://www.youtube.com/watch?v=qW7Ysn3Lhis", "title": "7 fondamentaux de la sécurité informatique" },
+  "ig_secauto": { "url": "https://www.youtube.com/watch?v=P9K1Fc0ayjU", "title": "Cybercriminalité, des attaques bien réelles — ARTE" },
+  "ig_devops": { "url": "https://www.youtube.com/watch?v=pnkeQ_olSz0", "title": "DevSecOps : comprendre l'essentiel en 8 minutes" }
+}
