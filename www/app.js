@@ -989,10 +989,9 @@ function mmMastery(list) {
 }
 function mmBoxClass(term, srs) {
   const e = srs[term];
-  if (!e || !e.seen) return 'mm-box-new';
-  if (e.box >= 4) return 'mm-box-mastered';
-  if (e.box === 0) return 'mm-box-due';
-  return 'mm-box-progress';
+  if (e && e.box >= 4) return 'mm-box-mastered';   // vert — maîtrisé
+  if (e && e.box >= 1) return 'mm-box-progress';    // orange — à moitié
+  return 'mm-box-new';                              // blanc — le reste
 }
 function mmHighlight(text, q) {
   const i = text.toLowerCase().indexOf(q.toLowerCase());
