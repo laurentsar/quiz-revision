@@ -38,7 +38,7 @@ const state = {
   learn: [], lidx: 0,
 };
 
-let DB = null, ALL = [], CATS = [], BYTERM = {};
+let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {};
 
 // Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
@@ -686,7 +686,7 @@ function renderQuestion() {
     fb.innerHTML = html;
     fb.className = 'feedback show ' + (a.correct ? 'good' : 'bad');
     const v = fb.querySelector('.fb-video');
-    if (v) v.addEventListener('click', () => openVideoModal(v.dataset.term));
+    if (v) v.addEventListener('click', () => openConceptVideo(v.dataset.term));
     const flagBtn = fb.querySelector('.flag-btn');
     if (flagBtn) flagBtn.addEventListener('click', () => openFlagModal(q.key, q.promptLabel));
   } else { fb.innerHTML = ''; fb.className = 'feedback'; startQTimer(); }
@@ -958,7 +958,7 @@ function renderFiches() {
       `<a class="fiche-video" data-term="${esc(c.term)}">🎥 Vidéo</a></div>`).join('') +
     `</div>`).join('') || '<div class="card"><div class="mm-source">Aucune fiche.</div></div>';
   $('fiches-content').querySelectorAll('.fiche-video').forEach(a =>
-    a.addEventListener('click', () => openVideoModal(a.dataset.term)));
+    a.addEventListener('click', () => openConceptVideo(a.dataset.term)));
 }
 
 // ---------- mind map (vision par thème / certification) ----------
@@ -1071,7 +1071,7 @@ function renderMindmapBody() {
         `<div class="mm-terms">${arr.map(c => mmTermHtml(c, srs)).join('')}</div></div>`;
     }).join('') || '<div class="card"><p class="mm-hit-p">Aucun concept.</p></div>';
   }
-  box.querySelectorAll('.fiche-video').forEach(a => a.addEventListener('click', () => openVideoModal(a.dataset.term)));
+  box.querySelectorAll('.fiche-video').forEach(a => a.addEventListener('click', () => openConceptVideo(a.dataset.term)));
 }
 
 function renderMindmap() {
@@ -1131,72 +1131,25 @@ function openExternal(url) {
 // (contenu EN) cherche en anglais avec le nom de la certif en contexte (« AIC triad
 // CISSP explained » >> « AIC triad cybersécurité », hors sujet en FR) ; un concept
 // francophone (homologation, réglementation, réf. cyber) garde la recherche FR.
-function videoQuery(term) {
+function videoSearchUrl(term) {
   const c = BYTERM[term];
   const q = term.replace(/\([^)]*\)/g, '').trim();
   if (c && branchLang(c.branch) === 'en') {
     const g = groupOf(c.branch);
     const ctx = g ? g.label.replace(/^Certification\s+/, '') : '';
-    return { q: q + (ctx ? ' ' + ctx : '') + ' explained', hl: 'en' };
+    return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + (ctx ? ' ' + ctx : '') + ' explained') + '&hl=en&gl=US';
   }
-  return { q: q + ' cybersécurité', hl: 'fr' };
-}
-// Repli : page de résultats YouTube (navigateur externe / in-app browser), utilisé
-// si l'API YouTube Data n'est pas configurée ou échoue (hors ligne, quota, etc.).
-function videoSearchUrl(term) {
-  const v = videoQuery(term);
-  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(v.q) + (v.hl === 'en' ? '&hl=en&gl=US' : '');
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' cybersécurité');
 }
 
-// ---------- lecteur vidéo intégré (modal) ----------
-// Recherche le 1er résultat YouTube via l'API YouTube Data v3 et le joue directement
-// dans l'app (iframe embed), sans quitter CyberRévision. Nécessite une clé API
-// (window.YOUTUBE_API_KEY, dans index.html) : sans clé, ou en cas d'échec (hors
-// ligne, quota dépassé), on retombe sur le lien de recherche externe.
-// Cache localStorage : chaque terme n'est cherché qu'une fois par appareil (le
-// quota gratuit de l'API — 100 recherches/jour — est vite atteint sans ça).
-function getVideoCache() { return lsGet('quizrev:videoCache:v1', {}); }
-function saveVideoCache(c) { lsSet('quizrev:videoCache:v1', c); }
-async function fetchTopVideoId(term) {
-  const cache = getVideoCache();
-  const hit = cache[term];
-  if (hit && (hit.id || Date.now() - hit.ts < 7 * DAY)) return hit.id || null;
-  const key = window.YOUTUBE_API_KEY;
-  if (!key) return null;
-  const v = videoQuery(term);
-  const url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&type=video&relevanceLanguage=' +
-    v.hl + '&key=' + encodeURIComponent(key) + '&q=' + encodeURIComponent(v.q);
-  const r = await fetch(url);
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  const data = await r.json();
-  const id = (data.items && data.items[0] && data.items[0].id && data.items[0].id.videoId) || null;
-  cache[term] = { id, ts: Date.now() };
-  saveVideoCache(cache);
-  return id;
-}
-function videoFallbackHtml(term) {
-  return `<div class="video-msg"><p class="mm-hit-p">Vidéo indisponible pour le moment.</p><a class="fiche-video" data-fallback-term="${esc(term)}">🔎 Ouvrir la recherche YouTube</a></div>`;
-}
-async function openVideoModal(term) {
-  const modal = $('video-modal'), wrap = $('video-frame-wrap');
-  $('video-title').textContent = '🎥 ' + term;
-  wrap.innerHTML = '<div class="video-msg"><p class="mm-hit-p">⏳ Recherche de la vidéo…</p></div>';
-  modal.classList.remove('hidden');
-  try {
-    const id = await fetchTopVideoId(term);
-    if (!id) throw new Error('no result');
-    // Modal encore ouverte sur ce terme ? (l'utilisateur a pu la fermer entre-temps)
-    if (modal.classList.contains('hidden') || $('video-title').textContent !== '🎥 ' + term) return;
-    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-  } catch (e) {
-    wrap.innerHTML = videoFallbackHtml(term);
-    const a = wrap.querySelector('[data-fallback-term]');
-    if (a) a.addEventListener('click', () => openExternal(videoSearchUrl(a.dataset.fallbackTerm)));
-  }
-}
-function closeVideoModal() {
-  $('video-modal').classList.add('hidden');
-  $('video-frame-wrap').innerHTML = '';   // stoppe la lecture (retire l'iframe)
+// Vidéo de référence choisie à la main par domaine/branche (data/branch_videos.json),
+// même principe que quiz-langue (video Url/title curés, pas de recherche live ni de
+// clé API). Un concept ouvre la vidéo de son domaine ; si le domaine n'a pas encore
+// de vidéo curée, on retombe sur la recherche YouTube externe.
+function openConceptVideo(term) {
+  const c = BYTERM[term];
+  const curated = c && BRANCH_VIDEOS[c.branch];
+  openExternal(curated ? curated.url : videoSearchUrl(term));
 }
 
 function renderResources() {
@@ -2000,9 +1953,6 @@ $('btn-check-update').addEventListener('click', async () => {
 $('btn-settings').addEventListener('click', () => settingsModal.classList.remove('hidden'));
 $('settings-close').addEventListener('click', () => settingsModal.classList.add('hidden'));
 settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.add('hidden'); });
-const videoModal = $('video-modal');
-$('video-modal-close').addEventListener('click', closeVideoModal);
-videoModal.addEventListener('click', (e) => { if (e.target === videoModal) closeVideoModal(); });
 $('btn-reset').addEventListener('click', () => {
   if (confirm('Réinitialiser progression, stats et erreurs ?')) {
     ['quizrev:stats:v1', 'quizrev:wrong:v1', 'quizrev:srs:v1', 'quizrev:daily:v1', 'quizrev:disabled:v1'].forEach(k => localStorage.removeItem(k));
@@ -2015,14 +1965,16 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 // ---------- démarrage ----------
 (async function init() {
   const empty = { branches: {}, concepts: [] };
-  const [base, cissp, isc2, ceh, ignite, scen] = await Promise.all([
+  const [base, cissp, isc2, ceh, ignite, scen, branchVideos] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
     (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
     (await fetch('data/isc2_concepts.json')).json().catch(() => empty),
     (await fetch('data/ceh_concepts.json')).json().catch(() => empty),
     (await fetch('data/ignite_concepts.json')).json().catch(() => empty),
     (await fetch('data/scenarios.json')).json().catch(() => ({})),
+    (await fetch('data/branch_videos.json')).json().catch(() => ({})),
   ]);
+  BRANCH_VIDEOS = branchVideos;
   // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite) apporte
   // ses thèmes ; tous sont traités à l'identique par le quiz, les flashcards et le Leitner.
   const srcs = [base, cissp, isc2, ceh, ignite];

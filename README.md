@@ -20,31 +20,19 @@ Architecture sécurité, Analyse de risque, Accréditation/Homologation, Indicat
   dépliables (définition + mnémonique + exemple + vidéo), recherche transverse. 100 % hors ligne
   (reconstruite depuis les données déjà chargées, aucun fichier supplémentaire à télécharger).
 
-Tout est **local** (localStorage) et **hors ligne** — sauf le lecteur vidéo intégré
-(🎥), qui nécessite le réseau et une clé API (voir ci-dessous).
+Tout est **local** (localStorage) et **hors ligne**.
 
-## Lecteur vidéo intégré
-Le lien « 🎥 Vidéo » d'un concept (quiz, Fiches, Mind Map) ouvre une modale qui
-cherche automatiquement la vidéo la plus pertinente sur YouTube et la joue
-**directement dans l'app** (iframe), sans quitter CyberRévision. La requête
-s'adapte à la langue du concept (ex. « AIC triad CISSP explained » en anglais
-pour un terme de certification, « Defense in depth cybersécurité » en français
-pour un terme d'homologation).
-
-Configuration requise (sinon repli automatique sur un lien de recherche externe) :
-1. Créer une clé API **YouTube Data API v3** sur [console.cloud.google.com](https://console.cloud.google.com/apis/credentials).
-2. La renseigner dans `www/index.html` : `window.YOUTUBE_API_KEY='...'`.
-3. **Recommandé** : restreindre la clé (Google Cloud Console → Identifiants → la
-   clé → « Restrictions relatives aux applications » → *Applications Android*)
-   au package `com.laurent.quizsecu` + l'empreinte SHA-1 du certificat de
-   signature de l'APK — ça empêche que la clé, visible dans le code et l'APK
-   publics, soit réutilisable ailleurs si elle est extraite.
-4. ⚠️ **Quota** : le palier gratuit est de 100 recherches/jour (10 000 unités,
-   100/recherche), **partagé par toutes les installations** de l'app puisqu'elles
-   utilisent la même clé. Un cache local (par appareil, indéfini par concept déjà
-   trouvé) limite fortement la consommation, mais un usage intensif/multi-utilisateurs
-   peut l'épuiser — dans ce cas le lecteur retombe simplement sur le lien de
-   recherche externe (dégradation silencieuse, pas d'erreur visible).
+## Vidéos de référence
+Même principe que l'app sœur **quiz-langue** : pas de recherche live ni de clé API,
+mais une **vidéo choisie à la main par domaine/branche** (`www/data/branch_videos.json`,
+`{ branche: { url, title } }`), vérifiée manuellement (recherche web + confirmation que
+la vidéo existe réellement avant intégration — jamais d'URL inventée). Le lien
+« 🎥 Vidéo » d'un concept (quiz, Fiches, Mind Map) ouvre la vidéo de son domaine, via
+le navigateur in-app (`Capacitor.Plugins.Browser`) si disponible, sinon le navigateur
+système. 36 des 42 domaines ont une vidéo curée à ce jour ; les domaines restants
+(quelques branches SSCP, IGI 2102, II 901 — contenu trop spécifique pour avoir une
+vidéo dédiée) retombent sur une recherche YouTube externe adaptée à la langue du
+concept. Pour ajouter/corriger une vidéo : éditer `branch_videos.json`.
 
 ## Contenu
 - `www/` : application web (HTML/CSS/JS vanilla, 0 dépendance runtime) emballée par Capacitor.
