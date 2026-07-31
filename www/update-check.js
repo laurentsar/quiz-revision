@@ -36,27 +36,55 @@
     return 0;
   }
 
-  var last = parseInt(ls(true, KEY_POLL), 10) || 0;
-  if (Date.now() - last < POLL_INTERVAL) return;
-
-  // Cache-buster (_) : évite qu'un service worker "cache-first" serve une
-  // réponse d'API périmée. GitHub ignore les paramètres inconnus.
-  fetch('https://api.github.com/repos/' + REPO + '/releases/latest?_=' + Date.now(), {
-    headers: { Accept: 'application/vnd.github+json' }
-  })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (rel) {
-      if (!rel || !rel.tag_name) return;
+  // force = déclenché par l'utilisateur (bouton Réglages) : ignore le throttle
+  // 6 h et une version déjà ignorée. Résout { status, version } ou rejette
+  // (erreur réseau) — utilisé par le bouton « Vérifier les mises à jour ».
+  function check(force) {
+    var last = parseInt(ls(true, KEY_POLL), 10) || 0;
+    if (!force && Date.now() - last < POLL_INTERVAL) {
+      return Promise.resolve({ status: 'throttled', version: CURRENT });
+    }
+    // Cache-buster (_) : évite qu'un service worker "cache-first" serve une
+    // réponse d'API périmée. GitHub ignore les paramètres inconnus.
+    return fetch('https://api.github.com/repos/' + REPO + '/releases/latest?_=' + Date.now(), {
+      headers: { Accept: 'application/vnd.github+json' }
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (rel) {
+      if (!rel || !rel.tag_name) throw new Error('Release illisible');
       ls(false, KEY_POLL, Date.now());
       var latest = String(rel.tag_name).replace(/^v/, '');
-      if (cmp(latest, CURRENT) <= 0) return;          // déjà à jour
-      if (ls(true, KEY_DISMISS) === latest) return;    // version déjà ignorée
-      var apk = (rel.assets || []).filter(function (a) {
-        return /\.apk$/i.test(a.name);
-      })[0];
+      if (cmp(latest, CURRENT) <= 0) return { status: 'uptodate', version: latest };
+      if (!force && ls(true, KEY_DISMISS) === latest) return { status: 'dismissed', version: latest };
+      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/i.test(a.name); })[0];
       showBanner(latest, apk ? apk.browser_download_url : rel.html_url);
-    })
-    .catch(function () { /* hors-ligne : silencieux */ });
+      return { status: 'update', version: latest };
+    });
+  }
+
+  // API publique (bouton « Vérifier les mises à jour » dans Réglages), + vérif
+  // à l'ouverture et à chaque retour au premier plan (throttlée à 1 req / 6 h).
+  window.UpdateCheck = { check: check, current: CURRENT };
+  check(false).catch(function () { /* hors ligne : silencieux */ });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) check(false).catch(function () {});
+  });
+
+  // Télécharge + installe l'APK via le plugin natif UpdatePlugin, sans quitter
+  // l'app (utilisé par le bouton « ⬇ Installer » de la bannière). `reset`
+  // réactive ce bouton en cas d'échec ou d'absence du plugin natif (PWA).
+  window.installApkUpdate = function (url, btn, reset) {
+    var up = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.UpdatePlugin;
+    if (!up) { reset(); window.open(url, '_blank', 'noopener'); return; }
+    up.downloadAndInstall({ url: url }).catch(function (e) {
+      reset();
+      var msg = (e && e.message) || String(e);
+      alert(/permission/i.test(msg)
+        ? "Autorise l'installation d'apps depuis cette source dans les paramètres Android, puis réessaie."
+        : 'Erreur : ' + msg);
+    });
+  };
 
   function showBanner(version, url) {
     if (document.getElementById('update-banner')) return;
