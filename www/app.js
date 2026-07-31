@@ -929,22 +929,18 @@ function gradeFlash(ok) {
 }
 
 // ---------- fiches (référence, consultables par thème via menu déroulant) ----------
-// Sélection propre aux Fiches, indépendante du quiz : 'all', une clé de branche,
-// ou 'grp:<id>' pour tout un groupe (CISSP, Réf. cyber…).
-let fichesSel = 'all';
+// Le thème sélectionné est partagé avec l'accueil et la Mind Map (state.branches) :
+// le changer ici, à l'accueil ou dans la Mind Map le change partout.
+function branchScopedList() { return state.branches.size ? ALL.filter(c => state.branches.has(c.branch)) : ALL; }
 
 // Peuple le menu déroulant des fiches (mêmes options que l'accueil).
 function renderFichesSelect() {
   const sel = $('fiches-select');
   sel.innerHTML = themeOptionsHtml();
-  sel.value = fichesSel;
+  sel.value = scopeToSelectValue();
 }
 
-function fichesList() {
-  if (fichesSel === 'all') return ALL;
-  if (fichesSel.startsWith('grp:')) { const g = groupById(fichesSel.slice(4)); return ALL.filter(c => g.test(c.branch)); }
-  return ALL.filter(c => c.branch === fichesSel);
-}
+function fichesList() { return branchScopedList(); }
 
 function renderFiches() {
   renderFichesSelect();
@@ -965,19 +961,11 @@ function renderFiches() {
 // ---------- mind map (vision par thème / certification) ----------
 // Reconstruit l'arbre branche -> catégorie -> concept depuis les données déjà en
 // mémoire (ALL) : aucun fetch supplémentaire, disponible hors ligne dès le 1er lancement.
-let mmSel = 'grp:cissp', mmDomain = null, mmQuery = '';
+// Le thème sélectionné est partagé avec l'accueil et les Fiches (state.branches).
+let mmDomain = null, mmQuery = '';
 const MM_SEARCH_MIN = 2;
 
-function mmSelLabel() {
-  if (mmSel === 'all') return 'Tous les thèmes';
-  if (mmSel.startsWith('grp:')) { const g = groupById(mmSel.slice(4)); return g ? g.label : mmSel; }
-  return branchLabel(mmSel);
-}
-function mmList() {
-  if (mmSel === 'all') return ALL;
-  if (mmSel.startsWith('grp:')) { const g = groupById(mmSel.slice(4)); return ALL.filter(c => g.test(c.branch)); }
-  return ALL.filter(c => c.branch === mmSel);
-}
+function mmList() { return branchScopedList(); }
 // Ordre stable des branches présentes, celui de DB.branches (cohérent avec le reste de l'appli).
 function mmBranchesOf(list) {
   const present = new Set(list.map(c => c.branch));
@@ -1006,7 +994,7 @@ function mmHighlight(text, q) {
 function renderMindmapSelect() {
   const sel = $('mm-select');
   sel.innerHTML = themeOptionsHtml();
-  sel.value = mmSel;
+  sel.value = scopeToSelectValue();
 }
 
 // Anneau de progression (maîtrise Leitner) au centre de la mind map : motive à
@@ -1015,7 +1003,7 @@ function renderMindmapHub(list) {
   const m = mmMastery(list);
   $('mm-hub-ring').style.background = `conic-gradient(var(--sky) ${m.pct * 3.6}deg, rgba(255,255,255,0.12) 0deg)`;
   $('mm-hub-pct').textContent = m.pct + '%';
-  $('mm-hub-title').textContent = mmSelLabel();
+  $('mm-hub-title').textContent = scopeLabel();
   $('mm-hub-sub').textContent = `${m.mastered} / ${m.total} concepts maîtrisés`;
 }
 
@@ -1759,20 +1747,14 @@ $('btn-flash-reveal').addEventListener('click', revealFlash);
 $('btn-flash-ok').addEventListener('click', () => gradeFlash(true));
 $('btn-flash-again').addEventListener('click', () => gradeFlash(false));
 $('btn-learn-home').addEventListener('click', exitToHome);
-$('btn-fiches').addEventListener('click', () => {
-  // pré-sélectionne le thème du quiz : une branche unique, un groupe entier, sinon Tout
-  const sel = [...state.branches];
-  if (sel.length === 1) fichesSel = sel[0];
-  else { const g = sel.length && GROUPS.find(gr => sel.every(gr.test) && sel.length === Object.keys(DB.branches).filter(gr.test).length); fichesSel = g ? 'grp:' + g.id : 'all'; }
-  renderFiches(); showView('fiches');
-});
-$('fiches-select').addEventListener('change', (e) => { fichesSel = e.target.value; renderFiches(); window.scrollTo(0, 0); });
+$('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
+$('fiches-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); renderFiches(); window.scrollTo(0, 0); });
 $('btn-fiches-home').addEventListener('click', exitToHome);
 $('btn-resources').addEventListener('click', () => { renderResources(); showView('resources'); });
 $('btn-resources-home').addEventListener('click', exitToHome);
 $('btn-mindmap').addEventListener('click', openMindmap);
 $('btn-mindmap-home').addEventListener('click', exitToHome);
-$('mm-select').addEventListener('change', (e) => { mmSel = e.target.value; mmDomain = null; mmQuery = ''; $('mm-search').value = ''; renderMindmap(); window.scrollTo(0, 0); });
+$('mm-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); mmDomain = null; mmQuery = ''; $('mm-search').value = ''; renderMindmap(); window.scrollTo(0, 0); });
 $('mm-search').addEventListener('input', (e) => { mmQuery = e.target.value.trim(); renderMindmapDomains(mmList()); renderMindmapBody(); });
 
 const optExam = $('opt-exammode');
