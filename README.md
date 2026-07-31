@@ -24,15 +24,24 @@ Tout est **local** (localStorage) et **hors ligne**.
 
 ## Vidéos de référence
 Même principe que l'app sœur **quiz-langue** : pas de recherche live ni de clé API,
-mais une **vidéo choisie à la main par domaine/branche** (`www/data/branch_videos.json`,
-`{ branche: { url, title } }`), vérifiée manuellement (recherche web + confirmation que
-la vidéo existe réellement avant intégration — jamais d'URL inventée). Le lien
-« 🎥 Vidéo » d'un concept (quiz, Fiches, Mind Map) ouvre la vidéo de son domaine, via
-le navigateur in-app (`Capacitor.Plugins.Browser`) si disponible, sinon le navigateur
-système. 36 des 42 domaines ont une vidéo curée à ce jour ; les domaines restants
-(quelques branches SSCP, IGI 2102, II 901 — contenu trop spécifique pour avoir une
-vidéo dédiée) retombent sur une recherche YouTube externe adaptée à la langue du
-concept. Pour ajouter/corriger une vidéo : éditer `branch_videos.json`.
+mais des **vidéos choisies à la main**, vérifiées manuellement (recherche web +
+confirmation que la vidéo existe réellement avant intégration — jamais d'URL
+inventée). Deux niveaux de précision, du plus spécifique au plus large :
+
+1. `www/data/category_videos.json` — `{ branche: { catégorie: { url, title } } }` :
+   une vidéo par **catégorie précise** (ex. « Access Control Models » plutôt que tout
+   le domaine SSCP 2). **220 des 243 catégories** couvertes à ce jour.
+2. `www/data/branch_videos.json` — `{ branche: { url, title } }` : une vidéo par
+   **domaine entier**, utilisée en repli si la catégorie précise n'est pas (encore)
+   couverte. 36 des 42 domaines couverts.
+
+Le lien « 🎥 Vidéo » d'un concept (quiz, Fiches, Mind Map) essaie d'abord la vidéo de
+sa catégorie, puis celle de son domaine, puis — si aucune des deux n'existe encore
+(quelques branches SSCP, IGI 2102, II 901 : contenu trop spécifique) — une recherche
+YouTube externe adaptée à la langue du concept. Ouverture via le navigateur in-app
+(`Capacitor.Plugins.Browser`) si disponible, sinon le navigateur système. Pour
+ajouter/corriger une vidéo : éditer `category_videos.json` (priorité) ou
+`branch_videos.json`.
 
 ## Contenu
 - `www/` : application web (HTML/CSS/JS vanilla, 0 dépendance runtime) emballée par Capacitor.
@@ -60,6 +69,14 @@ Le build local n'est pas possible sur la machine de dev (ARM). L'APK est produit
 
 Pour enrichir le quiz : ajouter un concept dans `secu_concepts.json` (term/def/cat/tip/ex),
 commit + push, l'APK se reconstruit automatiquement.
+
+## Programmation
+Un nouveau groupe « 💻 Programmation » (`www/data/prog_concepts.json`) réunit des
+concepts de langages de programmation, hors sujet cybersécurité mais utile en
+révision générale — même moteur (quiz, Fiches, Mind Map, Leitner) que le reste de
+l'app. Premier contenu : bases Python (dictionnaires, ensembles), transcrites à
+partir de fiches manuscrites. Extensible : ajouter d'autres concepts au même
+fichier, ou une nouvelle branche (ex. `js1`) pour un autre langage.
 
 ## Mind maps Ignite Technologies
 11 mind maps de [Ignitetechnologies/Mindmap](https://github.com/Ignitetechnologies/Mindmap)

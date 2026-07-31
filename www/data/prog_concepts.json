@@ -1,0 +1,108 @@
+{
+  "source": "Notes personnelles (fiches manuscrites) — Python basics",
+  "branches": {
+    "py": "Python"
+  },
+  "concepts": [
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "Dictionnaire (dict)",
+      "def": "Collection de paires clé/valeur : muable, ordonnée (depuis Python 3.7) et modifiable.",
+      "tip": "Les clés doivent être uniques et immuables (string, nombre, tuple).",
+      "ex": "student = {\"name\": \"John\", \"age\": 20, \"course\": \"Python\"}"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "Accès à un élément (dict)",
+      "def": "On accède à une valeur via sa clé entre crochets : dico[cle]. Lève une erreur si la clé n'existe pas.",
+      "ex": "print(student[\"name\"])  # John"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "Ajout / mise à jour (dict)",
+      "def": "dico[cle] = valeur ajoute la clé si elle n'existe pas, ou met à jour sa valeur si elle existe déjà.",
+      "ex": "student[\"city\"] = \"New York\"  # ajout\nstudent[\"age\"] = 21           # mise à jour"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "Suppression d'un élément (dict)",
+      "def": "del dico[cle] supprime l'entrée ; dico.pop(cle) la supprime et retourne sa valeur.",
+      "ex": "del student[\"course\"]\nstudent.pop(\"age\")"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.keys()",
+      "def": "Retourne toutes les clés du dictionnaire.",
+      "ex": "student.keys()"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.values()",
+      "def": "Retourne toutes les valeurs du dictionnaire.",
+      "ex": "student.values()"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.items()",
+      "def": "Retourne les paires clé/valeur du dictionnaire.",
+      "ex": "student.items()"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.get(cle)",
+      "def": "Retourne la valeur associée à la clé, ou None si la clé est absente — évite l'erreur d'un accès direct.",
+      "ex": "student.get(\"name\")"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.update(autre_dict)",
+      "def": "Met à jour le dictionnaire avec les paires clé/valeur d'un autre dictionnaire.",
+      "ex": "student.update({\"age\": 22})"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.clear()",
+      "def": "Supprime tous les éléments du dictionnaire (il devient vide).",
+      "ex": "student.clear()"
+    },
+    {
+      "branch": "py",
+      "cat": "Dictionnaires (dict)",
+      "term": "dict.copy()",
+      "def": "Retourne une copie superficielle (shallow copy) du dictionnaire.",
+      "ex": "new = student.copy()"
+    },
+    {
+      "branch": "py",
+      "cat": "Ensembles (set)",
+      "term": "Ensemble (set)",
+      "def": "Collection d'éléments uniques : non ordonnée, muable et non indexée (pas d'accès par position).",
+      "tip": "Les doublons sont automatiquement supprimés.",
+      "ex": "s = {1, 2, 3, 4}"
+    },
+    {
+      "branch": "py",
+      "cat": "Ensembles (set)",
+      "term": "Création d'un set",
+      "def": "Avec des accolades {} contenant des éléments, ou la fonction set() à partir d'une liste.",
+      "ex": "s = set([1, 2, 3, 4])\ntype(s)  # set"
+    },
+    {
+      "branch": "py",
+      "cat": "Ensembles (set)",
+      "term": "Unicité des éléments (set)",
+      "def": "Un set élimine automatiquement les doublons dès sa création : chaque valeur n'apparaît qu'une fois.",
+      "ex": "s = {1, 2, 2, 3, 3, 4}\nprint(s)  # {1, 2, 3, 4}"
+    }
+  ]
+}

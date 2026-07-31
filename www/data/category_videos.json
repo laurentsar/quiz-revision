@@ -1,0 +1,300 @@
+{
+  "cissp1": {
+    "Business Continuity and Disaster Recovery": { "url": "https://www.youtube.com/watch?v=X9JmfljT5go", "title": "Domain 1: CISSP Business Continuity and Disaster Recovery" },
+    "Control Types": { "url": "https://www.youtube.com/watch?v=UsiJODXQRyY", "title": "CISSP #25 - Domain 1 - Security Control Types" },
+    "Fundamental Principles of Security": { "url": "https://www.youtube.com/watch?v=SP8cr0fg5Sg", "title": "CIA Triad (Security Triad) - CISSP Training Series" },
+    "Intellectual Property Laws": { "url": "https://www.youtube.com/watch?v=kwqcutwCcgU", "title": "CISSP Domain 1: Security and Risk Management - Intellectual property" },
+    "Personnel Security": { "url": "https://www.youtube.com/watch?v=_ET9HiM-Lyw", "title": "CISSP Module 1.7 Personnel Security" },
+    "Policies, Standards, Baselines, Guidelines, and Procedures": { "url": "https://www.youtube.com/watch?v=9uyqD5aNets", "title": "CISSP | Domain 1.6 | Policies, Standards, Baselines, Procedures, Guidelines" },
+    "Privacy": { "url": "https://www.youtube.com/watch?v=94XrPk3FJDY", "title": "CISSP Series Domain1 Episode 36 - Privacy Laws for CISSP in 15 minutes" },
+    "Risk Assessment and Analysis": { "url": "https://www.youtube.com/watch?v=jB3Ka0x3TCo", "title": "Risk Assessment (CISSP Free by Skillset.com)" },
+    "Risk Management Frameworks": { "url": "https://www.youtube.com/watch?v=sQe0FZs-i-U", "title": "CISSP Domain 1: NIST Risk Management Framework & Practice Question" },
+    "Security Frameworks": { "url": "https://www.youtube.com/watch?v=-7_dMa6RmmQ", "title": "CISSP Domain 1.2 Memorizing Security Frameworks" },
+    "Supply Chain Risk Management": { "url": "https://www.youtube.com/watch?v=bc8GuVyiPS4", "title": "CISSP Lesson#22 - Objective 1.11 - Supply Chain Risk Management (SCRM)" }
+  },
+  "cissp2": {
+    "Classification": { "url": "https://www.youtube.com/watch?v=WBlQQ6qTlGI", "title": "Asset Classification MindMap (1 of 1) | CISSP Domain 2" },
+    "Information Life Cycle": { "url": "https://www.youtube.com/watch?v=tlhemE1b6e0", "title": "CISSP Domain 2 - 3. Data Lifecycle Management" },
+    "Layers of Responsibility": { "url": "https://www.youtube.com/watch?v=wAjoJloYnH0", "title": "Data Roles & Responsibilities Explained | CISSP" },
+    "Protecting Privacy": { "url": "https://www.youtube.com/watch?v=ZWt5j-i5c2Y", "title": "Protecting Privacy (CISSP Free by Skillset.com)" },
+    "Retention Policies": { "url": "https://www.youtube.com/watch?v=4t3yGlY3F8w", "title": "CISSP Domain 2.5: Ensuring Proper Asset Retention & End-of-Life Security" }
+  },
+  "cissp3": {
+    "A Few Threats to Review": { "url": "https://www.youtube.com/watch?v=-GikeG2OFmA", "title": "Vulnerabilities in Systems MindMap (4 of 9) | CISSP Domain 3" },
+    "Applying Cryptography": { "url": "https://www.youtube.com/watch?v=r5x4MwVIDp4", "title": "CISSP #48 - Domain 3 - Cryptography Applications" },
+    "Certification vs. Accreditation": { "url": "https://www.youtube.com/watch?v=GMidZjDkbjo", "title": "Certification vs Accreditation: Key Concepts for CISSP" },
+    "Computer Architecture": { "url": "https://www.youtube.com/watch?v=IYByuBBaWOw", "title": "CISSP #59 - Domain 3 - Architecture - Processing 1" },
+    "Cryptography Definitions and Concepts": { "url": "https://www.youtube.com/watch?v=4n-_UezAxOk", "title": "CISSP #41 - Domain 3 - Cryptography Terminology" },
+    "Internal Support Systems": { "url": "https://www.youtube.com/watch?v=L8k5Ls3rdSM", "title": "CISSP #82 - Domain 3 - Power, HVAC, & Fire" },
+    "Methods of Encryption": { "url": "https://www.youtube.com/watch?v=lB5EQo1excA", "title": "CISSP #43 - Domain 3 - Modern Cryptography" },
+    "Open vs. Closed Systems": { "url": "https://www.youtube.com/watch?v=WYordMIlfKE", "title": "CISSP (Chapter 8) - Closed vs Open Systems, APIs, Open vs Closed Source" },
+    "Operating Systems": { "url": "https://www.youtube.com/watch?v=T9GJXOG1Xpo", "title": "CISSP Domain 3: Types of Storage & System Kernel Explained" },
+    "Security Models": { "url": "https://www.youtube.com/watch?v=BHk55Z00eXI", "title": "CISSP #52 - Domain 3 - Security Models 1" },
+    "System Architecture": { "url": "https://www.youtube.com/watch?v=U3rPBL68YFk", "title": "CISSP Series Domain3 Episode 11 - Layering and Domain Separation" },
+    "System Security Architecture": { "url": "https://www.youtube.com/watch?v=N4bZSoV2yis", "title": "Trusted Computing Base MindMap (3 of 9) | CISSP Domain 3" },
+    "Systems Evaluation": { "url": "https://www.youtube.com/watch?v=hYfhV4N13SI", "title": "Evaluation Criteria MindMap (2 of 9) | CISSP Domain 3" },
+    "Systems Security": { "url": "https://www.youtube.com/watch?v=T8WZhLtl7yk", "title": "CISSP #77 - Domain 3 - Protection Mechanisms" },
+    "Types of Asymmetric Systems": { "url": "https://www.youtube.com/watch?v=UYX_rZ5JxJg", "title": "CISSP Micro Module: Asymmetric Cryptography" },
+    "Types of Symmetric Systems": { "url": "https://www.youtube.com/watch?v=FwnJh2v_cso", "title": "Symmetric Key Cryptography (CISSP Free by Skillset.com)" }
+  },
+  "cissp4": {
+    "Network Attacks": { "url": "https://www.youtube.com/watch?v=DLiP7y51OAQ", "title": "Common Network Attacks and Countermeasures (CISSP Free by Skillset.com)" },
+    "Network Components": { "url": "https://www.youtube.com/watch?v=gZlYukVZvI8", "title": "Network Devices (CISSP Free by Skillset.com)" },
+    "Network Encryption": { "url": "https://www.youtube.com/watch?v=X8BylpTBt3c", "title": "Protecting Data in Transit (CISSP Free by Skillset.com)" },
+    "Network Protocols and Services": { "url": "https://www.youtube.com/watch?v=wadoLjPojtQ", "title": "Secure Communication Protocols (CISSP Free by Skillset.com)" },
+    "Networking Foundations": { "url": "https://www.youtube.com/watch?v=vqXiExtCxFU", "title": "IP Networking (CISSP Free by Skillset.com)" },
+    "Open Systems Interconnection Reference Model": { "url": "https://www.youtube.com/watch?v=6X4A6B94vmw", "title": "CISSP Domain 4 Review | Mind Map (1 of 4) | OSI Model" },
+    "Remote Access": { "url": "https://www.youtube.com/watch?v=Y-b7movU3RQ", "title": "Remote Access MindMap (4 of 4) | CISSP Domain 4" },
+    "TCP/IP Model": { "url": "https://www.youtube.com/watch?v=AR23ZlBI9EI", "title": "CISSP Domain 4 Preview | The TCP/IP model" },
+    "Transmission Media": { "url": "https://www.youtube.com/watch?v=SlWnG_vT99E", "title": "Network Cabling and Topology (CISSP Free by Skillset.com)" },
+    "Wide Area Networks": { "url": "https://www.youtube.com/watch?v=ibmnQFz5UO4", "title": "WAN Connection Technologies (CISSP Free by Skillset.com)" },
+    "Wireless Networks": { "url": "https://www.youtube.com/watch?v=Gu5qx4bAKlE", "title": "Wireless Networks (CISSP Free by Skillset.com)" }
+  },
+  "cissp5": {
+    "Access Control Mechanisms": { "url": "https://www.youtube.com/watch?v=Exv329-T4e8", "title": "Access Control Models (CISSP Free by Skillset.com)" },
+    "Access Control Monitoring": { "url": "https://www.youtube.com/watch?v=atvB5F6ieKU", "title": "CISSP domain 5 - Part 146 A | Monitoring and Threats to Access Control" },
+    "Access Control Techniques and Technologies": { "url": "https://www.youtube.com/watch?v=kqLlWMrOKxw", "title": "Access Control Techniques (CISSP Free by Skillset.com)" },
+    "Controlling Physical and Logical Access": { "url": "https://www.youtube.com/watch?v=TJG7xoGE92U", "title": "CCT 264: Control Physical and Logical Access to Assets (CISSP Domain 5.1)" },
+    "Identification, Authentication, Authorization, and Accountability": { "url": "https://www.youtube.com/watch?v=X4-eM01l6EM", "title": "CISSP - IAAA - Identification, Authentication, Authorization and Accountability" },
+    "Integrating Identity as a Service": { "url": "https://www.youtube.com/watch?v=GU_-AGqDDtw", "title": "Integrating Identity Services (CISSP Free by Skillset.com)" },
+    "Managing the Identity and Access Provisioning Life Cycle": { "url": "https://www.youtube.com/watch?v=4meGlsgYgSA", "title": "CCT 010: Identity and Access Provisioning Lifecycle (CISSP Domain 5)" },
+    "Threats to Access Control": { "url": "https://www.youtube.com/watch?v=CnzxJEkwS0Y", "title": "Types of Access Control Attacks (CISSP Free by Skillset.com)" }
+  },
+  "cissp6": {
+    "Assessment, Test, and Audit Strategies": { "url": "https://www.youtube.com/watch?v=A-aNmhB_WjM", "title": "Security Assessment and Testing MindMap (1 of 3) | CISSP Domain 6" },
+    "Auditing Administrative Controls": { "url": "https://www.youtube.com/watch?v=_lwXekXGlJ8", "title": "Account Management (CISSP Free by Skillset.com)" },
+    "Auditing Technical Controls": { "url": "https://www.youtube.com/watch?v=EgU3dLB2O0M", "title": "Identifying Vulnerabilities (2 of 3) | CISSP Domain 6" }
+  },
+  "cissp7": {
+    "Administrative Management": { "url": "https://www.youtube.com/watch?v=1zGgjR5vdsI", "title": "MicroNuggets: CISSP Administrative Controls Explained" },
+    "Disaster Recovery": { "url": "https://www.youtube.com/watch?v=upbyxBDWIC0", "title": "Recovery Strategies MindMap (5 of 6) | CISSP Domain 7" },
+    "Implementing Disaster Recovery": { "url": "https://www.youtube.com/watch?v=lLbK5Twv6GM", "title": "DRP - Disaster Recovery Plan Testing (CISSP Free by Skillset.com)" },
+    "Investigations": { "url": "https://www.youtube.com/watch?v=ECUnAw3uDLY", "title": "Investigations MindMap (1 of 6) | CISSP Domain 7" },
+    "Network and Resource Availability": { "url": "https://www.youtube.com/watch?v=96F4SstiwfU", "title": "CISSP 18.2 - System Resilience, High Availability & Fault Tolerance" },
+    "Personal Safety Concerns": { "url": "https://www.youtube.com/watch?v=sf0DqKskcaA", "title": "Personnel Safety and Privacy (CISSP Free by Skillset.com)" },
+    "Physical Security": { "url": "https://www.youtube.com/watch?v=xm_gznvJIsY", "title": "Physical Security (CISSP Free by Skillset.com)" },
+    "Preventing and Detecting": { "url": "https://www.youtube.com/watch?v=ozP9uK6p_w4", "title": "CISSP 17.2 - Implementing Detection & Preventive Measures" },
+    "Secure Resource Provisioning": { "url": "https://www.youtube.com/watch?v=6ngap35x53A", "title": "CISSP 16.3 - Provision Information & Assets Securely" },
+    "The Incident Management Process": { "url": "https://www.youtube.com/watch?v=5a5ZscedRYE", "title": "Incident Response MindMap (2 of 6) | CISSP Domain 7" }
+  },
+  "cissp8": {
+    "Assessing Software Security": { "url": "https://www.youtube.com/watch?v=XiNgkBwRlnY", "title": "CCT 238: Assessing the Effectiveness of Software Security (Domain 8.3)" },
+    "Secure Coding": { "url": "https://www.youtube.com/watch?v=iQgbPFRo1SQ", "title": "CISSP Secure Coding Guidelines & Standards" },
+    "Software Development Life Cycle": { "url": "https://www.youtube.com/watch?v=GT306d4jJpY", "title": "CISSP Software Development Life Cycle (SDLC) Process" }
+  },
+  "sscp1": {
+    "Foundational Concepts": { "url": "https://www.youtube.com/watch?v=jIWWrMAVL_o", "title": "SSCP - Lesson 03 - What Is Information Security" },
+    "Governance & Ethics": { "url": "https://www.youtube.com/watch?v=XfwBxCYBBC0", "title": "CertMike Explains the (ISC)2 Code of Ethics for CISSP, CCSP, and SSCP" },
+    "Risk & Assurance": { "url": "https://www.youtube.com/watch?v=Sb8GVD-QDM8", "title": "CertMike Explains Quantitative Risk Assessment" },
+    "Security Governance": { "url": "https://www.youtube.com/watch?v=-843Jc7_B_8", "title": "What is Information Security Governance?" }
+  },
+  "sscp2": {
+    "Access Administration": { "url": "https://www.youtube.com/watch?v=PWhKVehWxbo", "title": "Provisioning and Deprovisioning - Security+ 2.3" },
+    "Access Control Models": { "url": "https://www.youtube.com/watch?v=hlbRzgg3lac", "title": "Access Control Models Explained | DAC MAC RBAC ABAC" },
+    "Authentication Factors": { "url": "https://www.youtube.com/watch?v=hPRszX4g4V4", "title": "CertMike Explains Multi-Factor Authentication" },
+    "Identity Management": { "url": "https://www.youtube.com/watch?v=aNj36g7fSsU", "title": "Identity & Access Management (IAM)" }
+  },
+  "sscp3": {
+    "Monitoring & Analysis": { "url": "https://www.youtube.com/watch?v=np2WI_rM-Ok", "title": "Security Monitoring - Security+ SY0-701 4.4" },
+    "Monitoring Techniques": { "url": "https://www.youtube.com/watch?v=CcpqT5uiRFA", "title": "CertMike Explains Web Log Analysis" },
+    "Risk Management": { "url": "https://www.youtube.com/watch?v=d8Z1RyhmRXg", "title": "CertMike Explains NIST Risk Management Framework" },
+    "Risk Treatment": { "url": "https://www.youtube.com/watch?v=En1UWXCA_RI", "title": "Risk Treatment Explained | Mitigation, Transfer, Acceptance & Avoidance" }
+  },
+  "sscp4": {
+    "Continuity & Recovery": { "url": "https://www.youtube.com/watch?v=0NgIZpxejcU", "title": "CertMike Explains Business Impact Analysis" },
+    "Incident Handling": { "url": "https://www.youtube.com/watch?v=-uwENcQzXj8", "title": "CertMike Explains Incident Response Process" },
+    "Incident Lifecycle": { "url": "https://www.youtube.com/watch?v=vDh8wwIOcSw", "title": "NIST Incident Response Lifecycle: 4 Phases Explained" },
+    "Resilience": { "url": "https://www.youtube.com/watch?v=S9c7oy-QXHI", "title": "What is Cyber Resilience?" }
+  },
+  "sscp5": {
+    "Algorithms & Modes": { "url": "https://www.youtube.com/watch?v=soatRmpccPk", "title": "Difference Between ECB, CBC, CFB, OFB, and CTR Modes" },
+    "Applied Cryptography": { "url": "https://www.youtube.com/watch?v=jNOXdJVgrG4", "title": "CISSP 7.7 - Applied Cryptography (Part 1 of 2)" },
+    "Cryptographic Concepts": { "url": "https://www.youtube.com/watch?v=Zg1BHC4qubM", "title": "Cryptography MindMap (6 of 9) | CISSP Domain 3" },
+    "Key Management & PKI": { "url": "https://www.youtube.com/watch?v=WR6LiHQbzec", "title": "PKI Key Management Process (CISSP Free by Skillset.com)" }
+  },
+  "sscp6": {
+    "Network Attacks & Defenses": { "url": "https://www.youtube.com/watch?v=CH2J2mYb51s", "title": "Network Attacks - Everything You Need to Know in 20 Minutes" },
+    "Network Fundamentals": { "url": "https://www.youtube.com/watch?v=Ptz3vISTZAI", "title": "CertMike Explains TCP/IP and the OSI Model" },
+    "Protocols & Services": { "url": "https://www.youtube.com/watch?v=E5bSumTAHZE", "title": "Network Protocols - ARP, FTP, SMTP, HTTP, SSL, TLS, HTTPS, DNS, DHCP" },
+    "Wireless & Remote": { "url": "https://www.youtube.com/watch?v=FYADqL3rnLo", "title": "Wireless Security Exam Prep for CISSP CISA CISM" }
+  },
+  "sscp7": {
+    "Data & Cloud": { "url": "https://www.youtube.com/watch?v=y0gp1q-lZxk", "title": "SSCP - Lesson 09 - Applications, Data, and Cloud Security" },
+    "Endpoint Defense": { "url": "https://www.youtube.com/watch?v=83pCkSSj1IQ", "title": "Endpoint Security - Security+ SY0-701 4.5" },
+    "Malware & Endpoint": { "url": "https://www.youtube.com/watch?v=jX_s3BMkHJw", "title": "SSCP Certification Training - Analyze Malicious Code and Activity" },
+    "Secure Environments": { "url": "https://www.youtube.com/watch?v=mfzq9y_IlZE", "title": "SSCP - Lesson 08 - Hardware and System Security" }
+  },
+  "cc1": {
+    "1.1 Information Assurance": { "url": "https://www.youtube.com/watch?v=TWfY1p_yLrE", "title": "CIA Triad Explained | Domain 1 - Certified in Cybersecurity (CC)" },
+    "1.2 Risk Management": { "url": "https://www.youtube.com/watch?v=q9MtAgrHECM", "title": "ISC2 CC Lesson 2: Risk Management Explained" },
+    "1.3 Security Controls": { "url": "https://www.youtube.com/watch?v=kweHA2UQmDA", "title": "ISC2 CC Lesson 3: Security Controls Explained" },
+    "1.4 & 1.5 Ethics & Governance": { "url": "https://www.youtube.com/watch?v=Sh3GUuQAqFw", "title": "Code of Ethics & Governance Explained | Domain 1 CC Exam" },
+    "More Principles": { "url": "https://www.youtube.com/watch?v=z_RRGH7Lo64", "title": "Authentication, Privacy & Non-Repudiation Explained | Domain 1 CC Exam" }
+  },
+  "cc2": {
+    "2.1 Business Continuity (BC)": { "url": "https://www.youtube.com/watch?v=coE4_JsHCdg", "title": "Business Continuity: Protecting Your Organization's Core | Domain 2 CC" },
+    "2.2 Disaster Recovery (DR)": { "url": "https://www.youtube.com/watch?v=C-c6lRGgID4", "title": "Disaster Recovery in Cybersecurity: Protect, Respond, Recover | Domain 2 CC" },
+    "2.3 Incident Response": { "url": "https://www.youtube.com/watch?v=f0iShbbkV0Y", "title": "ISC2 CC Lesson 6: Incident Response Explained" },
+    "Continuity Metrics": { "url": "https://www.youtube.com/watch?v=0YamglRBxVc", "title": "Business Impact Analysis (BIA) Explained | RTO, RPO & MTD" }
+  },
+  "cc3": {
+    "3.1 Physical Access Controls": { "url": "https://www.youtube.com/watch?v=EALmwg_9VnI", "title": "ISC2 CC Lesson 9: Physical Access Controls" },
+    "3.2 Logical Access Controls": { "url": "https://www.youtube.com/watch?v=UMAnnFfri08", "title": "Logical Access Controls Explained | DAC, MAC & RBAC | Domain 3 CC" },
+    "More Access Controls": { "url": "https://www.youtube.com/watch?v=dO-4QSs2Hrs", "title": "Mastering ISC2 CC Domain 3: Access Control (DAC, MAC, RBAC)" }
+  },
+  "cc4": {
+    "4.1 Computer Networking": { "url": "https://www.youtube.com/watch?v=aoGbRvCeYDM", "title": "ISC2 CC Lesson 11: OSI Model and TCP/IP Explained" },
+    "4.2 Threats and Attacks": { "url": "https://www.youtube.com/watch?v=EzvNl4K1Xt4", "title": "ISC2 CC Lesson 13: Network Threats and Attacks" },
+    "4.3 Security Infrastructure": { "url": "https://www.youtube.com/watch?v=R8hWKOFLrVs", "title": "ISC2 CC Lesson 14: Firewalls, IDS/IPS and Zero Trust" },
+    "Networking Details": { "url": "https://www.youtube.com/watch?v=6QgmmZlI9Sk", "title": "ISC2 CC Lesson 12: Ports and Protocols You Must Know" }
+  },
+  "cc5": {
+    "5.1 Data Security": { "url": "https://www.youtube.com/watch?v=lbwqxrViJaM", "title": "ISC2 CC Lesson 15: Encryption and Data Security Basics" },
+    "5.2 System Hardening": { "url": "https://www.youtube.com/watch?v=k3_pHXXv4KM", "title": "ISC2 CC Lesson 16: System Hardening and Config Management" },
+    "5.3 Security Policies": { "url": "https://www.youtube.com/watch?v=qMXm9SJcL34", "title": "Common Security Policies Explained | Domain 5 CC Exam" },
+    "5.4 Security Awareness Training": { "url": "https://www.youtube.com/watch?v=FknwnXQujtU", "title": "Security Awareness Training Explained | Domain 5 CC Exam" },
+    "Operations Details": { "url": "https://www.youtube.com/watch?v=OIoXEG-vtlA", "title": "ISC2 CC Lesson 17: Security Policies and Awareness Training" }
+  },
+  "ccsp1": {
+    "Cloud Fundamentals": { "url": "https://www.youtube.com/watch?v=2B6z5Gd6ypI", "title": "Cloud Computing MindMap | CCSP Domain 1 (1 of 5)" },
+    "Design Principles": { "url": "https://www.youtube.com/watch?v=3fijqOnYwRU", "title": "CCSP Domain 1 | 1.4 | Cloud data lifecycle, BCDR, Cost benefit analysis" },
+    "Roles & Standards": { "url": "https://www.youtube.com/watch?v=BXRAi9R4QrM", "title": "Cloud Shared Considerations & Frameworks MindMap | CCSP Domain 1" }
+  },
+  "ccsp2": {
+    "Data Governance": { "url": "https://www.youtube.com/watch?v=wZB9ySz0XE4", "title": "Data Discovery, Asset Classification & Log Review MindMap | CCSP Domain 2" },
+    "Data Protection": { "url": "https://www.youtube.com/watch?v=Udyo36Tv3vQ", "title": "Data Security Strategies MindMap | CCSP Domain 2" },
+    "Storage & Keys": { "url": "https://www.youtube.com/watch?v=RHJD-R6mptE", "title": "Cloud Data Storage MindMap | CCSP Domain 2" }
+  },
+  "ccsp3": {
+    "Cloud Infrastructure": { "url": "https://www.youtube.com/watch?v=FspwWwCrpWk", "title": "Cloud Infrastructure Components MindMap | CCSP Domain 3" },
+    "Infrastructure": { "url": "https://www.youtube.com/watch?v=97Kt0OgpYK4", "title": "Attack Vectors & Risks MindMap | CCSP Domain 3" },
+    "Resilience": { "url": "https://www.youtube.com/watch?v=sScBPXj81YQ", "title": "Business Continuity Management (BCM) MindMap | CCSP Domain 3" }
+  },
+  "ccsp4": {
+    "Application Assurance": { "url": "https://www.youtube.com/watch?v=ANjwPT0eSiY", "title": "Common Vulnerabilities, Threat Modeling & Verified Secure Software | CCSP Domain 4" },
+    "Identity for Apps": { "url": "https://www.youtube.com/watch?v=Td9TiqWWG0s", "title": "Access Control MindMap | CCSP Domain 4" },
+    "Secure Development": { "url": "https://www.youtube.com/watch?v=B0ot9ky64Ns", "title": "Secure Software Development MindMap | CCSP Domain 4" }
+  },
+  "ccsp5": {
+    "Continuity": { "url": "https://www.youtube.com/watch?v=W4IAzh-SN2E", "title": "CISSP CCSP (BCDR) Fault-Tolerance v Resilience v Disaster Recovery" },
+    "Operational Security": { "url": "https://www.youtube.com/watch?v=ltQGGyeYSUQ", "title": "CCSP Domain 5 | 5.7 Manage security operations | SOC | SIEM" },
+    "Operations": { "url": "https://www.youtube.com/watch?v=SP7odLTHsYA", "title": "Cloud Operations MindMap | CCSP Domain 5" }
+  },
+  "ccsp6": {
+    "Legal & Privacy": { "url": "https://www.youtube.com/watch?v=a87cBaYF73Q", "title": "Privacy, Outsourcing and Cloud Contracts MindMap | CCSP Domain 6" },
+    "Risk & Audit": { "url": "https://www.youtube.com/watch?v=VhaHNFDC8qk", "title": "Cloud Audit MindMap | CCSP Domain 6" },
+    "Standards & Frameworks": { "url": "https://www.youtube.com/watch?v=UpG2UCODXk0", "title": "Understanding CSA STAR: The Ultimate Guide to Cloud Security Assurance" }
+  },
+  "ceh1": {
+    "Foundations (Modules 1-5)": { "url": "https://www.youtube.com/watch?v=JHJKQ62ZGfw", "title": "CEH v13 AI Engage Part 1 | Practical Labs Modules 1-5 Explained" },
+    "Reconnaissance & scanning": { "url": "https://www.youtube.com/watch?v=BWaGnsRirtU", "title": "Red Team Reconnaissance Techniques" },
+    "System Attacks (Modules 6-10)": { "url": "https://www.youtube.com/watch?v=1n8wlafLsi0", "title": "Module 06: System Hacking | Password Cracking, Exploits, Gaining Access" },
+    "Access & post-exploitation": { "url": "https://www.youtube.com/watch?v=xsyeL6xWWy4", "title": "The Complete Meterpreter Guide | Privilege Escalation & Clearing Tracks" },
+    "Malware & sniffing": { "url": "https://www.youtube.com/watch?v=oHcYGvACFH0", "title": "Module 7 Malware Threats Explained (Viruses, Ransomware, Fileless & APTs)" },
+    "Network & Web Attacks (Modules 11-15)": { "url": "https://www.youtube.com/watch?v=_RcTgDgJAMg", "title": "CEH Module 12 | Understanding IDS, Firewalls & Honeypots" },
+    "Web & network attacks": { "url": "https://www.youtube.com/watch?v=1GJ_LwNw6sc", "title": "Hacking Web Applications" },
+    "Wireless, mobile & crypto": { "url": "https://www.youtube.com/watch?v=tQEEOQYiaB4", "title": "Module 16: Hacking Wireless Networks | WPA Cracking, Evil Twin & More" },
+    "Emerging Tech (Modules 16-20)": { "url": "https://www.youtube.com/watch?v=xaht7kF3IH4", "title": "IoT Cyber Security: IoT & OT Hacking Risks You Must Know" },
+    "Phases & concepts clés": { "url": "https://www.youtube.com/watch?v=NtMTQ9bD5hU", "title": "The Cyber Kill Chain Explained | Threat Intelligence" }
+  },
+  "archi": {
+    "Analyse de risque": { "url": "https://www.youtube.com/watch?v=LbATqB6qELo", "title": "EBIOS Risk Manager, la méthodologie expliquée" },
+    "Conformité & accréditation": { "url": "https://www.youtube.com/watch?v=fe4k-_Wma-s", "title": "Guide de l'homologation de sécurité des SI" },
+    "Données": { "url": "https://www.youtube.com/watch?v=-3RbQ3sbBPc", "title": "Cours de Cyber Sécurité : Classification des données et étiquetages" },
+    "Exigences": { "url": "https://www.youtube.com/watch?v=K5gHGhREl3w", "title": "Bien choisir le bon référentiel d'exigences de sécurité" },
+    "Identité & contrôle d'accès": { "url": "https://www.youtube.com/watch?v=gwLUNqfUHSA", "title": "IAM : comprendre l'essentiel en 6 minutes" },
+    "Indicateurs": { "url": "https://www.youtube.com/watch?v=oIh9IK2CMfI", "title": "Les KPI (indicateurs clés de performance) en cybersécurité" },
+    "Objectifs de sécurité": { "url": "https://www.youtube.com/watch?v=ea4DX-vj6HY", "title": "Les 3 piliers de la cybersécurité (CIA Triad)" },
+    "Principes d'architecture": { "url": "https://www.youtube.com/watch?v=RBK0wmREvkY", "title": "L'architecture de sécurité expliquée avec Game of Thrones" },
+    "Protection réseau": { "url": "https://www.youtube.com/watch?v=6Swt51w3EjY", "title": "Firewall : comprendre l'essentiel en 7 minutes" },
+    "Résilience & continuité": { "url": "https://www.youtube.com/watch?v=kkb6c--y3hI", "title": "PCA (BCP) vs PRA (DRP)" },
+    "Scénarios de menace": { "url": "https://www.youtube.com/watch?v=1Zdq-BWPWRk", "title": "Comment utiliser simplement MITRE ATT&CK pour analyser les CVE" },
+    "Segmentation & zones de confiance": { "url": "https://www.youtube.com/watch?v=mY-TvNXFHl0", "title": "La DMZ expliquée en dessins" },
+    "Supervision & détection": { "url": "https://www.youtube.com/watch?v=Awsajwvlris", "title": "Qu'est-ce qu'un SOC - Security Operations Center ?" },
+    "Systèmes & durcissement": { "url": "https://www.youtube.com/watch?v=_yfExG6PaGU", "title": "Durcissement des systèmes Windows et Linux" },
+    "Écarts / Waivers": { "url": "https://www.youtube.com/watch?v=t9_ee88-lIk", "title": "ISO 27001 : Comment définir tes critères d'acceptation des risques" }
+  },
+  "ig_blueteam": {
+    "Blue Team Operations": { "url": "https://www.youtube.com/watch?v=cyCIhG1M-Os", "title": "Qu'est-ce qu'un SOC (Security Operations Center) ?" },
+    "Endpoint & réseau": { "url": "https://www.youtube.com/watch?v=hB4winKNWog", "title": "Comprendre l'EDR (Endpoint Detection and Response)" },
+    "Incident Response": { "url": "https://www.youtube.com/watch?v=-_MFEYuOiUM", "title": "Répondre efficacement à des incidents de cybersécurité" },
+    "Log & vulnérabilités": { "url": "https://www.youtube.com/watch?v=9QvUuboW68E", "title": "Scanners de vulnérabilité et gestion des correctifs" },
+    "Security Monitoring": { "url": "https://www.youtube.com/watch?v=zOwWVlfMfhI", "title": "SIEM : optimisez votre supervision de la sécurité informatique" },
+    "Threat Detection": { "url": "https://www.youtube.com/watch?v=1nnlDbjjd7w", "title": "Détection des menaces Cyber : cas pratique grâce à l'IA" },
+    "Threat Intelligence": { "url": "https://www.youtube.com/watch?v=1DTTu34fp5M", "title": "Qu'est-ce que la Cyber Threat Intelligence ?" }
+  },
+  "ig_cybertech": {
+    "Cloud Security": { "url": "https://www.youtube.com/watch?v=nyvAIS4s-is", "title": "Comprendre SecNumCloud, la sécurité cloud selon l'ANSSI" },
+    "Data & App Security": { "url": "https://www.youtube.com/watch?v=nhq_87lYgSk", "title": "Sécurité Web pour Débutants : Guide Simple du OWASP Top 10" },
+    "Endpoint Security": { "url": "https://www.youtube.com/watch?v=mr3M8mkWEyY", "title": "Antivirus vs EDR vs XDR" },
+    "Identity & Access (IAM)": { "url": "https://www.youtube.com/watch?v=lBR8vA8NIuE", "title": "IAM : comprendre la gestion des identités et des accès" },
+    "Network Security": { "url": "https://www.youtube.com/watch?v=bG8Xb02Lrs4", "title": "IDS / IPS expliqués en dessins" },
+    "Offensive & GRC": { "url": "https://www.youtube.com/watch?v=R-RuzioEHg8", "title": "Comprendre les tests d'intrusion en sécurité informatique" },
+    "Threat Intel & Monitoring": { "url": "https://www.youtube.com/watch?v=GutkktXqcJ4", "title": "OSINT #5 : CTI - Anticiper, détecter et analyser les cybermenaces" }
+  },
+  "ig_devops": {
+    "CI/CD": { "url": "https://www.youtube.com/watch?v=ws1qGuFMYlc", "title": "CI/CD : comprendre l'essentiel en 8 minutes" },
+    "Fondations": { "url": "https://www.youtube.com/watch?v=fezJJgBMqik", "title": "Introduction au DevOps" },
+    "Infrastructure as Code": { "url": "https://www.youtube.com/watch?v=BUuMIq8A3BE", "title": "Infrastructure as Code : l'essentiel en 8 minutes" },
+    "Monitoring & Clouds": { "url": "https://www.youtube.com/watch?v=_UD181Kf4E0", "title": "Superviser ses conteneurs Docker avec Prometheus/Grafana" },
+    "Servers & Databases": { "url": "https://www.youtube.com/watch?v=RLst-fbRxws", "title": "Le concept Client Serveur, les bases de données, SQL" }
+  },
+  "ig_gdpr": {
+    "7 principes (Art. 5)": { "url": "https://www.youtube.com/watch?v=vW4ITMrRp4w", "title": "Article 5 RGPD - Principes relatifs au traitement des données" },
+    "Bases légales (Art. 6)": { "url": "https://www.youtube.com/watch?v=ja0DCenxC98", "title": "Article 6 RGPD - Licéité de traitement" },
+    "Droits des personnes": { "url": "https://www.youtube.com/watch?v=KhzBpohxzic", "title": "Quels sont les droits des personnes prévus par le RGPD ?" },
+    "Exigences de consentement": { "url": "https://www.youtube.com/watch?v=M3KjIRAVZQE", "title": "Article 7 - Conditions applicables au consentement" },
+    "Notification de violation": { "url": "https://www.youtube.com/watch?v=ZwcSO-J0oiY", "title": "RGPD : il faut notifier les violations de données sous 72h" },
+    "Obligations des organismes": { "url": "https://www.youtube.com/watch?v=ZBgBre-vwJA", "title": "Protection des données (RGPD) : obligations pour les entreprises" },
+    "Présentation & champ": { "url": "https://www.youtube.com/watch?v=0f_6-9qAVA4", "title": "RGPD : champs d'application matériel et territorial" },
+    "Rôles clés": { "url": "https://www.youtube.com/watch?v=VVDoWvAb470", "title": "RGPD : les acteurs des traitements" },
+    "Sanctions & transferts": { "url": "https://www.youtube.com/watch?v=sJPAvf3ibKc", "title": "RGPD : les sanctions de la CNIL" }
+  },
+  "ig_hipaa": {
+    "Privacy Rule": { "url": "https://www.youtube.com/watch?v=qavYsiWl-v4", "title": "What is the HIPAA Privacy Rule?" },
+    "Security Rule": { "url": "https://www.youtube.com/watch?v=tlotzdQfKkA", "title": "Road to HIPAA Compliance: Understanding the Security Rule" },
+    "Entités & identifiants": { "url": "https://www.youtube.com/watch?v=DsDFFmNGe9I", "title": "HIPAA Covered Entity vs Business Associate" },
+    "Autres règles": { "url": "https://www.youtube.com/watch?v=1w2oXGZP-DU", "title": "HIPAA Enforcement Guide" }
+  },
+  "ig_http": {
+    "1xx Informational": { "url": "https://www.youtube.com/watch?v=JVXK0ueIueY", "title": "All HTTP Status Codes of 1XX Explained" },
+    "2xx Successful": { "url": "https://www.youtube.com/watch?v=h7PxPAmnIMs", "title": "All HTTP 2xx Status Codes Explained" },
+    "3xx Redirection": { "url": "https://www.youtube.com/watch?v=9ma5yEBQMsk", "title": "All HTTP 3xx Status Codes Explained" },
+    "4xx Client Error": { "url": "https://www.youtube.com/watch?v=G2giA7ufoy0", "title": "All HTTP 4xx Status Codes Explained" },
+    "5xx Server Error": { "url": "https://www.youtube.com/watch?v=plfEQwqbKbw", "title": "All HTTP 5xx Status Codes Explained" }
+  },
+  "ig_mitre": {
+    "Tactiques Enterprise": { "url": "https://www.youtube.com/watch?v=LCec9K0aAkM", "title": "Introduction To The MITRE ATT&CK Framework" }
+  },
+  "ig_nist": {
+    "Identify (Identifier)": { "url": "https://www.youtube.com/watch?v=XGZyrWcUrJQ", "title": "NIST CSF Identify Function" },
+    "Protect (Protéger)": { "url": "https://www.youtube.com/watch?v=gdWv3NJKzSs", "title": "NIST CSF - Protect" },
+    "Detect (Détecter)": { "url": "https://www.youtube.com/watch?v=RAzffpMiyao", "title": "NIST CSF Detect Function" },
+    "Respond (Répondre)": { "url": "https://www.youtube.com/watch?v=ZDkt2hMjoGQ", "title": "DeNISTifying NIST Part IV: Respond" },
+    "Recover (Rétablir)": { "url": "https://www.youtube.com/watch?v=iBClhHTdglU", "title": "What is the NIST Recover Function?" }
+  },
+  "ig_sec360": {
+    "Advance Threat Protection": { "url": "https://www.youtube.com/watch?v=iXn4hjS3SSs", "title": "EDR : comprendre l'essentiel en 5 minutes" },
+    "Application Security": { "url": "https://www.youtube.com/watch?v=bBBOysbJD1s", "title": "Présentation de l'OWASP Top 10" },
+    "Data Security": { "url": "https://www.youtube.com/watch?v=8H3ecZf5JQ4", "title": "Comment protéger vos données ? Sécurité End-to-End" },
+    "Infrastructure Security": { "url": "https://www.youtube.com/watch?v=jDJ0JQLu3gA", "title": "Sécuriser votre data center face aux cyberattaques" },
+    "Mobile Security": { "url": "https://www.youtube.com/watch?v=IWRHxHucAjs", "title": "Comment sécuriser son smartphone et protéger sa vie privée ?" },
+    "Network Security": { "url": "https://www.youtube.com/watch?v=6Swt51w3EjY", "title": "Firewall : comprendre l'essentiel en 7 minutes" },
+    "System & Risk": { "url": "https://www.youtube.com/watch?v=NNNdLSePRIA", "title": "Introduction aux analyses de risques Cyber" }
+  },
+  "ig_secauto": {
+    "Application Security": { "url": "https://www.youtube.com/watch?v=bHmiPghYZtA", "title": "Sécuriser ses applications web : les injections SQL" },
+    "E-mail Attack": { "url": "https://www.youtube.com/watch?v=AN0VKrTHpFM", "title": "Comment se protéger contre le phishing ?" },
+    "Financial & Cyber Crime": { "url": "https://www.youtube.com/watch?v=0mJOfZRbT6Q", "title": "Cyber-arnaques : la traque aux escrocs" },
+    "Hacking": { "url": "https://www.youtube.com/watch?v=w_U5Itwiztg", "title": "Comment font les hackers ?" },
+    "Identity Theft": { "url": "https://www.youtube.com/watch?v=294remw9BiQ", "title": "Usurpation d'identité : comment ils prennent votre vie en ligne" },
+    "Malicious Code": { "url": "https://www.youtube.com/watch?v=G_lFrgwjw9E", "title": "Le ransomware expliqué en 5 minutes" },
+    "Password Attack": { "url": "https://www.youtube.com/watch?v=DikJ_VSa1DA", "title": "Attaque de connexion par force brute - OWASP Top 10" }
+  },
+  "ig_socialeng": {
+    "Baiting": { "url": "https://www.youtube.com/watch?v=4ejQXO_m834", "title": "J'ai déposé 100 clés USB avec un virus... (pour voir si les gens les branchent)" },
+    "Phishing": { "url": "https://www.youtube.com/watch?v=kREWBrQWQZo", "title": "Qu'est-ce que le phishing ou hameçonnage ?" },
+    "Pretexting": { "url": "https://www.youtube.com/watch?v=LZLuLBrPNVU", "title": "What Is a Pretexting Attack?" },
+    "Tailgating & physique": { "url": "https://www.youtube.com/watch?v=7n10Bt6OtGY", "title": "Tailgating and Impersonation - Security+ SY0-501 1.2" }
+  }
+}

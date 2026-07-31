@@ -38,7 +38,7 @@ const state = {
   learn: [], lidx: 0,
 };
 
-let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {};
+let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {}, CATEGORY_VIDEOS = {};
 
 // Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
@@ -56,6 +56,7 @@ const GROUPS = [
   { id: 'ccsp', label: 'Certification CCSP', icon: '☁️', dot: '🟢', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
   { id: 'cc', label: 'Certification CC (ISC2)', icon: '🌱', dot: '🟢', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
   { id: 'ceh', label: 'Certification CEH', icon: '🕵️', dot: '🟢', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
+  { id: 'prog', label: 'Programmation', icon: '💻', dot: '🐍', color: '#FFD166', test: (k) => k.startsWith('py') },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
 function groupById(id) { return GROUPS.find(g => g.id === id); }
@@ -64,7 +65,7 @@ function groupActive(g) { return [...state.branches].some(g.test); }
 function branchLabel(k) { return (DB.branches && DB.branches[k]) || k; }
 // Langue du contenu d'un thème : homologation/réglementation/réf. FR sont en français,
 // tout le reste (certifications ISC2/EC-Council) est en anglais (référentiels officiels EN).
-function branchLang(b) { return (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_')) ? 'fr' : 'en'; }
+function branchLang(b) { return (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_') || b.startsWith('py')) ? 'fr' : 'en'; }
 
 // Libellé de la sélection courante : rien de sélectionné = tout.
 function scopeLabel() {
@@ -1142,13 +1143,15 @@ function videoSearchUrl(term) {
   return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' cybersécurité');
 }
 
-// Vidéo de référence choisie à la main par domaine/branche (data/branch_videos.json),
+// Vidéo de référence choisie à la main (data/category_videos.json, data/branch_videos.json),
 // même principe que quiz-langue (video Url/title curés, pas de recherche live ni de
-// clé API). Un concept ouvre la vidéo de son domaine ; si le domaine n'a pas encore
-// de vidéo curée, on retombe sur la recherche YouTube externe.
+// clé API). Priorité : vidéo de la catégorie précise du concept > vidéo du domaine
+// entier > recherche YouTube externe (si rien n'est encore curé pour ce concept).
 function openConceptVideo(term) {
   const c = BYTERM[term];
-  const curated = c && BRANCH_VIDEOS[c.branch];
+  const catVideo = c && CATEGORY_VIDEOS[c.branch] && CATEGORY_VIDEOS[c.branch][c.cat];
+  const branchVideo = c && BRANCH_VIDEOS[c.branch];
+  const curated = catVideo || branchVideo;
   openExternal(curated ? curated.url : videoSearchUrl(term));
 }
 
@@ -1965,19 +1968,23 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 // ---------- démarrage ----------
 (async function init() {
   const empty = { branches: {}, concepts: [] };
-  const [base, cissp, isc2, ceh, ignite, scen, branchVideos] = await Promise.all([
+  const [base, cissp, isc2, ceh, ignite, prog, scen, branchVideos, categoryVideos] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
     (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
     (await fetch('data/isc2_concepts.json')).json().catch(() => empty),
     (await fetch('data/ceh_concepts.json')).json().catch(() => empty),
     (await fetch('data/ignite_concepts.json')).json().catch(() => empty),
+    (await fetch('data/prog_concepts.json')).json().catch(() => empty),
     (await fetch('data/scenarios.json')).json().catch(() => ({})),
     (await fetch('data/branch_videos.json')).json().catch(() => ({})),
+    (await fetch('data/category_videos.json')).json().catch(() => ({})),
   ]);
   BRANCH_VIDEOS = branchVideos;
-  // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite) apporte
-  // ses thèmes ; tous sont traités à l'identique par le quiz, les flashcards et le Leitner.
-  const srcs = [base, cissp, isc2, ceh, ignite];
+  CATEGORY_VIDEOS = categoryVideos;
+  // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite, langages
+  // de programmation) apporte ses thèmes ; tous sont traités à l'identique par le
+  // quiz, les flashcards et le Leitner.
+  const srcs = [base, cissp, isc2, ceh, ignite, prog];
   DB = {
     branches: Object.assign({}, ...srcs.map(s => s.branches)),
     concepts: [].concat(...srcs.map(s => s.concepts)),
