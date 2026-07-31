@@ -61,6 +61,14 @@ Le build local n'est pas possible sur la machine de dev (ARM). L'APK est produit
 Pour enrichir le quiz : ajouter un concept dans `secu_concepts.json` (term/def/cat/tip/ex),
 commit + push, l'APK se reconstruit automatiquement.
 
+## Programmation
+Un nouveau groupe « 💻 Programmation » (`www/data/prog_concepts.json`) réunit des
+concepts de langages de programmation, hors sujet cybersécurité mais utile en
+révision générale — même moteur (quiz, Fiches, Mind Map, Leitner) que le reste de
+l'app. Premier contenu : bases Python (dictionnaires, ensembles), transcrites à
+partir de fiches manuscrites. Extensible : ajouter d'autres concepts au même
+fichier, ou une nouvelle branche (ex. `js1`) pour un autre langage.
+
 ## Mind maps Ignite Technologies
 11 mind maps de [Ignitetechnologies/Mindmap](https://github.com/Ignitetechnologies/Mindmap)
 (NIST CSF, RGPD, HIPAA, codes HTTP, ingénierie sociale, MITRE ATT&CK, Blue Team,
