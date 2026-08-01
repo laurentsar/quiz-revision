@@ -538,6 +538,21 @@ function showView(name) {
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
 
 const BRANCH_COLORS = { archi: '#27B3FF', igi1300: '#8B9BFF', ii901: '#35D07F', igi2102: '#FF9F6B' };
+const MM_BRANCH_PALETTE = {
+  cissp1:'#4C96FF', cissp2:'#4CBFFF', cissp3:'#4CFFE8', cissp4:'#4CFF96',
+  cissp5:'#A0FF4C', cissp6:'#FFD54C', cissp7:'#FF964C', cissp8:'#FF4C6B',
+  archi:'#27B3FF', igi1300:'#8B9BFF', ii901:'#35D07F', igi2102:'#FF9F6B',
+  cc1:'#7C6BFF', cc2:'#6BAAFF', cc3:'#6BFFAA', cc4:'#FFAA6B', cc5:'#FF6BAA',
+  ccsp1:'#B06BFF', ccsp2:'#FF6BD6', ccsp3:'#6BD6FF', ccsp4:'#6BFFB0',
+  ccsp5:'#FFB06B', ccsp6:'#FF6B6B',
+  sscp1:'#6B8AFF', sscp2:'#6BFFDC', sscp3:'#DCFF6B', sscp4:'#FF8A6B',
+  sscp5:'#C06BFF', sscp6:'#6BC0FF', sscp7:'#6BFFC0',
+  ceh1:'#FF4C4C',
+  ig_nist:'#89CFF0', ig_gdpr:'#B8E0FF', ig_iso:'#7EC8E3',
+  ig_ebios:'#5B9BCC', ig_anssi:'#4A90D9', ig_pci:'#2171B5',
+  ig_socialeng:'#FF9F43', py:'#FFD700',
+};
+function mmBranchColor(b) { return MM_BRANCH_PALETTE[b] || '#6B8AFF'; }
 function themeColor() {
   const sel = [...state.branches];
   for (const g of GROUPS) if (sel.length && sel.every(g.test)) return g.color;
@@ -1013,21 +1028,7 @@ function renderMindmapHub(list) {
   $('mm-hub-sub').textContent = `${m.mastered} / ${m.total} concepts maîtrisés`;
 }
 
-function renderMindmapDomains(list) {
-  const branches = mmBranchesOf(list);
-  if (!branches.includes(mmDomain)) mmDomain = branches[0] || null;
-  const srs = getSrs();
-  $('mm-domains').innerHTML = branches.map(b => {
-    const items = list.filter(c => c.branch === b);
-    const mastered = items.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
-    const active = b === mmDomain && !mmQuery;
-    return `<button class="chip mm-chip${active ? ' active' : ''}" data-mm-domain="${esc(b)}">${esc(mmDomainShort(b))}<span class="mm-count">${mastered}/${items.length}</span></button>`;
-  }).join('');
-  $('mm-domains').querySelectorAll('[data-mm-domain]').forEach(btn => btn.addEventListener('click', () => {
-    mmDomain = btn.dataset.mmDomain; mmQuery = ''; $('mm-search').value = '';
-    renderMindmapDomains(mmList()); renderMindmapBody(); window.scrollTo(0, 0);
-  }));
-}
+function renderMindmapDomains() { $('mm-domains').innerHTML = ''; }
 
 function mmBoxNum(term, srs) {
   const e = srs[term];
@@ -1071,6 +1072,53 @@ function mmFilteredList(list, srs) {
   });
 }
 
+function renderMindmapTree(list, srs) {
+  const branchOrder = Object.keys(DB.branches).filter(k => list.some(c => c.branch === k));
+  if (!branchOrder.length) return '<div class="card"><p class="mm-hit-p">Aucun concept.</p></div>';
+
+  // Group: branch → { cat → [concepts] }
+  const byBranch = {};
+  list.forEach(c => {
+    if (!byBranch[c.branch]) byBranch[c.branch] = {};
+    (byBranch[c.branch][c.cat] = byBranch[c.branch][c.cat] || []).push(c);
+  });
+
+  return branchOrder.map(branch => {
+    const cats = byBranch[branch];
+    if (!cats) return '';
+    const color = mmBranchColor(branch);
+    const allTerms = Object.values(cats).flat();
+    const masteredN = allTerms.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+    const pct = allTerms.length ? Math.round(100 * masteredN / allTerms.length) : 0;
+    const autoOpen = branchOrder.length === 1 || allTerms.length <= 25;
+
+    const catsHtml = Object.keys(cats).map(cat => {
+      const concepts = cats[cat];
+      const catM = concepts.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+      const catPct = concepts.length ? Math.round(100 * catM / concepts.length) : 0;
+      return `<details class="mm-tree-cat">` +
+        `<summary class="mm-tree-cat-sum">` +
+        `<span class="mm-tree-cat-name">${esc(cat)}</span>` +
+        `<span class="mm-count">${catM}/${concepts.length}</span>` +
+        `<span class="mm-tree-cat-bar"><span class="mm-tree-cat-bar-fill" style="width:${catPct}%;background:${color}"></span></span>` +
+        `</summary>` +
+        `<div class="mm-tree-terms">${concepts.map(c => mmTermHtml(c, srs)).join('')}</div>` +
+        `</details>`;
+    }).join('');
+
+    return `<details class="mm-tree-branch" style="--bc:${color}" ${autoOpen ? 'open' : ''}>` +
+      `<summary class="mm-tree-branch-sum">` +
+      `<span class="mm-tree-branch-arr"></span>` +
+      `<span class="mm-tree-branch-dot"></span>` +
+      `<span class="mm-tree-branch-name">${esc(branchLabel(branch))}</span>` +
+      `<span class="mm-count">${masteredN}/${allTerms.length}</span>` +
+      `</summary>` +
+      `<div class="mm-tree-branch-prog"><div class="mm-tree-branch-prog-fill" style="width:${pct}%;background:${color}"></div></div>` +
+      `<div class="mm-tree-cats">${catsHtml}</div>` +
+      `</details>`;
+  }).join('');
+}
+
 function renderMindmapBody() {
   const list = mmList();
   const box = $('mm-content');
@@ -1084,24 +1132,9 @@ function renderMindmapBody() {
       ? `<div class="card mm-terms">${hits.slice(0, 150).map(c => mmHitHtml(c, srs)).join('')}</div>`
       : '<div class="card"><p class="mm-hit-p">Aucun résultat</p></div>';
   } else {
-    const domainItems = list.filter(c => c.branch === mmDomain);
-    const items = mmFilteredList(domainItems, srs);
-    $('mm-crumb').textContent = mmDomain ? mmDomainShort(mmDomain) : '';
-    // Build category map from ALL domain items (for total counts), but display only filtered
-    const byCatAll = {};
-    domainItems.forEach(c => (byCatAll[c.cat] = byCatAll[c.cat] || []).push(c));
-    const byCat = {};
-    items.forEach(c => (byCat[c.cat] = byCat[c.cat] || []).push(c));
-    box.innerHTML = Object.keys(byCatAll).filter(cat => byCat[cat]).map(cat => {
-      const arr = byCat[cat];
-      const allArr = byCatAll[cat];
-      const mastered = allArr.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
-      const pct = allArr.length ? Math.round(100 * mastered / allArr.length) : 0;
-      return `<div class="card mm-cat-card">` +
-        `<div class="mm-cat-head"><h3 class="gram-h3">${esc(cat)}</h3><span class="mm-count">${mastered}/${allArr.length}</span></div>` +
-        `<div class="mm-cat-bar"><div class="mm-cat-bar-fill" style="width:${pct}%"></div></div>` +
-        `<div class="mm-terms">${arr.map(c => mmTermHtml(c, srs)).join('')}</div></div>`;
-    }).join('') || '<div class="card"><p class="mm-hit-p">Aucun concept.</p></div>';
+    const filtered = mmFilteredList(list, srs);
+    $('mm-crumb').textContent = filtered.length + ' concept' + (filtered.length > 1 ? 's' : '');
+    box.innerHTML = `<div class="mm-tree">${renderMindmapTree(filtered, srs)}</div>`;
   }
   box.querySelectorAll('.fiche-video').forEach(a => a.addEventListener('click', () => openConceptVideo(a.dataset.term)));
 }
@@ -1110,7 +1143,7 @@ function renderMindmap() {
   renderMindmapSelect();
   const list = mmList();
   renderMindmapHub(list);
-  renderMindmapDomains(list);
+  renderMindmapDomains();
   renderMindmapFilters();
   renderMindmapBody();
 }
