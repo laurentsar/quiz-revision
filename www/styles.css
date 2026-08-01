@@ -645,6 +645,20 @@ html, body {
 .mm-term-def { margin: 0; font-size: 14px; color: var(--white); }
 .mm-term-tip { margin: 0; font-size: 13px; color: var(--sky); }
 .mm-term-ex  { margin: 0; font-size: 13px; color: var(--text-dim); font-style: italic; }
+.mm-term-confuse { margin: 0; font-size: 12.5px; color: #FF9F43; }
+.mm-term-confuse em { font-style: normal; font-weight: 600; }
+.mm-term-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-term-footer { display: flex; align-items: center; justify-content: flex-start; }
+/* Boîte Leitner badge dans le résumé */
+.mm-box-lbl { flex-shrink: 0; font-size: 10px; font-weight: 800; border-radius: 5px; padding: 1px 5px; background: rgba(255,255,255,0.08); color: var(--text-dim); }
+.mm-box-lbl-4, .mm-box-lbl-5 { background: rgba(76,224,130,0.18); color: var(--success); }
+.mm-box-lbl-2, .mm-box-lbl-3 { background: rgba(255,159,67,0.15); color: #FF9F43; }
+/* Barre de progression par catégorie */
+.mm-cat-bar { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.mm-cat-bar-fill { height: 100%; background: var(--sky); border-radius: 2px; transition: width 0.4s ease; }
+/* Filtres de maîtrise */
+.mm-filters { display: flex; gap: 6px; padding-bottom: 6px; flex-wrap: wrap; }
+.mm-filter-chip { font-size: 11.5px; padding: 3px 10px; }
 
 /* ===== Accessibilité : réduction de mouvement ===== */
 @media (prefers-reduced-motion: reduce) {
