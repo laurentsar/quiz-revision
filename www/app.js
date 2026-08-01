@@ -962,8 +962,14 @@ function renderFiches() {
 // Reconstruit l'arbre branche -> catégorie -> concept depuis les données déjà en
 // mémoire (ALL) : aucun fetch supplémentaire, disponible hors ligne dès le 1er lancement.
 // Le thème sélectionné est partagé avec l'accueil et les Fiches (state.branches).
-let mmDomain = null, mmQuery = '';
+let mmDomain = null, mmQuery = '', mmFilter = 'all';
 const MM_SEARCH_MIN = 2;
+const MM_FILTERS = [
+  { id: 'all',      label: 'Tous' },
+  { id: 'new',      label: 'Nouveaux' },
+  { id: 'progress', label: 'En cours' },
+  { id: 'mastered', label: 'Maîtrisés' },
+];
 
 function mmList() { return branchScopedList(); }
 // Ordre stable des branches présentes, celui de DB.branches (cohérent avec le reste de l'appli).
@@ -1023,19 +1029,46 @@ function renderMindmapDomains(list) {
   }));
 }
 
-function mmTermBody(c) {
+function mmBoxNum(term, srs) {
+  const e = srs[term];
+  return e ? `<span class="mm-box-lbl mm-box-lbl-${Math.min(e.box, 5)}" title="Boîte Leitner ${e.box}">${e.box}</span>` : '';
+}
+function mmTermBody(c, srs) {
   return `<div class="mm-term-body">` +
     `<p class="mm-term-def">${esc(c.def || 'Relève de : ' + c.cat)}</p>` +
     (c.tip ? `<p class="mm-term-tip">💡 ${esc(c.tip)}</p>` : '') +
     (c.ex ? `<p class="mm-term-ex">🔎 ${esc(c.ex)}</p>` : '') +
-    `<a class="fiche-video" data-term="${esc(c.term)}">🎥 Vidéo</a>` +
+    (c.confuse && c.confuse.length ? `<p class="mm-term-confuse">⚠️ À ne pas confondre : ${c.confuse.map(t => `<em>${esc(t)}</em>`).join(', ')}</p>` : '') +
+    `<div class="mm-term-footer"><a class="fiche-video" data-term="${esc(c.term)}">🎥 Vidéo</a></div>` +
     `</div>`;
 }
 function mmTermHtml(c, srs) {
-  return `<details class="mm-term ${mmBoxClass(c.term, srs)}"><summary><span class="mm-term-row"><span class="mm-dot"></span>${esc(c.term)}</span></summary>${mmTermBody(c)}</details>`;
+  return `<details class="mm-term ${mmBoxClass(c.term, srs)}"><summary><span class="mm-term-row"><span class="mm-dot"></span><span class="mm-term-label">${esc(c.term)}</span>${mmBoxNum(c.term, srs)}</span></summary>${mmTermBody(c, srs)}</details>`;
 }
 function mmHitHtml(c, srs) {
-  return `<details class="mm-term ${mmBoxClass(c.term, srs)}"><summary><span class="mm-term-row"><span class="mm-dot"></span>${mmHighlight(c.term, mmQuery)}</span><span class="mm-hit-crumb">${esc(mmDomainShort(c.branch))} › ${esc(c.cat)}</span></summary>${mmTermBody(c)}</details>`;
+  return `<details class="mm-term ${mmBoxClass(c.term, srs)}"><summary><span class="mm-term-row"><span class="mm-dot"></span><span class="mm-term-label">${mmHighlight(c.term, mmQuery)}</span>${mmBoxNum(c.term, srs)}</span><span class="mm-hit-crumb">${esc(mmDomainShort(c.branch))} › ${esc(c.cat)}</span></summary>${mmTermBody(c, srs)}</details>`;
+}
+
+function renderMindmapFilters() {
+  const el = $('mm-filters');
+  if (!el) return;
+  el.innerHTML = MM_FILTERS.map(f =>
+    `<button class="chip mm-filter-chip${mmFilter === f.id ? ' active' : ''}" data-mmf="${f.id}">${f.label}</button>`
+  ).join('');
+  el.querySelectorAll('[data-mmf]').forEach(btn => btn.addEventListener('click', () => {
+    mmFilter = btn.dataset.mmf;
+    renderMindmapFilters(); renderMindmapBody();
+  }));
+}
+
+function mmFilteredList(list, srs) {
+  if (mmFilter === 'all') return list;
+  return list.filter(c => {
+    const e = srs[c.term];
+    if (mmFilter === 'mastered') return e && e.box >= 4;
+    if (mmFilter === 'progress') return e && e.box >= 1 && e.box < 4;
+    return !e || e.box < 1; // 'new'
+  });
 }
 
 function renderMindmapBody() {
@@ -1044,19 +1077,29 @@ function renderMindmapBody() {
   const srs = getSrs();
   if (mmQuery.length >= MM_SEARCH_MIN) {
     const needle = mmQuery.toLowerCase();
-    const hits = list.filter(c => c.term.toLowerCase().includes(needle) || c.cat.toLowerCase().includes(needle));
+    const raw = list.filter(c => c.term.toLowerCase().includes(needle) || c.cat.toLowerCase().includes(needle));
+    const hits = mmFilteredList(raw, srs);
     $('mm-crumb').textContent = hits.length + ' résultat' + (hits.length > 1 ? 's' : '');
     box.innerHTML = hits.length
       ? `<div class="card mm-terms">${hits.slice(0, 150).map(c => mmHitHtml(c, srs)).join('')}</div>`
       : '<div class="card"><p class="mm-hit-p">Aucun résultat</p></div>';
   } else {
-    const items = list.filter(c => c.branch === mmDomain);
+    const domainItems = list.filter(c => c.branch === mmDomain);
+    const items = mmFilteredList(domainItems, srs);
     $('mm-crumb').textContent = mmDomain ? mmDomainShort(mmDomain) : '';
+    // Build category map from ALL domain items (for total counts), but display only filtered
+    const byCatAll = {};
+    domainItems.forEach(c => (byCatAll[c.cat] = byCatAll[c.cat] || []).push(c));
     const byCat = {};
     items.forEach(c => (byCat[c.cat] = byCat[c.cat] || []).push(c));
-    box.innerHTML = Object.entries(byCat).map(([cat, arr]) => {
-      const mastered = arr.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
-      return `<div class="card mm-cat-card"><div class="mm-cat-head"><h3 class="gram-h3">${esc(cat)}</h3><span class="mm-count">${mastered}/${arr.length}</span></div>` +
+    box.innerHTML = Object.keys(byCatAll).filter(cat => byCat[cat]).map(cat => {
+      const arr = byCat[cat];
+      const allArr = byCatAll[cat];
+      const mastered = allArr.filter(c => srs[c.term] && srs[c.term].box >= 4).length;
+      const pct = allArr.length ? Math.round(100 * mastered / allArr.length) : 0;
+      return `<div class="card mm-cat-card">` +
+        `<div class="mm-cat-head"><h3 class="gram-h3">${esc(cat)}</h3><span class="mm-count">${mastered}/${allArr.length}</span></div>` +
+        `<div class="mm-cat-bar"><div class="mm-cat-bar-fill" style="width:${pct}%"></div></div>` +
         `<div class="mm-terms">${arr.map(c => mmTermHtml(c, srs)).join('')}</div></div>`;
     }).join('') || '<div class="card"><p class="mm-hit-p">Aucun concept.</p></div>';
   }
@@ -1068,10 +1111,11 @@ function renderMindmap() {
   const list = mmList();
   renderMindmapHub(list);
   renderMindmapDomains(list);
+  renderMindmapFilters();
   renderMindmapBody();
 }
 function openMindmap() {
-  mmQuery = ''; const s = $('mm-search'); if (s) s.value = '';
+  mmQuery = ''; mmFilter = 'all'; const s = $('mm-search'); if (s) s.value = '';
   showView('mindmap'); renderMindmap();
 }
 

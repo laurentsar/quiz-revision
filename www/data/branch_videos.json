@@ -29,6 +29,9 @@
 
   "archi": { "url": "https://www.youtube.com/watch?v=m1oJnweJwKE", "title": "EBIOS Risk Manager — 1. Pourquoi ? — Club EBIOS" },
   "igi1300": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" },
+  "igi2102": { "url": "https://www.youtube.com/watch?v=L6dOX1SFlrY", "title": "La protection du secret de la défense nationale" },
+  "ii901": { "url": "https://www.youtube.com/watch?v=-_MYLID33w0", "title": "Présentation du guide d'hygiène numérique de l'ANSSI" },
+  "py": { "url": "https://www.youtube.com/watch?v=qFiK62vpmUw", "title": "Tuple, Set et Dictionnaire en Python" },
 
   "ig_nist": { "url": "https://www.youtube.com/watch?v=QzWTnsPlLt0", "title": "NIST Cybersecurity Framework (NIST CSF) — Introduction (VF)" },
   "ig_gdpr": { "url": "https://www.youtube.com/watch?v=OUMGp3HHel4", "title": "RGPD / GDPR : FAQ avec la CNIL" },
