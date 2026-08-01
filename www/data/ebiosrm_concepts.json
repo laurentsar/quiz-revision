@@ -1,0 +1,298 @@
+{
+  "branches": {
+    "ebios_1": "EBIOS RM · Fondamentaux & Concepts",
+    "ebios_2": "EBIOS RM · Ateliers 1 & 2",
+    "ebios_3": "EBIOS RM · Ateliers 3 & 4",
+    "ebios_4": "EBIOS RM · Atelier 5 & Synthèse"
+  },
+  "concepts": [
+    {
+      "term": "EBIOS Risk Manager (EBIOS RM)",
+      "def": "Méthode d'analyse et de traitement des risques de cybersécurité publiée par l'ANSSI (2018). Orientée scénarios d'attaque, elle structure l'analyse en 5 ateliers permettant de prioriser les risques et de définir un plan de traitement.",
+      "tip": "EBIOS = Expression des Besoins et Identification des Objectifs de Sécurité. La version RM (Risk Manager) remplace EBIOS 2010.",
+      "ex": "Utilisée pour homologuer des systèmes d'information sensibles, réaliser des analyses de risques OIV/OSE, ou sécuriser un projet numérique complexe.",
+      "cat": "Introduction EBIOS RM",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Valeur métier (VM)",
+      "def": "Bien immatériel ou matériel présentant de la valeur pour l'organisation et que l'on souhaite protéger : données, processus, service, actif. C'est ce que l'on cherche à préserver.",
+      "tip": "Mnémotechnique : VM = ce que l'organisation valorise (données clients, service en ligne, processus de production).",
+      "ex": "Pour un hôpital : dossiers médicaux (données), système de prise de RDV (service), protocoles de soins (processus).",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Bien support (BS)",
+      "def": "Actif technique ou organisationnel sur lequel s'appuient les valeurs métier : serveurs, applications, réseaux, locaux, prestataires, utilisateurs. Un BS peut supporter plusieurs VM.",
+      "tip": "VM ← repose sur → BS. La relation VM/BS est au cœur de l'atelier 1.",
+      "ex": "La VM « données patients » repose sur les BS : serveur base de données, réseau interne, logiciel DPI.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Événement redouté (ER)",
+      "def": "Scénario de haut niveau décrivant une atteinte à une valeur métier en termes d'impacts sur la mission de l'organisation : violation de la confidentialité, atteinte à la disponibilité, à l'intégrité.",
+      "tip": "ER = VM + critère DICT (Disponibilité, Intégrité, Confidentialité, Traçabilité) + impacts.",
+      "ex": "ER : « Divulgation des données patients à un tiers non autorisé » → impact : atteinte à la vie privée, amende RGPD, perte de confiance.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Gravité (EBIOS RM)",
+      "def": "Niveau d'impact d'un événement redouté sur la mission de l'organisation. Échelle à 4 niveaux : 1-Négligeable, 2-Significatif, 3-Important, 4-Critique.",
+      "tip": "La gravité est évaluée selon les impacts métier, pas techniques. Elle est fixée à l'atelier 1 et réévaluée à l'atelier 5.",
+      "ex": "Indisponibilité du SI de facturation pendant 48h : gravité 3 (Important) → perte financière majeure sans blocage opérationnel total.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Source de risque (SR)",
+      "def": "Entité (humaine ou non) susceptible d'engendrer un risque de cybersécurité en exploitant des vulnérabilités. Une SR est caractérisée par sa motivation et ses capacités.",
+      "tip": "Ne pas confondre SR et menace : la SR est l'acteur, la menace est l'action.",
+      "ex": "Types de SR : cybercriminel (gain financier), État étranger (espionnage), concurrent (intelligence économique), initié malveillant (vengeance), hacktiviste (idéologie).",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Objectif visé (OV)",
+      "def": "Intention finale d'une source de risque : ce qu'elle cherche à accomplir en ciblant l'organisation (déstabilisation, espionnage, sabotage, extorsion, appropriation de ressources).",
+      "tip": "OV = pourquoi la SR attaque (motivation stratégique), pas comment (mode opératoire).",
+      "ex": "SR : cybercriminel / OV : extorsion financière (ransomware). SR : concurrent / OV : appropriation de secrets commerciaux.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Couple SR/OV",
+      "def": "Association d'une source de risque et d'un objectif visé formant une combinaison pertinente pour l'organisation. Seuls les couples SR/OV plausibles sont retenus pour l'analyse.",
+      "tip": "Le couple SR/OV est l'unité d'analyse centrale d'EBIOS RM — il alimente les scénarios stratégiques.",
+      "ex": "Couple retenu : « Cybercriminel / Extorsion financière » → pertinent si l'organisation est une cible financièrement intéressante.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Scénario stratégique (SS)",
+      "def": "Scénario décrivant comment une source de risque pourrait atteindre son objectif visé en passant par l'écosystème (parties prenantes) et en atteignant les valeurs métier de l'organisation.",
+      "tip": "SS = chemin d'attaque de haut niveau, via l'écosystème. Il se distingue du scénario opérationnel (techniques d'attaque détaillées).",
+      "ex": "SS : un cybercriminel compromet un prestataire de maintenance pour accéder au SI de l'hôpital et chiffrer les données patients.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Scénario opérationnel (SO)",
+      "def": "Scénario détaillant les modes opératoires techniques utilisés par une source de risque pour réaliser un scénario stratégique : exploitation de vulnérabilités, techniques MITRE ATT&CK.",
+      "tip": "SO = concrétisation technique du SS. Il permet d'évaluer la vraisemblance technique.",
+      "ex": "SO : phishing ciblé du prestataire → vol de credentials VPN → mouvement latéral → déploiement du ransomware.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Niveau de menace",
+      "def": "Synthèse du risque combinant la gravité d'un événement redouté et la vraisemblance d'un scénario. Représenté sur une matrice (4×4) : de Tolérable à Inacceptable.",
+      "tip": "Niveau de menace = f(gravité, vraisemblance). Un risque grave et vraisemblable est prioritaire.",
+      "ex": "Gravité 4 (Critique) × Vraisemblance 3 → Niveau de menace : Inacceptable → traitement obligatoire.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Risque résiduel",
+      "def": "Niveau de risque subsistant après application des mesures de sécurité. Il doit être évalué, documenté et accepté formellement par la direction.",
+      "tip": "Tout risque résiduel doit être accepté — l'acceptation est une décision explicite, pas un oubli.",
+      "ex": "Après chiffrement des sauvegardes et formation anti-phishing, le risque ransomware passe de 'Inacceptable' à 'Élevé' — risque résiduel accepté par le RSSI.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Atelier 1 – Socle de sécurité",
+      "def": "Premier atelier EBIOS RM : définir le périmètre, identifier les valeurs métier et biens supports, évaluer les événements redoutés (gravité), et établir le socle de sécurité de référence.",
+      "tip": "Livrables : périmètre validé, cartographie VM/BS, liste des ER avec gravité, socle de sécurité, liste des écarts.",
+      "ex": "Pour une mairie : VM = état civil (données), processus d'urbanisme ; BS = serveurs, réseau, agents ; ER = indisponibilité du site web municipal.",
+      "cat": "Ateliers 1 & 2",
+      "branch": "ebios_2"
+    },
+    {
+      "term": "Mission et périmètre (atelier 1)",
+      "def": "Première étape de l'atelier 1 : définir l'objet de l'étude (système, organisation, projet), ses missions, ses limites et les parties prenantes impliquées dans l'analyse.",
+      "tip": "Un périmètre mal défini = une analyse incomplète. Inclure les interfaces avec l'extérieur.",
+      "ex": "Périmètre : le SI RH d'un groupe industriel, incluant le portail employés et les interfaces avec les SIRH tiers.",
+      "cat": "Ateliers 1 & 2",
+      "branch": "ebios_2"
+    },
+    {
+      "term": "Socle de sécurité (atelier 1)",
+      "def": "Ensemble des mesures de sécurité de base applicables à l'objet de l'étude, issues d'un référentiel (ANSSI, ISO 27001, NIS2…). Les écarts identifiés sont traités comme des vulnérabilités.",
+      "tip": "Le socle de sécurité est la baseline — les écarts = risques à corriger avant ou pendant l'analyse.",
+      "ex": "Référentiel utilisé : guide ANSSI 'Mesures cybersécurité TPE/PME'. Écart identifié : pas d'authentification MFA sur le VPN.",
+      "cat": "Ateliers 1 & 2",
+      "branch": "ebios_2"
+    },
+    {
+      "term": "Atelier 2 – Sources de risque",
+      "def": "Deuxième atelier EBIOS RM : identifier les sources de risque et objectifs visés pertinents pour l'organisation, évaluer leur pertinence (motivation, capacités), et sélectionner les couples SR/OV à étudier.",
+      "tip": "Livrables : liste des SR pertinentes, couples SR/OV retenus avec niveau de pertinence.",
+      "ex": "Pour un OIV du secteur énergie : SR retenus = État étranger (espionnage/sabotage), cybercriminel (extorsion).",
+      "cat": "Ateliers 1 & 2",
+      "branch": "ebios_2"
+    },
+    {
+      "term": "Pertinence d'un couple SR/OV",
+      "def": "Évaluation de la probabilité qu'une source de risque cherche réellement à atteindre l'objectif visé contre cette organisation. Tient compte de la motivation et des capacités de la SR.",
+      "tip": "Niveaux : 1-Très peu probable, 2-Peu probable, 3-Assez probable, 4-Très probable.",
+      "ex": "SR État étranger / OV Espionnage industriel → pertinence 4 pour un fabricant d'armes, pertinence 1 pour une boulangerie.",
+      "cat": "Ateliers 1 & 2",
+      "branch": "ebios_2"
+    },
+    {
+      "term": "Capacités d'une source de risque",
+      "def": "Niveau de ressources techniques, financières et organisationnelles d'une SR. Détermine les modes opératoires qu'elle peut réalistement employer.",
+      "tip": "Un État a des capacités 4 (zero-day, APT) ; un script kiddie a des capacités 1 (outils publics).",
+      "ex": "Cybercriminel organisé : capacités 3 — accès aux outils RaaS, techniques de phishing avancées, cryptomonnaie.",
+      "cat": "Ateliers 1 & 2",
+      "branch": "ebios_2"
+    },
+    {
+      "term": "Atelier 3 – Scénarios stratégiques",
+      "def": "Troisième atelier EBIOS RM : construire les scénarios stratégiques par couple SR/OV, analyser l'écosystème (parties prenantes), cartographier les chemins d'attaque et évaluer le niveau de menace.",
+      "tip": "Livrables : cartographie de l'écosystème, liste des SS avec niveau de menace, mesures de sécurité sur l'écosystème.",
+      "ex": "SS : cybercriminel → compromission du prestataire infogérance → accès SI client → chiffrement données → rançon.",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Parties prenantes de l'écosystème",
+      "def": "Organisations ou individus externes en relation avec l'objet de l'étude : fournisseurs, prestataires, partenaires, clients, autorités. Leur niveau de sécurité influe sur les risques de l'organisation.",
+      "tip": "Supply chain attack : attaquer via un prestataire de confiance est un vecteur privilégié par les APT.",
+      "ex": "Écosystème d'un hôpital : éditeur du DPI, prestataire de maintenance biomédicale, hébergeur cloud, laboratoires partenaires.",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Chemin d'attaque stratégique",
+      "def": "Séquence de haut niveau décrivant comment une source de risque transite par l'écosystème et les biens supports pour atteindre les valeurs métier ciblées.",
+      "tip": "Visualiser sous forme de graphe : SR → PP1 → PP2 → BS → VM → ER.",
+      "ex": "SR: concurrent → PP: cabinet de conseil commun → BS: email → VM: données R&D → ER: espionnage industriel.",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Vraisemblance (atelier 3)",
+      "def": "Probabilité stratégique qu'un scénario stratégique se produise, évaluée au regard de la pertinence du couple SR/OV et de la robustesse de l'écosystème.",
+      "tip": "Échelle 1 à 4 : 1-Minime, 2-Significative, 3-Forte, 4-Maximale.",
+      "ex": "SS avec SR cybercriminel / OV extorsion : vraisemblance 3 si des attaques similaires ont déjà ciblé le secteur.",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Atelier 4 – Scénarios opérationnels",
+      "def": "Quatrième atelier EBIOS RM : décliner chaque scénario stratégique en scénarios opérationnels détaillant les modes opératoires techniques, et affiner la vraisemblance.",
+      "tip": "Livrables : liste des SO par SS, vraisemblance technique affinée, cartographie des vulnérabilités exploitées.",
+      "ex": "SO issu du SS ransomware : phishing → macro malveillante → Cobalt Strike → mouvement latéral → GPO → déploiement ransomware.",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Modes opératoires (atelier 4)",
+      "def": "Techniques d'attaque détaillées employées par une source de risque pour réaliser un scénario opérationnel. Référencées par le framework MITRE ATT&CK.",
+      "tip": "MITRE ATT&CK : 14 tactiques, ~200 techniques. Permet d'identifier les contrôles défensifs manquants.",
+      "ex": "T1566.001 (phishing pièce jointe), T1059.001 (PowerShell), T1021.002 (SMB lateral movement).",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Vraisemblance technique (atelier 4)",
+      "def": "Probabilité qu'une technique d'attaque spécifique réussisse contre l'objet de l'étude, tenant compte des vulnérabilités présentes et des mesures de sécurité existantes.",
+      "tip": "Vraisemblance technique = f(vulnérabilités exploitables, niveau de détection, mesures préventives).",
+      "ex": "Technique phishing : vraisemblance 4 si aucune formation utilisateur et filtrage email insuffisant.",
+      "cat": "Ateliers 3 & 4",
+      "branch": "ebios_3"
+    },
+    {
+      "term": "Atelier 5 – Traitement du risque",
+      "def": "Cinquième atelier EBIOS RM : définir la stratégie de traitement pour chaque risque, sélectionner les mesures de sécurité, élaborer le plan de traitement du risque et faire accepter les risques résiduels.",
+      "tip": "Livrables : stratégie de traitement, plan de traitement du risque (PTR), cadre de suivi, rapport EBIOS RM.",
+      "ex": "Pour le risque ransomware (niveau Inacceptable) : mesures = MFA, EDR, sauvegarde hors ligne, cloisonnement réseau, exercice de crise.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "Stratégie de traitement du risque",
+      "def": "Décision organisationnelle sur la manière de gérer chaque risque identifié. Quatre options : réduction (contrôles), transfert (assurance/contrat), évitement (ne pas faire), acceptation.",
+      "tip": "Réduction est la plus courante. L'acceptation doit être explicite et documentée par la direction.",
+      "ex": "Risque d'intrusion via VPN : réduction (MFA + filtrage IP) + transfert partiel (assurance cyber).",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "Plan de traitement du risque (PTR)",
+      "def": "Document listant pour chaque risque : mesures de sécurité retenues, responsable, échéance, coût estimé, état d'avancement. Il constitue la feuille de route sécurité issue de l'analyse EBIOS RM.",
+      "tip": "Le PTR doit être validé par la direction et intégré dans la gestion de projet globale.",
+      "ex": "PTR : Risque ransomware → Mesure : déploiement EDR sur 100 % du parc → Responsable : RSSI → Échéance : T3 2025 → Budget : 50k€.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "Acceptation des risques résiduels",
+      "def": "Décision formelle de la direction d'accepter les niveaux de risque résiduels après application des mesures de sécurité. Elle doit être documentée et signée.",
+      "tip": "L'acceptation est une décision de management, pas technique. Elle engage la responsabilité de la direction.",
+      "ex": "Le DG accepte formellement un risque résiduel de niveau 'Élevé' sur la disponibilité du site web en période hors pointe.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "Cadre de suivi des risques",
+      "def": "Processus continu de surveillance des risques après l'analyse EBIOS RM : revue périodique, mise à jour si le contexte change, suivi des mesures du PTR, indicateurs de risque.",
+      "tip": "EBIOS RM n'est pas un exercice ponctuel — il doit être mis à jour à chaque changement majeur du SI ou du contexte.",
+      "ex": "Revue annuelle du registre des risques, revue ad hoc si acquisition d'une nouvelle entité ou incident majeur.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "Rapport EBIOS RM",
+      "def": "Livrable final de l'étude : synthèse de la démarche, cartographie des risques, plan de traitement, risques résiduels acceptés, cadre de suivi. Destiné à la direction et aux parties prenantes.",
+      "tip": "Le rapport EBIOS RM peut servir de base à une homologation de sécurité (RGS, LPM, DORA).",
+      "ex": "Un OIV soumet son rapport EBIOS RM à l'ANSSI dans le cadre de son homologation au titre de la LPM.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "Homologation de sécurité",
+      "def": "Décision officielle d'un responsable (autorité d'homologation) autorisant la mise en service d'un système d'information après évaluation des risques résiduels. S'appuie souvent sur une analyse EBIOS RM.",
+      "tip": "RGS pour le secteur public, LPM pour les OIV, NIS2 pour les OSE — EBIOS RM est la méthode recommandée.",
+      "ex": "Un ministère homologue son SI de gestion des ressources humaines sur la base d'une analyse EBIOS RM.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "OIV – Opérateur d'Importance Vitale",
+      "def": "Organisation dont l'indisponibilité aurait des conséquences graves sur la défense nationale, la sécurité ou le fonctionnement de l'économie. Soumis à des obligations de cybersécurité renforcées (LPM).",
+      "tip": "12 secteurs OIV en France : énergie, transports, santé, eau, alimentation, finance, télécoms, etc.",
+      "ex": "EDF, SNCF, AP-HP sont des OIV. Ils doivent déclarer leurs incidents à l'ANSSI et soumettre leurs SIIV à homologation.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "OSE – Opérateur de Services Essentiels",
+      "def": "Organisation désignée par l'État au titre de la directive NIS comme opérateur dont la perturbation aurait un impact significatif sur les services essentiels à la société ou à l'économie.",
+      "tip": "NIS2 élargit le périmètre des OSE — les entités essentielles et importantes doivent gérer leurs risques cyber.",
+      "ex": "Un opérateur de réseau de distribution d'eau ou un grand hôpital peut être désigné OSE.",
+      "cat": "Atelier 5 & Synthèse",
+      "branch": "ebios_4"
+    },
+    {
+      "term": "DICT (critères de sécurité)",
+      "def": "Les quatre critères de sécurité de l'information utilisés dans EBIOS RM pour qualifier les événements redoutés : Disponibilité, Intégrité, Confidentialité, Traçabilité.",
+      "tip": "Extension de la triade CIA (Confidentiality, Integrity, Availability) avec la Traçabilité (audit, non-répudiation).",
+      "ex": "Événement redouté sur la VM 'données de paie' : violation de la confidentialité (DICT-C) → impact : fraude, atteinte à la vie privée.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    },
+    {
+      "term": "Matrice de risque (EBIOS RM)",
+      "def": "Représentation graphique croisant la gravité (axe X) et la vraisemblance (axe Y) des scénarios, permettant de visualiser et prioriser les risques à traiter en urgence.",
+      "tip": "Zones : Tolérable (bas gauche), Élevé, Critique, Inacceptable (haut droite). Tout risque Inacceptable doit être traité.",
+      "ex": "Un risque Gravité 4 / Vraisemblance 3 est dans la zone Inacceptable → mesures obligatoires avant mise en service.",
+      "cat": "Concepts fondamentaux",
+      "branch": "ebios_1"
+    }
+  ]
+}

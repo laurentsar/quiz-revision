@@ -1,0 +1,258 @@
+{
+  "branches": {
+    "iso42_1": "ISO 42001 · Introduction & Contexte IA",
+    "iso42_2": "ISO 42001 · Leadership & Planification",
+    "iso42_3": "ISO 42001 · Support, Opération & Évaluation",
+    "iso42_a": "ISO 42001 · Annexe A – Mesures IA"
+  },
+  "concepts": [
+    {
+      "term": "ISO 42001:2023",
+      "def": "Norme internationale définissant les exigences d'un Système de Management de l'Intelligence Artificielle (SMIA/AIMS). Première norme de management certifiable dédiée à l'IA.",
+      "tip": "Même structure haute niveau (HLS) que ISO 27001 et ISO 9001 — clauses 4 à 10.",
+      "ex": "Une entreprise utilisant des algorithmes de recrutement ou de crédit peut se faire certifier ISO 42001.",
+      "cat": "Famille ISO",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "AIMS (AI Management System)",
+      "def": "Système de Management de l'IA : ensemble de politiques, processus et contrôles permettant à une organisation de développer, fournir ou utiliser des systèmes d'IA de façon responsable.",
+      "tip": "SMIA en français — équivalent IA du SMSI (ISO 27001).",
+      "ex": "Un AIMS inclut une politique IA, une cartographie des risques IA et des procédures de surveillance des modèles.",
+      "cat": "Famille ISO",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "Système d'IA (ISO 42001)",
+      "def": "Système basé sur des machines capable, pour un ensemble donné d'objectifs, de faire des prédictions, recommandations ou décisions influençant des environnements réels ou virtuels.",
+      "tip": "Définition alignée avec l'AI Act européen.",
+      "ex": "Un moteur de recommandation, un système de détection de fraude ou un chatbot LLM sont des systèmes d'IA.",
+      "cat": "Famille ISO",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "Fournisseur de systèmes d'IA",
+      "def": "Organisation qui conçoit, développe ou met à disposition un système d'IA pour une utilisation par d'autres organisations (opérateurs) ou utilisateurs finaux.",
+      "tip": "Rôle clé : responsable de la conformité initiale du modèle.",
+      "ex": "OpenAI fournit GPT-4 ; une ESN qui développe un outil de scoring crédit est fournisseur.",
+      "cat": "Rôles et responsabilités",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "Opérateur de systèmes d'IA",
+      "def": "Organisation ou personne qui déploie et exploite un système d'IA dans un contexte métier, en assumant la responsabilité de son utilisation conforme.",
+      "tip": "L'opérateur peut être différent du fournisseur : ex. une banque qui intègre une API d'IA tierce.",
+      "ex": "Un hôpital qui intègre un outil de diagnostic IA fourni par un éditeur est opérateur.",
+      "cat": "Rôles et responsabilités",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "Contexte de l'organisation (cl. 4)",
+      "def": "Clause exigeant d'identifier les enjeux internes/externes liés à l'IA, les parties prenantes et le périmètre du SMIA.",
+      "tip": "Même logique que la clause 4 d'ISO 27001 — SWOT IA.",
+      "ex": "Une fintech identifie : enjeux externes (réglementation AI Act), internes (compétences data science limitées).",
+      "cat": "Contexte de l'organisation",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "Parties prenantes IA",
+      "def": "Individus, groupes ou organisations ayant un intérêt dans le développement ou l'utilisation des systèmes d'IA : régulateurs, clients, employés affectés, fournisseurs de données.",
+      "tip": "Inclure explicitement les personnes affectées par les décisions automatisées.",
+      "ex": "Pour un système de scoring RH : candidats, DRH, syndicats, CNIL sont parties prenantes.",
+      "cat": "Contexte de l'organisation",
+      "branch": "iso42_1"
+    },
+    {
+      "term": "Politique IA (cl. 5.2)",
+      "def": "Document de haut niveau signé par la direction exprimant les engagements de l'organisation concernant le développement et l'utilisation responsable de l'IA.",
+      "tip": "Doit couvrir : éthique IA, responsabilité, transparence, conformité réglementaire.",
+      "ex": "La politique IA d'une banque précise que tout modèle de crédit doit être explicable et auditable.",
+      "cat": "Leadership et engagement",
+      "branch": "iso42_2"
+    },
+    {
+      "term": "Leadership et engagement (cl. 5.1)",
+      "def": "Exigence que la direction démontre son engagement envers le SMIA : alloue les ressources, fixe les objectifs IA, intègre les exigences IA dans les processus métier.",
+      "tip": "La direction doit « championer » l'IA responsable — pas seulement valider.",
+      "ex": "Nomination d'un Chief AI Officer (CAIO) avec mandat formel sur la gouvernance IA.",
+      "cat": "Leadership et engagement",
+      "branch": "iso42_2"
+    },
+    {
+      "term": "Objectifs IA (cl. 6.2)",
+      "def": "Cibles mesurables fixées pour les systèmes d'IA : performance, équité, fiabilité, respect de la vie privée. Ils doivent être SMART et alignés avec la politique IA.",
+      "tip": "Exemple d'objectif SMART : taux de faux positifs < 2 % pour le modèle de fraude.",
+      "ex": "Objectif : réduire le biais de genre du modèle de recrutement à < 5 % d'écart entre groupes.",
+      "cat": "Leadership et engagement",
+      "branch": "iso42_2"
+    },
+    {
+      "term": "Évaluation des risques IA (cl. 6.1)",
+      "def": "Processus d'identification et d'analyse des risques liés au développement et à l'utilisation des systèmes d'IA : biais, erreurs, dérive de modèle, mauvais usage, atteinte aux droits.",
+      "tip": "Risques IA ≠ risques cybersécurité — inclure risques éthiques, opérationnels et réputationnels.",
+      "ex": "Risque : un modèle de scoring crédit reproduit des discriminations historiques présentes dans les données d'entraînement.",
+      "cat": "Planification",
+      "branch": "iso42_2"
+    },
+    {
+      "term": "Évaluation d'impact IA",
+      "def": "Analyse structurée des conséquences potentielles d'un système d'IA sur les individus, groupes et société, réalisée avant déploiement et périodiquement ensuite.",
+      "tip": "Similaire à l'AIPD/DPIA RGPD mais étendue aux impacts éthiques et sociaux.",
+      "ex": "Avant de déployer un outil de reconnaissance faciale, évaluer l'impact sur la vie privée et les biais potentiels.",
+      "cat": "Planification",
+      "branch": "iso42_2"
+    },
+    {
+      "term": "Plan de traitement des risques IA",
+      "def": "Document décrivant les mesures choisies pour réduire, transférer, éviter ou accepter chaque risque IA identifié, avec responsable, délai et ressources associées.",
+      "tip": "Quatre options : réduction (contrôles), transfert (assurance/contrat), évitement, acceptation.",
+      "ex": "Pour le risque de dérive de modèle : mise en place d'un tableau de bord de monitoring mensuel.",
+      "cat": "Planification",
+      "branch": "iso42_2"
+    },
+    {
+      "term": "Ressources et compétences IA (cl. 7)",
+      "def": "Exigence de disposer des compétences humaines et techniques nécessaires : data scientists, experts en éthique IA, ingénieurs MLOps, juristes.",
+      "tip": "Les compétences éthiques sont explicitement requises — pas seulement les compétences techniques.",
+      "ex": "Formation obligatoire sur les biais algorithmiques pour tous les développeurs de modèles.",
+      "cat": "Support",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Information documentée IA (cl. 7.5)",
+      "def": "Documents et enregistrements obligatoires du SMIA : politique IA, cartographie des systèmes d'IA, évaluations de risques, fiches de modèle (model cards), rapports d'audit.",
+      "tip": "La model card est le document clé décrivant un modèle : objectif, données, performances, limites.",
+      "ex": "Une model card pour un modèle de NLP précise : jeu d'entraînement, métriques d'équité, cas d'usage exclus.",
+      "cat": "Support",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Cycle de vie du système d'IA (cl. 8)",
+      "def": "Phases couvrant un système d'IA de la conception au retrait : définition des besoins, conception des données, développement du modèle, tests, déploiement, surveillance, retrait.",
+      "tip": "ISO 42001 exige des contrôles à chaque phase — pas seulement en production.",
+      "ex": "Phase tests : validation sur données de biais avant tout passage en production.",
+      "cat": "Opération",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Gestion des données IA (cl. 8.4)",
+      "def": "Processus de contrôle de la qualité, de la représentativité et de la traçabilité des données utilisées pour entraîner, valider et tester les modèles d'IA.",
+      "tip": "Données biaisées → modèle biaisé : la gestion des données est le levier n°1 contre les biais.",
+      "ex": "Audit de représentativité des données d'entraînement : vérifier que les minorités ne sont pas sous-représentées.",
+      "cat": "Opération",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Supervision humaine (Human oversight)",
+      "def": "Mécanisme garantissant qu'un humain peut surveiller, corriger, interrompre ou annuler les décisions d'un système d'IA, en particulier pour les décisions à fort impact.",
+      "tip": "Exigé explicitement par ISO 42001 et l'AI Act — Human-in-the-loop vs Human-on-the-loop.",
+      "ex": "Un système de crédit automatisé doit permettre au client de demander une révision humaine de tout refus.",
+      "cat": "Opération",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Surveillance des performances IA (cl. 9.1)",
+      "def": "Mesure continue des performances opérationnelles des systèmes d'IA déployés : précision, dérive de données (data drift), dérive de modèle (model drift), équité.",
+      "tip": "La dérive de modèle est la dégradation des performances dans le temps — surveiller les KPIs définis.",
+      "ex": "Tableau de bord mensuel : précision, rappel, équité par segment, alertes automatiques si seuil franchi.",
+      "cat": "Évaluation",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Audit interne SMIA (cl. 9.2)",
+      "def": "Évaluation périodique interne de la conformité du SMIA aux exigences ISO 42001, des contrôles en place et de leur efficacité.",
+      "tip": "L'audit vérifie aussi l'éthique IA — pas seulement la conformité documentaire.",
+      "ex": "Audit annuel incluant test de biais sur les modèles en production et revue des model cards.",
+      "cat": "Évaluation",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Revue de direction SMIA (cl. 9.3)",
+      "def": "Réunion périodique de la direction pour évaluer la performance du SMIA, revoir les risques IA, les incidents, les objectifs et décider des améliorations.",
+      "tip": "Intrants obligatoires : résultats d'audit, incidents IA, retours parties prenantes, performances des KPIs.",
+      "ex": "Revue semestrielle incluant bilan des incidents de biais signalés et évolution du portefeuille de modèles.",
+      "cat": "Évaluation",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Non-conformité et amélioration (cl. 10)",
+      "def": "Processus de traitement des défaillances du SMIA : identifier la non-conformité, analyser la cause racine, corriger, vérifier l'efficacité et capitaliser.",
+      "tip": "PDCA appliqué à l'IA : Plan (risques) → Do (contrôles) → Check (audit) → Act (amélioration).",
+      "ex": "Incident : modèle de NLP produit des sorties discriminatoires → analyse, correction des données, re-entraînement.",
+      "cat": "Évaluation",
+      "branch": "iso42_3"
+    },
+    {
+      "term": "Utilisation acceptable de l'IA (A.2.2)",
+      "def": "Politique définissant les usages autorisés et interdits des systèmes d'IA au sein de l'organisation : interdire les usages contraires à l'éthique ou au droit.",
+      "tip": "À documenter avant tout déploiement — inclure les cas limites (IA générative, deepfakes, etc.).",
+      "ex": "La politique interdit l'utilisation de l'IA pour évaluer les émotions des employés sans consentement explicite.",
+      "cat": "Mesures organisationnelles",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Gestion du cycle de vie des données IA (A.3)",
+      "def": "Ensemble de contrôles portant sur la collecte, le stockage, l'utilisation et la suppression des données IA : traçabilité, qualité, consentement, anonymisation.",
+      "tip": "La lignée des données (data lineage) est clé pour l'auditabilité des modèles.",
+      "ex": "Chaque jeu de données d'entraînement est enregistré avec sa source, sa date, son processus de nettoyage.",
+      "cat": "Mesures liées aux données",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Biais algorithmique (A.6.2)",
+      "def": "Discrimination systématique introduite par un modèle d'IA, résultant de données d'entraînement non représentatives, de choix de conception ou d'optimisation inadaptée.",
+      "tip": "Types : biais historique, biais de représentation, biais de mesure, biais d'agrégation.",
+      "ex": "Un modèle de recrutement entraîné sur 20 ans de données RH hérite des biais historiques contre les femmes.",
+      "cat": "Mesures liées aux données",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Explicabilité et transparence (A.6.4)",
+      "def": "Capacité d'un système d'IA à fournir des explications compréhensibles sur ses décisions. La transparence concerne la communication sur les capacités et limites du système.",
+      "tip": "XAI (Explainable AI) : LIME, SHAP sont des techniques d'explicabilité post-hoc.",
+      "ex": "Un modèle de crédit doit expliquer à un client pourquoi son dossier est refusé (RGPD art. 22).",
+      "cat": "Mesures techniques",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Robustesse des systèmes d'IA (A.6.5)",
+      "def": "Capacité d'un système d'IA à maintenir ses performances face à des variations d'entrée, des données inattendues ou des attaques adversariales.",
+      "tip": "Tester : données hors distribution, attaques adversariales, cas limites (edge cases).",
+      "ex": "Test de robustesse : injecter des images légèrement modifiées pour tester si le classifieur est trompé.",
+      "cat": "Mesures techniques",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Sécurité des systèmes d'IA (A.6.6)",
+      "def": "Protection des systèmes d'IA contre les attaques spécifiques : empoisonnement de modèle (data poisoning), vol de modèle (model stealing), attaques adversariales, inversion de modèle.",
+      "tip": "Les attaques IA s'ajoutent aux cybermenaces classiques — référencer aussi ISO 27001.",
+      "ex": "Data poisoning : un attaquant injecte des données malveillantes dans le jeu d'entraînement pour corrompre le modèle.",
+      "cat": "Mesures techniques",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Protection de la vie privée IA (A.6.7)",
+      "def": "Mesures garantissant que les systèmes d'IA respectent la vie privée : minimisation des données, privacy by design, anonymisation différentielle, federated learning.",
+      "tip": "Federated learning : le modèle est entraîné sur les appareils sans centraliser les données personnelles.",
+      "ex": "Utilisation de la confidentialité différentielle pour garantir qu'on ne peut pas inférer les données d'entraînement.",
+      "cat": "Mesures techniques",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Model Card",
+      "def": "Document de transparence accompagnant un modèle d'IA : décrit son objectif, ses données d'entraînement, ses performances par segment, ses limites et ses cas d'usage exclus.",
+      "tip": "Concept introduit par Google (Mitchell et al., 2019) — requis par ISO 42001 dans la documentation.",
+      "ex": "La model card d'un modèle de détection de cancer précise : performances (AUC 0.94), limite (données issues de 3 hôpitaux US), usage interdit (décision finale sans médecin).",
+      "cat": "Documentation",
+      "branch": "iso42_a"
+    },
+    {
+      "term": "Dérive de modèle (Model Drift)",
+      "def": "Dégradation progressive des performances d'un modèle d'IA en production due à l'évolution des données réelles par rapport aux données d'entraînement.",
+      "tip": "Deux types : data drift (distribution des entrées change) et concept drift (relation entrée/sortie change).",
+      "ex": "Un modèle de détection de fraude entraîné en 2020 perd en précision car les techniques de fraude ont évolué.",
+      "cat": "Documentation",
+      "branch": "iso42_a"
+    }
+  ]
+}
