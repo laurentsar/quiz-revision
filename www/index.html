@@ -32,7 +32,6 @@
       </div>
 
       <div class="top-actions">
-        <button id="btn-learn" class="secondary">🎓 Apprendre (cartes)</button>
         <button id="btn-browse" class="secondary">📖 Parcourir</button>
         <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
         <button id="btn-stats" class="secondary">📊 Stats</button>
@@ -202,12 +201,7 @@
         </div>
       </div>
 
-      <button id="btn-flash-reveal" class="primary">Afficher la réponse</button>
-      <div id="flash-grade" class="quiz-footer hidden">
-        <button id="btn-flash-again" class="ghost grow">🔁 À revoir</button>
-        <button id="btn-flash-ok" class="primary grow">✅ Je savais</button>
-      </div>
-      <div id="learn-kbd-strip" class="fs-kbd-strip"><kbd>Espace</kbd> révéler <span class="ks">·</span> <kbd>←</kbd> à revoir <span class="ks">·</span> <kbd>→</kbd> je savais <span class="ks">·</span> <kbd>Échap</kbd> quitter</div>
+      <div id="learn-kbd-strip" class="fs-kbd-strip"><kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter</div>
       <div id="browse-nav" class="quiz-footer hidden">
         <button id="btn-browse-prev" class="ghost grow">← Précédent</button>
         <button id="btn-browse-next" class="primary grow">Suivant →</button>
@@ -514,7 +508,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.37';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.38';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
   <script>window.BACKUP_APP = 'quiz-revision';</script>
