@@ -1,4 +1,4 @@
-const CACHE = 'quiz-thales-v5.32';
+const CACHE = 'quiz-thales-v5.33';
 const ASSETS = [
   './',
   'index.html',
@@ -18,6 +18,7 @@ const ASSETS = [
   'data/branch_videos.json',
   'data/category_videos.json',
   'data/prog_concepts.json',
+  'data/iso27001_concepts.json',
   'img/icon-192.png',
   'img/icon-512.png',
 ];
