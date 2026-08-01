@@ -534,6 +534,7 @@ let autoNextTimer = null;
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
   $('btn-fab-home').classList.toggle('hidden', name === 'home');   // bouton flottant Accueil
+  if (name !== 'quiz' && name !== 'learn' && typeof exitFS === 'function') exitFS();
   window.scrollTo(0, 0);
 }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
@@ -2026,6 +2027,66 @@ $('btn-reset').addEventListener('click', () => {
 });
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+// ---------- mode révision plein écran ----------
+let fsActive = false;
+
+function enterFS() {
+  fsActive = true;
+  document.body.classList.add('fs');
+  const el = document.documentElement;
+  try { (el.requestFullscreen || el.webkitRequestFullscreen || (() => {})).call(el); } catch (_) {}
+  updateFSButtons();
+}
+function exitFS() {
+  if (!fsActive) return;
+  fsActive = false;
+  document.body.classList.remove('fs');
+  try { if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen || (() => {})).call(document); } catch (_) {}
+  updateFSButtons();
+}
+function toggleFS() { fsActive ? exitFS() : enterFS(); }
+function updateFSButtons() {
+  const icon = fsActive ? '⤡' : '⤢';
+  ['btn-fs-quiz', 'btn-fs-learn'].forEach(id => { const b = $(id); if (b) b.textContent = icon; });
+}
+
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && fsActive) exitFS(); });
+document.addEventListener('webkitfullscreenchange', () => { if (!document.webkitFullscreenElement && fsActive) exitFS(); });
+
+$('btn-fs-quiz').addEventListener('click', toggleFS);
+$('btn-fs-learn').addEventListener('click', toggleFS);
+
+// Raccourcis clavier
+document.addEventListener('keydown', (e) => {
+  if (e.target.matches('input, textarea, select, [contenteditable]')) return;
+
+  // Quiz QCM
+  if (!$('view-quiz').classList.contains('hidden')) {
+    const idx = 'abcd'.indexOf(e.key.toLowerCase());
+    if (idx >= 0) {
+      const opts = $('quiz-options').querySelectorAll('.option:not([disabled])');
+      if (opts[idx]) { e.preventDefault(); opts[idx].click(); }
+      return;
+    }
+    if (e.key === 'Enter' && !$('btn-next').disabled) { e.preventDefault(); $('btn-next').click(); return; }
+    if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFS(); return; }
+    if (e.key === 'Escape' && fsActive) { exitFS(); return; }
+  }
+
+  // Flashcard
+  if (!$('view-learn').classList.contains('hidden')) {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      if (!$('btn-flash-reveal').classList.contains('hidden')) $('btn-flash-reveal').click();
+      return;
+    }
+    if (e.key === 'ArrowLeft'  && !$('flash-grade').classList.contains('hidden')) { e.preventDefault(); $('btn-flash-again').click(); return; }
+    if (e.key === 'ArrowRight' && !$('flash-grade').classList.contains('hidden')) { e.preventDefault(); $('btn-flash-ok').click(); return; }
+    if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFS(); return; }
+    if (e.key === 'Escape' && fsActive) { exitFS(); return; }
+  }
+});
 
 // ---------- démarrage ----------
 (async function init() {
