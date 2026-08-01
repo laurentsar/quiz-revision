@@ -857,7 +857,8 @@ body.fs .flash-card {
 }
 body.fs .flash-term { font-size: clamp(26px, 4.5vw, 40px); }
 body.fs #btn-learn-home { display: none !important; }
-body.fs #flash-grade {
+body.fs #flash-grade,
+body.fs #browse-nav {
   flex-shrink: 0;
   display: flex !important;
   padding: 8px 14px max(14px, env(safe-area-inset-bottom));
