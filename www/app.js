@@ -931,18 +931,32 @@ function startLearn() {
 function startBrowse() {
   const pool = branchScopedList();
   if (!pool.length) return;
-  state.learn = state.count > 0 ? pool.slice(0, state.count) : pool;
+  // Tri par catégorie puis par terme pour parcourir catégorie par catégorie
+  const sorted = [...pool].sort((a, b) => (a.cat || '').localeCompare(b.cat || '') || (a.term || '').localeCompare(b.term || ''));
+  state.learn = state.count > 0 ? sorted.slice(0, state.count) : sorted;
   state.browse = true;
+  state.browseRevealed = false;
   studying = true; pomoStart();
   state.lidx = 0;
   showView('learn'); renderFlash();
 }
 function browsePrev() {
-  if (state.lidx > 0) { state.lidx--; renderFlash(); }
+  if (state.lidx > 0) { state.lidx--; state.browseRevealed = false; renderFlash(); }
 }
 function browseNext() {
-  if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
-  else { state.browse = false; showView('home'); renderHome(); }
+  if (!state.browseRevealed) {
+    // Étape 1 : révéler la définition
+    state.browseRevealed = true;
+    $('flash-back').classList.remove('hidden');
+    $('btn-browse-next').textContent = 'Concept suivant →';
+    const strip = $('learn-kbd-strip');
+    if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+  } else {
+    // Étape 2 : passer au concept suivant
+    state.browseRevealed = false;
+    if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
+    else { state.browse = false; showView('home'); renderHome(); }
+  }
 }
 function renderFlash() {
   const c = state.learn[state.lidx];
@@ -954,16 +968,17 @@ function renderFlash() {
   $('flash-tip').textContent = c.tip ? '💡 ' + c.tip : '';
   $('flash-ex').textContent = c.ex ? '🔎 ' + c.ex : '';
   const browse = !!state.browse;
-  // Mode parcours : définition visible d'emblée, navigation ← →
-  $('flash-back').classList.toggle('hidden', !browse);
+  // Mode parcours : définition masquée, Suivant la révèle puis avance
+  $('flash-back').classList.add('hidden');
   $('btn-flash-reveal').classList.toggle('hidden', browse);
   $('flash-grade').classList.add('hidden');
   $('browse-nav').classList.toggle('hidden', !browse);
   $('btn-learn-home').classList.toggle('hidden', browse);
   if (browse) {
     $('btn-browse-prev').disabled = state.lidx === 0;
+    $('btn-browse-next').textContent = 'Voir la définition →';
     const strip = $('learn-kbd-strip');
-    if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+    if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> voir définition <span class="ks">·</span> <kbd>Échap</kbd> quitter';
   } else {
     const strip = $('learn-kbd-strip');
     if (strip) strip.innerHTML = '<kbd>Espace</kbd> révéler <span class="ks">·</span> <kbd>←</kbd> à revoir <span class="ks">·</span> <kbd>→</kbd> je savais <span class="ks">·</span> <kbd>Échap</kbd> quitter';
