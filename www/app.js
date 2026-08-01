@@ -56,6 +56,7 @@ const GROUPS = [
   { id: 'ccsp', label: 'Certification CCSP', icon: '☁️', dot: '🟢', color: '#27B3FF', test: (k) => /^ccsp\d+$/.test(k) },
   { id: 'cc', label: 'Certification CC (ISC2)', icon: '🌱', dot: '🟢', color: '#FF9F43', test: (k) => /^cc\d+$/.test(k) },
   { id: 'ceh', label: 'Certification CEH', icon: '🕵️', dot: '🟢', color: '#FF6B81', test: (k) => /^ceh\d+$/.test(k) },
+  { id: 'iso27001', label: 'Certification ISO 27001', icon: '🛡️', dot: '🟣', color: '#A78BFA', test: (k) => k.startsWith('iso27001') },
   { id: 'prog', label: 'Programmation', icon: '💻', dot: '🐍', color: '#FFD166', test: (k) => k.startsWith('py') },
 ];
 function groupOf(k) { return GROUPS.find(g => g.test(k)); }
@@ -65,7 +66,7 @@ function groupActive(g) { return [...state.branches].some(g.test); }
 function branchLabel(k) { return (DB.branches && DB.branches[k]) || k; }
 // Langue du contenu d'un thème : homologation/réglementation/réf. FR sont en français,
 // tout le reste (certifications ISC2/EC-Council) est en anglais (référentiels officiels EN).
-function branchLang(b) { return (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_') || b.startsWith('py')) ? 'fr' : 'en'; }
+function branchLang(b) { return (b === 'archi' || b === 'igi1300' || b === 'ii901' || b === 'igi2102' || b.startsWith('ig_') || b.startsWith('py') || b.startsWith('iso27001')) ? 'fr' : 'en'; }
 
 // Libellé de la sélection courante : rien de sélectionné = tout.
 function scopeLabel() {
@@ -551,6 +552,8 @@ const MM_BRANCH_PALETTE = {
   ig_nist:'#89CFF0', ig_gdpr:'#B8E0FF', ig_iso:'#7EC8E3',
   ig_ebios:'#5B9BCC', ig_anssi:'#4A90D9', ig_pci:'#2171B5',
   ig_socialeng:'#FF9F43', py:'#FFD700',
+  iso27001_1:'#A78BFA', iso27001_2:'#818CF8', iso27001_3:'#60A5FA',
+  iso27001_4:'#34D399', iso27001_a:'#F472B6',
 };
 function mmBranchColor(b) { return MM_BRANCH_PALETTE[b] || '#6B8AFF'; }
 function themeColor() {
@@ -2027,13 +2030,14 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 // ---------- démarrage ----------
 (async function init() {
   const empty = { branches: {}, concepts: [] };
-  const [base, cissp, isc2, ceh, ignite, prog, scen, branchVideos, categoryVideos] = await Promise.all([
+  const [base, cissp, isc2, ceh, ignite, prog, iso27001, scen, branchVideos, categoryVideos] = await Promise.all([
     (await fetch('data/secu_concepts.json')).json(),
     (await fetch('data/cissp_concepts.json')).json().catch(() => empty),
     (await fetch('data/isc2_concepts.json')).json().catch(() => empty),
     (await fetch('data/ceh_concepts.json')).json().catch(() => empty),
     (await fetch('data/ignite_concepts.json')).json().catch(() => empty),
     (await fetch('data/prog_concepts.json')).json().catch(() => empty),
+    (await fetch('data/iso27001_concepts.json')).json().catch(() => empty),
     (await fetch('data/scenarios.json')).json().catch(() => ({})),
     (await fetch('data/branch_videos.json')).json().catch(() => ({})),
     (await fetch('data/category_videos.json')).json().catch(() => ({})),
@@ -2043,7 +2047,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
   // Chaque source (homologation, CISSP, SSCP/CCSP/CC, CEH, mind maps Ignite, langages
   // de programmation) apporte ses thèmes ; tous sont traités à l'identique par le
   // quiz, les flashcards et le Leitner.
-  const srcs = [base, cissp, isc2, ceh, ignite, prog];
+  const srcs = [base, cissp, isc2, ceh, ignite, prog, iso27001];
   DB = {
     branches: Object.assign({}, ...srcs.map(s => s.branches)),
     concepts: [].concat(...srcs.map(s => s.concepts)),
