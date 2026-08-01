@@ -913,14 +913,32 @@ function finishQuiz() {
   if (perfect && total >= 3) launchFireworks();
 }
 
-// ---------- mode Apprendre (flashcards) ----------
+// ---------- mode Apprendre (flashcards Leitner) ----------
 function startLearn() {
+  state.browse = false;
   state.learn = pickConcepts('srs');
   if (state.count > 0) state.learn = state.learn.slice(0, state.count);
   if (!state.learn.length) return;
   studying = true; pomoStart();
   state.lidx = 0;
   showView('learn'); renderFlash();
+}
+// ---------- mode Parcours (lecture libre, sans notation) ----------
+function startBrowse() {
+  const pool = branchScopedList();
+  if (!pool.length) return;
+  state.learn = state.count > 0 ? pool.slice(0, state.count) : pool;
+  state.browse = true;
+  studying = true; pomoStart();
+  state.lidx = 0;
+  showView('learn'); renderFlash();
+}
+function browsePrev() {
+  if (state.lidx > 0) { state.lidx--; renderFlash(); }
+}
+function browseNext() {
+  if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
+  else { state.browse = false; showView('home'); renderHome(); }
 }
 function renderFlash() {
   const c = state.learn[state.lidx];
@@ -931,9 +949,21 @@ function renderFlash() {
   $('flash-def').textContent = c.def || 'Relève de : ' + c.cat;
   $('flash-tip').textContent = c.tip ? '💡 ' + c.tip : '';
   $('flash-ex').textContent = c.ex ? '🔎 ' + c.ex : '';
-  $('flash-back').classList.add('hidden');
-  $('btn-flash-reveal').classList.remove('hidden');
+  const browse = !!state.browse;
+  // Mode parcours : définition visible d'emblée, navigation ← →
+  $('flash-back').classList.toggle('hidden', !browse);
+  $('btn-flash-reveal').classList.toggle('hidden', browse);
   $('flash-grade').classList.add('hidden');
+  $('browse-nav').classList.toggle('hidden', !browse);
+  $('btn-learn-home').classList.toggle('hidden', browse);
+  if (browse) {
+    $('btn-browse-prev').disabled = state.lidx === 0;
+    const strip = $('learn-kbd-strip');
+    if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+  } else {
+    const strip = $('learn-kbd-strip');
+    if (strip) strip.innerHTML = '<kbd>Espace</kbd> révéler <span class="ks">·</span> <kbd>←</kbd> à revoir <span class="ks">·</span> <kbd>→</kbd> je savais <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+  }
 }
 function revealFlash() {
   $('flash-back').classList.remove('hidden');
@@ -1824,6 +1854,9 @@ $('btn-abort').addEventListener('click', exitToHome);
 $('btn-replay').addEventListener('click', () => startSession(state.mode));
 $('btn-home').addEventListener('click', exitToHome);
 $('btn-learn').addEventListener('click', startLearn);
+$('btn-browse').addEventListener('click', startBrowse);
+$('btn-browse-prev').addEventListener('click', browsePrev);
+$('btn-browse-next').addEventListener('click', browseNext);
 $('btn-flash-reveal').addEventListener('click', revealFlash);
 $('btn-flash-ok').addEventListener('click', () => gradeFlash(true));
 $('btn-flash-again').addEventListener('click', () => gradeFlash(false));
@@ -2074,15 +2107,20 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && fsActive) { exitFS(); return; }
   }
 
-  // Flashcard
+  // Flashcard / Parcours
   if (!$('view-learn').classList.contains('hidden')) {
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      if (!$('btn-flash-reveal').classList.contains('hidden')) $('btn-flash-reveal').click();
-      return;
+    if (state.browse) {
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); browsePrev(); return; }
+      if (e.key === 'ArrowRight') { e.preventDefault(); browseNext(); return; }
+    } else {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        if (!$('btn-flash-reveal').classList.contains('hidden')) $('btn-flash-reveal').click();
+        return;
+      }
+      if (e.key === 'ArrowLeft'  && !$('flash-grade').classList.contains('hidden')) { e.preventDefault(); $('btn-flash-again').click(); return; }
+      if (e.key === 'ArrowRight' && !$('flash-grade').classList.contains('hidden')) { e.preventDefault(); $('btn-flash-ok').click(); return; }
     }
-    if (e.key === 'ArrowLeft'  && !$('flash-grade').classList.contains('hidden')) { e.preventDefault(); $('btn-flash-again').click(); return; }
-    if (e.key === 'ArrowRight' && !$('flash-grade').classList.contains('hidden')) { e.preventDefault(); $('btn-flash-ok').click(); return; }
     if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFS(); return; }
     if (e.key === 'Escape' && fsActive) { exitFS(); return; }
   }
