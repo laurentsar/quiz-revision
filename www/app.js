@@ -961,7 +961,9 @@ function renderFlash() {
   const c = state.learn[state.lidx];
   $('learn-progress').textContent = `Carte ${state.lidx + 1}/${state.learn.length}`;
   $('learn-level').textContent = scopeLabel();
-  $('flash-cat').textContent = c.cat;
+  const catItems = state.learn.filter(x => (x.cat || '') === (c.cat || ''));
+  const catPos = catItems.indexOf(c) + 1;
+  $('flash-cat').textContent = `${c.cat || ''}  ·  ${catPos}/${catItems.length}`;
   $('flash-term').textContent = c.term;
   $('flash-def').textContent = c.def || 'Relève de : ' + c.cat;
   $('flash-tip').textContent = c.tip ? '💡 ' + c.tip : '';
