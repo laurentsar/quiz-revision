@@ -918,11 +918,20 @@ function finishQuiz() {
 }
 
 // ---------- mode Parcours (lecture libre, sans notation) ----------
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 function startBrowse() {
   const pool = branchScopedList();
   if (!pool.length) return;
-  // Tri par catégorie puis par terme pour parcourir catégorie par catégorie
-  const sorted = [...pool].sort((a, b) => (a.cat || '').localeCompare(b.cat || '') || (a.term || '').localeCompare(b.term || ''));
+  // Catégories dans un ordre aléatoire, concepts mélangés à l'intérieur de chaque catégorie
+  const bycat = {};
+  for (const c of pool) { (bycat[c.cat || ''] ||= []).push(c); }
+  const sorted = shuffle(Object.values(bycat)).flatMap(g => shuffle(g));
   state.learn = state.count > 0 ? sorted.slice(0, state.count) : sorted;
   state.browse = true;
   state.browseRevealed = false;
