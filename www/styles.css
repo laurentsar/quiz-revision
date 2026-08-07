@@ -597,6 +597,17 @@ html, body {
 .dash-fill { height: 100%; background: linear-gradient(90deg, #27B3FF, #35D07F); border-radius: 4px; transition: width .6s ease; }
 .dash-pct-label { font-size: 0.7rem; opacity: .6; text-align: center; margin: 4px 0 0; }
 
+/* ===== Objectif du jour (barre de motivation) ===== */
+.goal-block { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+.goal-msg { font-size: 0.78rem; opacity: .85; text-align: center; margin: 0 0 4px; font-weight: 600; }
+.goal-track { margin: 0; }
+.goal-fill { background: linear-gradient(90deg, #F5A623, #FF6B35); }
+.goal-fill.goal-done { background: linear-gradient(90deg, #35D07F, #27B3FF); }
+
+/* ===== Réglages : lignes avec libellé + chips ===== */
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+.setting-label { font-size: 0.9rem; }
+
 /* ===== Concepts les plus difficiles ===== */
 .weak-concepts-list { margin-top: 6px; }
 .weak-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 10px; }

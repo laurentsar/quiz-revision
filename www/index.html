@@ -33,6 +33,7 @@
 
       <div class="top-actions">
         <button id="btn-browse" class="secondary">📖 Parcourir</button>
+        <button id="btn-cloze" class="secondary">🧩 Texte à trous</button>
         <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
         <button id="btn-stats" class="secondary">📊 Stats</button>
         <button id="btn-fiches" class="secondary">📑 Fiches</button>
@@ -63,6 +64,7 @@
             <button class="chip qtype-chip" data-qtype="def">Terme → définition</button>
             <button class="chip qtype-chip" data-qtype="term">Définition → terme</button>
             <button class="chip qtype-chip" data-qtype="situation">Mise en situation</button>
+            <button class="chip qtype-chip" data-qtype="cloze">🧩 Texte à trous</button>
             <button class="chip qtype-chip" data-qtype="cat">Catégorie</button>
           </div>
           <label class="toggle adv-toggle">
@@ -95,6 +97,13 @@
           <div id="dash-fill" class="dash-fill" style="width:0%"></div>
         </div>
         <p id="dash-label" class="dash-pct-label">0 % maîtrisé — tous thèmes</p>
+
+        <div class="goal-block">
+          <p id="goal-msg" class="goal-msg">Objectif du jour · <span id="goal-today">0</span>/<span id="goal-target">10</span> questions</p>
+          <div class="dash-track goal-track">
+            <div id="goal-fill" class="dash-fill goal-fill" style="width:0%"></div>
+          </div>
+        </div>
       </div>
 
       <div class="card meta">
@@ -123,6 +132,16 @@
         <label class="toggle"><span>⏱️ Minuteur 30 s par question</span><input type="checkbox" id="opt-timer" /></label>
         <label class="toggle"><span>🍅 Pauses Pomodoro (25 min → 5 min)</span><input type="checkbox" id="opt-pomodoro" /></label>
         <label class="toggle"><span>🔢 Afficher le nombre de concepts par thème</span><input type="checkbox" id="opt-counts" /></label>
+
+        <div class="setting-row" style="margin-top:14px">
+          <span class="setting-label">🎯 Objectif quotidien</span>
+          <div class="chip-row">
+            <button class="chip goal-chip" data-goal="5">5</button>
+            <button class="chip goal-chip" data-goal="10">10</button>
+            <button class="chip goal-chip" data-goal="20">20</button>
+            <button class="chip goal-chip" data-goal="30">30</button>
+          </div>
+        </div>
 
         <div class="meta-row" style="margin-top:14px">
           <span class="meta-label">Pseudo (défis)</span>
@@ -508,7 +527,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.40';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.41';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
   <script>window.BACKUP_APP = 'quiz-revision';</script>

@@ -82,7 +82,7 @@ function scopeLabel() {
   return `${n} thèmes`;
 }
 
-const settings = Object.assign({ autoNext: true, sound: true, showCounts: false, closeDistractors: false, timer: false, pomodoro: false }, lsGet('quizrev:settings:v1', {}));
+const settings = Object.assign({ autoNext: true, sound: true, showCounts: false, closeDistractors: false, timer: false, pomodoro: false, dailyGoal: 10 }, lsGet('quizrev:settings:v1', {}));
 const TIMER_SECS = 30;          // minuteur par question
 const POMODORO_WORK = 25 * 60;  // 25 min de révision active
 const POMODORO_BREAK = 5 * 60;  // 5 min de pause
@@ -319,6 +319,10 @@ function logDaily(correct) {
   while (keys.length > 90) delete m[keys.shift()];   // on ne garde que 90 jours
   lsSet('quizrev:daily:v1', m);
 }
+function todayCount() {
+  const m = lsGet('quizrev:daily:v1', {});
+  return (m[todayStr()] || {}).q || 0;
+}
 function lastNDays(n) {
   const m = lsGet('quizrev:daily:v1', {});
   const out = [];
@@ -418,8 +422,12 @@ function fieldVal(term, field) { const c = BYTERM[term]; return c ? c[field] : n
 
 // ---------- sélection des concepts (répétition espacée) ----------
 function pickConcepts(mode) {
-  const p = pool();
-  if (mode === 'review') { const w = new Set(getWrong()); return shuffle(ALL.filter(c => w.has(c.term))); }
+  const elig = c => state.qtype !== 'cloze' || clozeEligible(c);
+  let p = pool().filter(elig);
+  // Le « texte à trous » est rare et transverse aux thèmes : si le thème choisi
+  // n'a aucun concept masquable, on élargit à tous les thèmes plutôt que d'échouer.
+  if (state.qtype === 'cloze' && !p.length) p = ALL.filter(clozeEligible);
+  if (mode === 'review') { const w = new Set(getWrong()); return shuffle(ALL.filter(c => w.has(c.term) && elig(c))); }
   const srs = getSrs(), now = Date.now();
   const due = p.filter(c => srs[c.term] && srs[c.term].due <= now).sort((a, b) => srs[a.term].due - srs[b.term].due);
   const fresh = shuffle(p.filter(c => !srs[c.term]));
@@ -462,6 +470,43 @@ function distractors(field, correct, concept, n) {
 // seule sa place dans l'arbre est révisable -> question de catégorie.
 function hasDef(concept) { return !!concept.def; }
 
+// ---------- texte à trous (cloze) ----------
+// Normalisation pour repérer le terme dans une phrase malgré accents,
+// apostrophes, tirets et casse (« l'analyse de risque » ≈ « Analyse de risque »).
+function normTxt(s) {
+  return String(s || '').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’'\-]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+const CLOZE_BLANK = '_________';
+// Construit une phrase à trous : masque le terme là où il apparaît (exemple
+// prioritaire, sinon définition), avec tolérance pluriel/flexion sur le dernier
+// mot. Renvoie null si le terme n'apparaît nulle part.
+function clozeMask(concept) {
+  const term = normTxt(concept.term);
+  if (!term) return null;
+  const tw = term.split(' ');
+  const wordMatch = (sw, t, last) => sw === t || (last && sw.length >= 4 && t.length >= 4 && (sw.startsWith(t) || t.startsWith(sw)));
+  for (const src of [concept.ex, concept.def]) {
+    if (!src) continue;
+    const words = String(src).split(/(\s+)/); // garde les séparateurs
+    const nw = words.map(normTxt);
+    for (let i = 0; i < nw.length; i++) {
+      if (nw[i] === '') continue;
+      let j = i, k = 0, ok = true;
+      while (k < tw.length) {
+        while (j < nw.length && nw[j] === '') j++;
+        if (j >= nw.length) { ok = false; break; }
+        if (!wordMatch(nw[j], tw[k], k === tw.length - 1)) { ok = false; break; }
+        j++; k++;
+      }
+      if (ok && k === tw.length) return words.slice(0, i).join('') + CLOZE_BLANK + words.slice(j).join('');
+    }
+  }
+  return null;
+}
+function clozeEligible(concept) { return clozeMask(concept) != null; }
+
 function makeQuestion(concept) {
   let type = state.qtype;
   if (type === 'mix') {
@@ -475,9 +520,13 @@ function makeQuestion(concept) {
   }
   if (type === 'situation' && !concept.ex) type = 'def';
   if ((type === 'def' || type === 'term') && !hasDef(concept)) type = 'cat';
+  if (type === 'cloze' && !clozeEligible(concept)) type = hasDef(concept) ? 'term' : 'cat';
 
   let promptLabel, promptText, correct, field;
-  if (type === 'term') {
+  if (type === 'cloze') {
+    field = 'term'; promptLabel = 'Complétez le texte à trous';
+    promptText = clozeMask(concept); correct = concept.term;
+  } else if (type === 'term') {
     field = 'term'; promptLabel = 'Quel terme correspond à cette définition ?';
     promptText = '« ' + concept.def + ' »'; correct = concept.term;
   } else if (type === 'situation') {
@@ -654,6 +703,16 @@ function renderHome() {
   $('dash-mastered-global').textContent = globalMastered;
   $('dash-fill').style.width = pct + '%';
   $('dash-label').textContent = pct + ' % maîtrisé — ' + globalMastered + ' / ' + ALL.length + ' concepts';
+  // Objectif du jour (barre de motivation)
+  const gDone = todayCount(), gGoal = settings.dailyGoal || 10;
+  const gPct = Math.min(100, Math.round(gDone / gGoal * 100));
+  if ($('goal-today')) {
+    $('goal-today').textContent = gDone;
+    $('goal-target').textContent = gGoal;
+    $('goal-fill').style.width = gPct + '%';
+    $('goal-fill').classList.toggle('goal-done', gPct >= 100);
+    $('goal-msg').textContent = gPct >= 100 ? '🎉 Objectif atteint !' : `Objectif du jour · ${gDone}/${gGoal} questions`;
+  }
 }
 
 // ---------- déroulé du quiz ----------
@@ -1507,7 +1566,7 @@ function refreshChallengeCode() {
   const qtype = state.qtype;
   const code = encodeChallenge(scope, count, qtype, _challengeSeed) || '—';
   $('challenge-code').textContent = code;
-  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[qtype] || qtype;
+  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie', cloze: 'Texte à trous' }[qtype] || qtype;
   const dur = challengeDuration(count);
   $('challenge-duration').textContent = dur || '—';
   const fireReady = window.FirebaseChallenge && FirebaseChallenge.isReady();
@@ -1849,6 +1908,11 @@ function exitToHome() {
   showView('home'); renderHome();
 }
 $('btn-start').addEventListener('click', () => startSession('srs'));
+$('btn-cloze').addEventListener('click', () => {
+  state.qtype = 'cloze'; state.examMode = false;
+  renderChips('.qtype-chip', state.qtype, 'qtype');
+  startSession('srs');
+});
 $('btn-review').addEventListener('click', () => startSession('review'));
 $('btn-next').addEventListener('click', goNext);
 $('btn-abort').addEventListener('click', exitToHome);
@@ -1898,7 +1962,7 @@ $('btn-whatsapp-code').addEventListener('click', () => {
   const ch = $('challenge-modal')._challenge;
   if (!ch) return;
   const code = ch.code;
-  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie' }[ch.qtype] || ch.qtype;
+  const qtypeLabel = { mix: 'Mélange', def: 'Terme→déf.', term: 'Déf.→terme', situation: 'Mise en situation', cat: 'Catégorie', cloze: 'Texte à trous' }[ch.qtype] || ch.qtype;
   const countLabel = ch.count ? ch.count + ' questions' : 'Toutes les questions';
   const themeLabel = challengeScopeLabel(ch.scope);
   const dur = challengeDuration(ch.count);
@@ -2018,6 +2082,14 @@ bindToggle('opt-counts', 'showCounts', renderBranchSelect);
 bindToggle('opt-close', 'closeDistractors');
 bindToggle('opt-timer', 'timer');
 bindToggle('opt-pomodoro', 'pomodoro', () => { if (settings.pomodoro) pomoStart(); else pomoStop(); });
+
+// Objectif quotidien (barre de motivation)
+renderChips('.goal-chip', settings.dailyGoal, 'goal');
+document.querySelectorAll('.goal-chip').forEach(c => c.addEventListener('click', () => {
+  settings.dailyGoal = +c.dataset.goal; saveSettings();
+  renderChips('.goal-chip', settings.dailyGoal, 'goal');
+  renderHome();
+}));
 
 const pseudoInput = $('pseudo-input');
 pseudoInput.value = getPseudo();
