@@ -1042,10 +1042,17 @@ function renderFlash() {
   if (audioMode) browseAutoPlay();
 }
 // ---------- audio (Web Speech API) ----------
+// Les voix sont chargées de façon asynchrone sur Chrome/Android :
+// getVoices() retourne [] au premier appel ; on écoute voiceschanged pour les mettre en cache.
+let _voices = [];
+if (window.speechSynthesis) {
+  const _loadVoices = () => { _voices = window.speechSynthesis.getVoices(); };
+  _loadVoices();
+  window.speechSynthesis.onvoiceschanged = _loadVoices;
+}
 function pickVoice(lang) {
-  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
   const code = lang === 'fr' ? 'fr' : 'en';
-  const pool = voices.filter(v => v.lang.startsWith(code));
+  const pool = _voices.filter(v => v.lang.startsWith(code));
   const femRe = /amélie|marie|audrey|claire|hortense|virginie|google\s+fran|zira|hazel|karen|moira|samantha|victoria|fiona/i;
   return pool.find(v => femRe.test(v.name)) || pool[0] || null;
 }
@@ -1053,13 +1060,24 @@ function speak(text, lang, onEnd) {
   if (!window.speechSynthesis || !text) { if (onEnd) onEnd(); return; }
   const myGen = ++audioGen;
   window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-  utt.rate = 0.88; utt.pitch = 1.1;
-  const v = pickVoice(lang);
-  if (v) utt.voice = v;
-  if (onEnd) utt.onend = () => { if (audioGen === myGen) onEnd(); };
-  window.speechSynthesis.speak(utt);
+  // Petit délai pour laisser cancel() se propager (stabilité Chrome Android)
+  setTimeout(() => {
+    if (audioGen !== myGen) return;
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+    utt.rate = 0.82; utt.pitch = 1.05;
+    const v = pickVoice(lang);
+    if (v) utt.voice = v;
+    let done = false;
+    // onend peut se déclencher prématurément sur Chrome Android ;
+    // le fallback setTimeout garantit une durée minimale réaliste.
+    const finish = () => { if (audioGen === myGen && !done) { done = true; if (onEnd) onEnd(); } };
+    const minMs = Math.min(Math.ceil(text.length * 90) + 500, 25000);
+    utt.onend = finish;
+    utt.onerror = finish;
+    setTimeout(finish, minMs);
+    window.speechSynthesis.speak(utt);
+  }, 80);
 }
 function cancelSpeak() { audioGen++; window.speechSynthesis && window.speechSynthesis.cancel(); }
 function updateAudioButton() {
@@ -1086,7 +1104,7 @@ function readDefAndAdvance() {
       state.browseRevealed = false;
       if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
       else { audioMode = false; updateAudioButton(); state.browse = false; showView('home'); renderHome(); }
-    }, 1500);
+    }, 3000);
   });
 }
 function browseAutoPlay() {
@@ -1104,7 +1122,7 @@ function browseAutoPlay() {
       const strip = $('learn-kbd-strip');
       if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
       readDefAndAdvance();
-    }, 700);
+    }, 1500);
   });
 }
 
