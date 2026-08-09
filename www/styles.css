@@ -759,6 +759,7 @@ html, body {
   margin-left: auto; flex-shrink: 0;
 }
 .btn-fs-toggle:hover { color: var(--text); }
+.btn-fs-toggle.audio-on { color: #38BDF8; }
 
 .fs-kbd-strip {
   display: none;
