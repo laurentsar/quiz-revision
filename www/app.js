@@ -39,6 +39,7 @@ const state = {
 };
 
 let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {}, CATEGORY_VIDEOS = {};
+let audioMode = false, audioGen = 0;
 
 // Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
@@ -584,8 +585,9 @@ const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-resu
 let autoNextTimer = null;
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
-  $('btn-fab-home').classList.toggle('hidden', name === 'home');   // bouton flottant Accueil
+  $('btn-fab-home').classList.toggle('hidden', name === 'home');
   if (name !== 'quiz' && name !== 'learn' && typeof exitFS === 'function') exitFS();
+  if (name !== 'learn') cancelSpeak();
   window.scrollTo(0, 0);
 }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
@@ -999,9 +1001,10 @@ function startBrowse() {
   showView('learn'); renderFlash();
 }
 function browsePrev() {
-  if (state.lidx > 0) { state.lidx--; state.browseRevealed = false; renderFlash(); }
+  if (state.lidx > 0) { cancelSpeak(); state.lidx--; state.browseRevealed = false; renderFlash(); }
 }
 function browseNext() {
+  cancelSpeak();
   if (!state.browseRevealed) {
     // Étape 1 : révéler la définition
     state.browseRevealed = true;
@@ -1009,6 +1012,7 @@ function browseNext() {
     $('btn-browse-next').textContent = 'Concept suivant →';
     const strip = $('learn-kbd-strip');
     if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+    if (audioMode) readDefAndAdvance();
   } else {
     // Étape 2 : passer au concept suivant
     state.browseRevealed = false;
@@ -1035,6 +1039,73 @@ function renderFlash() {
   $('btn-browse-next').textContent = 'Voir la définition →';
   const strip = $('learn-kbd-strip');
   if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> voir définition <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+  if (audioMode) browseAutoPlay();
+}
+// ---------- audio (Web Speech API) ----------
+function pickVoice(lang) {
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  const code = lang === 'fr' ? 'fr' : 'en';
+  const pool = voices.filter(v => v.lang.startsWith(code));
+  const femRe = /amélie|marie|audrey|claire|hortense|virginie|google\s+fran|zira|hazel|karen|moira|samantha|victoria|fiona/i;
+  return pool.find(v => femRe.test(v.name)) || pool[0] || null;
+}
+function speak(text, lang, onEnd) {
+  if (!window.speechSynthesis || !text) { if (onEnd) onEnd(); return; }
+  const myGen = ++audioGen;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+  utt.rate = 0.88; utt.pitch = 1.1;
+  const v = pickVoice(lang);
+  if (v) utt.voice = v;
+  if (onEnd) utt.onend = () => { if (audioGen === myGen) onEnd(); };
+  window.speechSynthesis.speak(utt);
+}
+function cancelSpeak() { audioGen++; window.speechSynthesis && window.speechSynthesis.cancel(); }
+function updateAudioButton() {
+  const btn = $('btn-audio-toggle');
+  if (!btn) return;
+  btn.textContent = audioMode ? '🔊' : '🔇';
+  btn.classList.toggle('audio-on', audioMode);
+}
+function toggleAudio() {
+  audioMode = !audioMode;
+  updateAudioButton();
+  if (!audioMode) cancelSpeak();
+  else if (state.browse) browseAutoPlay();
+}
+function readDefAndAdvance() {
+  const c = state.learn[state.lidx];
+  const lang = branchLang(c.branch || '');
+  const txt = [c.def || '', c.tip || '', c.ex || ''].filter(Boolean).join('. ');
+  speak(txt, lang, () => {
+    if (!audioMode || !state.browse) return;
+    const g = audioGen;
+    setTimeout(() => {
+      if (audioGen !== g || !audioMode || !state.browse) return;
+      state.browseRevealed = false;
+      if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
+      else { audioMode = false; updateAudioButton(); state.browse = false; showView('home'); renderHome(); }
+    }, 1500);
+  });
+}
+function browseAutoPlay() {
+  if (!audioMode || !state.browse) return;
+  const c = state.learn[state.lidx];
+  const lang = branchLang(c.branch || '');
+  speak(c.term, lang, () => {
+    if (!audioMode || !state.browse) return;
+    const g = audioGen;
+    setTimeout(() => {
+      if (audioGen !== g || !audioMode || !state.browse) return;
+      state.browseRevealed = true;
+      $('flash-back').classList.remove('hidden');
+      $('btn-browse-next').textContent = 'Concept suivant →';
+      const strip = $('learn-kbd-strip');
+      if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+      readDefAndAdvance();
+    }, 700);
+  });
 }
 
 // ---------- fiches (référence, consultables par thème via menu déroulant) ----------
@@ -1921,6 +1992,7 @@ $('btn-home').addEventListener('click', exitToHome);
 $('btn-browse').addEventListener('click', startBrowse);
 $('btn-browse-prev').addEventListener('click', browsePrev);
 $('btn-browse-next').addEventListener('click', browseNext);
+$('btn-audio-toggle').addEventListener('click', toggleAudio);
 $('btn-learn-home').addEventListener('click', exitToHome);
 $('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
 $('fiches-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); renderFiches(); window.scrollTo(0, 0); });
@@ -2180,6 +2252,7 @@ document.addEventListener('keydown', (e) => {
   if (!$('view-learn').classList.contains('hidden')) {
     if (e.key === 'ArrowLeft')  { e.preventDefault(); browsePrev(); return; }
     if (e.key === 'ArrowRight') { e.preventDefault(); browseNext(); return; }
+    if (e.key === 'a' || e.key === 'A') { e.preventDefault(); toggleAudio(); return; }
     if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFS(); return; }
     if (e.key === 'Escape' && fsActive) { exitFS(); return; }
   }
