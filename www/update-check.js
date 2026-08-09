@@ -71,6 +71,49 @@
     if (!document.hidden) check(false).catch(function () {});
   });
 
+  // Détection fiable de mise à jour : le SW fait skipWaiting + clients.claim(),
+  // ce qui prend le contrôle immédiatement SANS recharger la page. La page tourne
+  // donc encore avec les anciens fichiers (APP_VERSION périmé) et le throttle de
+  // 6 h empêche le check de détecter la nouvelle version. On écoute
+  // controllerchange — déclenché exactement quand le nouveau SW prend le relais —
+  // pour forcer un check immédiat et afficher la bannière « Recharger ».
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      // Nouveau SW actif : forcer le check GitHub (ignore throttle + dismiss)
+      check(true).catch(function () {
+        // Si hors-ligne ou API indisponible : bannière reload générique
+        showReloadBanner();
+      });
+    });
+  }
+
+  function showReloadBanner() {
+    if (document.getElementById('update-banner') || document.getElementById('reload-banner')) return;
+    var b = document.createElement('div');
+    b.id = 'reload-banner';
+    b.style.cssText =
+      'position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;' +
+      'display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;' +
+      'background:#1f2937;color:#f9fafb;box-shadow:0 6px 24px rgba(0,0,0,.35);' +
+      'font:500 14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;' +
+      'max-width:520px;margin:0 auto';
+    var txt = document.createElement('span');
+    txt.style.flex = '1';
+    txt.innerHTML = '🔄 Mise à jour installée — rechargez pour en profiter';
+    var act = document.createElement('button');
+    act.style.cssText =
+      'flex:none;background:#22c55e;color:#06210f;border:0;font-weight:700;' +
+      'font-size:14px;padding:8px 14px;border-radius:10px;cursor:pointer';
+    act.textContent = '⟳ Recharger';
+    act.onclick = function () { location.reload(); };
+    var x = document.createElement('button');
+    x.style.cssText = 'flex:none;background:transparent;border:0;color:#9ca3af;font-size:18px;line-height:1;cursor:pointer;padding:4px';
+    x.setAttribute('aria-label', 'Ignorer'); x.textContent = '✕';
+    x.onclick = function () { b.remove(); };
+    b.appendChild(txt); b.appendChild(act); b.appendChild(x);
+    (document.body || document.documentElement).appendChild(b);
+  }
+
   // Télécharge + installe l'APK via le plugin natif UpdatePlugin, sans quitter
   // l'app (utilisé par le bouton « ⬇ Installer » de la bannière). `reset`
   // réactive ce bouton en cas d'échec ou d'absence du plugin natif (PWA).
