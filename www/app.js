@@ -1053,14 +1053,48 @@ function renderFlash() {
   const strip = $('learn-kbd-strip');
   if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> voir définition <span class="ks">·</span> <kbd>Échap</kbd> quitter';
   updateAudioButton();
-  fdResetCard();
+  fdResetCard(c);
   if (audioMode) browseAutoPlay();
 }
 // ---------- mini diagramme animé (mode Parcourir) ----------
-// Illustre visuellement le lien terme → définition : nœud « terme » qui respire,
-// ligne pointillée jusqu'à la révélation, puis pulsation voyageuse qui allume le
+// Illustre visuellement le lien terme → définition : une icône simplifiée du
+// concept (choisie par mots-clés dans le terme/la catégorie) qui respire, ligne
+// pointillée jusqu'à la révélation, puis pulsation voyageuse qui allume le
 // nœud « définition ». Un seul rAF par carte, pas de contenu à créer par concept.
-const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0 };
+const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0, icon: '💭' };
+
+// Mots-clés (FR/EN) → icône représentative. Ordre = priorité (1er match gagne).
+const CONCEPT_ICONS = [
+  [/phishing|hame\wonnage|ing[ée]nierie sociale|social engineering/i, '🎣'],
+  [/malware|virus|ransomware|rançongiciel|cheval de troie|trojan|ver\b|worm/i, '🦠'],
+  [/mot de passe|password|authentifi|mfa|2fa|iam\b|identit[ée]|acc[èe]s/i, '🔑'],
+  [/chiffr|crypto|cl[ée] (publique|priv[ée])|certificat|pki|hash|signature/i, '🔐'],
+  [/r[ée]seau|network|firewall|pare-feu|routeur|vpn|tcp|dns|protocole/i, '🌐'],
+  [/cloud|aws|azure|saas|iaas|paas/i, '☁️'],
+  [/rgpd|gdpr|hipaa|vie priv[ée]e|privacy|donn[ée]es personnelles/i, '🛂'],
+  [/l[ée]gal|loi|r[ée]glementation|conformit[ée]|compliance/i, '⚖️'],
+  [/incident|forensic|investigation|r[ée]ponse à incident/i, '🚨'],
+  [/base de donn[ée]es|database|sql\b/i, '🗄️'],
+  [/physique|badge|cam[ée]ra|surveillance vid[ée]o/i, '🚪'],
+  [/sensibilisation|formation|awareness|training/i, '🎓'],
+  [/politique|policy|proc[ée]dure|gouvernance|governance/i, '📋'],
+  [/intelligence artificielle|ia\b|machine learning|mod[èe]le|ai\b/i, '🤖'],
+  [/vuln[ée]rabilit[ée]|faille|exploit|cve\b/i, '🐞'],
+  [/sauvegarde|backup|continuit[ée]|pca\b|pra\b|recovery/i, '💾'],
+  [/soc\b|siem|monitoring|journal|log\b/i, '👁️'],
+  [/d[ée]veloppement|code|application|devops|api\b/i, '💻'],
+  [/mitre|kill chain|ttp\b|attaque/i, '⚔️'],
+  [/pentest|red team|offensi[fv]/i, '🗡️'],
+  [/blue team|d[ée]fense/i, '🛡️'],
+  [/risque|menace|sc[ée]nario|ebios/i, '🎯'],
+  [/audit|[ée]valuation|analyse/i, '📊'],
+];
+function fdConceptIcon(c) {
+  if (!c) return '💭';
+  const text = `${c.cat || ''} ${c.term || ''}`;
+  for (const [re, icon] of CONCEPT_ICONS) if (re.test(text)) return icon;
+  return '💭';
+}
 
 function fdResize() {
   const dpr = window.devicePixelRatio || 1;
@@ -1083,8 +1117,9 @@ function fdEnsureLoop() {
 function fdStop() {
   if (FD.raf) { cancelAnimationFrame(FD.raf); FD.raf = null; }
 }
-function fdResetCard() {
+function fdResetCard(c) {
   FD.revealed = false; FD.travelStart = 0;
+  FD.icon = fdConceptIcon(c);
   fdEnsureLoop();
 }
 function fdReveal() {
@@ -1125,7 +1160,7 @@ function fdLoop(now) {
   g1.addColorStop(0, '#4C96FF'); g1.addColorStop(1, '#1B5CFF');
   ctx.fillStyle = g1; ctx.fill();
   ctx.fillStyle = '#EAF2FF'; ctx.font = '13px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('💭', lx, cy);
+  ctx.fillText(FD.icon, lx, cy);
 
   // nœud « définition » : verrouillé jusqu'à ce que la pulsation arrive
   const lit = t >= 1;
