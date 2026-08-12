@@ -276,6 +276,7 @@ html, body {
 .flash-card { align-items: center; text-align: center; gap: 14px; min-height: 180px; justify-content: center; }
 .flash-cat { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--sky); }
 .flash-term { font-size: 28px; font-weight: 800; color: var(--white); }
+.flash-diagram { display: block; width: 100%; height: 56px; }
 .flash-back { display: flex; flex-direction: column; gap: 10px; width: 100%; border-top: 1px solid rgba(255,255,255,.1); padding-top: 14px; }
 .flash-def { font-size: 17px; color: var(--white); margin: 0; }
 .flash-tip { font-size: 14px; color: var(--sky); margin: 0; }
