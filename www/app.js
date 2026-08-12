@@ -1178,43 +1178,58 @@ function renderFiches() {
 }
 
 // ---------- constellation (mind map dynamique canvas) ----------
-const DM_CAT_COLORS = [
-  '#27B3FF','#4CE0D2','#35D07F','#8B9BFF','#FFD166',
-  '#FF9F6B','#4C96FF','#A0FF4C','#FF6B81','#FFBF69',
-];
-const DM = { canvas: null, ctx: null, raf: null, W: 0, H: 0, cx: 0, cy: 0, cats: [], terms: [], activeCat: -1, selTerm: null, scale: 1, offsetX: 0, offsetY: 0 };
+// Le choix d'une rubrique (catégorie) est obligatoire avant l'affichage : une
+// constellation avec toutes les catégories d'un thème à la fois est illisible.
+const DM = { canvas: null, ctx: null, raf: null, W: 0, H: 0, cx: 0, cy: 0, terms: [], selTerm: null, catName: '', scale: 1, offsetX: 0, offsetY: 0 };
 
-function openDynmap() {
-  showView('dynmap');
-  requestAnimationFrame(dmBuild);
-}
-
-function dmBuild() {
-  DM.canvas = $('dm-canvas');
-  DM.ctx = DM.canvas.getContext('2d');
-  dmResize();
+function dmCatEntries() {
   const list = branchScopedList();
   const bycat = {};
   for (const c of list) (bycat[c.cat || ''] ||= []).push(c);
-  const entries = Object.entries(bycat);
-  const n = entries.length;
-  const rCat = 46;
-  // R1 garantit qu'aucun cercle-catégorie ne touche son voisin (zoom-out possible)
-  const R1 = Math.max(Math.min(DM.cx, DM.cy) * 0.55, n > 1 ? rCat / Math.sin(Math.PI / n) * 1.2 : rCat * 2);
-  DM.cats = entries.map(([cat, items], i) => {
-    const angle = n === 1 ? -Math.PI / 2 : (2 * Math.PI * i / n) - Math.PI / 2;
-    return {
-      label: cat, color: DM_CAT_COLORS[i % DM_CAT_COLORS.length],
-      items, angle,
-      tx: DM.cx + R1 * Math.cos(angle), ty: DM.cy + R1 * Math.sin(angle),
-      x: DM.cx, y: DM.cy, r: rCat,
-    };
-  });
-  DM.terms = []; DM.activeCat = -1; DM.selTerm = null;
-  DM.scale = 1; DM.offsetX = 0; DM.offsetY = 0;
+  return Object.entries(bycat);
+}
+
+function dmPopulateCatSelect() {
+  const sel = $('dm-cat-select');
+  const entries = dmCatEntries();
+  sel.innerHTML = '<option value="" disabled selected>— Choisir une rubrique —</option>' +
+    entries.map(([cat, items]) => `<option value="${esc(cat)}">${esc(cat)} (${items.length})</option>`).join('');
+}
+
+function openDynmap() {
+  showView('dynmap');
+  DM.catName = ''; DM.terms = []; DM.selTerm = null;
   $('dm-def-panel').classList.add('hidden');
-  if (DM.raf) cancelAnimationFrame(DM.raf);
-  DM.raf = requestAnimationFrame(dmLoop);
+  $('dm-hint').classList.remove('hidden');
+  dmPopulateCatSelect();
+  DM.canvas = $('dm-canvas');
+  DM.ctx = DM.canvas.getContext('2d');
+  requestAnimationFrame(() => { dmResize(); if (DM.raf) cancelAnimationFrame(DM.raf); DM.raf = requestAnimationFrame(dmLoop); });
+}
+
+function dmSelectCategory(catName) {
+  const found = dmCatEntries().find(([c]) => c === catName);
+  if (!found) return;
+  DM.catName = catName;
+  $('dm-hint').classList.add('hidden');
+  dmResize();
+  const rTerm = 36;
+  const items = found[1];
+  const n = items.length;
+  const span = n <= 1 ? 0 : Math.min(Math.PI * 1.9, (n - 1) * 0.46);
+  const step = n > 1 ? span / (n - 1) : 1;
+  // R garantit qu'aucun terme ne touche son voisin le long de l'arc
+  const R = Math.max(rTerm * 3, Math.min(DM.cx, DM.cy) * 0.62, n > 1 ? rTerm / Math.sin(step / 2) * 1.2 : rTerm * 3);
+  const startA = -Math.PI / 2 - span / 2;
+  DM.terms = items.map((concept, i) => ({
+    label: concept.term, concept, r: rTerm,
+    tx: DM.cx + R * Math.cos(n <= 1 ? -Math.PI / 2 : startA + span * i / (n - 1)),
+    ty: DM.cy + R * Math.sin(n <= 1 ? -Math.PI / 2 : startA + span * i / (n - 1)),
+    x: DM.cx, y: DM.cy, alpha: 0, alive: true,
+  }));
+  DM.selTerm = null;
+  $('dm-def-panel').classList.add('hidden');
+  DM.scale = 1; DM.offsetX = 0; DM.offsetY = 0;
 }
 
 function dmResize() {
@@ -1249,10 +1264,6 @@ function dmLoop() {
   const ctx = DM.ctx;
   ctx.clearRect(0, 0, DM.W, DM.H);
 
-  for (const c of DM.cats) {
-    c.x = dmLerp(c.x, c.tx, 0.12);
-    c.y = dmLerp(c.y, c.ty, 0.12);
-  }
   for (const t of DM.terms) {
     t.x = dmLerp(t.x, t.tx, 0.12);
     t.y = dmLerp(t.y, t.ty, 0.12);
@@ -1263,25 +1274,15 @@ function dmLoop() {
   ctx.translate(DM.offsetX, DM.offsetY);
   ctx.scale(DM.scale, DM.scale);
 
-  // lines: center → categories
-  for (const c of DM.cats) {
-    ctx.strokeStyle = 'rgba(39,179,255,0.25)';
+  // lines: center → terms
+  for (const t of DM.terms) {
+    if (t.alpha < 0.05) continue;
+    ctx.globalAlpha = t.alpha * 0.5;
+    ctx.strokeStyle = 'rgba(39,179,255,0.35)';
     ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(DM.cx, DM.cy); ctx.lineTo(c.x, c.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(DM.cx, DM.cy); ctx.lineTo(t.x, t.y); ctx.stroke();
   }
-
-  // lines: active category → terms
-  if (DM.activeCat >= 0) {
-    const cat = DM.cats[DM.activeCat];
-    for (const t of DM.terms) {
-      if (t.alpha < 0.05) continue;
-      ctx.globalAlpha = t.alpha * 0.5;
-      ctx.strokeStyle = cat.color;
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(cat.x, cat.y); ctx.lineTo(t.x, t.y); ctx.stroke();
-    }
-    ctx.globalAlpha = 1;
-  }
+  ctx.globalAlpha = 1;
 
   // term nodes
   for (const t of DM.terms) {
@@ -1290,7 +1291,7 @@ function dmLoop() {
     ctx.beginPath(); ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
     ctx.fillStyle = t === DM.selTerm ? '#1B5CFF' : '#0F3A66';
     ctx.fill();
-    ctx.strokeStyle = t === DM.selTerm ? '#EAF2FF' : DM.cats[t.catIdx].color;
+    ctx.strokeStyle = t === DM.selTerm ? '#EAF2FF' : '#27B3FF';
     ctx.lineWidth = 1.5; ctx.stroke();
     ctx.fillStyle = '#EAF2FF';
     ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -1308,69 +1309,20 @@ function dmLoop() {
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   dmWrapText(ctx, dmHubLabel(), DM.cx, DM.cy, 64, 11);
 
-  // category nodes (drawn last, on top)
-  for (let i = 0; i < DM.cats.length; i++) {
-    const c = DM.cats[i];
-    const active = DM.activeCat === i;
-    ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-    ctx.fillStyle = active ? c.color : '#102E5A';
-    ctx.fill();
-    ctx.strokeStyle = c.color; ctx.lineWidth = active ? 2.5 : 1.5; ctx.stroke();
-    ctx.fillStyle = active ? '#061525' : '#EAF2FF';
-    ctx.font = (active ? 'bold ' : '') + '11px system-ui';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    dmWrapText(ctx, c.label, c.x, c.y, c.r * 2 - 10, 12);
-  }
-
   ctx.restore();
   DM.raf = requestAnimationFrame(dmLoop);
 }
 
-function dmHubLabel() {
-  if (!state.branches.size) return 'Tous';
-  const bs = [...state.branches];
-  if (bs.length === 1) return branchLabel(bs[0]).replace(/^[^·]+·\s*/, '');
-  return bs.length + ' thèmes';
-}
-
-function dmExpandCat(idx) {
-  if (DM.activeCat === idx) {
-    DM.activeCat = -1; DM.selTerm = null; DM.terms = [];
-    $('dm-def-panel').classList.add('hidden');
-    return;
-  }
-  DM.activeCat = idx; DM.selTerm = null;
-  $('dm-def-panel').classList.add('hidden');
-  const cat = DM.cats[idx];
-  const rTerm = 36;
-  const items = cat.items.slice(0, 10);
-  const n = items.length;
-  const span = n <= 1 ? 0 : Math.min(Math.PI * 0.9, (n - 1) * 0.48);
-  // R2 garantit qu'aucun terme ne touche son voisin le long de l'arc
-  const step = n > 1 ? span / (n - 1) : 1;
-  const R2 = Math.max(rTerm * 3, n > 1 ? rTerm / Math.sin(step / 2) * 1.2 : rTerm * 3);
-  const startA = cat.angle - span / 2;
-  DM.terms = items.map((concept, i) => ({
-    label: concept.term, concept, catIdx: idx, r: rTerm,
-    tx: cat.tx + R2 * Math.cos(n <= 1 ? cat.angle : startA + span * i / (n - 1)),
-    ty: cat.ty + R2 * Math.sin(n <= 1 ? cat.angle : startA + span * i / (n - 1)),
-    x: cat.x, y: cat.y, alpha: 0, alive: true,
-  }));
-}
+function dmHubLabel() { return DM.catName || 'Constellation'; }
 
 function dmHit(px, py) {
   for (let i = DM.terms.length - 1; i >= 0; i--) {
     const t = DM.terms[i];
     if (t.alpha < 0.4) continue;
     const dx = px - t.x, dy = py - t.y;
-    if (dx * dx + dy * dy <= t.r * t.r * 1.4) return { type: 'term', idx: i };
+    if (dx * dx + dy * dy <= t.r * t.r * 1.4) return i;
   }
-  for (let i = 0; i < DM.cats.length; i++) {
-    const c = DM.cats[i];
-    const dx = px - c.x, dy = py - c.y;
-    if (dx * dx + dy * dy <= c.r * c.r * 1.4) return { type: 'cat', idx: i };
-  }
-  return null;
+  return -1;
 }
 
 function dmToLogical(clientX, clientY) {
@@ -1382,10 +1334,9 @@ function dmToLogical(clientX, clientY) {
 function dmPointerUp(e) {
   if (e.pointerType === 'touch') return; // handled by touch events
   const { x, y } = dmToLogical(e.clientX, e.clientY);
-  const hit = dmHit(x, y);
-  if (!hit) { DM.selTerm = null; return; }
-  if (hit.type === 'cat') dmExpandCat(hit.idx);
-  else dmShowTerm(DM.terms[hit.idx]);
+  const idx = dmHit(x, y);
+  if (idx < 0) { DM.selTerm = null; return; }
+  dmShowTerm(DM.terms[idx]);
 }
 
 // Pinch-to-zoom + drag
@@ -1426,8 +1377,8 @@ function dmTouchEnd(e) {
   if (!_dmG.moved && _dmG.n === 1 && e.changedTouches.length === 1) {
     const t = e.changedTouches[0];
     const { x, y } = dmToLogical(t.clientX, t.clientY);
-    const hit = dmHit(x, y);
-    if (hit) { if (hit.type === 'cat') dmExpandCat(hit.idx); else dmShowTerm(DM.terms[hit.idx]); }
+    const idx = dmHit(x, y);
+    if (idx >= 0) dmShowTerm(DM.terms[idx]);
     else DM.selTerm = null;
   }
   _dmG.n = e.touches.length;
@@ -2310,6 +2261,7 @@ $('btn-resources-home').addEventListener('click', exitToHome);
 $('btn-mindmap').addEventListener('click', openMindmap);
 $('btn-mindmap-home').addEventListener('click', exitToHome);
 $('btn-dynmap-home').addEventListener('click', exitToHome);
+$('dm-cat-select').addEventListener('change', (e) => dmSelectCategory(e.target.value));
 $('dm-def-close').addEventListener('click', () => { DM.selTerm = null; $('dm-def-panel').classList.add('hidden'); });
 $('dm-canvas').addEventListener('pointerup', dmPointerUp);
 $('dm-canvas').addEventListener('touchstart', dmTouchStart, { passive: false });
