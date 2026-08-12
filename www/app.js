@@ -1061,7 +1061,7 @@ function renderFlash() {
 // concept (choisie par mots-clés dans le terme/la catégorie) qui respire, ligne
 // pointillée jusqu'à la révélation, puis pulsation voyageuse qui allume le
 // nœud « définition ». Un seul rAF par carte, pas de contenu à créer par concept.
-const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0, icon: '💭' };
+const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0, icon: '💭', iconAt: 0 };
 
 // Mots-clés (FR/EN) → icône représentative. Ordre = priorité (1er match gagne).
 const CONCEPT_ICONS = [
@@ -1120,6 +1120,7 @@ function fdStop() {
 function fdResetCard(c) {
   FD.revealed = false; FD.travelStart = 0;
   FD.icon = fdConceptIcon(c);
+  FD.iconAt = performance.now();
   fdEnsureLoop();
 }
 function fdReveal() {
@@ -1160,7 +1161,13 @@ function fdLoop(now) {
   g1.addColorStop(0, '#4C96FF'); g1.addColorStop(1, '#1B5CFF');
   ctx.fillStyle = g1; ctx.fill();
   ctx.fillStyle = '#EAF2FF'; ctx.font = '13px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(FD.icon, lx, cy);
+  // Apparition en « pop » de l'icône à chaque nouvelle carte (300 ms)
+  const popT = Math.min(1, (now - FD.iconAt) / 300);
+  const pop = popT >= 1 ? 1 : 0.6 + 0.4 * Math.sin(popT * Math.PI / 2);
+  ctx.save();
+  ctx.translate(lx, cy); ctx.scale(pop, pop);
+  ctx.fillText(FD.icon, 0, 0);
+  ctx.restore();
 
   // nœud « définition » : verrouillé jusqu'à ce que la pulsation arrive
   const lit = t >= 1;
