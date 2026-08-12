@@ -1,4 +1,4 @@
-const CACHE = 'quiz-thales-v5.51';
+const CACHE = 'quiz-thales-v5.52';
 const ASSETS = [
   './',
   'index.html',

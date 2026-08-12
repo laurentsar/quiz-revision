@@ -1196,12 +1196,25 @@ function dmPopulateCatSelect() {
     entries.map(([cat, items]) => `<option value="${esc(cat)}">${esc(cat)} (${items.length})</option>`).join('');
 }
 
-function openDynmap() {
-  showView('dynmap');
+// Thème synchronisé avec le menu déroulant de l'accueil (state.branches partagé,
+// comme Fiches/Mind Map) : changer le thème ici ou à l'accueil se répercute partout.
+function renderDynmapThemeSelect() {
+  const sel = $('dm-theme-select');
+  sel.innerHTML = themeOptionsHtml();
+  sel.value = scopeToSelectValue();
+}
+
+function dmResetSelection() {
   DM.catName = ''; DM.terms = []; DM.selTerm = null;
   $('dm-def-panel').classList.add('hidden');
   $('dm-hint').classList.remove('hidden');
   dmPopulateCatSelect();
+}
+
+function openDynmap() {
+  showView('dynmap');
+  renderDynmapThemeSelect();
+  dmResetSelection();
   DM.canvas = $('dm-canvas');
   DM.ctx = DM.canvas.getContext('2d');
   requestAnimationFrame(() => { dmResize(); if (DM.raf) cancelAnimationFrame(DM.raf); DM.raf = requestAnimationFrame(dmLoop); });
@@ -2261,6 +2274,7 @@ $('btn-resources-home').addEventListener('click', exitToHome);
 $('btn-mindmap').addEventListener('click', openMindmap);
 $('btn-mindmap-home').addEventListener('click', exitToHome);
 $('btn-dynmap-home').addEventListener('click', exitToHome);
+$('dm-theme-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); dmResetSelection(); });
 $('dm-cat-select').addEventListener('change', (e) => dmSelectCategory(e.target.value));
 $('dm-def-close').addEventListener('click', () => { DM.selTerm = null; $('dm-def-panel').classList.add('hidden'); });
 $('dm-canvas').addEventListener('pointerup', dmPointerUp);
