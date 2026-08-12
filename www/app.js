@@ -39,7 +39,17 @@ const state = {
 };
 
 let DB = null, ALL = [], CATS = [], BYTERM = {}, BRANCH_VIDEOS = {}, CATEGORY_VIDEOS = {};
-let audioMode = false, audioGen = 0;
+let audioMode = false, audioGen = 0, wakeLock = null;
+
+async function acquireWakeLock() {
+  if (!navigator.wakeLock || wakeLock) return;
+  try { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } catch (e) {}
+}
+function releaseWakeLock() {
+  if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; }
+}
+// Re-acquiert le wake lock si la page revient au premier plan pendant une session audio
+document.addEventListener('visibilitychange', () => { if (!document.hidden && audioMode) acquireWakeLock(); });
 
 // Groupes de thèmes : une chip parent repliée + le détail des membres à la demande.
 // id = identifiant de la chip parent ; test() reconnaît les clés de branche membres.
@@ -587,7 +597,7 @@ function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
   $('btn-fab-home').classList.toggle('hidden', name === 'home');
   if (name !== 'quiz' && name !== 'learn' && typeof exitFS === 'function') exitFS();
-  if (name !== 'learn') cancelSpeak();
+  if (name !== 'learn') { cancelSpeak(); releaseWakeLock(); }
   window.scrollTo(0, 0);
 }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
@@ -1082,15 +1092,23 @@ function speak(text, lang, onEnd) {
 function cancelSpeak() { audioGen++; window.speechSynthesis && window.speechSynthesis.cancel(); }
 function updateAudioButton() {
   const btn = $('btn-audio-toggle');
-  if (!btn) return;
-  btn.textContent = audioMode ? '🔊' : '🔇';
-  btn.classList.toggle('audio-on', audioMode);
+  if (btn) { btn.textContent = audioMode ? '🔊' : '🔇'; btn.classList.toggle('audio-on', audioMode); }
+  const stop = $('btn-audio-stop');
+  if (stop) stop.classList.toggle('hidden', !audioMode);
 }
 function toggleAudio() {
   audioMode = !audioMode;
   updateAudioButton();
-  if (!audioMode) cancelSpeak();
-  else if (state.browse) browseAutoPlay();
+  if (!audioMode) { cancelSpeak(); releaseWakeLock(); }
+  else { acquireWakeLock(); if (state.browse) browseAutoPlay(); }
+}
+function stopAudio() {
+  audioMode = false;
+  updateAudioButton();
+  cancelSpeak();
+  releaseWakeLock();
+  state.browse = false;
+  showView('home'); renderHome();
 }
 function readDefAndAdvance() {
   const c = state.learn[state.lidx];
@@ -1103,7 +1121,7 @@ function readDefAndAdvance() {
       if (audioGen !== g || !audioMode || !state.browse) return;
       state.browseRevealed = false;
       if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
-      else { audioMode = false; updateAudioButton(); state.browse = false; showView('home'); renderHome(); }
+      else { state.lidx = 0; renderFlash(); } // boucle infinie en mode audio
     }, 3000);
   });
 }
@@ -2011,6 +2029,7 @@ $('btn-browse').addEventListener('click', startBrowse);
 $('btn-browse-prev').addEventListener('click', browsePrev);
 $('btn-browse-next').addEventListener('click', browseNext);
 $('btn-audio-toggle').addEventListener('click', toggleAudio);
+$('btn-audio-stop').addEventListener('click', stopAudio);
 $('btn-learn-home').addEventListener('click', exitToHome);
 $('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
 $('fiches-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); renderFiches(); window.scrollTo(0, 0); });
