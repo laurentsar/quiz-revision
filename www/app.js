@@ -597,7 +597,7 @@ function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
   $('btn-fab-home').classList.toggle('hidden', name === 'home');
   if (name !== 'quiz' && name !== 'learn' && typeof exitFS === 'function') exitFS();
-  if (name !== 'learn') { cancelSpeak(); releaseWakeLock(); }
+  if (name !== 'learn') { cancelSpeak(); releaseWakeLock(); fdStop(); }
   if (name !== 'dynmap' && DM.raf) { cancelAnimationFrame(DM.raf); DM.raf = null; }
   window.scrollTo(0, 0);
 }
@@ -1024,6 +1024,7 @@ function browseNext() {
     $('btn-browse-next').textContent = 'Concept suivant →';
     const strip = $('learn-kbd-strip');
     if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+    fdReveal();
     if (audioMode) readDefAndAdvance();
   } else {
     // Étape 2 : passer au concept suivant (boucle infinie)
@@ -1052,7 +1053,98 @@ function renderFlash() {
   const strip = $('learn-kbd-strip');
   if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> voir définition <span class="ks">·</span> <kbd>Échap</kbd> quitter';
   updateAudioButton();
+  fdResetCard();
   if (audioMode) browseAutoPlay();
+}
+// ---------- mini diagramme animé (mode Parcourir) ----------
+// Illustre visuellement le lien terme → définition : nœud « terme » qui respire,
+// ligne pointillée jusqu'à la révélation, puis pulsation voyageuse qui allume le
+// nœud « définition ». Un seul rAF par carte, pas de contenu à créer par concept.
+const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0 };
+
+function fdResize() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = FD.canvas.clientWidth || 280;
+  const cssH = FD.canvas.clientHeight || 56;
+  FD.canvas.width = cssW * dpr;
+  FD.canvas.height = cssH * dpr;
+  FD.W = cssW; FD.H = cssH;
+  FD.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function fdEnsureLoop() {
+  if (!FD.canvas) {
+    FD.canvas = $('flash-diagram');
+    if (!FD.canvas) return;
+    FD.ctx = FD.canvas.getContext('2d');
+  }
+  fdResize();
+  if (!FD.raf) FD.raf = requestAnimationFrame(fdLoop);
+}
+function fdStop() {
+  if (FD.raf) { cancelAnimationFrame(FD.raf); FD.raf = null; }
+}
+function fdResetCard() {
+  FD.revealed = false; FD.travelStart = 0;
+  fdEnsureLoop();
+}
+function fdReveal() {
+  FD.revealed = true;
+  FD.travelStart = performance.now();
+  fdEnsureLoop();
+}
+function fdLoop(now) {
+  if (!FD.canvas) { FD.raf = null; return; }
+  const ctx = FD.ctx, W = FD.W, H = FD.H;
+  ctx.clearRect(0, 0, W, H);
+  const r = 15, lx = r + 10, rx = W - r - 10, cy = H / 2;
+
+  // ligne de fond
+  ctx.strokeStyle = 'rgba(234,242,255,0.18)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath(); ctx.moveTo(lx + r, cy); ctx.lineTo(rx - r, cy); ctx.stroke();
+  ctx.setLineDash([]);
+
+  const travelMs = 700;
+  const t = FD.revealed ? Math.min(1, (now - FD.travelStart) / travelMs) : 0;
+  if (t > 0) {
+    ctx.strokeStyle = '#4CE0D2';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(lx + r, cy); ctx.lineTo(lx + r + (rx - r - (lx + r)) * t, cy); ctx.stroke();
+    if (t < 1) {
+      const px = lx + r + (rx - r - (lx + r)) * t;
+      ctx.beginPath(); ctx.arc(px, cy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#4CE0D2'; ctx.fill();
+    }
+  }
+
+  // nœud « terme » : respiration continue
+  const breathe = 1 + 0.08 * Math.sin(now / 420);
+  ctx.beginPath(); ctx.arc(lx, cy, r * breathe, 0, Math.PI * 2);
+  const g1 = ctx.createRadialGradient(lx - 4, cy - 4, 2, lx, cy, r * breathe);
+  g1.addColorStop(0, '#4C96FF'); g1.addColorStop(1, '#1B5CFF');
+  ctx.fillStyle = g1; ctx.fill();
+  ctx.fillStyle = '#EAF2FF'; ctx.font = '13px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('💭', lx, cy);
+
+  // nœud « définition » : verrouillé jusqu'à ce que la pulsation arrive
+  const lit = t >= 1;
+  ctx.beginPath(); ctx.arc(rx, cy, r, 0, Math.PI * 2);
+  if (lit) {
+    const g2 = ctx.createRadialGradient(rx - 4, cy - 4, 2, rx, cy, r);
+    g2.addColorStop(0, '#6CF2D8'); g2.addColorStop(1, '#0FA88C');
+    ctx.fillStyle = g2;
+  } else {
+    ctx.fillStyle = '#102E5A';
+  }
+  ctx.fill();
+  ctx.strokeStyle = lit ? '#4CE0D2' : 'rgba(234,242,255,0.3)';
+  ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = lit ? '#06210f' : '#B8C7E3';
+  ctx.font = '13px system-ui';
+  ctx.fillText(lit ? '💡' : '🔒', rx, cy);
+
+  FD.raf = requestAnimationFrame(fdLoop);
 }
 // ---------- audio (Web Speech API) ----------
 // Les voix sont chargées de façon asynchrone sur Chrome/Android :
@@ -1142,6 +1234,7 @@ function browseAutoPlay() {
       $('btn-browse-next').textContent = 'Concept suivant →';
       const strip = $('learn-kbd-strip');
       if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+      fdReveal();
       readDefAndAdvance();
     }, 1500);
   });
