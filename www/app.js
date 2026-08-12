@@ -1182,7 +1182,7 @@ const DM_CAT_COLORS = [
   '#27B3FF','#4CE0D2','#35D07F','#8B9BFF','#FFD166',
   '#FF9F6B','#4C96FF','#A0FF4C','#FF6B81','#FFBF69',
 ];
-const DM = { canvas: null, ctx: null, raf: null, W: 0, H: 0, cx: 0, cy: 0, cats: [], terms: [], activeCat: -1, selTerm: null };
+const DM = { canvas: null, ctx: null, raf: null, W: 0, H: 0, cx: 0, cy: 0, cats: [], terms: [], activeCat: -1, selTerm: null, scale: 1, offsetX: 0, offsetY: 0 };
 
 function openDynmap() {
   showView('dynmap');
@@ -1209,6 +1209,7 @@ function dmBuild() {
     };
   });
   DM.terms = []; DM.activeCat = -1; DM.selTerm = null;
+  DM.scale = 1; DM.offsetX = 0; DM.offsetY = 0;
   $('dm-def-panel').classList.add('hidden');
   if (DM.raf) cancelAnimationFrame(DM.raf);
   DM.raf = requestAnimationFrame(dmLoop);
@@ -1255,6 +1256,10 @@ function dmLoop() {
     t.y = dmLerp(t.y, t.ty, 0.12);
     t.alpha = dmLerp(t.alpha, t.alive ? 1 : 0, 0.12);
   }
+
+  ctx.save();
+  ctx.translate(DM.offsetX, DM.offsetY);
+  ctx.scale(DM.scale, DM.scale);
 
   // lines: center → categories
   for (const c of DM.cats) {
@@ -1315,6 +1320,7 @@ function dmLoop() {
     dmWrapText(ctx, c.label, c.x, c.y, c.r * 2 - 8, 11);
   }
 
+  ctx.restore();
   DM.raf = requestAnimationFrame(dmLoop);
 }
 
@@ -1362,15 +1368,65 @@ function dmHit(px, py) {
   return null;
 }
 
-function dmPointerUp(e) {
-  if (e.pointerType === 'touch' && e.movementX !== undefined && (Math.abs(e.movementX) + Math.abs(e.movementY)) > 8) return;
+function dmToLogical(clientX, clientY) {
   const rect = DM.canvas.getBoundingClientRect();
-  const px = (e.clientX - rect.left) * (DM.W / rect.width);
-  const py = (e.clientY - rect.top) * (DM.H / rect.height);
-  const hit = dmHit(px, py);
+  const px = (clientX - rect.left) * (DM.W / rect.width);
+  const py = (clientY - rect.top) * (DM.H / rect.height);
+  return { x: (px - DM.offsetX) / DM.scale, y: (py - DM.offsetY) / DM.scale };
+}
+function dmPointerUp(e) {
+  if (e.pointerType === 'touch') return; // handled by touch events
+  const { x, y } = dmToLogical(e.clientX, e.clientY);
+  const hit = dmHit(x, y);
   if (!hit) { DM.selTerm = null; return; }
-  if (hit.type === 'cat') { dmExpandCat(hit.idx); }
-  else { dmShowTerm(DM.terms[hit.idx]); }
+  if (hit.type === 'cat') dmExpandCat(hit.idx);
+  else dmShowTerm(DM.terms[hit.idx]);
+}
+
+// Pinch-to-zoom + drag
+function dmTouchDist(t) {
+  const dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+const _dmG = { n: 0, moved: false, sx: 0, sy: 0, sox: 0, soy: 0, sd: 0, ss: 1, pcx: 0, pcy: 0 };
+function dmTouchStart(e) {
+  e.preventDefault();
+  _dmG.moved = false; _dmG.n = e.touches.length;
+  if (e.touches.length === 1) {
+    _dmG.sx = e.touches[0].clientX; _dmG.sy = e.touches[0].clientY;
+    _dmG.sox = DM.offsetX; _dmG.soy = DM.offsetY;
+  } else if (e.touches.length === 2) {
+    _dmG.sd = dmTouchDist(e.touches); _dmG.ss = DM.scale;
+    _dmG.sox = DM.offsetX; _dmG.soy = DM.offsetY;
+    const rect = DM.canvas.getBoundingClientRect();
+    _dmG.pcx = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) * (DM.W / rect.width);
+    _dmG.pcy = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) * (DM.H / rect.height);
+  }
+}
+function dmTouchMove(e) {
+  e.preventDefault();
+  if (e.touches.length === 1 && _dmG.n === 1) {
+    const dx = e.touches[0].clientX - _dmG.sx, dy = e.touches[0].clientY - _dmG.sy;
+    if (Math.abs(dx) + Math.abs(dy) > 5) _dmG.moved = true;
+    DM.offsetX = _dmG.sox + dx; DM.offsetY = _dmG.soy + dy;
+  } else if (e.touches.length === 2) {
+    _dmG.moved = true;
+    const ns = Math.max(0.35, Math.min(4, _dmG.ss * dmTouchDist(e.touches) / _dmG.sd));
+    DM.offsetX = _dmG.pcx - (_dmG.pcx - _dmG.sox) * (ns / _dmG.ss);
+    DM.offsetY = _dmG.pcy - (_dmG.pcy - _dmG.soy) * (ns / _dmG.ss);
+    DM.scale = ns;
+  }
+}
+function dmTouchEnd(e) {
+  if (!_dmG.moved && _dmG.n === 1 && e.changedTouches.length === 1) {
+    const t = e.changedTouches[0];
+    const { x, y } = dmToLogical(t.clientX, t.clientY);
+    const hit = dmHit(x, y);
+    if (hit) { if (hit.type === 'cat') dmExpandCat(hit.idx); else dmShowTerm(DM.terms[hit.idx]); }
+    else DM.selTerm = null;
+  }
+  _dmG.n = e.touches.length;
+  if (!e.touches.length) _dmG.moved = false;
 }
 
 function dmShowTerm(t) {
@@ -2251,6 +2307,9 @@ $('btn-mindmap-home').addEventListener('click', exitToHome);
 $('btn-dynmap-home').addEventListener('click', exitToHome);
 $('dm-def-close').addEventListener('click', () => { DM.selTerm = null; $('dm-def-panel').classList.add('hidden'); });
 $('dm-canvas').addEventListener('pointerup', dmPointerUp);
+$('dm-canvas').addEventListener('touchstart', dmTouchStart, { passive: false });
+$('dm-canvas').addEventListener('touchmove',  dmTouchMove,  { passive: false });
+$('dm-canvas').addEventListener('touchend',   dmTouchEnd,   { passive: false });
 
 const revisionModal = $('revision-modal');
 $('revision-modal-close').addEventListener('click', () => revisionModal.classList.add('hidden'));
