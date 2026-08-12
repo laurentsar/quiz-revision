@@ -1061,39 +1061,43 @@ function renderFlash() {
 // concept (choisie par mots-clés dans le terme/la catégorie) qui respire, ligne
 // pointillée jusqu'à la révélation, puis pulsation voyageuse qui allume le
 // nœud « définition ». Un seul rAF par carte, pas de contenu à créer par concept.
-const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0, icon: '💭', iconAt: 0 };
+const FD = { canvas: null, ctx: null, raf: null, W: 0, H: 0, revealed: false, travelStart: 0, icon: '💭', anim: 'bob', iconAt: 0 };
 
-// Mots-clés (FR/EN) → icône représentative. Ordre = priorité (1er match gagne).
+// Mots-clés (FR/EN) → icône représentative + style d'animation évoquant le concept :
+// rotate (clé/cadenas qui tourne) · spin (réseau qui balaie) · bob (flotte) ·
+// swing (balancier, hameçon/balance) · jitter (agitation, malware/faille) ·
+// pulse (battement, cible/bouclier/base) · scan (balayage, œil/audit/code) ·
+// flicker (clignote, alerte). Ordre = priorité (1er match gagne).
 const CONCEPT_ICONS = [
-  [/phishing|hame\wonnage|ing[ée]nierie sociale|social engineering/i, '🎣'],
-  [/malware|virus|ransomware|rançongiciel|cheval de troie|trojan|ver\b|worm/i, '🦠'],
-  [/mot de passe|password|authentifi|mfa|2fa|iam\b|identit[ée]|acc[èe]s/i, '🔑'],
-  [/chiffr|crypto|cl[ée] (publique|priv[ée])|certificat|pki|hash|signature/i, '🔐'],
-  [/r[ée]seau|network|firewall|pare-feu|routeur|vpn|tcp|dns|protocole/i, '🌐'],
-  [/cloud|aws|azure|saas|iaas|paas/i, '☁️'],
-  [/rgpd|gdpr|hipaa|vie priv[ée]e|privacy|donn[ée]es personnelles/i, '🛂'],
-  [/l[ée]gal|loi|r[ée]glementation|conformit[ée]|compliance/i, '⚖️'],
-  [/incident|forensic|investigation|r[ée]ponse à incident/i, '🚨'],
-  [/base de donn[ée]es|database|sql\b/i, '🗄️'],
-  [/physique|badge|cam[ée]ra|surveillance vid[ée]o/i, '🚪'],
-  [/sensibilisation|formation|awareness|training/i, '🎓'],
-  [/politique|policy|proc[ée]dure|gouvernance|governance/i, '📋'],
-  [/intelligence artificielle|ia\b|machine learning|mod[èe]le|ai\b/i, '🤖'],
-  [/vuln[ée]rabilit[ée]|faille|exploit|cve\b/i, '🐞'],
-  [/sauvegarde|backup|continuit[ée]|pca\b|pra\b|recovery/i, '💾'],
-  [/soc\b|siem|monitoring|journal|log\b/i, '👁️'],
-  [/d[ée]veloppement|code|application|devops|api\b/i, '💻'],
-  [/mitre|kill chain|ttp\b|attaque/i, '⚔️'],
-  [/pentest|red team|offensi[fv]/i, '🗡️'],
-  [/blue team|d[ée]fense/i, '🛡️'],
-  [/risque|menace|sc[ée]nario|ebios/i, '🎯'],
-  [/audit|[ée]valuation|analyse/i, '📊'],
+  [/phishing|hame\wonnage|ing[ée]nierie sociale|social engineering/i, '🎣', 'swing'],
+  [/malware|virus|ransomware|rançongiciel|cheval de troie|trojan|ver\b|worm/i, '🦠', 'jitter'],
+  [/mot de passe|password|authentifi|mfa|2fa|iam\b|identit[ée]|acc[èe]s/i, '🔑', 'rotate'],
+  [/chiffr|crypto|cl[ée] (publique|priv[ée])|certificat|pki|hash|signature/i, '🔐', 'rotate'],
+  [/r[ée]seau|network|firewall|pare-feu|routeur|vpn|tcp|dns|protocole/i, '🌐', 'spin'],
+  [/cloud|aws|azure|saas|iaas|paas/i, '☁️', 'bob'],
+  [/rgpd|gdpr|hipaa|vie priv[ée]e|privacy|donn[ée]es personnelles/i, '🛂', 'bob'],
+  [/l[ée]gal|loi|r[ée]glementation|conformit[ée]|compliance/i, '⚖️', 'swing'],
+  [/incident|forensic|investigation|r[ée]ponse à incident/i, '🚨', 'flicker'],
+  [/base de donn[ée]es|database|sql\b/i, '🗄️', 'pulse'],
+  [/physique|badge|cam[ée]ra|surveillance vid[ée]o/i, '🚪', 'bob'],
+  [/sensibilisation|formation|awareness|training/i, '🎓', 'bob'],
+  [/politique|policy|proc[ée]dure|gouvernance|governance/i, '📋', 'scan'],
+  [/intelligence artificielle|ia\b|machine learning|mod[èe]le|ai\b/i, '🤖', 'pulse'],
+  [/vuln[ée]rabilit[ée]|faille|exploit|cve\b/i, '🐞', 'jitter'],
+  [/sauvegarde|backup|continuit[ée]|pca\b|pra\b|recovery/i, '💾', 'pulse'],
+  [/soc\b|siem|monitoring|journal|log\b/i, '👁️', 'scan'],
+  [/d[ée]veloppement|code|application|devops|api\b/i, '💻', 'scan'],
+  [/mitre|kill chain|ttp\b|attaque/i, '⚔️', 'swing'],
+  [/pentest|red team|offensi[fv]/i, '🗡️', 'swing'],
+  [/blue team|d[ée]fense/i, '🛡️', 'pulse'],
+  [/risque|menace|sc[ée]nario|ebios/i, '🎯', 'pulse'],
+  [/audit|[ée]valuation|analyse/i, '📊', 'scan'],
 ];
 function fdConceptIcon(c) {
-  if (!c) return '💭';
+  if (!c) return { icon: '💭', anim: 'bob' };
   const text = `${c.cat || ''} ${c.term || ''}`;
-  for (const [re, icon] of CONCEPT_ICONS) if (re.test(text)) return icon;
-  return '💭';
+  for (const [re, icon, anim] of CONCEPT_ICONS) if (re.test(text)) return { icon, anim };
+  return { icon: '💭', anim: 'bob' };
 }
 
 function fdResize() {
@@ -1119,7 +1123,8 @@ function fdStop() {
 }
 function fdResetCard(c) {
   FD.revealed = false; FD.travelStart = 0;
-  FD.icon = fdConceptIcon(c);
+  const { icon, anim } = fdConceptIcon(c);
+  FD.icon = icon; FD.anim = anim;
   FD.iconAt = performance.now();
   fdEnsureLoop();
 }
@@ -1161,11 +1166,22 @@ function fdLoop(now) {
   g1.addColorStop(0, '#4C96FF'); g1.addColorStop(1, '#1B5CFF');
   ctx.fillStyle = g1; ctx.fill();
   ctx.fillStyle = '#EAF2FF'; ctx.font = '13px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  // Apparition en « pop » de l'icône à chaque nouvelle carte (300 ms)
+  // Apparition en « pop » de l'icône à chaque nouvelle carte (300 ms), puis
+  // animation propre au concept (rotation de clé, balancier, agitation…)
   const popT = Math.min(1, (now - FD.iconAt) / 300);
   const pop = popT >= 1 ? 1 : 0.6 + 0.4 * Math.sin(popT * Math.PI / 2);
   ctx.save();
   ctx.translate(lx, cy); ctx.scale(pop, pop);
+  switch (FD.anim) {
+    case 'rotate': ctx.rotate(Math.sin(now / 500) * 0.22); break;
+    case 'spin': ctx.rotate((now / 900) % (Math.PI * 2)); break;
+    case 'bob': ctx.translate(0, Math.sin(now / 600) * 2.5); break;
+    case 'swing': ctx.translate(0, -4); ctx.rotate(Math.sin(now / 480) * 0.3); ctx.translate(0, 4); break;
+    case 'jitter': ctx.translate(Math.sin(now / 70) * 1.3 + Math.sin(now / 131) * 0.8, Math.cos(now / 95) * 1.1); break;
+    case 'pulse': { const s = 1 + 0.12 * Math.sin(now / 260); ctx.scale(s, s); break; }
+    case 'scan': ctx.translate(Math.sin(now / 520) * 4, 0); break;
+    case 'flicker': ctx.globalAlpha = 0.55 + 0.45 * Math.abs(Math.sin(now / 170)); break;
+  }
   ctx.fillText(FD.icon, 0, 0);
   ctx.restore();
 
