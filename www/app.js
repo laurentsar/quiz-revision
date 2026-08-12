@@ -1008,6 +1008,7 @@ function startBrowse() {
   state.browseRevealed = false;
   studying = true; pomoStart();
   state.lidx = 0;
+  acquireWakeLock();
   showView('learn'); renderFlash();
 }
 function browsePrev() {
@@ -1024,10 +1025,10 @@ function browseNext() {
     if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> concept suivant <span class="ks">·</span> <kbd>Échap</kbd> quitter';
     if (audioMode) readDefAndAdvance();
   } else {
-    // Étape 2 : passer au concept suivant
+    // Étape 2 : passer au concept suivant (boucle infinie)
     state.browseRevealed = false;
-    if (state.lidx < state.learn.length - 1) { state.lidx++; renderFlash(); }
-    else { state.browse = false; showView('home'); renderHome(); }
+    state.lidx = state.lidx < state.learn.length - 1 ? state.lidx + 1 : 0;
+    renderFlash();
   }
 }
 function renderFlash() {
@@ -1049,6 +1050,7 @@ function renderFlash() {
   $('btn-browse-next').textContent = 'Voir la définition →';
   const strip = $('learn-kbd-strip');
   if (strip) strip.innerHTML = '<kbd>←</kbd> précédent <span class="ks">·</span> <kbd>→</kbd> voir définition <span class="ks">·</span> <kbd>Échap</kbd> quitter';
+  updateAudioButton();
   if (audioMode) browseAutoPlay();
 }
 // ---------- audio (Web Speech API) ----------
@@ -1094,7 +1096,7 @@ function updateAudioButton() {
   const btn = $('btn-audio-toggle');
   if (btn) { btn.textContent = audioMode ? '🔊' : '🔇'; btn.classList.toggle('audio-on', audioMode); }
   const stop = $('btn-audio-stop');
-  if (stop) stop.classList.toggle('hidden', !audioMode);
+  if (stop) stop.classList.toggle('hidden', !state.browse);
 }
 function toggleAudio() {
   audioMode = !audioMode;
@@ -1102,12 +1104,12 @@ function toggleAudio() {
   if (!audioMode) { cancelSpeak(); releaseWakeLock(); }
   else { acquireWakeLock(); if (state.browse) browseAutoPlay(); }
 }
-function stopAudio() {
+function stopBrowse() {
   audioMode = false;
-  updateAudioButton();
   cancelSpeak();
   releaseWakeLock();
   state.browse = false;
+  updateAudioButton();
   showView('home'); renderHome();
 }
 function readDefAndAdvance() {
@@ -2029,7 +2031,7 @@ $('btn-browse').addEventListener('click', startBrowse);
 $('btn-browse-prev').addEventListener('click', browsePrev);
 $('btn-browse-next').addEventListener('click', browseNext);
 $('btn-audio-toggle').addEventListener('click', toggleAudio);
-$('btn-audio-stop').addEventListener('click', stopAudio);
+$('btn-audio-stop').addEventListener('click', stopBrowse);
 $('btn-learn-home').addEventListener('click', exitToHome);
 $('btn-fiches').addEventListener('click', () => { renderFiches(); showView('fiches'); });
 $('fiches-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); renderFiches(); window.scrollTo(0, 0); });
