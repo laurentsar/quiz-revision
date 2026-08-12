@@ -1198,14 +1198,16 @@ function dmBuild() {
   for (const c of list) (bycat[c.cat || ''] ||= []).push(c);
   const entries = Object.entries(bycat);
   const n = entries.length;
-  const R1 = Math.min(DM.cx, DM.cy) * 0.50;
+  const rCat = 46;
+  // R1 garantit qu'aucun cercle-catégorie ne touche son voisin (zoom-out possible)
+  const R1 = Math.max(Math.min(DM.cx, DM.cy) * 0.55, n > 1 ? rCat / Math.sin(Math.PI / n) * 1.2 : rCat * 2);
   DM.cats = entries.map(([cat, items], i) => {
     const angle = n === 1 ? -Math.PI / 2 : (2 * Math.PI * i / n) - Math.PI / 2;
     return {
       label: cat, color: DM_CAT_COLORS[i % DM_CAT_COLORS.length],
       items, angle,
       tx: DM.cx + R1 * Math.cos(angle), ty: DM.cy + R1 * Math.sin(angle),
-      x: DM.cx, y: DM.cy, r: 32,
+      x: DM.cx, y: DM.cy, r: rCat,
     };
   });
   DM.terms = []; DM.activeCat = -1; DM.selTerm = null;
@@ -1291,8 +1293,8 @@ function dmLoop() {
     ctx.strokeStyle = t === DM.selTerm ? '#EAF2FF' : DM.cats[t.catIdx].color;
     ctx.lineWidth = 1.5; ctx.stroke();
     ctx.fillStyle = '#EAF2FF';
-    ctx.font = '9px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    dmWrapText(ctx, t.label, t.x, t.y, t.r * 2 - 8, 10);
+    ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    dmWrapText(ctx, t.label, t.x, t.y, t.r * 2 - 10, 12);
     ctx.globalAlpha = 1;
   }
 
@@ -1315,9 +1317,9 @@ function dmLoop() {
     ctx.fill();
     ctx.strokeStyle = c.color; ctx.lineWidth = active ? 2.5 : 1.5; ctx.stroke();
     ctx.fillStyle = active ? '#061525' : '#EAF2FF';
-    ctx.font = (active ? 'bold ' : '') + '10px system-ui';
+    ctx.font = (active ? 'bold ' : '') + '11px system-ui';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    dmWrapText(ctx, c.label, c.x, c.y, c.r * 2 - 8, 11);
+    dmWrapText(ctx, c.label, c.x, c.y, c.r * 2 - 10, 12);
   }
 
   ctx.restore();
@@ -1340,13 +1342,16 @@ function dmExpandCat(idx) {
   DM.activeCat = idx; DM.selTerm = null;
   $('dm-def-panel').classList.add('hidden');
   const cat = DM.cats[idx];
-  const items = cat.items.slice(0, 8);
+  const rTerm = 36;
+  const items = cat.items.slice(0, 10);
   const n = items.length;
-  const R2 = Math.min(DM.cx, DM.cy) * 0.42;
-  const span = n <= 1 ? 0 : Math.min(Math.PI * 0.85, (n - 1) * 0.45);
+  const span = n <= 1 ? 0 : Math.min(Math.PI * 0.9, (n - 1) * 0.48);
+  // R2 garantit qu'aucun terme ne touche son voisin le long de l'arc
+  const step = n > 1 ? span / (n - 1) : 1;
+  const R2 = Math.max(rTerm * 3, n > 1 ? rTerm / Math.sin(step / 2) * 1.2 : rTerm * 3);
   const startA = cat.angle - span / 2;
   DM.terms = items.map((concept, i) => ({
-    label: concept.term, concept, catIdx: idx, r: 26,
+    label: concept.term, concept, catIdx: idx, r: rTerm,
     tx: cat.tx + R2 * Math.cos(n <= 1 ? cat.angle : startA + span * i / (n - 1)),
     ty: cat.ty + R2 * Math.sin(n <= 1 ? cat.angle : startA + span * i / (n - 1)),
     x: cat.x, y: cat.y, alpha: 0, alive: true,
