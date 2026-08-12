@@ -2235,7 +2235,7 @@ $('btn-next').addEventListener('click', goNext);
 $('btn-abort').addEventListener('click', exitToHome);
 $('btn-replay').addEventListener('click', () => startSession(state.mode));
 $('btn-home').addEventListener('click', exitToHome);
-$('btn-browse').addEventListener('click', startBrowse);
+$('btn-browse').addEventListener('click', () => $('revision-modal').classList.remove('hidden'));
 $('btn-browse-prev').addEventListener('click', browsePrev);
 $('btn-browse-next').addEventListener('click', browseNext);
 $('btn-audio-toggle').addEventListener('click', toggleAudio);
@@ -2248,10 +2248,15 @@ $('btn-resources').addEventListener('click', () => { renderResources(); showView
 $('btn-resources-home').addEventListener('click', exitToHome);
 $('btn-mindmap').addEventListener('click', openMindmap);
 $('btn-mindmap-home').addEventListener('click', exitToHome);
-$('btn-dynmap').addEventListener('click', openDynmap);
 $('btn-dynmap-home').addEventListener('click', exitToHome);
 $('dm-def-close').addEventListener('click', () => { DM.selTerm = null; $('dm-def-panel').classList.add('hidden'); });
 $('dm-canvas').addEventListener('pointerup', dmPointerUp);
+
+const revisionModal = $('revision-modal');
+$('revision-modal-close').addEventListener('click', () => revisionModal.classList.add('hidden'));
+revisionModal.addEventListener('click', (e) => { if (e.target === revisionModal) revisionModal.classList.add('hidden'); });
+$('btn-rev-browse').addEventListener('click', () => { revisionModal.classList.add('hidden'); startBrowse(); });
+$('btn-rev-dynmap').addEventListener('click', () => { revisionModal.classList.add('hidden'); openDynmap(); });
 $('mm-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); mmDomain = null; mmQuery = ''; $('mm-search').value = ''; renderMindmap(); window.scrollTo(0, 0); });
 $('mm-search').addEventListener('input', (e) => { mmQuery = e.target.value.trim(); renderMindmapDomains(mmList()); renderMindmapBody(); });
 

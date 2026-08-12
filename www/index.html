@@ -32,13 +32,12 @@
       </div>
 
       <div class="top-actions">
-        <button id="btn-browse" class="secondary">📖 Parcourir</button>
+        <button id="btn-browse" class="secondary">📖 Révision</button>
         <button id="btn-cloze" class="secondary">🧩 Texte à trous</button>
         <button id="btn-review" class="secondary">⟳ Mes erreurs (<span id="review-count">0</span>)</button>
         <button id="btn-stats" class="secondary">📊 Stats</button>
         <button id="btn-fiches" class="secondary">📑 Fiches</button>
         <button id="btn-mindmap" class="secondary top-wide">🧠 Mind Map</button>
-        <button id="btn-dynmap" class="secondary top-wide">✨ Constellation</button>
         <button id="btn-challenge" class="secondary top-wide">⚔️ Défi multijoueur</button>
         <button id="btn-resources" class="secondary top-wide">🎧 Podcasts &amp; vidéos</button>
         <button id="btn-flags" class="secondary top-wide">🚩 Signalements <span id="flag-badge" class="flag-badge hidden"></span></button>
@@ -165,6 +164,30 @@
         <p id="update-status" class="mm-source"></p>
 
         <button id="btn-reset" class="ghost">🗑️ Réinitialiser mes stats &amp; erreurs</button>
+      </div>
+    </div>
+
+    <!-- MENU RÉVISION (modal) -->
+    <div id="revision-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <span>📖 Mode révision</span>
+          <button id="revision-modal-close" class="gear">✕</button>
+        </div>
+        <button id="btn-rev-browse" class="primary" style="margin-bottom:12px;text-align:left;padding:14px 18px">
+          <span style="font-size:20px">📖</span>
+          <span style="display:inline-block;vertical-align:middle;margin-left:10px">
+            <strong>Parcourir</strong><br>
+            <span style="font-size:13px;opacity:.8">Cartes une par une, définition au tap</span>
+          </span>
+        </button>
+        <button id="btn-rev-dynmap" class="secondary" style="text-align:left;padding:14px 18px">
+          <span style="font-size:20px">✨</span>
+          <span style="display:inline-block;vertical-align:middle;margin-left:10px">
+            <strong>Constellation</strong><br>
+            <span style="font-size:13px;opacity:.8">Mind map interactif et animé</span>
+          </span>
+        </button>
       </div>
     </div>
 
@@ -547,7 +570,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.46';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.47';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
   <script>window.BACKUP_APP = 'quiz-revision';</script>
