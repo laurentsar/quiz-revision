@@ -295,14 +295,16 @@
       <div class="quiz-header">
         <span class="quiz-progress">✨ Constellation</span>
       </div>
-      <canvas id="dm-canvas" class="dm-canvas"></canvas>
-      <div id="dm-def-panel" class="dm-def-panel hidden">
-        <span id="dm-def-cat" class="dm-def-cat"></span>
-        <span id="dm-def-term" class="dm-def-term"></span>
-        <p id="dm-def-def" class="dm-def-def"></p>
-        <p id="dm-def-tip" class="dm-def-tip hidden"></p>
-        <p id="dm-def-ex" class="dm-def-ex hidden"></p>
-        <button id="dm-def-close" class="ghost" style="margin-top:8px;width:100%">✕ Fermer</button>
+      <div class="dm-container">
+        <canvas id="dm-canvas" class="dm-canvas"></canvas>
+        <div id="dm-def-panel" class="dm-def-panel hidden">
+          <button id="dm-def-close" class="dm-def-close-btn" title="Fermer">✕</button>
+          <span id="dm-def-cat" class="dm-def-cat"></span>
+          <span id="dm-def-term" class="dm-def-term"></span>
+          <p id="dm-def-def" class="dm-def-def"></p>
+          <p id="dm-def-tip" class="dm-def-tip hidden"></p>
+          <p id="dm-def-ex" class="dm-def-ex hidden"></p>
+        </div>
       </div>
       <button id="btn-dynmap-home" class="secondary" style="margin-top:12px">Accueil</button>
     </section>
@@ -570,7 +572,7 @@
   <script src="firebase-challenge.js" defer></script>
 
   <!-- avant app.js : celui-ci lit APP_VERSION au chargement (affichage de la version) -->
-  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.47';</script>
+  <script>window.UPDATE_REPO='laurentsar/quiz-revision';window.APP_VERSION='5.48';</script>
   <script src="app.js"></script>
   <script src="update-check.js" defer></script>
   <script>window.BACKUP_APP = 'quiz-revision';</script>
