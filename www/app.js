@@ -591,13 +591,14 @@ function beep(ok) {
 function vibrate(ok) { try { navigator.vibrate && navigator.vibrate(ok ? 25 : [40, 50, 40]); } catch (e) {} }
 
 // ---------- vues ----------
-const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), mindmap: $('view-mindmap'), learn: $('view-learn'), resources: $('view-resources'), stats: $('view-stats') };
+const views = { home: $('view-home'), quiz: $('view-quiz'), result: $('view-result'), fiches: $('view-fiches'), mindmap: $('view-mindmap'), learn: $('view-learn'), resources: $('view-resources'), stats: $('view-stats'), dynmap: $('view-dynmap') };
 let autoNextTimer = null;
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.classList.toggle('hidden', k !== name));
   $('btn-fab-home').classList.toggle('hidden', name === 'home');
   if (name !== 'quiz' && name !== 'learn' && typeof exitFS === 'function') exitFS();
   if (name !== 'learn') { cancelSpeak(); releaseWakeLock(); }
+  if (name !== 'dynmap' && DM.raf) { cancelAnimationFrame(DM.raf); DM.raf = null; }
   window.scrollTo(0, 0);
 }
 function renderChips(sel, current, attr) { document.querySelectorAll(sel).forEach(c => c.classList.toggle('active', c.dataset[attr] === String(current))); }
@@ -1003,7 +1004,7 @@ function startBrowse() {
   const bycat = {};
   for (const c of pool) { (bycat[c.cat || ''] ||= []).push(c); }
   const sorted = shuffle(Object.values(bycat)).flatMap(g => shuffle(g));
-  state.learn = state.count > 0 ? sorted.slice(0, state.count) : sorted;
+  state.learn = sorted;
   state.browse = true;
   state.browseRevealed = false;
   studying = true; pomoStart();
@@ -1174,6 +1175,213 @@ function renderFiches() {
     `</div>`).join('') || '<div class="card"><div class="mm-source">Aucune fiche.</div></div>';
   $('fiches-content').querySelectorAll('.fiche-video').forEach(a =>
     a.addEventListener('click', () => openConceptVideo(a.dataset.term)));
+}
+
+// ---------- constellation (mind map dynamique canvas) ----------
+const DM_CAT_COLORS = [
+  '#27B3FF','#4CE0D2','#35D07F','#8B9BFF','#FFD166',
+  '#FF9F6B','#4C96FF','#A0FF4C','#FF6B81','#FFBF69',
+];
+const DM = { canvas: null, ctx: null, raf: null, W: 0, H: 0, cx: 0, cy: 0, cats: [], terms: [], activeCat: -1, selTerm: null };
+
+function openDynmap() {
+  showView('dynmap');
+  requestAnimationFrame(dmBuild);
+}
+
+function dmBuild() {
+  DM.canvas = $('dm-canvas');
+  DM.ctx = DM.canvas.getContext('2d');
+  dmResize();
+  const list = branchScopedList();
+  const bycat = {};
+  for (const c of list) (bycat[c.cat || ''] ||= []).push(c);
+  const entries = Object.entries(bycat);
+  const n = entries.length;
+  const R1 = Math.min(DM.cx, DM.cy) * 0.50;
+  DM.cats = entries.map(([cat, items], i) => {
+    const angle = n === 1 ? -Math.PI / 2 : (2 * Math.PI * i / n) - Math.PI / 2;
+    return {
+      label: cat, color: DM_CAT_COLORS[i % DM_CAT_COLORS.length],
+      items, angle,
+      tx: DM.cx + R1 * Math.cos(angle), ty: DM.cy + R1 * Math.sin(angle),
+      x: DM.cx, y: DM.cy, r: 32,
+    };
+  });
+  DM.terms = []; DM.activeCat = -1; DM.selTerm = null;
+  $('dm-def-panel').classList.add('hidden');
+  if (DM.raf) cancelAnimationFrame(DM.raf);
+  DM.raf = requestAnimationFrame(dmLoop);
+}
+
+function dmResize() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = DM.canvas.clientWidth || 320;
+  const cssH = DM.canvas.clientHeight || 340;
+  DM.canvas.width = cssW * dpr;
+  DM.canvas.height = cssH * dpr;
+  DM.W = cssW; DM.H = cssH;
+  DM.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  DM.cx = cssW / 2; DM.cy = cssH / 2;
+}
+
+function dmLerp(a, b, t) { return a + (b - a) * t; }
+
+function dmWrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let lines = [], line = '';
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; }
+    else line = test;
+  }
+  if (line) lines.push(line);
+  if (lines.length > 3) lines = lines.slice(0, 3);
+  const top = y - ((lines.length - 1) * lineH) / 2;
+  lines.forEach((l, i) => ctx.fillText(l, x, top + i * lineH));
+}
+
+function dmLoop() {
+  if (!DM.canvas) return;
+  const ctx = DM.ctx;
+  ctx.clearRect(0, 0, DM.W, DM.H);
+
+  for (const c of DM.cats) {
+    c.x = dmLerp(c.x, c.tx, 0.12);
+    c.y = dmLerp(c.y, c.ty, 0.12);
+  }
+  for (const t of DM.terms) {
+    t.x = dmLerp(t.x, t.tx, 0.12);
+    t.y = dmLerp(t.y, t.ty, 0.12);
+    t.alpha = dmLerp(t.alpha, t.alive ? 1 : 0, 0.12);
+  }
+
+  // lines: center → categories
+  for (const c of DM.cats) {
+    ctx.strokeStyle = 'rgba(39,179,255,0.25)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(DM.cx, DM.cy); ctx.lineTo(c.x, c.y); ctx.stroke();
+  }
+
+  // lines: active category → terms
+  if (DM.activeCat >= 0) {
+    const cat = DM.cats[DM.activeCat];
+    for (const t of DM.terms) {
+      if (t.alpha < 0.05) continue;
+      ctx.globalAlpha = t.alpha * 0.5;
+      ctx.strokeStyle = cat.color;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cat.x, cat.y); ctx.lineTo(t.x, t.y); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // term nodes
+  for (const t of DM.terms) {
+    if (t.alpha < 0.02) continue;
+    ctx.globalAlpha = t.alpha;
+    ctx.beginPath(); ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+    ctx.fillStyle = t === DM.selTerm ? '#1B5CFF' : '#0F3A66';
+    ctx.fill();
+    ctx.strokeStyle = t === DM.selTerm ? '#EAF2FF' : DM.cats[t.catIdx].color;
+    ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#EAF2FF';
+    ctx.font = '9px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    dmWrapText(ctx, t.label, t.x, t.y, t.r * 2 - 8, 10);
+    ctx.globalAlpha = 1;
+  }
+
+  // center hub
+  ctx.beginPath(); ctx.arc(DM.cx, DM.cy, 38, 0, Math.PI * 2);
+  const g = ctx.createRadialGradient(DM.cx - 8, DM.cy - 8, 4, DM.cx, DM.cy, 38);
+  g.addColorStop(0, '#2A7AFF'); g.addColorStop(1, '#0B2440');
+  ctx.fillStyle = g; ctx.fill();
+  ctx.strokeStyle = '#27B3FF'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#EAF2FF'; ctx.font = 'bold 10px system-ui';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  dmWrapText(ctx, dmHubLabel(), DM.cx, DM.cy, 64, 11);
+
+  // category nodes (drawn last, on top)
+  for (let i = 0; i < DM.cats.length; i++) {
+    const c = DM.cats[i];
+    const active = DM.activeCat === i;
+    ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    ctx.fillStyle = active ? c.color : '#102E5A';
+    ctx.fill();
+    ctx.strokeStyle = c.color; ctx.lineWidth = active ? 2.5 : 1.5; ctx.stroke();
+    ctx.fillStyle = active ? '#061525' : '#EAF2FF';
+    ctx.font = (active ? 'bold ' : '') + '10px system-ui';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    dmWrapText(ctx, c.label, c.x, c.y, c.r * 2 - 8, 11);
+  }
+
+  DM.raf = requestAnimationFrame(dmLoop);
+}
+
+function dmHubLabel() {
+  if (!state.branches.size) return 'Tous';
+  const bs = [...state.branches];
+  if (bs.length === 1) return branchLabel(bs[0]).replace(/^[^·]+·\s*/, '');
+  return bs.length + ' thèmes';
+}
+
+function dmExpandCat(idx) {
+  if (DM.activeCat === idx) {
+    DM.activeCat = -1; DM.selTerm = null; DM.terms = [];
+    $('dm-def-panel').classList.add('hidden');
+    return;
+  }
+  DM.activeCat = idx; DM.selTerm = null;
+  $('dm-def-panel').classList.add('hidden');
+  const cat = DM.cats[idx];
+  const items = cat.items.slice(0, 8);
+  const n = items.length;
+  const R2 = Math.min(DM.cx, DM.cy) * 0.42;
+  const span = n <= 1 ? 0 : Math.min(Math.PI * 0.85, (n - 1) * 0.45);
+  const startA = cat.angle - span / 2;
+  DM.terms = items.map((concept, i) => ({
+    label: concept.term, concept, catIdx: idx, r: 26,
+    tx: cat.tx + R2 * Math.cos(n <= 1 ? cat.angle : startA + span * i / (n - 1)),
+    ty: cat.ty + R2 * Math.sin(n <= 1 ? cat.angle : startA + span * i / (n - 1)),
+    x: cat.x, y: cat.y, alpha: 0, alive: true,
+  }));
+}
+
+function dmHit(px, py) {
+  for (let i = DM.terms.length - 1; i >= 0; i--) {
+    const t = DM.terms[i];
+    if (t.alpha < 0.4) continue;
+    const dx = px - t.x, dy = py - t.y;
+    if (dx * dx + dy * dy <= t.r * t.r * 1.4) return { type: 'term', idx: i };
+  }
+  for (let i = 0; i < DM.cats.length; i++) {
+    const c = DM.cats[i];
+    const dx = px - c.x, dy = py - c.y;
+    if (dx * dx + dy * dy <= c.r * c.r * 1.4) return { type: 'cat', idx: i };
+  }
+  return null;
+}
+
+function dmPointerUp(e) {
+  if (e.pointerType === 'touch' && e.movementX !== undefined && (Math.abs(e.movementX) + Math.abs(e.movementY)) > 8) return;
+  const rect = DM.canvas.getBoundingClientRect();
+  const px = (e.clientX - rect.left) * (DM.W / rect.width);
+  const py = (e.clientY - rect.top) * (DM.H / rect.height);
+  const hit = dmHit(px, py);
+  if (!hit) { DM.selTerm = null; return; }
+  if (hit.type === 'cat') { dmExpandCat(hit.idx); }
+  else { dmShowTerm(DM.terms[hit.idx]); }
+}
+
+function dmShowTerm(t) {
+  DM.selTerm = t;
+  const c = t.concept;
+  $('dm-def-cat').textContent = c.cat || '';
+  $('dm-def-term').textContent = c.term;
+  $('dm-def-def').textContent = c.def || '';
+  const tip = $('dm-def-tip'); tip.textContent = c.tip ? '💡 ' + c.tip : ''; tip.classList.toggle('hidden', !c.tip);
+  const ex = $('dm-def-ex'); ex.textContent = c.ex ? '🔎 ' + c.ex : ''; ex.classList.toggle('hidden', !c.ex);
+  $('dm-def-panel').classList.remove('hidden');
 }
 
 // ---------- mind map (vision par thème / certification) ----------
@@ -2040,6 +2248,10 @@ $('btn-resources').addEventListener('click', () => { renderResources(); showView
 $('btn-resources-home').addEventListener('click', exitToHome);
 $('btn-mindmap').addEventListener('click', openMindmap);
 $('btn-mindmap-home').addEventListener('click', exitToHome);
+$('btn-dynmap').addEventListener('click', openDynmap);
+$('btn-dynmap-home').addEventListener('click', exitToHome);
+$('dm-def-close').addEventListener('click', () => { DM.selTerm = null; $('dm-def-panel').classList.add('hidden'); });
+$('dm-canvas').addEventListener('pointerup', dmPointerUp);
 $('mm-select').addEventListener('change', (e) => { selectHomeTheme(e.target.value); mmDomain = null; mmQuery = ''; $('mm-search').value = ''; renderMindmap(); window.scrollTo(0, 0); });
 $('mm-search').addEventListener('input', (e) => { mmQuery = e.target.value.trim(); renderMindmapDomains(mmList()); renderMindmapBody(); });
 
